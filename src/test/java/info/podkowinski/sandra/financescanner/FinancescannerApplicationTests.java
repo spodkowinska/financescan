@@ -1,4 +1,4 @@
-package sandra.podkowinski.info.financescanner;
+package info.podkowinski.sandra.financescanner;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

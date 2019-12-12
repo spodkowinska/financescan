@@ -1,4 +1,4 @@
-package sandra.podkowinski.info.financescanner;
+package info.podkowinski.sandra.financescanner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

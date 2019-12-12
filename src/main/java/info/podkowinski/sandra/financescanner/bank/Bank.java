@@ -1,4 +1,4 @@
-package sandra.podkowinski.info.financescanner.category;
+package info.podkowinski.sandra.financescanner.bank;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,14 +7,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "banks")
+public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     String name;
-
-    String description;
+    String address;
 
 }

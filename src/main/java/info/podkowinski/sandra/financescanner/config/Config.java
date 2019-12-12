@@ -1,4 +1,4 @@
-package sandra.podkowinski.info.financescanner.config;
+package info.podkowinski.sandra.financescanner.config;
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

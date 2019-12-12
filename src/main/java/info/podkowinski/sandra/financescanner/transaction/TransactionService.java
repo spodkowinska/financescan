@@ -1,4 +1,4 @@
-package sandra.podkowinski.info.financescanner.transaction;
+package info.podkowinski.sandra.financescanner.transaction;
 
 import org.springframework.stereotype.Service;
 

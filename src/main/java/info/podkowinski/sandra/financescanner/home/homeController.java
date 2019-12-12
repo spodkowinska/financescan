@@ -1,4 +1,4 @@
-package sandra.podkowinski.info.financescanner.home;
+package info.podkowinski.sandra.financescanner.home;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

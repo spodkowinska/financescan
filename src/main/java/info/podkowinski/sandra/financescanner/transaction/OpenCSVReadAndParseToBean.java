@@ -1,7 +1,8 @@
-package sandra.podkowinski.info.financescanner.transaction;
+package info.podkowinski.sandra.financescanner.transaction;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
