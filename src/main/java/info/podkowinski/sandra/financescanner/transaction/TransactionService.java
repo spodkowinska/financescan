@@ -1,5 +1,7 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
+import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParseToBean;
+import info.podkowinski.sandra.financescanner.csvScanner.TransactionMBank;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,7 +18,7 @@ public class TransactionService {
 
     public void scanDocument(String path) throws IOException {
         OpenCSVReadAndParseToBean parser = new OpenCSVReadAndParseToBean();
-        List<Transaction> transactions = parser.csvTransactions(path);
+        List<TransactionMBank> transactions = parser.csvTransactions(path);
         transactions.forEach(t -> this.saveTransaction(t));
     }
 
@@ -24,6 +26,7 @@ public class TransactionService {
     public void saveTransaction(Transaction transaction) {
         transactionRepository.save(transaction);
     }
+
 
 
 }

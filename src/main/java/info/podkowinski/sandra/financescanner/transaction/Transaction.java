@@ -24,32 +24,20 @@ public class Transaction {
     Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @CsvBindByName(column = "#Data operacji")
-    @CsvDate("yyyy-MM-dd")
     Date transactionDate;
 
-    @CsvBindByName(column = "#Data ksiegowania")
-    @CsvDate("yyyy-MM-dd")
     Date financeDate;
 
-    @CsvBindByName(column = "#Opis operacji")
     String description;
 
-    @CsvBindByName(column = "#Tytul")
     String title;
 
-    @CsvBindByName(column = "#Nadawca/Odbiorca")
     String party;
 
-    @CsvBindByName(column = "#Numer konta")
     String accountNumber;
 
-    @PreAssignmentProcessor(processor = FormatOfNumbers.class, paramString = "-")
-    @CsvBindByName(column = "#Kwota")
     float amount;
 
-    @PreAssignmentProcessor(processor = FormatOfNumbers.class, paramString = "-")
-    @CsvBindByName(column = "#Saldo po operacji")
     float balance;
 
     @ManyToOne(fetch = FetchType.EAGER)

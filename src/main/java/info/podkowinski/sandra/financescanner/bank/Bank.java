@@ -14,5 +14,6 @@ public class Bank {
     Long id;
     String name;
     String address;
+    String phone;
 
 }
