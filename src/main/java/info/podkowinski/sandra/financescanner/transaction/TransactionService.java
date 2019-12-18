@@ -18,10 +18,10 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-    public void scanDocument(String path, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator)
+    public void scanDocument(String path, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines)
             throws IOException, CsvValidationException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
-        List<List<String>> transactions = parser.csvTransactions(path, separator);
+        List<List<String>> transactions = parser.csvTransactions(path, separator, skipLines);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
             newTransaction.transactionDate = trans.get(transactionDatePosition);

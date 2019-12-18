@@ -22,8 +22,8 @@ public class TransactionController {
     @RequestMapping("/home/btn")
     @ResponseBody
     public String homeBtn() throws IOException, ValidationException, CsvValidationException {
-        transactionService.scanDocument(path2, 0, 2, 3, 5, ',');
-      //  transactionService.scanDocument(path, 0, 3, 4, 6, ';');
+        transactionService.scanDocument(path2, 0, 2, 3, 5, ',',1);
+        transactionService.scanDocument(path, 0, 3, 4, 6, ';', 0);
         return "Udało się";
     }
 }

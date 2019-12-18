@@ -19,7 +19,7 @@ import java.util.*;
 
 public class OpenCSVReadAndParse {
 
-    public List<List<String>> csvTransactions(String path, char separator) throws IOException, CsvValidationException {
+    public List<List<String>> csvTransactions(String path, char separator, int skipLines) throws IOException, CsvValidationException {
         List<List<String>> transactions = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(path);
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
@@ -34,7 +34,7 @@ public class OpenCSVReadAndParse {
                         .build();
             }
                 CSVReader reader = new CSVReaderBuilder(isr)
-                        .withSkipLines(1)
+                        .withSkipLines(skipLines)
                         .withCSVParser(parser)
                         .build();
                 List<String> nextLine;
