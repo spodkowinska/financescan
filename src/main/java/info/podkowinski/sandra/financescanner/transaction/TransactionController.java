@@ -1,9 +1,11 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 
 @Controller
@@ -18,7 +20,7 @@ public class TransactionController {
 
     @RequestMapping("/home/btn")
     @ResponseBody
-    public String homeBtn() throws IOException {
+    public String homeBtn() throws IOException, ValidationException, CsvValidationException {
         transactionService.scanDocument(path);
         return "Udało się";
     }

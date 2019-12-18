@@ -1,17 +1,12 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
-import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvDate;
-import com.opencsv.bean.processor.PreAssignmentProcessor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import info.podkowinski.sandra.financescanner.bank.Bank;
 import info.podkowinski.sandra.financescanner.category.Category;
-import info.podkowinski.sandra.financescanner.csvScanner.FormatOfNumbers;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Getter
 @Setter
@@ -24,21 +19,15 @@ public class Transaction {
     Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date transactionDate;
 
-    Date financeDate;
+    //TODO change to Date and add converter
+    String transactionDate;
 
     String description;
 
-    String title;
-
     String party;
 
-    String accountNumber;
-
     float amount;
-
-    float balance;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_id")
