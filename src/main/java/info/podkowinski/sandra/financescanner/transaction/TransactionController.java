@@ -13,6 +13,7 @@ public class TransactionController {
 
     private final TransactionService transactionService;
     private final String path = "/Users/sandracoderslab/Desktop/simple.csv";
+    private final String path2 = "/Users/sandracoderslab/Desktop/historia.csv";
 
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
@@ -21,7 +22,8 @@ public class TransactionController {
     @RequestMapping("/home/btn")
     @ResponseBody
     public String homeBtn() throws IOException, ValidationException, CsvValidationException {
-        transactionService.scanDocument(path, 0, 3, 4, 7);
+        transactionService.scanDocument(path2, 0, 2, 3, 5, ',');
+      //  transactionService.scanDocument(path, 0, 3, 4, 6, ';');
         return "Udało się";
     }
 }

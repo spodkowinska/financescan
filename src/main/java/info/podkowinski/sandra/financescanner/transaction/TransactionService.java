@@ -18,24 +18,21 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-    public void scanDocument(String path, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition)
-            throws IOException, ValidationException, CsvValidationException {
+    public void scanDocument(String path, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator)
+            throws IOException, CsvValidationException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
-        List<List<String>> transactions = parser.csvTransactions(path);
+        List<List<String>> transactions = parser.csvTransactions(path, separator);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
             newTransaction.transactionDate = trans.get(transactionDatePosition);
             newTransaction.party = trans.get(partyPosition);
             newTransaction.description = trans.get(descriptionPosition);
-            newTransaction.amount = Float.parseFloat(trans.get(amountPosition).replace(',', '.')
+            newTransaction.amount = Float.parseFloat(trans.get(amountPosition)
+                    .replace(',', '.')
+                    .replace("\"","")
                     .replace(" ", ""));
             transactionRepository.save(newTransaction);
         }
-    }
-
-
-    public void saveTransaction(Transaction transaction) {
-        transactionRepository.save(transaction);
     }
 
 

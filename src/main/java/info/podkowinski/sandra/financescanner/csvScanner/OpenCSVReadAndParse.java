@@ -19,27 +19,35 @@ import java.util.*;
 
 public class OpenCSVReadAndParse {
 
-    public List<List<String>> csvTransactions(String path) throws IOException, ValidationException, CsvValidationException {
+    public List<List<String>> csvTransactions(String path, char separator) throws IOException, CsvValidationException {
         List<List<String>> transactions = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(path);
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
-            CSVParser parser = new CSVParserBuilder()
-                    .withSeparator(';')
-                    .withIgnoreQuotations(true)
-                    .build();
-            CSVReader reader = new CSVReaderBuilder(isr)
-                    .withSkipLines(0)
-                    .withCSVParser(parser)
-                    .build();
-            List<String> nextLine;
-            String[] row;
-            while ((row = reader.readNext()) != null) {
-                nextLine = Arrays.asList(row);
-                transactions.add(nextLine);
+            CSVParser parser;
+            if (separator == ',') {
+                parser = new CSVParserBuilder()
+                        .build();
+            } else {
+                parser = new CSVParserBuilder()
+                        .withSeparator(separator)
+//                    .withIgnoreQuotations(false)
+                        .build();
             }
-            reader.close();
-        }
-        return transactions;
+                CSVReader reader = new CSVReaderBuilder(isr)
+                        .withSkipLines(1)
+                        .withCSVParser(parser)
+                        .build();
+                List<String> nextLine;
+                String[] row;
+                while ((row = reader.readNext()) != null) {
+                    nextLine = Arrays.asList(row);
+                    transactions.add(nextLine);
+                }
+                reader.close();
+            }
+            return transactions;
 
+        }
     }
-}
+
+
