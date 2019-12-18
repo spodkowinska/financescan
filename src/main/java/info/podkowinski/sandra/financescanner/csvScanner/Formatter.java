@@ -4,22 +4,25 @@ import java.sql.Date;
 
 public class Formatter  {
 
-    public static Date sqlDate (String formatddMMyyyy) {
-       char[] chars = formatddMMyyyy.trim().toCharArray();
-       if(chars.length==10){
+    public Date sqlDate (String formatddMMyyyy) {
+       char[] chars = formatddMMyyyy.toCharArray();
+       if(chars.length==10 && (chars[5]>'9'||chars[5]<'0')){
            StringBuilder sb = new StringBuilder();
-           for(int i=7; i<chars.length; i++){
-               sb.append(i);
-           }
            sb.append(chars[6]);
-           sb.append(chars[4]);
+           sb.append(chars[7]);
+           sb.append(chars[8]);
+           sb.append(chars[9]);
            sb.append(chars[5]);
            sb.append(chars[3]);
-           sb.append(chars[1]);
+           sb.append(chars[4]);
            sb.append(chars[2]);
-           return sqlDate(sb.toString());
+           sb.append(chars[0]);
+           sb.append(chars[1]);
+           System.out.println(sb.toString());
+           return Date.valueOf(sb.toString());
        }
-       return sqlDate(formatddMMyyyy);
+        System.out.println("nie ");
+       return Date.valueOf(formatddMMyyyy);
     }
 
 }

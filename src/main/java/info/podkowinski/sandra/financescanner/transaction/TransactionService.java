@@ -29,8 +29,8 @@ public class TransactionService {
         List<List<String>> transactions = parser.csvTransactions(path, separator, skipLines);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
-            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-            newTransaction.transactionDate = Formatter.sqlDate(trans.get(transactionDatePosition));
+            Formatter formatter = new Formatter();
+            newTransaction.transactionDate = formatter.sqlDate(trans.get(transactionDatePosition));
             newTransaction.party = trans.get(partyPosition);
             newTransaction.description = trans.get(descriptionPosition);
             newTransaction.amount = Float.parseFloat(trans.get(amountPosition)
