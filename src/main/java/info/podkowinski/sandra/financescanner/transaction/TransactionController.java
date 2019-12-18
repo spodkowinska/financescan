@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
+import java.text.ParseException;
 
 @Controller
 public class TransactionController {
@@ -21,7 +22,7 @@ public class TransactionController {
 
     @RequestMapping("/home/btn")
     @ResponseBody
-    public String homeBtn() throws IOException, ValidationException, CsvValidationException {
+    public String homeBtn() throws IOException, ParseException, CsvValidationException {
         transactionService.scanDocument(path2, 0, 2, 3, 5, ',',1);
         transactionService.scanDocument(path, 0, 3, 4, 6, ';', 0);
         return "Udało się";
