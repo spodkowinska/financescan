@@ -20,24 +20,6 @@ import java.util.*;
 public class OpenCSVReadAndParse {
 
     public List<List<String>> csvTransactions(String path) throws IOException, ValidationException, CsvValidationException {
-//        List<TransactionMBank>transactions = new ArrayList<>();
-//        try (
-//                Reader reader = Files.newBufferedReader(Paths.get(path))) {
-//            CsvToBean<TransactionMBank> csvToBean = new CsvToBeanBuilder(reader)
-//                    .withSeparator(';')
-//                    .withType(Transaction.class)
-//                    .withIgnoreLeadingWhiteSpace(true)
-//                    .build();
-//
-//            Iterator<TransactionMBank> csvTransactionIterator = csvToBean.iterator();
-//
-//            while (csvTransactionIterator.hasNext()) {
-//                TransactionMBank transactionMBank = csvTransactionIterator.next();
-//                transactions.add(transactionMBank);
-//            }
-//        }
-//        return transactions;
-//    }
         List<List<String>> transactions = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(path);
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
