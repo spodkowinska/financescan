@@ -30,7 +30,6 @@ public class OpenCSVReadAndParse {
             } else {
                 parser = new CSVParserBuilder()
                         .withSeparator(separator)
-//                    .withIgnoreQuotations(false)
                         .build();
             }
                 CSVReader reader = new CSVReaderBuilder(isr)

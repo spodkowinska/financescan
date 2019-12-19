@@ -1,5 +1,6 @@
 package info.podkowinski.sandra.financescanner.category;
 
+import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +17,11 @@ public class Category {
     String name;
 
     String description;
+
+    String keywords;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
 
 }

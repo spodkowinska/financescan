@@ -1,6 +1,7 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
 
+import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,7 +21,6 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    //TODO change to Date and add converter
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date transactionDate;
 
@@ -38,9 +38,9 @@ public class Transaction {
     @ManyToOne
     Category category;
 
-//    @JoinColumn(name = "user_id")
-//    @ManyToOne
-//    User user;
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    User user;
 
 
 }
