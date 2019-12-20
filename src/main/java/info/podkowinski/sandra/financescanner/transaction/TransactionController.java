@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -27,14 +26,16 @@ public class TransactionController {
     @RequestMapping("/home/btn")
     @ResponseBody
     public String homeBtn() throws IOException, ParseException, CsvValidationException {
-        User user1 = new User();
-        user1.setMail("mail@mail");
-        user1.setName("user1");
-        userService.saveUser(user1);
-        transactionService.scanDocument(path2, 0, 2,
-                3, 5, ',', 1, user1);
-        transactionService.scanDocument(path, 0, 3,
-                4, 6, ';', 0, user1);
+//        User user1 = new User();
+//        user1.setMail("mail@mail");
+//        user1.setName("user1");
+//        userService.saveUser(user1);
+//        transactionService.scanDocument(path2, 0, 2,
+//                3, 5, ',', 1, user1);
+//        transactionService.scanDocument(path, 0, 3,
+//                4, 6, ';', 0, user1);
+        User user1 = userService.findById(2l);
+        transactionService.assignDefaultCategoriesInTransactions(user1);
         return "Udało się";
     }
 }

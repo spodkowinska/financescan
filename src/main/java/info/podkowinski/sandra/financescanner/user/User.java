@@ -17,14 +17,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
     String name;
 
     String mail;
