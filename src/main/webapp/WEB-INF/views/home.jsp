@@ -13,6 +13,7 @@
 </form>
 
 <a href="/home/btn">BTN</a>
+<a href="/home/sum">SUM</a>
 
 </body>
 </html>
