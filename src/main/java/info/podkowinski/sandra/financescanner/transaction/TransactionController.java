@@ -51,6 +51,7 @@ public class TransactionController {
         String str2="2019-11-31";
         Date date2=Date.valueOf(str2);
         User user1 = userService.findById(2l);
-        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
+//        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
+        return transactionService.balancesByDatesForAllCategories(user1, date1, date2).toString();
     }
 }

@@ -7,10 +7,13 @@ import info.podkowinski.sandra.financescanner.csvScanner.Formatter;
 import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
 import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -46,7 +49,7 @@ public class TransactionService {
     public void assignDefaultCategoriesInTransactions(User user) {
         List<Transaction> transactionList = transactionRepository.findAllByUserId(user.getId());
         for (Transaction transaction : transactionList) {
-            for(Category category: categoryRepository.findAllByUser(user)){
+            for (Category category : categoryRepository.findAllByUser(user)) {
                 boolean keywordFound = false;
                 for (String keyword : category.getKeywords().split(",")) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
@@ -62,25 +65,49 @@ public class TransactionService {
             }
         }
     }
+
     //todo what to do if transaction doesn't exist, itp?
     public void assignCategoryInTransaction(User user, Long transactionId, Long categoryId) {
         Transaction transaction = transactionRepository.getOne(transactionId);
-        if(transaction.getUser().equals(user)){
+        if (transaction.getUser().equals(user)) {
             transaction.setCategory(categoryRepository.getOne(categoryId));
             transactionRepository.save(transaction);
         }
     }
 
-    public double balanceByDates(User user, Date start, Date end){
-        List <Transaction> transactionList = transactionRepository.findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(start, end, user);
+    public double balanceByDates(User user, Date start, Date end) {
+        List<Transaction> transactionList = transactionRepository.findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(start, end, user);
         double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
         return balance;
     }
 
-    public double balanceByDatesAndCategory(User user, Date start, Date end, Long categoryId){
-        List <Transaction> transactionList = transactionRepository.findAllByTransactionDateAfterAndTransactionDateBeforeAndUserAndCategory
+    public double balanceByDatesAndCategory(User user, Date start, Date end, Long categoryId) {
+        List<Transaction> transactionList = transactionRepository.findAllByTransactionDateAfterAndTransactionDateBeforeAndUserAndCategory
                 (start, end, user, categoryRepository.getOne(categoryId));
         double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
         return balance;
+    }
+
+    public HashMap<String, Double> balancesByDatesForAllCategories(User user, Date start, Date end) {
+        List<Transaction> transactionList = transactionRepository.findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(start, end, user);
+        HashMap<String, Double> balanceByCategory=new HashMap<>();
+        for (Category category:categoryRepository.findAllByUser(user)) {
+            Double categorySum = 0.0;
+            for (Transaction transaction : transactionList) {
+                if (transaction.getCategory()==category) {
+                    categorySum += transaction.amount;
+                }
+            }
+
+            balanceByCategory.put(category.getName(), categorySum);
+        }
+        Double sum = 0.0;
+        for (Transaction transaction : transactionList) {
+            if(transaction.getCategory()==null){
+                sum+=transaction.amount;
+            }
+        }
+        balanceByCategory.put("Bez kategorii", sum);
+        return balanceByCategory;
     }
 }
