@@ -5,6 +5,8 @@ import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,6 +26,7 @@ public class TransactionController {
         this.transactionService = transactionService;
         this.userService = userService;
     }
+
 
     @RequestMapping("/home/btn")
     @ResponseBody
@@ -53,5 +56,13 @@ public class TransactionController {
         User user1 = userService.findById(2l);
 //        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
         return transactionService.balancesByDatesForAllCategories(user1, date1, date2).toString();
+    }
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
+    @GetMapping("/csvsettings")
+    public String csvsettings() {
+        return "csv-settings";
     }
 }
