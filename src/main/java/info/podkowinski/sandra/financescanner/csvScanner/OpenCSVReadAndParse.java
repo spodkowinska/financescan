@@ -35,7 +35,7 @@ public class OpenCSVReadAndParse {
                         .build();
                 List<String> nextLine;
                 String[] row;
-                while ((row = reader.readNext()) != null) {
+                while ((row = reader.readNext()) != null && !reader.readNext()[0].isEmpty()) {
                     nextLine = Arrays.asList(row);
                     transactions.add(nextLine);
                 }

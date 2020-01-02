@@ -38,8 +38,8 @@ public class HomeController {
     public String homePost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
         User user1 = userService.findById(1l);
-        transactionService.scanDocument(filePart.getInputStream(), 0, 2,
-                3, 5, ';', 40, user1);
+        transactionService.scanDocument(filePart.getInputStream(), 1, 3,
+                4, 6, ';', 50, user1);
         return "good";
     }
 }
