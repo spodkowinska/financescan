@@ -61,8 +61,5 @@ public class TransactionController {
     public String index() {
         return "index";
     }
-    @GetMapping("/csvsettings")
-    public String csvsettings() {
-        return "csv-settings";
-    }
+
 }
