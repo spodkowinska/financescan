@@ -8,7 +8,9 @@ import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
 import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -27,10 +29,10 @@ public class TransactionService {
         this.categoryRepository = categoryRepository;
     }
 
-    public void scanDocument(String path, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, User user)
+    public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, User user)
             throws IOException, CsvValidationException, ParseException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
-        List<List<String>> transactions = parser.csvTransactions(path, separator, skipLines);
+        List<List<String>> transactions = parser.csvTransactions(inputStream, separator, skipLines);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
             Formatter formatter = new Formatter();

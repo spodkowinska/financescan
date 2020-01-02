@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<form action="UploadDownloadFileServlet" method="post" enctype="multipart/form-data">
+<form action="/home" method="post" enctype="multipart/form-data">
     Select File to Upload:
-    <input type="file" name="fileName">
+    <input type="file" name="fileToUpload">
     <br>
     <input type="submit" value="Upload">
 </form>

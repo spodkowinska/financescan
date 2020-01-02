@@ -5,10 +5,7 @@ import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -36,15 +33,16 @@ public class TransactionController {
 //        user1.setMail("mail@mail");
 //        user1.setName("user1");
 //        userService.saveUser(user1);
-        User user1 = userService.findById(2l);
-//        transactionService.scanDocument(path2, 0, 2,
+//        User user1 = userService.findById(1l);
+//        transactionService.scanDocument(, 0, 2,
 //                3, 5, ',', 1, user1);
 //        transactionService.scanDocument(path, 0, 3,
 //                4, 6, ';', 0, user1);
-        transactionService.assignDefaultCategoriesInTransactions(user1);
-//        transactionService.assignCategoryInTransaction(user1, 1l, 6l);
+//        transactionService.assignDefaultCategoriesInTransactions(user1);
+////        transactionService.assignCategoryInTransaction(user1, 1l, 6l);
         return "Udało się";
     }
+
 
     @RequestMapping("/home/sum")
     @ResponseBody

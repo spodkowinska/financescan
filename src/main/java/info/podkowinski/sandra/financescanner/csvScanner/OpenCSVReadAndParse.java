@@ -9,19 +9,16 @@ import com.opencsv.exceptions.CsvValidationException;
 
 
 import javax.xml.bind.ValidationException;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
 public class OpenCSVReadAndParse {
 
-    public List<List<String>> csvTransactions(String path, char separator, int skipLines) throws IOException, CsvValidationException {
+    public List<List<String>> csvTransactions(InputStream inputStream, char separator, int skipLines) throws IOException, CsvValidationException {
         List<List<String>> transactions = new ArrayList<>();
-        try (FileInputStream fis = new FileInputStream(path);
+        try (InputStream fis = inputStream;
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
             CSVParser parser;
             if (separator == ',') {
