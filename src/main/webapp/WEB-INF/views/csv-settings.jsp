@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,8 @@
 
     <!-- Custom fonts for this template-->
     <link href="<c:url value="vendor/fontawesome-free/css/all.min.css"/>" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<c:url value="css/sb-admin-2.min.css"/>" rel="stylesheet">
@@ -29,58 +31,41 @@
     <div class="text-center">
         <h1 class="h4 text-gray-900 mb-4">Here you can prepare your new CSV reader</h1>
     </div>
-
-        <form:form modelAttribute="present1" method="post">
+    <form:form modelAttribute="csvSettings" method="post">
         <div class="form-group shadow-textarea">
-            <form:textarea path="description3" class="form-control z-depth-1"
-                           id="exampleFormControlTextarea6" rows="3"
-                           placeholder="${placeholder}"></form:textarea>
-        <div class="form-group">
-            <form:textarea path="" type="text" class="form-control form-control-user" id="csvName" placeholder="Name for your CSV Reader Settings">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-user" id="datePosition" placeholder="In which column is date?">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-user" id="descriptionPosition" placeholder="In which column is transaction description?">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-user" id="partyPosition" placeholder="In which column is partner of the transaction?">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-user" id="amountPosition" placeholder="In which column is amount?">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-user" id="separator" placeholder="What is separator in your CSV?">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-user" id="skipLines" placeholder="How many lines should be skipped?">
-        </div>
 
-        <div class="form-group">
-            <div class="custom-control custom-checkbox small">
-                <input type="checkbox" class="custom-control-input" id="customCheck">
-                <label class="custom-control-label" for="customCheck">Remember Me</label>
+            <div class="form-group">
+                <form:input path="name" class="form-control form-control-user" id="csvName"
+                            placeholder="Name for your CSV Reader Settings"></form:input>
+            </div>
+            <div class="form-group">
+                <form:input path="datePosition" class="form-control form-control-user" id="datePosition"
+                            placeholder="In which column is date?"></form:input>
+            </div>
+            <div class="form-group">
+                <form:input path="descriptionPosition" class="form-control form-control-user" id="descriptionPosition"
+                            placeholder="In which column is transaction description?"></form:input>
+            </div>
+            <div class="form-group">
+                <form:input path="partyPosition" class="form-control form-control-user" id="partyPosition"
+                            placeholder="In which column is partner of the transaction?"></form:input>
+            </div>
+            <div class="form-group">
+                <form:input path="amountPosition" class="form-control form-control-user" id="amountPosition"
+                            placeholder="In which column is amount?"></form:input>
+            </div>
+            <div class="form-group">
+                <form:input path="csvSeparator" class="form-control form-control-user" id="separator"
+                            placeholder="What is separator in your CSV?"></form:input>
+            </div>
+            <div class="form-group">
+                <form:input path="skipLines" class="form-control form-control-user" id="skipLines"
+                            placeholder="How many lines should be skipped?"></form:input>
             </div>
         </div>
-        <a href="index.html" class="btn btn-primary btn-user btn-block">
-            Login
-        </a>
-        <hr>
-        <a href="index.html" class="btn btn-google btn-user btn-block">
-            <i class="fab fa-google fa-fw"></i> Login with Google
-        </a>
-        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-        </a>
-    </form>
-    <hr>
-    <div class="text-center">
-        <a class="small" href="forgot-password.html">Forgot Password?</a>
-    </div>
-    <div class="text-center">
-        <a class="small" href="register.html">Create an Account!</a>
-    </div>
+
+        <input type="submit" placeholder="Set settings">
+    </form:form>
 </div>
 </div>
 </div>

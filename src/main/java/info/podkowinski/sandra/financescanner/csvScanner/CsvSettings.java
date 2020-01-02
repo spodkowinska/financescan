@@ -6,9 +6,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+
 @Getter
 @Setter
+@Entity
+@Table(name = "csv_settings")
 public class CsvSettings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +26,12 @@ public class CsvSettings {
 
     int amountPosition;
 
-    char separator;
+    char csvSeparator;
 
     int skipLines;
 
     @JoinColumn(name = "user_id")
     @ManyToOne
     User user;
+
 }

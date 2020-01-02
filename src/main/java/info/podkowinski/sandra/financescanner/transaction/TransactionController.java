@@ -21,6 +21,7 @@ public class TransactionController {
     private final UserService userService;
     private final String path = "/Users/sandracoderslab/Desktop/simple.csv";
     private final String path2 = "/Users/sandracoderslab/Desktop/historia.csv";
+    private final String path3 = "Macintosh HD/Users/sandracoderslab/Downloads/Macintosh/77905261_191201_191231 (1).csv";
 
     public TransactionController(TransactionService transactionService, UserService userService) {
         this.transactionService = transactionService;

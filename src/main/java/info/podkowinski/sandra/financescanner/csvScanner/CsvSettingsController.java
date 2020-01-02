@@ -23,7 +23,7 @@ public class CsvSettingsController {
         return "csv-settings";
     }
 
-    @PostMapping("/csv-settings")
+    @PostMapping("/csvsettings")
     public String csvsettingsForm(@Valid @ModelAttribute CsvSettings csvSettings) {
         csvSettingsService.saveCsvSettings(csvSettings);
         return "csv-settings";
