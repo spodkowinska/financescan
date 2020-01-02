@@ -28,4 +28,7 @@ public class CsvSettingsService {
         Long id = user.getId();
         return csvSettingsRepository.findByUserId(id);
     }
+    public CsvSettings findById(Long id){
+        return csvSettingsRepository.findById(id).orElse(null);
+    }
 }
