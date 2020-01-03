@@ -18,6 +18,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.text.ParseException;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -33,7 +34,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String home(){
+    public String home() {
         return "home";
     }
 
@@ -47,4 +48,13 @@ public class HomeController {
                 mBankSettings.getPartyPosition(), mBankSettings.getAmountPosition(), mBankSettings.getCsvSeparator(), mBankSettings.getSkipLines(), user1);
         return "good";
     }
+
+    @GetMapping("/fileimport")
+    public String fileimport(Model model) {
+        User user1 = userService.findById(1l);
+        List<CsvSettings>csvSettingsList=csvSettingsService.findSettings(user1);
+        model.addAttribute("csvSettings", csvSettingsList);
+        return "file-import";
+    }
 }
+
