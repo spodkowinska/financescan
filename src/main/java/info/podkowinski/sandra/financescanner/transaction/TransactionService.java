@@ -8,14 +8,12 @@ import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
 import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Service
@@ -47,6 +45,10 @@ public class TransactionService {
             newTransaction.user = user;
             transactionRepository.save(newTransaction);
         }
+    }
+
+    public List <Transaction> findByUsersId(long id){
+       return transactionRepository.findAllByUserId(id);
     }
 
     public void assignDefaultCategoriesInTransactions(User user) {
@@ -93,11 +95,11 @@ public class TransactionService {
 
     public HashMap<String, Double> balancesByDatesForAllCategories(User user, Date start, Date end) {
         List<Transaction> transactionList = transactionRepository.findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(start, end, user);
-        HashMap<String, Double> balanceByCategory=new HashMap<>();
-        for (Category category:categoryRepository.findAllByUser(user)) {
+        HashMap<String, Double> balanceByCategory = new HashMap<>();
+        for (Category category : categoryRepository.findAllByUser(user)) {
             Double categorySum = 0.0;
             for (Transaction transaction : transactionList) {
-                if (transaction.getCategory()==category) {
+                if (transaction.getCategory() == category) {
                     categorySum += transaction.amount;
                 }
             }
@@ -106,8 +108,8 @@ public class TransactionService {
         }
         Double sum = 0.0;
         for (Transaction transaction : transactionList) {
-            if(transaction.getCategory()==null){
-                sum+=transaction.amount;
+            if (transaction.getCategory() == null) {
+                sum += transaction.amount;
             }
         }
         balanceByCategory.put("Bez kategorii", sum);

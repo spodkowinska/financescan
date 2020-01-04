@@ -5,42 +5,32 @@ import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.List;
 
 @Controller
+@RequestMapping("/transaction")
 public class TransactionController {
 
     private final TransactionService transactionService;
     private final UserService userService;
-    private final String path = "/Users/sandracoderslab/Desktop/simple.csv";
-    private final String path2 = "/Users/sandracoderslab/Desktop/historia.csv";
-    private final String path3 = "Macintosh HD/Users/sandracoderslab/Downloads/Macintosh/77905261_191201_191231 (1).csv";
 
     public TransactionController(TransactionService transactionService, UserService userService) {
         this.transactionService = transactionService;
         this.userService = userService;
     }
 
-
-    @RequestMapping("/home/btn")
-    @ResponseBody
-    public String homeBtn() throws IOException, ParseException, CsvValidationException {
-//        User user1 = new User();
-//        user1.setMail("mail@mail");
-//        user1.setName("user1");
-//        userService.saveUser(user1);
-//        User user1 = userService.findById(1l);
-//        transactionService.scanDocument(, 0, 2,
-//                3, 5, ',', 1, user1);
-//        transactionService.scanDocument(path, 0, 3,
-//                4, 6, ';', 0, user1);
-//        transactionService.assignDefaultCategoriesInTransactions(user1);
-////        transactionService.assignCategoryInTransaction(user1, 1l, 6l);
-        return "Udało się";
+    @RequestMapping("/list")
+    public String transaction(Model model) {
+        User user1 = userService.findById(2l);
+        List<Transaction> transactionsList = transactionService.findByUsersId(2l);
+        model.addAttribute("transactionslist", transactionsList);
+        return "transactions-list";
     }
 
 

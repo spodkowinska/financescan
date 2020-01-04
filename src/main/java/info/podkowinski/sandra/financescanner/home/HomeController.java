@@ -42,7 +42,7 @@ public class HomeController {
     @ResponseBody
     public String homePost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
-        User user1 = userService.findById(1l);
+        User user1 = userService.findById(2l);
         CsvSettings mBankSettings = csvSettingsService.findById(1l);
         CsvSettings santanderSettings = csvSettingsService.findById(2l);
         transactionService.scanDocument(filePart.getInputStream(), mBankSettings.getDatePosition(), mBankSettings.getDescriptionPosition(),
@@ -54,7 +54,7 @@ public class HomeController {
 
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
-        User user1 = userService.findById(1l);
+        User user1 = userService.findById(2l);
         List<CsvSettings> csvSettingsList = csvSettingsService.findSettings(user1);
         model.addAttribute("csvSettingsList", csvSettingsList);
         return "file-import";
@@ -64,7 +64,7 @@ public class HomeController {
     @ResponseBody
     public String fileimportPost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
-        User user1 = userService.findById(1l);
+        User user1 = userService.findById(2l);
         int datePosition = Integer.parseInt(request.getParameter("datePosition"))-1;
         int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition"))-1;
         int partyPosition = Integer.parseInt(request.getParameter("partyPosition"))-1;
