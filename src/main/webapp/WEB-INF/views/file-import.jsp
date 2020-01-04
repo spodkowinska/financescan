@@ -46,12 +46,12 @@
             switch (selectedValue) {
                 <c:forEach items="${csvSettingsList}" var="setting">
                 case "${setting.id}":
-                    document.querySelector('#datePosition').value = ${setting.datePosition};
-                    document.querySelector('#descriptionPosition').value = ${setting.descriptionPosition};
-                    document.querySelector('#partyPosition').value = ${setting.partyPosition};
-                    document.querySelector('#amountPosition').value = ${setting.amountPosition};
-                    document.querySelector('#separator').value = ${setting.csvSeparator};
-                    document.querySelector('#skipLines').value = ${setting.skipLines};
+                    document.querySelector('#datePosition').value = "${setting.datePosition+1}";
+                    document.querySelector('#descriptionPosition').value = "${setting.descriptionPosition+1}";
+                    document.querySelector('#partyPosition').value = "${setting.partyPosition+1}";
+                    document.querySelector('#amountPosition').value = "${setting.amountPosition+1}";
+                    document.querySelector('#separator').value = "${setting.csvSeparator}";
+                    document.querySelector('#skipLines').value = "${setting.skipLines}";
                     break;
                 </c:forEach>
             }
@@ -83,7 +83,7 @@
             <div class="row">
                 <div class="col-lg-24">
 
-                    <form action="/fileimport" method="post">
+                    <form action="/fileimport" method="post" enctype="multipart/form-data">
 
                         <div class="form-group">
                             <label>File input</label>
@@ -101,37 +101,37 @@
 
                         <div class="form-group">
                             <label>Set date position</label>
-                            <input class="form-control" id="datePosition">
+                            <input class="form-control" id="datePosition" name="datePosition">
                             <p class="help-block">This block can be imported from your custom CSV settings</p>
                         </div>
 
                         <div class="form-group">
                             <label>Set description position</label>
-                            <input class="form-control" id="descriptionPosition">
+                            <input class="form-control" id="descriptionPosition" name="descriptionPosition">
                             <p class="help-block">This block can be imported from your custom CSV settings</p>
                         </div>
 
                         <div class="form-group">
                             <label>Set transaction partner position</label>
-                            <input class="form-control" id="partyPosition">
+                            <input class="form-control" id="partyPosition" name="partyPosition">
                             <p class="help-block">This block can be imported from your custom CSV settings</p>
                         </div>
 
                         <div class="form-group">
                             <label>Set amount position</label>
-                            <input class="form-control" id="amountPosition">
+                            <input class="form-control" id="amountPosition" name="amountPosition">
                             <p class="help-block">This block can be imported from your custom CSV settings</p>
                         </div>
 
                         <div class="form-group">
                             <label>Set separator</label>
-                            <input class="form-control" id="separator">
+                            <input class="form-control" id="separator" name="separator">
                             <p class="help-block">This block can be imported from your custom CSV settings</p>
                         </div>
 
                         <div class="form-group">
                             <label>How many lines at the beginning should be skipped?</label>
-                            <input class="form-control" id="skipLines">
+                            <input class="form-control" id="skipLines" name="skipLines">
                             <p class="help-block">This block can be imported from your custom CSV settings</p>
                         </div>
 

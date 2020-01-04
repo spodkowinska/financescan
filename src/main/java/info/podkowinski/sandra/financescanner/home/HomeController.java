@@ -65,10 +65,10 @@ public class HomeController {
     public String fileimportPost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
         User user1 = userService.findById(1l);
-        int datePosition = Integer.parseInt(request.getParameter("datePosition"));
-        int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition"));
-        int partyPosition = Integer.parseInt(request.getParameter("partyPosition"));
-        int amountPosition = Integer.parseInt(request.getParameter("amountPosition"));
+        int datePosition = Integer.parseInt(request.getParameter("datePosition"))-1;
+        int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition"))-1;
+        int partyPosition = Integer.parseInt(request.getParameter("partyPosition"))-1;
+        int amountPosition = Integer.parseInt(request.getParameter("amountPosition"))-1;
         int skippedLines = Integer.parseInt(request.getParameter("skipLines"));
         char separator = request.getParameter("separator").charAt(0);
         transactionService.scanDocument(filePart.getInputStream(), datePosition, descriptionPosition,
