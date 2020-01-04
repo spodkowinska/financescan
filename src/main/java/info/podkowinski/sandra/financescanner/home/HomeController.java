@@ -44,17 +44,36 @@ public class HomeController {
         Part filePart = request.getPart("fileToUpload");
         User user1 = userService.findById(1l);
         CsvSettings mBankSettings = csvSettingsService.findById(1l);
+        CsvSettings santanderSettings = csvSettingsService.findById(2l);
         transactionService.scanDocument(filePart.getInputStream(), mBankSettings.getDatePosition(), mBankSettings.getDescriptionPosition(),
                 mBankSettings.getPartyPosition(), mBankSettings.getAmountPosition(), mBankSettings.getCsvSeparator(), mBankSettings.getSkipLines(), user1);
+//        transactionService.scanDocument(filePart.getInputStream(), santanderSettings.getDatePosition(), santanderSettings.getDescriptionPosition(),
+//                santanderSettings.getPartyPosition(), santanderSettings.getAmountPosition(), santanderSettings.getCsvSeparator(), santanderSettings.getSkipLines(), user1);
         return "good";
     }
 
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
         User user1 = userService.findById(1l);
-        List<CsvSettings>csvSettingsList=csvSettingsService.findSettings(user1);
-        model.addAttribute("csvSettings", csvSettingsList);
+        List<CsvSettings> csvSettingsList = csvSettingsService.findSettings(user1);
+        model.addAttribute("csvSettingsList", csvSettingsList);
         return "file-import";
+    }
+
+    @PostMapping("/fileimport")
+    @ResponseBody
+    public String fileimportPost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
+        Part filePart = request.getPart("fileToUpload");
+        User user1 = userService.findById(1l);
+        int datePosition = Integer.parseInt(request.getParameter("datePosition"));
+        int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition"));
+        int partyPosition = Integer.parseInt(request.getParameter("partyPosition"));
+        int amountPosition = Integer.parseInt(request.getParameter("amountPosition"));
+        int skippedLines = Integer.parseInt(request.getParameter("skipLines"));
+        char separator = request.getParameter("separator").charAt(0);
+        transactionService.scanDocument(filePart.getInputStream(), datePosition, descriptionPosition,
+                partyPosition, amountPosition, separator, skippedLines, user1);
+        return "good";
     }
 }
 

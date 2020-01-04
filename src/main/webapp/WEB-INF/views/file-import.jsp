@@ -40,11 +40,21 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script>
-        function fillaform() {
-            var selected = document.getElementById('selectSettings').value();
-            var date = document.querySelector('#datePosition');
-            date.value = selected.type;
-            
+        function fillAForm() {
+            var selectedValue = document.getElementById('selectSettings').value;
+
+            switch (selectedValue) {
+                <c:forEach items="${csvSettingsList}" var="setting">
+                case "${setting.id}":
+                    document.querySelector('#datePosition').value = ${setting.datePosition};
+                    document.querySelector('#descriptionPosition').value = ${setting.descriptionPosition};
+                    document.querySelector('#partyPosition').value = ${setting.partyPosition};
+                    document.querySelector('#amountPosition').value = ${setting.amountPosition};
+                    document.querySelector('#separator').value = ${setting.csvSeparator};
+                    document.querySelector('#skipLines').value = ${setting.skipLines};
+                    break;
+                </c:forEach>
+            }
         }
     </script>
 </head>
@@ -73,18 +83,18 @@
             <div class="row">
                 <div class="col-lg-24">
 
-                    <form role="form">
+                    <form action="/fileimport" method="post">
 
                         <div class="form-group">
                             <label>File input</label>
-                            <input type="file">
+                            <input type="file" name="fileToUpload">
                         </div>
 
                         <div class="form-group">
                             <label>Select your custom csv settings</label>
-                            <select class="form-control" onchange="fillaform()" id="selectSettings">
-                                <c:forEach items="${csvSettings}" var="setting">
-                                    <option value="${setting}">${setting.name}</option>
+                            <select class="form-control" onchange="fillAForm()" id="selectSettings">
+                                <c:forEach items="${csvSettingsList}" var="setting">
+                                    <option value="${setting.id}">${setting.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -125,8 +135,9 @@
                             <p class="help-block">This block can be imported from your custom CSV settings</p>
                         </div>
 
-                        <button type="submit" class="btn btn-default">Submit Button</button>
-                        <button type="reset" class="btn btn-default">Reset Button</button>
+                        <button type="submit" class="btn btn-default">Submit CSV</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+                        <button type="submit" class="btn btn-default">Save settings</button>
 
                     </form>
 
