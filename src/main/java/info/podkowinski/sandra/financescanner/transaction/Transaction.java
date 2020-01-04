@@ -42,5 +42,7 @@ public class Transaction {
     @ManyToOne
     User user;
 
+    String importName;
+
 
 }

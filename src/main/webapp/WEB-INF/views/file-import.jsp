@@ -100,6 +100,12 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Name of this import</label>
+                            <input class="form-control" id="importName" name="importName">
+                            <p class="help-block">Name helps you sort your transactions</p>
+                        </div>
+
+                        <div class="form-group">
                             <label>Set date position</label>
                             <input class="form-control" id="datePosition" name="datePosition">
                             <p class="help-block">This block can be imported from your custom CSV settings</p>
@@ -140,23 +146,24 @@
                         <button type="submit" class="btn btn-default">Save settings</button>
 
                     </form>
-
-                    <!-- /.row -->
-
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- /#page-wrapper -->
+            <!-- /.row -->
 
         </div>
-        <!-- /#wrapper -->
+        <!-- /.container-fluid -->
 
-        <!-- jQuery Version 1.11.0 -->
-        <script src="js/jquery-1.11.0.js"></script>
+    </div>
+    <!-- /#page-wrapper -->
 
-        <!-- Bootstrap Core JavaScript -->
-        <script src="js/bootstrap.min.js"></script>
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery Version 1.11.0 -->
+<script src="js/jquery-1.11.0.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 
 </body>
 

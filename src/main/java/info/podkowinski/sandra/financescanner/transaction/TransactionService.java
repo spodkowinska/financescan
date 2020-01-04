@@ -29,7 +29,7 @@ public class TransactionService {
         this.categoryRepository = categoryRepository;
     }
 
-    public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, User user)
+    public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, String importName, User user)
             throws IOException, CsvValidationException, ParseException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
         List<List<String>> transactions = parser.csvTransactions(inputStream, separator, skipLines);
@@ -43,6 +43,7 @@ public class TransactionService {
                     .replace(',', '.')
                     .replace("\"", "")
                     .replace(" ", ""));
+            newTransaction.importName = importName;
             newTransaction.user = user;
             transactionRepository.save(newTransaction);
         }

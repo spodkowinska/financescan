@@ -29,21 +29,22 @@ public class OpenCSVReadAndParse {
                         .withSeparator(separator)
                         .build();
             }
-                CSVReader reader = new CSVReaderBuilder(isr)
-                        .withSkipLines(skipLines)
-                        .withCSVParser(parser)
-                        .build();
-                List<String> nextLine;
-                String[] row;
-                while ((row = reader.readNext()) != null && !reader.readNext()[0].isEmpty()) {
-                    nextLine = Arrays.asList(row);
-                    transactions.add(nextLine);
-                }
-                reader.close();
+            CSVReader reader = new CSVReaderBuilder(isr)
+                    .withSkipLines(skipLines)
+                    .withCSVParser(parser)
+                    .build();
+            List<String> nextLine;
+            String[] row;
+
+            while ((row = reader.readNext()) != null && !row[0].isEmpty()) {
+                nextLine = Arrays.asList(row);
+                transactions.add(nextLine);
             }
-            return transactions;
 
+
+            reader.close();
         }
+        return transactions;
+
     }
-
-
+}
