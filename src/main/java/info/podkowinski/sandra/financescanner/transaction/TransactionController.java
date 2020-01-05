@@ -1,6 +1,8 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
 import com.opencsv.exceptions.CsvValidationException;
+import info.podkowinski.sandra.financescanner.bank.Bank;
+import info.podkowinski.sandra.financescanner.bank.BankService;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
@@ -19,18 +21,21 @@ public class TransactionController {
 
     private final TransactionService transactionService;
     private final UserService userService;
+    private final BankService bankService;
 
-    public TransactionController(TransactionService transactionService, UserService userService) {
+    public TransactionController(TransactionService transactionService, UserService userService, BankService bankService) {
         this.transactionService = transactionService;
         this.userService = userService;
+        this.bankService = bankService;
     }
 
     @RequestMapping("/list")
     public String transaction(Model model) {
         User user1 = userService.findById(1l);
         List<Transaction> transactionsList = transactionService.findByUsersId(1l);
-        System.out.println(transactionsList);
+        List<Bank>banksList = bankService.findBankByUserId(1l);
         model.addAttribute("tl", transactionsList);
+        model.addAttribute("bl", banksList);
         return "transactions-list";
     }
 

@@ -105,6 +105,16 @@
                             <p class="help-block">Name helps you sort your transactions</p>
                         </div>
 
+
+                        <div class="form-group">
+                            <label>Select bank</label>
+                            <select class="form-control" id="selectBank">
+                                <c:forEach items="${banksList}" var="bank">
+                                    <option value="${bank.id}">${bank.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label>Set date position</label>
                             <input class="form-control" id="datePosition" name="datePosition">

@@ -1,6 +1,7 @@
 package info.podkowinski.sandra.financescanner.home;
 
 import com.opencsv.exceptions.CsvValidationException;
+import info.podkowinski.sandra.financescanner.bank.Bank;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
@@ -55,6 +56,7 @@ public class HomeController {
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
         User user1 = userService.findById(2l);
+        List<Bank>banksList = bankService.fin
         List<CsvSettings> csvSettingsList = csvSettingsService.findSettings(user1);
         model.addAttribute("csvSettingsList", csvSettingsList);
         return "file-import";

@@ -1,5 +1,6 @@
 package info.podkowinski.sandra.financescanner.bank;
 
+import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +16,9 @@ public class Bank {
     String name;
     String address;
     String phone;
+
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    User user;
 
 }

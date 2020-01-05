@@ -12,4 +12,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     public Category findByKeyword(String keyword);
 
     public List<Category> findAllByUser(User user);
+    public List<Category> findAllByUserId(Long id);
 }
