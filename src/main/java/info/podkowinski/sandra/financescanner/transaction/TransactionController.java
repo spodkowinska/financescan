@@ -27,9 +27,10 @@ public class TransactionController {
 
     @RequestMapping("/list")
     public String transaction(Model model) {
-        User user1 = userService.findById(2l);
-        List<Transaction> transactionsList = transactionService.findByUsersId(2l);
-        model.addAttribute("transactionslist", transactionsList);
+        User user1 = userService.findById(1l);
+        List<Transaction> transactionsList = transactionService.findByUsersId(1l);
+        System.out.println(transactionsList);
+        model.addAttribute("tl", transactionsList);
         return "transactions-list";
     }
 
