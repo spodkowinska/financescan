@@ -2,6 +2,7 @@ package info.podkowinski.sandra.financescanner.home;
 
 import com.opencsv.exceptions.CsvValidationException;
 import info.podkowinski.sandra.financescanner.bank.Bank;
+import info.podkowinski.sandra.financescanner.bank.BankService;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
@@ -27,11 +28,13 @@ public class HomeController {
     private final TransactionService transactionService;
     private final UserService userService;
     private final CsvSettingsService csvSettingsService;
+    private final BankService bankService;
 
-    public HomeController(TransactionService transactionService, UserService userService, CsvSettingsService csvSettingsService) {
+    public HomeController(TransactionService transactionService, UserService userService, BankService bankService, CsvSettingsService csvSettingsService) {
         this.transactionService = transactionService;
         this.userService = userService;
         this.csvSettingsService = csvSettingsService;
+        this.bankService = bankService;
     }
 
     @GetMapping("/home")
@@ -56,7 +59,7 @@ public class HomeController {
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
         User user1 = userService.findById(2l);
-        List<Bank>banksList = bankService.fin
+        List<Bank>banksList = bankService.findByUserId(1l);
         List<CsvSettings> csvSettingsList = csvSettingsService.findSettings(user1);
         model.addAttribute("csvSettingsList", csvSettingsList);
         return "file-import";

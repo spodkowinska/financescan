@@ -16,7 +16,7 @@ public class BankService {
     public Bank findBankById(Long id){
        return bankRepository.getOne(id);
     }
-    public List<Bank>findBankByUserId(Long id){
+    public List<Bank>findByUserId(Long id){
        return bankRepository.findByUserId(id);
     }
 }

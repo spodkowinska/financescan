@@ -33,7 +33,7 @@ public class TransactionController {
     public String transaction(Model model) {
         User user1 = userService.findById(1l);
         List<Transaction> transactionsList = transactionService.findByUsersId(1l);
-        List<Bank>banksList = bankService.findBankByUserId(1l);
+        List<Bank>banksList = bankService.findByUserId(1l);
         model.addAttribute("tl", transactionsList);
         model.addAttribute("bl", banksList);
         return "transactions-list";
