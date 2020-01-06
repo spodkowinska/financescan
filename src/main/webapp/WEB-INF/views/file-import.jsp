@@ -108,7 +108,7 @@
 
                         <div class="form-group">
                             <label>Select bank</label>
-                            <select class="form-control" id="selectBank">
+                            <select class="form-control" id="selectBank" name="bank">
                                 <c:forEach items="${banksList}" var="bank">
                                     <option value="${bank.id}">${bank.name}</option>
                                 </c:forEach>

@@ -24,11 +24,11 @@ public class CsvSettingsService {
         int parsed = Integer.parseInt(stringToParse);
         return parsed;
     }
-    public List<CsvSettings>findSettings(User user){
-        Long id = user.getId();
-        return csvSettingsRepository.findByUserId(id);
-    }
     public CsvSettings findById(Long id){
         return csvSettingsRepository.findById(id).orElse(null);
+    }
+
+    public List<CsvSettings>findByUserId(Long userId){
+        return csvSettingsRepository.findByUserId(userId);
     }
 }

@@ -10,6 +10,7 @@ import info.podkowinski.sandra.financescanner.category.Category;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,9 +35,9 @@ public class Transaction {
     @JoinColumn(name = "bank_id")
     Bank bank;
 
-    @JoinColumn(name = "category_id")
-    @ManyToOne
-    Category category;
+    @JoinColumn(name = "categories_id")
+    @ManyToMany
+    List<Category> categories;
 
     @JoinColumn(name = "user_id")
     @ManyToOne
