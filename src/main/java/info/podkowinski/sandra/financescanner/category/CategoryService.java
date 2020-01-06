@@ -12,7 +12,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    List<Category>findByUserId(Long id){
+    public List<Category>findByUserId(Long id){
         return categoryRepository.findAllByUserId(id);
     }
 }

@@ -36,7 +36,7 @@ public class Transaction {
     Bank bank;
 
     @JoinColumn(name = "categories_id")
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     List<Category> categories;
 
     @JoinColumn(name = "user_id")

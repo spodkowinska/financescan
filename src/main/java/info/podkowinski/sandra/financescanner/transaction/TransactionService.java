@@ -50,14 +50,14 @@ public class TransactionService {
         }
     }
 
-    public List <Transaction> findByUsersId(long id){
-       return transactionRepository.findAllByUserId(id);
+    public List<Transaction> findByUsersId(long id) {
+        return transactionRepository.findAllByUserId(id);
     }
 
     public void assignDefaultCategoriesInTransactions(User user) {
         List<Transaction> transactionList = transactionRepository.findAllByUserId(user.getId());
         for (Transaction transaction : transactionList) {
-            for (Category category : categoryRepository.findAllByUser(user)) {
+            for (Category category : categoryRepository.findAllByUserId(user.getId())) {
                 boolean keywordFound = false;
                 for (String keyword : category.getKeywords().split(",")) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
@@ -98,7 +98,7 @@ public class TransactionService {
     public HashMap<String, Double> balancesByDatesForAllCategories(User user, Date start, Date end) {
         List<Transaction> transactionList = transactionRepository.findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(start, end, user);
         HashMap<String, Double> balanceByCategory = new HashMap<>();
-        for (Category category : categoryRepository.findAllByUser(user)) {
+        for (Category category : categoryRepository.findAllByUserId(user.getId())) {
             Double categorySum = 0.0;
             for (Transaction transaction : transactionList) {
                 if (transaction.getCategories().contains(category)) {
@@ -116,5 +116,16 @@ public class TransactionService {
         }
         balanceByCategory.put("Bez kategorii", sum);
         return balanceByCategory;
+    }
+
+    public HashMap<Long, List<String>> transactionIdCategories(Long userId) {
+        HashMap<Long, List<String>> transactionIdCategories = new HashMap<>();
+        List<Transaction> transactionsList = findByUsersId(userId);
+        for (Transaction t : transactionsList) {
+            List<String>categoriesNames=new ArrayList<>();
+            t.getCategories().forEach(c->categoriesNames.add(c.getName()));
+            transactionIdCategories.put(t.getId(),categoriesNames);
+        }
+        return transactionIdCategories;
     }
 }

@@ -387,7 +387,7 @@
                                     <th>Date</th>
                                     <th>Amount</th>
                                     <th>Description</th>
-                                    <th>Party</th>
+                                    <th>Transaction Partner</th>
                                     <th>Bank</th>
                                     <th>Category</th>
                                 </tr>
@@ -409,8 +409,10 @@
                                     <td>${trans.amount}</td>
                                     <td>${trans.description}</td>
                                     <td>${trans.party}</td>
-                                    <td>${trans.bank}</td>
-                                    <td>${trans.category}</td>
+                                    <td>${trans.bank.name}</td>
+                                    <td><c:forEach items="${trans.categories}" var="category">
+                                        ${category.name}
+                                    </c:forEach> </td>
                                 </tr>
                                 </c:forEach>
                                 </tbody>

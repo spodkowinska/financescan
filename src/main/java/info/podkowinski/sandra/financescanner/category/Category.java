@@ -22,6 +22,8 @@ public class Category {
     @Column(nullable = false)
     String keywords;
 
+    Long parentCategoryId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;

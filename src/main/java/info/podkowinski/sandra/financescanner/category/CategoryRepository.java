@@ -11,6 +11,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = "SELECT * FROM categories c WHERE c.keywords LIKE ?1", nativeQuery = true)
     public Category findByKeyword(String keyword);
 
-    public List<Category> findAllByUser(User user);
     public List<Category> findAllByUserId(Long id);
 }

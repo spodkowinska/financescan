@@ -4,6 +4,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import info.podkowinski.sandra.financescanner.bank.Bank;
 import info.podkowinski.sandra.financescanner.bank.BankService;
 import info.podkowinski.sandra.financescanner.category.Category;
+import info.podkowinski.sandra.financescanner.category.CategoryService;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/transaction")
@@ -22,11 +26,14 @@ public class TransactionController {
     private final TransactionService transactionService;
     private final UserService userService;
     private final BankService bankService;
+    private final CategoryService categoryService;
 
-    public TransactionController(TransactionService transactionService, UserService userService, BankService bankService) {
+    public TransactionController(TransactionService transactionService, UserService userService, BankService bankService,
+                                 CategoryService categoryService) {
         this.transactionService = transactionService;
         this.userService = userService;
         this.bankService = bankService;
+        this.categoryService = categoryService;
     }
 
     @RequestMapping("/list")
@@ -34,8 +41,12 @@ public class TransactionController {
         User user1 = userService.findById(1l);
         List<Transaction> transactionsList = transactionService.findByUsersId(1l);
         List<Bank>banksList = bankService.findByUserId(1l);
+        List<Category>categoriesList = categoryService.findByUserId(1l);
+        HashMap<Long, List<String>> transactionCategory= transactionService.transactionIdCategories(1l);
         model.addAttribute("tl", transactionsList);
         model.addAttribute("bl", banksList);
+        model.addAttribute("categoriesList", categoriesList);
+        model.addAttribute("transCategories", transactionCategory);
         return "transactions-list";
     }
 
