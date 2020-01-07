@@ -11,6 +11,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "categories")
 public class Category {
+
+    public Category(String name, String description, String keywords, Long parentCategoryId, User user) {
+        this.name = name;
+        this.description = description;
+        this.keywords = keywords;
+        this.parentCategoryId = parentCategoryId;
+        this.user = user;
+    }
+
+    public Category() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
