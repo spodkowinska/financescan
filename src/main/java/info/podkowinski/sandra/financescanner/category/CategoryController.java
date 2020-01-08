@@ -9,10 +9,7 @@ import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -67,10 +64,10 @@ public class CategoryController {
         return "categories-list";
     }
     @RequestMapping("/edit/{id}")
-    public String edit(Model model) {
+    public String edit(@PathVariable Long id, Model model) {
         User user1 = userService.findById(1l);
-        List<Category>categoriesList = categoryService.findByUserId(1l);
-        model.addAttribute("cl", categoriesList);
-        return "categories-list";
+        Category category = categoryService.findById(id);
+        model.addAttribute("category", category);
+        return "edit-category";
     }
 }

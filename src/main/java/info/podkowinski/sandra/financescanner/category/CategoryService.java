@@ -52,6 +52,9 @@ public class CategoryService {
         }
         return Long.parseLong(parent);
     }
+    Category findById(Long id){
+        return categoryRepository.findById(id).orElse(null);
+    }
 }
 
 
