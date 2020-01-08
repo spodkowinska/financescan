@@ -67,12 +67,12 @@
 <div class="row">
 <div class="col-lg-24">
 
-<form:form action="../../category/edit" method="post">
+<form:form action="../../category/edit" method="post" modelAttribute="category">
 
 
 <div class="form-group">
     <label>Name</label>
-    <form:input path="categoryName" class="form-control" id="categoryName" ></form:input>
+    <form:input path="name" class="form-control" id="categoryName" ></form:input>
 </div>
 
 <div class="form-group">
@@ -92,7 +92,7 @@
 
     <div class="form-group">
     <label>Select parent category</label>
-    <form:select path="parent" class="form-control" id="parent" name="parent">
+    <form:select path="parentCategoryId" class="form-control" id="parent" name="parent">
     <option> --select category if it is not a parent category-- </option>
     <c:forEach items="${categories}" var="category">
         <option value="${category.id}">${category.name}</option>
