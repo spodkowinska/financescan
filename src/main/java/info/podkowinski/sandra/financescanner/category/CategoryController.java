@@ -3,6 +3,7 @@ package info.podkowinski.sandra.financescanner.category;
 import com.opencsv.exceptions.CsvValidationException;
 import info.podkowinski.sandra.financescanner.bank.Bank;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
+import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +45,7 @@ public class CategoryController {
         model.addAttribute("categories", categories);
         return "add-category";
     }
-//todo is keyword already used
+//todo frontend validation
     @PostMapping("/add")
     @ResponseBody
     public String addPost(HttpServletRequest request) {
@@ -55,5 +57,20 @@ public class CategoryController {
         Category category = new Category(name, description, keywords, parent, user1);
         categoryService.save(category);
         return "good";
+    }
+
+    @RequestMapping("/list")
+    public String categoryList(Model model) {
+        User user1 = userService.findById(1l);
+        List<Category>categoriesList = categoryService.findByUserId(1l);
+        model.addAttribute("cl", categoriesList);
+        return "categories-list";
+    }
+    @RequestMapping("/edit/{id}")
+    public String edit(Model model) {
+        User user1 = userService.findById(1l);
+        List<Category>categoriesList = categoryService.findByUserId(1l);
+        model.addAttribute("cl", categoriesList);
+        return "categories-list";
     }
 }
