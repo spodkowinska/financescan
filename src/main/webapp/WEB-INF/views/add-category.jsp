@@ -15,22 +15,22 @@
 
     <title>Add category</title>
     <!-- Bootstrap Core CSS -->
-    <link href="<c:url value="css/bootstrap.min.css"/>" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="<c:url value="font-awesome-4.1.0/css/font-awesome.min.css"/>" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<c:url value="css/sb-admin-2.min.css"/>" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="<c:url value="vendor/datatables/dataTables.bootstrap4.min.css"/>" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}css/sb-admin.css" rel="stylesheet">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -83,11 +83,11 @@
 
 <div class="form-group">
 <label>Keywords</label>
-<form:input class="form-control" id="keywords" name="keywords" path="keywords">
-    <form:errors path="keywords" cssclass="error" element="div"></form:errors>
-    <div id="username.errors" class="error">keyword already used</div>
+<input class="form-control" id="keywords" name="keywords">
+<%--    <form:errors path="keywords" cssClass="error" element="div"></form:errors>--%>
+<%--    <div id="username.errors" class="error">keyword already used</div>--%>
     <p class="help-block">Words that will be used to assign categories to your transactions</p>
-</form:input>
+
     </div>
 
     <div class="form-group">
@@ -119,10 +119,10 @@
     <!-- /#wrapper -->
 
     <!-- jQuery Version 1.11.0 -->
-    <script src="js/jquery-1.11.0.js"></script>
+    <script src="${pageContext.request.contextPath}js/jquery-1.11.0.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}js/bootstrap.min.js"></script>
 
     </body>
 
