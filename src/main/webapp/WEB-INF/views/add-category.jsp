@@ -47,80 +47,83 @@
 <div id="wrapper">
 
 
-    <div id="page-wrapper">
+<div id="page-wrapper">
 
-        <div class="container-fluid">
+<div class="container-fluid">
 
-            <!-- Page Heading -->
-            <div class="row">
-                <div class="col-lg-24">
-                    <h1 class="page-header">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Add category</h1>
-                            <h10 class="h6 text-gray-900 mb-4">More categories will give you more insight in your expenses</h10>
-                        </div>
-                    </h1>
-                </div>
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-lg-24">
+        <h1 class="page-header">
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Add category</h1>
+                <h10 class="h6 text-gray-900 mb-4">More categories will give you more insight in your expenses</h10>
             </div>
-            <!-- /.row -->
+        </h1>
+    </div>
+</div>
+<!-- /.row -->
 
-            <div class="row">
-                <div class="col-lg-24">
+<div class="row">
+<div class="col-lg-24">
 
-                    <form action="" method="post">
-
-
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input class="form-control" id="name" name="name">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Description</label>
-                            <input class="form-control" id="description" name="description">
-                            <p class="help-block"></p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Keywords</label>
-                            <input class="form-control" id="keywords" name="keywords">
-                            <p class="help-block">Words that can be used to assign categories to your transactions</p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Select parent category</label>
-                            <select class="form-control" id="parent" name="parent">
-                                <option> --select category if it is not a parent category-- </option>
-                                <c:forEach items="${categories}" var="category">
-                                    <option value="${category.id}">${category.name}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
+<form action="" method="post">
 
 
-                        <button type="submit" class="btn btn-default">Save</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
+<div class="form-group">
+    <label>Name</label>
+    <input class="form-control" id="name" name="name">
+</div>
 
-                    </form>
-                </div>
-            </div>
-            <!-- /.row -->
+<div class="form-group">
+    <label>Description</label>
+    <input class="form-control" id="description" name="description">
+    <p class="help-block"></p>
+</div>
 
-        </div>
-        <!-- /.container-fluid -->
+<div class="form-group">
+<label>Keywords</label>
+<form:input class="form-control" id="keywords" name="keywords" path="keywords">
+    <form:errors path="keywords" cssclass="error" element="div"></form:errors>
+    <div id="username.errors" class="error">keyword already used</div>
+    <p class="help-block">Words that will be used to assign categories to your transactions</p>
+</form:input>
+    </div>
+
+    <div class="form-group">
+    <label>Select parent category</label>
+    <select class="form-control" id="parent" name="parent">
+    <option> --select category if it is not a parent category-- </option>
+    <c:forEach items="${categories}" var="category">
+        <option value="${category.id}">${category.name}</option>
+    </c:forEach>
+    </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-default">Save</button>
+    <button type="reset" class="btn btn-default">Reset</button>
+
+    </form>
+    </div>
+    </div>
+    <!-- /.row -->
+
+    </div>
+    <!-- /.container-fluid -->
 
     </div>
     <!-- /#page-wrapper -->
 
-</div>
-<!-- /#wrapper -->
+    </div>
+    <!-- /#wrapper -->
 
-<!-- jQuery Version 1.11.0 -->
-<script src="js/jquery-1.11.0.js"></script>
+    <!-- jQuery Version 1.11.0 -->
+    <script src="js/jquery-1.11.0.js"></script>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 
-</body>
+    </body>
 
-</html>
+    </html>

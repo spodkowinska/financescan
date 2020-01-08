@@ -43,17 +43,16 @@ public class CategoryController {
         model.addAttribute("categories", categories);
         return "add-category";
     }
-//todo is keyword already used && no parent option
+//todo is keyword already used
     @PostMapping("/add")
     @ResponseBody
     public String addPost(HttpServletRequest request) {
         User user1 = userService.findById(1l);
         String name = request.getParameter("name");
         String description = request.getParameter("description");
-        String keywords = request.getParameter("keywords");
-        Long parent = Long.parseLong(request.getParameter("parent"));
+        String keywords= categoryService.filterKeywords(request.getParameter("keywords"));
+        Long parent = categoryService.parseParentCategory(request.getParameter("parent"));
         Category category = new Category(name, description, keywords, parent, user1);
-
         categoryService.save(category);
         return "good";
     }

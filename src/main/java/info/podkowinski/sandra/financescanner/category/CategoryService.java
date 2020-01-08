@@ -34,6 +34,24 @@ public class CategoryService {
     public void save(Category category){
         categoryRepository.save(category);
     }
+
+    String filterKeywords(String keywords){
+        Map<String, String> usedKeywords =usedKeywords(1l);
+        StringBuilder sb = new StringBuilder();
+        for (String keyword: keywords.split(",. ")) {
+            if(!usedKeywords.containsKey(keyword.toLowerCase())){
+                sb.append(keyword);
+            }
+        }
+        return sb.toString();
+    }
+
+    Long parseParentCategory(String parent){
+        if(parent.equals("--select category if it is not a parent category--")){
+            parent= "0";
+        }
+        return Long.parseLong(parent);
+    }
 }
 
 
