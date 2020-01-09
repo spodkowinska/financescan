@@ -51,7 +51,7 @@ public class CategoryController {
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String keywords= categoryService.filterKeywords(request.getParameter("keywords"));
-        Long parent = categoryService.parseParentCategory(request.getParameter("parent"));
+        Long parent = Long.parseLong(request.getParameter("parent"));
         Category category = new Category(name, description, keywords, parent, user1);
         categoryService.save(category);
         return "good";

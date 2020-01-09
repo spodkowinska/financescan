@@ -9,11 +9,13 @@ import java.util.Map;
 
 @Service
 public class CategoryService {
+
+    private final CategoryRepository categoryRepository;
+
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    private final CategoryRepository categoryRepository;
 
     public List<Category>findByUserId(Long id){
         return categoryRepository.findAllByUserId(id);
@@ -46,15 +48,10 @@ public class CategoryService {
         return sb.toString();
     }
 
-    Long parseParentCategory(String parent){
-        if(parent.equals("--select category if it is not a parent category--")){
-            parent= "0";
-        }
-        return Long.parseLong(parent);
-    }
     Category findById(Long id){
         return categoryRepository.findById(id).orElse(null);
     }
+
     Category compareCategories(Long categoryId, Category newCategory){
         Category category = categoryRepository.findById(categoryId).orElse(null);
         if (!category.equals(newCategory)){

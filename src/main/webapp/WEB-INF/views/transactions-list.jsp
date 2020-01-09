@@ -387,9 +387,10 @@
                                     <th>Date</th>
                                     <th>Amount</th>
                                     <th>Description</th>
-                                    <th>Transaction Partner</th>
+                                    <th>Party</th>
                                     <th>Bank</th>
                                     <th>Category</th>
+                                    <th>Change category</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -400,20 +401,30 @@
                                     <th>Party</th>
                                     <th>Bank</th>
                                     <th>Category</th>
+                                    <th>Change category</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <c:forEach items="${tl}" var="trans">
-                                <tr>
-                                    <td>${trans.transactionDate}</td>
-                                    <td>${trans.amount}</td>
-                                    <td>${trans.description}</td>
-                                    <td>${trans.party}</td>
-                                    <td>${trans.bank.name}</td>
-                                    <td><c:forEach items="${trans.categories}" var="category">
-                                        ${category.name}
-                                    </c:forEach> </td>
-                                </tr>
+                                    <tr>
+                                        <td>${trans.transactionDate}</td>
+                                        <td>${trans.amount}</td>
+                                        <td>${trans.description}</td>
+                                        <td>${trans.party}</td>
+                                        <td>${trans.bank.name}</td>
+                                        <td><c:forEach items="${trans.categories}" var="category">
+                                            ${category.name}
+                                        </c:forEach></td>
+                                        <td>
+                                            <select class="form-control" id="changeCategory" name="changeCategory">
+                                                <option value="0"> Change category</option>
+                                                <c:forEach items="${categoriesList}" var="category">
+                                                    <option value="${category.id}">${category.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+
+                                    </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
