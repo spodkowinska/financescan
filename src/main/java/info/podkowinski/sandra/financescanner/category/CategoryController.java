@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -42,7 +43,7 @@ public class CategoryController {
         model.addAttribute("categories", categories);
         return "add-category";
     }
-//todo frontend validation
+//todo frontend validation, name cannot be the same, keywords info about usage
     @PostMapping("/add")
     @ResponseBody
     public String addPost(HttpServletRequest request) {
@@ -63,11 +64,24 @@ public class CategoryController {
         model.addAttribute("cl", categoriesList);
         return "categories-list";
     }
-    @RequestMapping("/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
         User user1 = userService.findById(1l);
+        List<Category> categories = categoryService.findByUserId(1l);
+        Map<String, String> usedKeywords = categoryService.usedKeywords(1l);
         Category category = categoryService.findById(id);
         model.addAttribute("category", category);
+        model.addAttribute("usedKeywords", usedKeywords);
+        model.addAttribute("categories", categories);
         return "edit-category";
+    }
+    @PostMapping("/edit/{id}")
+    @ResponseBody
+    public String editPost(@PathVariable Long id, @ModelAttribute Category category1) {
+        User user1 = userService.findById(1l);
+        Category category = categoryService.compareCategories(id, category1);
+        category.user=user1;
+        categoryService.save(category);
+        return "good";
     }
 }

@@ -55,6 +55,16 @@ public class CategoryService {
     Category findById(Long id){
         return categoryRepository.findById(id).orElse(null);
     }
+    Category compareCategories(Long categoryId, Category newCategory){
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (!category.equals(newCategory)){
+            category.name=newCategory.name;
+            category.description=newCategory.description;
+            category.keywords=filterKeywords(newCategory.keywords);
+            category.parentCategoryId=newCategory.parentCategoryId;
+        }
+        return category;
+    }
 }
 
 

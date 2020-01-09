@@ -56,8 +56,7 @@
     <div class="col-lg-24">
         <h1 class="page-header">
             <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Add category</h1>
-                <h10 class="h6 text-gray-900 mb-4">More categories will give you more insight in your expenses</h10>
+                <h10 class="h4 text-gray-900 mb-4">Edit category</h10>
             </div>
         </h1>
     </div>
@@ -67,7 +66,7 @@
 <div class="row">
 <div class="col-lg-24">
 
-<form:form action="../../category/edit" method="post" modelAttribute="category">
+<form:form action="../../category/edit/${category.id}" method="post" modelAttribute="category">
 
 
 <div class="form-group">
@@ -93,7 +92,7 @@
     <div class="form-group">
     <label>Select parent category</label>
     <form:select path="parentCategoryId" class="form-control" id="parent" name="parent">
-    <option> --select category if it is not a parent category-- </option>
+    <option value="0"> --select category if it is not a parent category-- </option>
     <c:forEach items="${categories}" var="category">
         <option value="${category.id}">${category.name}</option>
     </c:forEach>
