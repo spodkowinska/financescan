@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/transaction")
@@ -47,6 +44,21 @@ public class TransactionController {
         model.addAttribute("bl", banksList);
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
+        return "transactions-list";
+    }
+
+    @GetMapping("/setcategories/{transactionId}/{categories}")
+    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
+        System.out.println(transactionId + " " + categories);
+        User user1 = userService.findById(1l);
+        Transaction transaction = transactionService.findById(transactionId);
+        if(transaction.getUser()==user1){
+        transaction.setCategories(transactionService.categoriesfromUrlString(categories));
+        transactionService.save(transaction);
+        }
+        else{
+            System.out.println("not authorised user");
+        }
         return "transactions-list";
     }
 

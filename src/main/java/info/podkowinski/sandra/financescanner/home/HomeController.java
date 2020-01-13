@@ -20,6 +20,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -83,5 +84,13 @@ public class HomeController {
                 partyPosition, amountPosition, separator, skippedLines, importName, bank, user1);
         return "good";
     }
+
+    @GetMapping("/ajax")
+    public String ajax() {
+
+        return "ajaxexample";
+    }
+
+
 }
 

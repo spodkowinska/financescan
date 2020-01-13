@@ -28,6 +28,17 @@ public class TransactionService {
         this.categoryRepository = categoryRepository;
         this.bankRepository = bankRepository;
     }
+    public Transaction findById(Long id){
+        return transactionRepository.findById(id).orElse(null);
+    }
+    public List <Category> categoriesfromUrlString(String categoriesIds){
+        String [] categoriesIdsList = categoriesIds.split(",");
+        List<Category>categoriesList = new ArrayList<>();
+        for (String id: categoriesIdsList) {
+            categoriesList.add(categoryRepository.getOne(Long.parseLong(id)));
+        }
+        return categoriesList;
+    }
 
     public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, String importName, Long bankId, User user)
             throws IOException, CsvValidationException, ParseException {
@@ -127,5 +138,8 @@ public class TransactionService {
             transactionIdCategories.put(t.getId(),categoriesNames);
         }
         return transactionIdCategories;
+    }
+    public void save(Transaction transaction){
+        transactionRepository.save(transaction);
     }
 }

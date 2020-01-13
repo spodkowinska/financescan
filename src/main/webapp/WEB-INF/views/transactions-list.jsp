@@ -17,7 +17,7 @@
     <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
           type="text/css">
     <!--datatables-->
-    <link href="${pageContext.request.contextPath}/cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"
+    <link href="http://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"
           rel="stylesheet" type="text/css">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -28,10 +28,25 @@
 
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}css/vanillaSelectBox.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vanillaSelectBox.css">
 
-    <script src="${pageContext.request.contextPath}js//vanillaSelectBox.js"></script>
-
+    <script src="${pageContext.request.contextPath}/js//vanillaSelectBox.js"></script>
+    <script>
+        function sendData(selectId) {
+            var category = $('#changeCategory' + selectId);
+            // $('#changeCategory' + selectId){
+                var categoryIds = category.val();
+                // var xmlhttp;
+                // if (window.XMLHttpRequest)
+                // {xmlhttp = new XMLHttpRequest(); //for IE7+, Firefox, Chrome, Opera, Safari
+                // } else
+                // {xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); //for IE6, IE5
+                // }
+            $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/"+categoryIds.join(","));
+            // };
+            category.text('Assigning category');
+        };
+    </script>
 
 
 </head>
@@ -419,9 +434,9 @@
 <%--                                            ${category.name}--%>
 <%--                                        </c:forEach></td>--%>
                                         <td>
-                                            <select class="form-control" id="changeCategory" name="changeCategory"
-                                                    multiple size="3">
-                                                <option value="0"> Choose category</option>
+                                            <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"
+                                                    multiple size="4" onchange="sendData(${trans.id})" >
+<%--                                                <option onfocusout="sendData()" value="0"> Choose category</option>--%>
                                                 <c:forEach items="${categoriesList}" var="category">
                                                     <option value="${category.id}">${category.name}</option>
                                                 </c:forEach>
@@ -482,7 +497,11 @@
         </div>
     </div>
 </div>
-<script>let mySelect = new vanillaSelectBox("#changeCategory");</script>
+<script> <c:forEach items="${tl}" var="trans"> new vanillaSelectBox("#changeCategory${trans.id}",{
+    placeHolder: "Uncategorised",  search: true});
+    </c:forEach></script>
+
+
 
 <!-- Bootstrap core JavaScript-->
 <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
