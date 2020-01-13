@@ -28,6 +28,10 @@
 
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}css/vanillaSelectBox.css">
+
+    <script src="${pageContext.request.contextPath}js//vanillaSelectBox.js"></script>
+
 
 
 </head>
@@ -390,7 +394,6 @@
                                     <th>Party</th>
                                     <th>Bank</th>
                                     <th>Category</th>
-                                    <th>Change category</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -401,7 +404,7 @@
                                     <th>Party</th>
                                     <th>Bank</th>
                                     <th>Category</th>
-                                    <th>Change category</th>
+
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -412,12 +415,13 @@
                                         <td>${trans.description}</td>
                                         <td>${trans.party}</td>
                                         <td>${trans.bank.name}</td>
-                                        <td><c:forEach items="${trans.categories}" var="category">
-                                            ${category.name}
-                                        </c:forEach></td>
+<%--                                        <td><c:forEach items="${trans.categories}" var="category">--%>
+<%--                                            ${category.name}--%>
+<%--                                        </c:forEach></td>--%>
                                         <td>
-                                            <select class="form-control" id="changeCategory" name="changeCategory">
-                                                <option value="0"> Change category</option>
+                                            <select class="form-control" id="changeCategory" name="changeCategory"
+                                                    multiple size="3">
+                                                <option value="0"> Choose category</option>
                                                 <c:forEach items="${categoriesList}" var="category">
                                                     <option value="${category.id}">${category.name}</option>
                                                 </c:forEach>
@@ -478,6 +482,7 @@
         </div>
     </div>
 </div>
+<script>let mySelect = new vanillaSelectBox("#changeCategory");</script>
 
 <!-- Bootstrap core JavaScript-->
 <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
