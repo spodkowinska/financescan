@@ -34,18 +34,19 @@
     <script>
         function sendData(selectId) {
             var category = $('#changeCategory' + selectId);
-            // $('#changeCategory' + selectId){
                 var categoryIds = category.val();
-                // var xmlhttp;
-                // if (window.XMLHttpRequest)
-                // {xmlhttp = new XMLHttpRequest(); //for IE7+, Firefox, Chrome, Opera, Safari
-                // } else
-                // {xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); //for IE6, IE5
-                // }
-            $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/"+categoryIds.join(","));
-            // };
-            category.text('Assigning category');
-        };
+                console.log(category.val());
+               if (categoryIds!=null){
+                   $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/"+categoryIds.join(","));
+               }else{
+                   $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/"+"0");
+               }
+        }
+        <c:forEach items="${tl}" var="trans">
+        var mySelect = new vanillaSelectBox("#changeCategory${trans.id}");
+        mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> option${category.id},</c:forEach>]);
+
+        </c:forEach>
     </script>
 
 
@@ -497,8 +498,10 @@
         </div>
     </div>
 </div>
-<script> <c:forEach items="${tl}" var="trans"> new vanillaSelectBox("#changeCategory${trans.id}",{
+<script> <c:forEach items="${tl}" var="trans"> var mySelect = new vanillaSelectBox("#changeCategory${trans.id}",{
     placeHolder: "Uncategorised",  search: true});
+mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> ${category.id}</c:forEach>]);
+
     </c:forEach></script>
 
 
@@ -520,7 +523,7 @@
 <!-- Page level custom scripts -->
 <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
 <!--datatables-->
-<script src="${pageContext.request.contextPath}/cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 
 </body>
 

@@ -35,11 +35,11 @@ public class TransactionController {
 
     @RequestMapping("/list")
     public String transaction(Model model) {
-        User user1 = userService.findById(1l);
-        List<Transaction> transactionsList = transactionService.findByUsersId(1l);
-        List<Bank>banksList = bankService.findByUserId(1l);
-        List<Category>categoriesList = categoryService.findByUserId(1l);
-        HashMap<Long, List<String>> transactionCategory= transactionService.transactionIdCategories(1l);
+        User user2 = userService.findById(2l);
+        List<Transaction> transactionsList = transactionService.findByUsersId(2l);
+        List<Bank> banksList = bankService.findByUserId(2l);
+        List<Category> categoriesList = categoryService.findByUserId(2l);
+        HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(2l);
         model.addAttribute("tl", transactionsList);
         model.addAttribute("bl", banksList);
         model.addAttribute("categoriesList", categoriesList);
@@ -49,35 +49,36 @@ public class TransactionController {
 
     @GetMapping("/setcategories/{transactionId}/{categories}")
     public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
-        System.out.println(transactionId + " " + categories);
-        User user1 = userService.findById(1l);
-        Transaction transaction = transactionService.findById(transactionId);
-        if(transaction.getUser()==user1){
-        transaction.setCategories(transactionService.categoriesfromUrlString(categories));
-        transactionService.save(transaction);
-        }
-        else{
-            System.out.println("not authorised user");
-        }
-        return "transactions-list";
-    }
-
-
-    @RequestMapping("/home/sum")
-    @ResponseBody
-    public String sumBtn() {
-
-        String str="2019-10-31";
-        Date date1=Date.valueOf(str);
-        String str2="2019-11-31";
-        Date date2=Date.valueOf(str2);
         User user1 = userService.findById(2l);
-//        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
-        return transactionService.balancesByDatesForAllCategories(user1, date1, date2).toString();
-    }
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
+        Transaction transaction = transactionService.findById(transactionId);
 
-}
+        if (transaction.getUser() == user1) {
+            if (categories.equals("0")) {
+                transaction.setCategories(null);
+            } else {
+                transaction.setCategories(transactionService.categoriesfromUrlString(categories));
+                transactionService.save(transaction);
+            }
+        }
+            return "transactions-list";
+        }
+
+
+        @RequestMapping("/home/sum")
+        @ResponseBody
+        public String sumBtn () {
+
+            String str = "2019-10-31";
+            Date date1 = Date.valueOf(str);
+            String str2 = "2019-11-31";
+            Date date2 = Date.valueOf(str2);
+            User user1 = userService.findById(2l);
+//        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
+            return transactionService.balancesByDatesForAllCategories(user1, date1, date2).toString();
+        }
+        @GetMapping("/index")
+        public String index () {
+            return "index";
+        }
+
+    }
