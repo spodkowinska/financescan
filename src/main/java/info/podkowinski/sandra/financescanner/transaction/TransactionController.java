@@ -51,7 +51,7 @@ public class TransactionController {
     public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
         User user1 = userService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
-
+if(categories==null){transaction.setCategories(null);}
         if (transaction.getUser() == user1) {
             if (categories.equals("0")) {
                 transaction.setCategories(null);

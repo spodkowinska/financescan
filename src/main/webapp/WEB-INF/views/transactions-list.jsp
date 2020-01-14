@@ -36,18 +36,17 @@
         function sendData(selectId) {
             var category = $('#changeCategory' + selectId);
                 var categoryIds = category.val();
-                console.log(category.val());
-               if (categoryIds!=null){
-                   $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/"+categoryIds.join(","));
-               }else{
-                   $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/"+"0");
+            if (categoryIds == ""){
+                $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId + "/0");
+            }
+            else {
+                $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/" + categoryIds.join(","));
                }
         }
-        <c:forEach items="${tl}" var="trans">
-        var mySelect = new vanillaSelectBox("#changeCategory${trans.id}");
-        mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> option${category.id},</c:forEach>]);
-
-        </c:forEach>
+<%--        <c:forEach items="${tl}" var="trans">--%>
+        <%--var mySelect = new vanillaSelectBox("#changeCategory${trans.id}");--%>
+        <%--mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> option${category.id},</c:forEach>]);--%>
+<%--        </c:forEach>--%>
     </script>
 
 
@@ -421,7 +420,6 @@
                                     <th>Party</th>
                                     <th>Bank</th>
                                     <th>Category</th>
-
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -432,19 +430,12 @@
                                         <td>${trans.description}</td>
                                         <td>${trans.party}</td>
                                         <td>${trans.bank.name}</td>
-<%--                                        <td><c:forEach items="${trans.categories}" var="category">--%>
-<%--                                            ${category.name}--%>
-<%--                                        </c:forEach></td>--%>
                                         <td>
                                             <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"
                                                     multiple size="4" onchange="sendData(${trans.id})" >
-<%--                                                <option onfocusout="sendData()" value="0"> Choose category</option>--%>
                                                 <c:forEach items="${categoriesList}" var="category">
-                                                    console.log(${trans.categories});
-                                                    console.log(${category.id});
                                                     <c:choose>
-                                                        <c:when test="${fn:containsIgnoreCase(trans.categories, category.id)}">
-<%--                                                        <c:when test="${trans.categories}.contains(${category.id})">--%>
+                                                        <c:when test="${fn:contains(trans.categories, category)}">
                                                             <option selected="selected"
                                                         </c:when>
                                                         <c:otherwise>
