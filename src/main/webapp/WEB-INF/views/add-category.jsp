@@ -16,10 +16,20 @@
     <title>Add category</title>
     <!-- Bootstrap Core CSS -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template -->
 
-    <!-- Custom fonts for this template-->
-    <link href="${pageContext.request.contextPath}/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet"
+    <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
           type="text/css">
+    <!--datatables-->
+    <link href="${pageContext.request.contextPath}/cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"
+          rel="stylesheet" type="text/css">
+
+<%--    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"--%>
+<%--          rel="stylesheet">--%>
+
+<%--    <!-- Custom fonts for this template-->--%>
+<%--    <link href="${pageContext.request.contextPath}/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet"--%>
+<%--          type="text/css">--%>
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
@@ -43,21 +53,39 @@
 
 </head>
 
-<body>
+<body id="page-top">
 
+<!-- Page Wrapper -->
 <div id="wrapper">
 
+    <!-- Sidebar -->
+    <jsp:include page="sidebar.jsp"></jsp:include>
+    <!-- End of Sidebar -->
 
-    <div id="page-wrapper">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-        <div class="container-fluid">
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <jsp:include page="topbar.jsp"></jsp:include>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Add category</h1>
+
 
             <!-- Page Heading -->
+
             <div class="row">
                 <div class="col-lg-24">
                     <h1 class="page-header">
                         <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Add category</h1>
+
                             <h10 class="h6 text-gray-900 mb-4">More categories will give you more insight in your
                                 expenses
                             </h10>
@@ -65,8 +93,8 @@
                     </h1>
                 </div>
             </div>
-            <!-- /.row -->
-
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
             <div class="row">
                 <div class="col-lg-24">
 
@@ -126,7 +154,14 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+            <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
+            <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+            <!-- Core plugin JavaScript-->
+            <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+            <!-- Custom scripts for all pages-->
+            <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
 </body>
 
 </html>

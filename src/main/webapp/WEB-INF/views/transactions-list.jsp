@@ -142,7 +142,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-     <jsp:include page="footer.jspx"></jsp:include>
+     <jsp:include page="footer.jsp"></jsp:include>
         <!-- End of Footer -->
 
     </div>

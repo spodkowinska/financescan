@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,49 +21,6 @@
 
 <!-- Custom styles for this template-->
 <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
-
-<script>
-// Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
-
-// Pie Chart Example
-var ctx = document.getElementById("PieChartAllTransactions");
-var myPieChart = new Chart(ctx, {
-type: 'doughnut',
-data: {
-labels: [
-<c:forEach items="${categoriesWIthAmounts.keySet()}" var="category">
-  ${category},</c:forEach>
-],
-    datasets: [{
-    data: [
-      <c:forEach items="${categoriesWIthAmounts.values()}" var="amount">
-      ${amount},</c:forEach>],
-    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-    hoverBorderColor: "rgba(234, 236, 244, 1)",
-    }],
-    },
-    options: {
-    maintainAspectRatio: false,
-    tooltips: {
-    backgroundColor: "rgb(255,255,255)",
-    bodyFontColor: "#858796",
-    borderColor: '#dddfeb',
-    borderWidth: 1,
-    xPadding: 15,
-    yPadding: 15,
-    displayColors: false,
-    caretPadding: 10,
-    },
-    legend: {
-    display: false
-    },
-    cutoutPercentage: 80,
-    },
-    });
-    </script>
 
     </head>
 
@@ -93,7 +49,6 @@ labels: [
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Visualisation of your expenses</h1>
     <p class="mb-4">Select options to customise your graphs. You can also just analyse by default all transactions. </p>
-
     <!-- Content Row -->
     <div class="row">
 
@@ -134,21 +89,19 @@ labels: [
     <div class="card shadow mb-4">
     <!-- Card Header - Dropdown -->
     <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+    <h6 class="m-0 font-weight-bold text-primary">All expenses by categories</h6>
     </div>
     <!-- Card Body -->
     <div class="card-body">
     <div class="chart-pie pt-4">
-    <canvas id="PieChartAllTransactions"></canvas>
+    <canvas id="PieChartAllTransactions1"></canvas>
     </div>
     <hr>
-    Styling for the donut chart can be found in the <code>/js/demo/chart-pie-demo.js</code> file.
+    Here you can see which categories take the biggest part in your expenses in the long run.
     </div>
     </div>
     </div>
     </div>
-      <c:forEach items="${categoriesWIthAmounts.values()}" var="amount">
-        ${amount},</c:forEach>],
     </div>
     <!-- /.container-fluid -->
 
@@ -198,9 +151,52 @@ labels: [
 
     <!-- Custom scripts for all pages-->
     <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
-
     <!-- Page level plugins -->
     <script src="${pageContext.request.contextPath}/vendor/chart.js/Chart.min.js"></script>
+    <script>
+
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
+
+        // Pie Chart Example
+        var ctx = document.getElementById("PieChartAllTransactions1");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    <c:forEach items="${categoriesWithAmounts}" var="category">
+                      ${category.key},</c:forEach>
+                ],
+                datasets: [{
+                    data: [
+                          <c:forEach items="${categoriesWithAmounts.values()}" var="amount">
+                          ${amount},</c:forEach>],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+    </script>
+
 
     <!-- Page level custom scripts -->
     <script src="${pageContext.request.contextPath}/js/demo/chart-area-demo.js"></script>

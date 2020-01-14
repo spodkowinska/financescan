@@ -72,10 +72,8 @@ public class TransactionController {
         List<Transaction> allTransactions = transactionService.findByUsersId(2l);
         Map<String, Float> categoriesAndAmounts = transactionService.mapExpensesToCategoriesWithAmounts(allTransactions, 2l);
         model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);
-
         return "present";
     }
-
 
     @RequestMapping("/home/sum")
     @ResponseBody
