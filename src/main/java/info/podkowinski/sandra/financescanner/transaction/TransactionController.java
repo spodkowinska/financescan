@@ -51,7 +51,6 @@ public class TransactionController {
     public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
         User user1 = userService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
-if(categories==null){transaction.setCategories(null);}
         if (transaction.getUser() == user1) {
             if (categories.equals("0")) {
                 transaction.setCategories(null);
@@ -60,25 +59,40 @@ if(categories==null){transaction.setCategories(null);}
                 transactionService.save(transaction);
             }
         }
-            return "transactions-list";
-        }
-
-
-        @RequestMapping("/home/sum")
-        @ResponseBody
-        public String sumBtn () {
-
-            String str = "2019-10-31";
-            Date date1 = Date.valueOf(str);
-            String str2 = "2019-11-31";
-            Date date2 = Date.valueOf(str2);
-            User user1 = userService.findById(2l);
-//        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
-            return transactionService.balancesByDatesForAllCategories(user1, date1, date2).toString();
-        }
-        @GetMapping("/index")
-        public String index () {
-            return "index";
-        }
-
+        return "transactions-list";
     }
+
+    @GetMapping("/present")
+    public String present(Model model) {
+        User user2 = userService.findById(2l);
+        String str = "2019-10-31";
+        Date date1 = Date.valueOf(str);
+        String str2 = "2019-11-31";
+        Date date2 = Date.valueOf(str2);
+        List<Transaction> allTransactions = transactionService.findByUsersId(2l);
+        Map<String, Float> categoriesAndAmounts = transactionService.mapExpensesToCategoriesWithAmounts(allTransactions, 2l);
+        model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);
+
+        return "present";
+    }
+
+
+    @RequestMapping("/home/sum")
+    @ResponseBody
+    public String sumBtn() {
+
+        String str = "2019-10-31";
+        Date date1 = Date.valueOf(str);
+        String str2 = "2019-11-31";
+        Date date2 = Date.valueOf(str2);
+        User user1 = userService.findById(2l);
+//        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
+        return transactionService.balancesByDatesForAllCategories(user1, date1, date2).toString();
+    }
+
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
+
+}

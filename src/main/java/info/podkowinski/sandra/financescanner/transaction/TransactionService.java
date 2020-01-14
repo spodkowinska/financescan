@@ -28,13 +28,15 @@ public class TransactionService {
         this.categoryRepository = categoryRepository;
         this.bankRepository = bankRepository;
     }
-    public Transaction findById(Long id){
+
+    public Transaction findById(Long id) {
         return transactionRepository.findById(id).orElse(null);
     }
-    public List <Category> categoriesfromUrlString(String categoriesIds){
-        String [] categoriesIdsList = categoriesIds.split(",");
-        List<Category>categoriesList = new ArrayList<>();
-        for (String id: categoriesIdsList) {
+
+    public List<Category> categoriesfromUrlString(String categoriesIds) {
+        String[] categoriesIdsList = categoriesIds.split(",");
+        List<Category> categoriesList = new ArrayList<>();
+        for (String id : categoriesIdsList) {
             categoriesList.add(categoryRepository.getOne(Long.parseLong(id)));
         }
         return categoriesList;
@@ -133,13 +135,37 @@ public class TransactionService {
         HashMap<Long, List<String>> transactionIdCategories = new HashMap<>();
         List<Transaction> transactionsList = findByUsersId(userId);
         for (Transaction t : transactionsList) {
-            List<String>categoriesNames=new ArrayList<>();
-            t.getCategories().forEach(c->categoriesNames.add(c.getName()));
-            transactionIdCategories.put(t.getId(),categoriesNames);
+            List<String> categoriesNames = new ArrayList<>();
+            t.getCategories().forEach(c -> categoriesNames.add(c.getName()));
+            transactionIdCategories.put(t.getId(), categoriesNames);
         }
         return transactionIdCategories;
     }
-    public void save(Transaction transaction){
+
+    public void save(Transaction transaction) {
         transactionRepository.save(transaction);
+    }
+
+    HashMap<String, Float> mapExpensesToCategoriesWithAmounts(List<Transaction> transactionsToBeMapped, Long userId) {
+        HashMap<String, Float> categoriesWithAmounts = new HashMap<>();
+        List<Category> categoriesByUser = categoryRepository.findAllByUserId(userId);
+        for (Category category : categoriesByUser) {
+            categoriesWithAmounts.put(category.getName(), 0f);
+        }
+        for (Transaction transaction : transactionsToBeMapped) {
+            if (transaction.amount < 0) {
+                int numberOfCategoriesPerTransaction = transaction.categories.size();
+                List<String> categoriesPerTransaction = new ArrayList<>();
+                for (Category category : transaction.categories) {
+                    categoriesPerTransaction.add(category.name);
+                }
+                for (String categoryName : categoriesPerTransaction) {
+                    Float previousAmount = categoriesWithAmounts.get(categoryName);
+                    Float newAmount = previousAmount + Math.abs(transaction.amount) / numberOfCategoriesPerTransaction;
+                    categoriesWithAmounts.replace(categoryName, newAmount);
+                }
+            }
+        }
+        return categoriesWithAmounts;
     }
 }
