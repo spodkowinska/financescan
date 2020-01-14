@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -439,7 +440,18 @@
                                                     multiple size="4" onchange="sendData(${trans.id})" >
 <%--                                                <option onfocusout="sendData()" value="0"> Choose category</option>--%>
                                                 <c:forEach items="${categoriesList}" var="category">
-                                                    <option value="${category.id}">${category.name}</option>
+                                                    console.log(${trans.categories});
+                                                    console.log(${category.id});
+                                                    <c:choose>
+                                                        <c:when test="${fn:containsIgnoreCase(trans.categories, category.id)}">
+<%--                                                        <c:when test="${trans.categories}.contains(${category.id})">--%>
+                                                            <option selected="selected"
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    value="${category.id}">${category.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </td>
@@ -500,7 +512,7 @@
 </div>
 <script> <c:forEach items="${tl}" var="trans"> var mySelect = new vanillaSelectBox("#changeCategory${trans.id}",{
     placeHolder: "Uncategorised",  search: true});
-mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> ${category.id}</c:forEach>]);
+<%--mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> ${category.id}</c:forEach>]);--%>
 
     </c:forEach></script>
 
