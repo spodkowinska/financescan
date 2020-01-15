@@ -68,7 +68,7 @@ public class HomeController {
         return "ajaxexample";
     }
 
-    @GetMapping("/present")
+    @GetMapping("/report")
     public String present(Model model) {
         User user2 = userService.findById(2l);
         String str = "2019-10-31";
@@ -78,7 +78,7 @@ public class HomeController {
         List<Transaction> allTransactions = transactionService.findByUsersId(2l);
         Map<String, Float> categoriesAndAmounts = transactionService.mapExpensesToCategoriesWithAmounts(allTransactions, 2l);
         model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);
-        return "present";
+        return "report";
     }
 
 }

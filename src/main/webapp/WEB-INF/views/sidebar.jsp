@@ -68,9 +68,9 @@
     </div>
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="${pageContext.request.contextPath}/report">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
+            <span>Report</span></a>
     </li>
 
 
