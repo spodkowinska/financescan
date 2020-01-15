@@ -62,7 +62,7 @@ public class TransactionController {
             if (categories.equals("0")) {
                 transaction.setCategories(null);
             } else {
-                transaction.setCategories(transactionService.categoriesfromUrlString(categories));
+                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
                 transactionService.save(transaction);
             }
         }
@@ -107,7 +107,7 @@ public class TransactionController {
         Date date2 = Date.valueOf(str2);
         User user1 = userService.findById(2l);
 //        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
-        return transactionService.balancesByDatesForAllCategories(user1, date1, date2).toString();
+        return transactionService.balancesByDatesForAllCategories(user1.getId(), date1, date2).toString();
     }
 
     @GetMapping("/index")

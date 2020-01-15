@@ -23,6 +23,7 @@ import java.net.http.HttpRequest;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,14 +61,6 @@ public class HomeController {
         return "good";
     }
 
-
-
-    @GetMapping("/ajax")
-    public String ajax() {
-
-        return "ajaxexample";
-    }
-
     @GetMapping("/report")
     public String present(Model model) {
         User user2 = userService.findById(2l);
@@ -78,6 +71,8 @@ public class HomeController {
         List<Transaction> allTransactions = transactionService.findByUsersId(2l);
         Map<String, Float> categoriesAndAmounts = transactionService.mapExpensesToCategoriesWithAmounts(allTransactions, 2l);
         model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);
+        Map<String,Double> categoryAmountLastMonth = transactionService.lastYearBalances(2l);
+        System.out.println(categoryAmountLastMonth);
         return "report";
     }
 
