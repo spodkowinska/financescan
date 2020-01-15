@@ -75,7 +75,9 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
+<%--todo frontend validation--%>
+
+            <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">Add category</h1>
 
 

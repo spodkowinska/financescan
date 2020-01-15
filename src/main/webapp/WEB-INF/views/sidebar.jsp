@@ -51,7 +51,7 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="${pageContext.request.contextPath}/fileimport">Import Transactions</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/fileimport">Import Transactions</a>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/list">Transaction List</a>
                 <a class="collapse-item" href="utilities-animation.html">Animations</a>
                 <a class="collapse-item" href="utilities-other.html">Other</a>
@@ -64,8 +64,15 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Addons
+        Reports
     </div>
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Charts</span></a>
+    </li>
+
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
@@ -88,12 +95,6 @@
         </div>
     </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
-    </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item active">

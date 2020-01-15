@@ -146,7 +146,7 @@ public class TransactionService {
         transactionRepository.save(transaction);
     }
 
-    HashMap<String, Float> mapExpensesToCategoriesWithAmounts(List<Transaction> transactionsToBeMapped, Long userId) {
+    public HashMap<String, Float> mapExpensesToCategoriesWithAmounts(List<Transaction> transactionsToBeMapped, Long userId) {
         HashMap<String, Float> categoriesWithAmounts = new HashMap<>();
         List<Category> categoriesByUser = categoryRepository.findAllByUserId(userId);
         for (Category category : categoriesByUser) {

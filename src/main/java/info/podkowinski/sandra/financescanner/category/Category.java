@@ -9,7 +9,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
+@Table(name = "categories",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name"})}
+)
 public class Category {
 
     public Category(String name, String description, String keywords, Long parentCategoryId, User user) {
@@ -27,7 +29,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    public String name;
+    public
+    String name;
 
     String description;
 
