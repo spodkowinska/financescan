@@ -60,15 +60,15 @@ public class CategoryController {
     @RequestMapping("/list")
     public String categoryList(Model model) {
         User user1 = userService.findById(1l);
-        List<Category>categoriesList = categoryService.findByUserId(1l);
+        List<Category>categoriesList = categoryService.findByUserId(2l);
         model.addAttribute("cl", categoriesList);
         return "categories-list";
     }
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        User user1 = userService.findById(1l);
-        List<Category> categories = categoryService.findByUserId(1l);
-        Map<String, String> usedKeywords = categoryService.usedKeywords(1l);
+        User user1 = userService.findById(2l);
+        List<Category> categories = categoryService.findByUserId(2l);
+        Map<String, String> usedKeywords = categoryService.usedKeywords(2l);
         Category category = categoryService.findById(id);
         model.addAttribute("category", category);
         model.addAttribute("usedKeywords", usedKeywords);
@@ -78,7 +78,7 @@ public class CategoryController {
     @PostMapping("/edit/{id}")
     @ResponseBody
     public String editPost(@PathVariable Long id, @ModelAttribute Category category1) {
-        User user1 = userService.findById(1l);
+        User user1 = userService.findById(2l);
         Category category = categoryService.compareCategories(id, category1);
         category.user=user1;
         categoryService.save(category);

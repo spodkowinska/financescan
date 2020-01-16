@@ -58,15 +58,15 @@
                         <!-- Area Chart -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Last year of transactions</h6>
                             </div>
                             <div class="card-body">
                                 <div class="chart-area">
-                                    <canvas id="myAreaChart"></canvas>
+                                    <canvas id="AreaChartLastYearAllTransactions"></canvas>
                                 </div>
                                 <hr>
-                                Styling for the area chart can be found in the <code>/js/demo/chart-area-demo.js</code>
-                                file.
+                               Month by month all transactions show global trend of your expenses.
+                                Visualisations of trends can prepare you for the reocurring bigger expenses like birthdays, car insurence or holidays.
                             </div>
                         </div>
 
@@ -234,7 +234,7 @@
     }
 
     // Area Chart Example
-    var ctx = document.getElementById("myAreaChart");
+    var ctx = document.getElementById("AreaChartLastYearAllTransactions");
     var myLineChart = new Chart(ctx, {
         type: 'line',
         data: {
