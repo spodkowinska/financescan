@@ -112,14 +112,20 @@ public class TransactionService {
         double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
         return balance;
     }
+
     public Map<String, Double> lastYearBalances(Long userId){
-        Map<String, Double> lastYearBalances = new HashMap<>();
+        SortedMap<String, Double> lastYearBalances = new TreeMap<>();
         Date dateNow = Date.valueOf(LocalDate.now());
         StringBuilder sb = new StringBuilder();
         sb.append(dateNow.toLocalDate().getYear()).append("-").append(dateNow.toLocalDate().getMonthValue ()).append("-").append("01");
         String monthBegin = sb.toString();
         StringBuilder sb1 = new StringBuilder();
-        String yearMonth = sb1.append(dateNow.toLocalDate().getYear()).append(" ").append(dateNow.toLocalDate().getMonth()).toString();
+        int month = dateNow.toLocalDate().getMonthValue();
+        String yearMonth ="";
+        if(month<10){
+            yearMonth = sb1.append(dateNow.toLocalDate().getYear()).append(" ").append("0").append(month).toString();}
+        else{
+            yearMonth = sb1.append(dateNow.toLocalDate().getYear()).append(" ").append(month).toString();}
         lastYearBalances.put(yearMonth, balanceByDates(userId, Date.valueOf(monthBegin), dateNow));
         for(int i=0; i<11; i++) {
             Date monthBeginDate = Date.valueOf(monthBegin);
@@ -127,10 +133,16 @@ public class TransactionService {
             sb1.delete(0,sb1.length());
             LocalDate previousMonthEnd = monthBeginDate.toLocalDate().minusDays(1l);
             String previousMonthBegin = sb.append(previousMonthEnd.getYear()).append("-").append(previousMonthEnd.getMonthValue()).append("-").append("01").toString();
-            String previousYearMonth = sb1.append(Date.valueOf(previousMonthBegin).toLocalDate().getYear()).append(" ").append(Date.valueOf(previousMonthBegin).toLocalDate().getMonth()).toString();
+            int previousMonth=Date.valueOf(previousMonthBegin).toLocalDate().getMonthValue();
+            String previousYearMonth;
+            if(previousMonth<10){
+                previousYearMonth = sb1.append(previousMonthEnd.getYear()).append(" ").append("0").append(previousMonth).toString();}
+            else{
+                previousYearMonth = sb1.append(previousMonthEnd.getYear()).append(" ").append(previousMonth).toString();}
             lastYearBalances.put(previousYearMonth, balanceByDates(userId, Date.valueOf(previousMonthBegin), Date.valueOf(previousMonthEnd)));
             monthBegin = previousMonthBegin;
         }
+        System.out.println(lastYearBalances);
         return lastYearBalances;
     }
 

@@ -63,16 +63,16 @@ public class HomeController {
 
     @GetMapping("/report")
     public String present(Model model) {
-        User user2 = userService.findById(2l);
-        String str = "2019-10-31";
-        Date date1 = Date.valueOf(str);
-        String str2 = "2019-11-31";
-        Date date2 = Date.valueOf(str2);
+//        User user2 = userService.findById(2l);
+//        String str = "2019-10-31";
+//        Date date1 = Date.valueOf(str);
+//        String str2 = "2019-11-31";
+//        Date date2 = Date.valueOf(str2);
         List<Transaction> allTransactions = transactionService.findByUsersId(2l);
+        Map<String, Double> lastYearBalances = transactionService.lastYearBalances(2l);
         Map<String, Float> categoriesAndAmounts = transactionService.mapExpensesToCategoriesWithAmounts(allTransactions, 2l);
         model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);
-        Map<String,Double> categoryAmountLastMonth = transactionService.lastYearBalances(2l);
-        System.out.println(categoryAmountLastMonth);
+        model.addAttribute("lastYearBalances", lastYearBalances);
         return "report";
     }
 
