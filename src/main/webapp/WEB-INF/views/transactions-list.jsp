@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Table with transactions</title>
+    <title>Table With Transactions</title>
 
     <!-- Custom fonts for this template -->
     <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
@@ -71,7 +71,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Table with transactions</h1>
+                <h1 class="h3 mb-2 text-gray-800">Table With Transactions</h1>
 
 
                 <!-- DataTales Example -->

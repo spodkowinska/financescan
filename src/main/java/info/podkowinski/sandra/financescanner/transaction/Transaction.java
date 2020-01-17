@@ -2,6 +2,7 @@ package info.podkowinski.sandra.financescanner.transaction;
 
 
 import info.podkowinski.sandra.financescanner.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;

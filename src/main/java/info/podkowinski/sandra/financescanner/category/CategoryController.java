@@ -36,30 +36,29 @@ public class CategoryController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        User user1 = userService.findById(1l);
-        List<Category> categories = categoryService.findByUserId(1l);
-        Map<String, String> usedKeywords = categoryService.usedKeywords(1l);
+        User user1 = userService.findById(2l);
+        List<Category> categories = categoryService.findByUserId(2l);
+        Map<String, String> usedKeywords = categoryService.usedKeywords(2l);
         model.addAttribute("usedKeywords", usedKeywords);
         model.addAttribute("categories", categories);
         return "add-category";
     }
 //todo frontend validation, name cannot be the same, keywords info about usage
     @PostMapping("/add")
-    @ResponseBody
     public String addPost(HttpServletRequest request) {
-        User user1 = userService.findById(1l);
+        User user1 = userService.findById(2l);
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String keywords= categoryService.filterKeywords(request.getParameter("keywords"));
         Long parent = Long.parseLong(request.getParameter("parent"));
         Category category = new Category(name, description, keywords, parent, user1);
         categoryService.save(category);
-        return "good";
+        return "redirect:../category/list";
     }
 
     @RequestMapping("/list")
     public String categoryList(Model model) {
-        User user1 = userService.findById(1l);
+        User user1 = userService.findById(2l);
         List<Category>categoriesList = categoryService.findByUserId(2l);
         model.addAttribute("cl", categoriesList);
         return "categories-list";
@@ -76,12 +75,11 @@ public class CategoryController {
         return "edit-category";
     }
     @PostMapping("/edit/{id}")
-    @ResponseBody
     public String editPost(@PathVariable Long id, @ModelAttribute Category category1) {
         User user1 = userService.findById(2l);
         Category category = categoryService.compareCategories(id, category1);
         category.user=user1;
         categoryService.save(category);
-        return "good";
+        return "redirect:../../category/list";
     }
 }

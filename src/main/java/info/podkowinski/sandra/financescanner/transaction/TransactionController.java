@@ -19,6 +19,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -53,22 +54,6 @@ public class TransactionController {
         model.addAttribute("transCategories", transactionCategory);
         return "transactions-list";
     }
-
-    @GetMapping("/setcategories/{transactionId}/{categories}")
-    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
-        User user1 = userService.findById(2l);
-        Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getUser() == user1) {
-            if (categories.equals("0")) {
-                transaction.setCategories(null);
-            } else {
-                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
-                transactionService.save(transaction);
-            }
-        }
-        return "transactions-list";
-    }
-
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
         User user1 = userService.findById(1l);
@@ -96,6 +81,58 @@ public class TransactionController {
                 partyPosition, amountPosition, separator, skippedLines, importName, bank, user1);
         return "good";
     }
+
+    @GetMapping("/add")
+    public String add(Model model) {
+        User user1 = userService.findById(2l);
+        List<Category> categories = categoryService.findByUserId(2l);
+        List<Bank> banks = bankService.findByUserId(2l);
+        Transaction transaction = new Transaction();
+        model.addAttribute("categories", categories);
+        model.addAttribute("banks", banks);
+        model.addAttribute("transaction", transaction);
+        return "add-transaction";
+    }
+    //todo frontend validation
+    @PostMapping("/add")
+    public String addPost(HttpServletRequest request) {
+        User user1 = userService.findById(2l);
+        Date date = Date.valueOf(request.getParameter("date"));
+        Float amount = Float.parseFloat(request.getParameter("amount"));
+        String description = request.getParameter("description");
+        String party = request.getParameter("party");
+        Bank bank = bankService.findBankById(Long.parseLong(request.getParameter("bankId")));
+        String importName = "Imported manually on " + LocalDate.now();
+        //todo multiple select
+        List <Category> categories = Arrays.asList(categoryService.findById(Long.parseLong(request.getParameter("category"))));
+        Transaction transaction = new Transaction();
+        transaction.transactionDate = date;
+        transaction.amount = amount;
+        transaction.description = description;
+        transaction.categories = categories;
+        transaction.bank = bank;
+        transaction.party = party;
+        transaction.importName = importName;
+        transaction.user = user1;
+        return "redirect:../transaction/list";
+    }
+
+    @GetMapping("/setcategories/{transactionId}/{categories}")
+    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
+        User user1 = userService.findById(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        if (transaction.getUser() == user1) {
+            if (categories.equals("0")) {
+                transaction.setCategories(null);
+            } else {
+                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
+                transactionService.save(transaction);
+            }
+        }
+        return "transactions-list";
+    }
+
+
 
     @RequestMapping("/home/sum")
     @ResponseBody
