@@ -3,7 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add transaction</title>
+    <title>Add account</title>
 
     <!-- Custom fonts for this template -->
     <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
@@ -25,13 +24,14 @@
           rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
 
 </head>
 
@@ -60,7 +60,7 @@
                 <%--todo frontend validation--%>
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Add Transaction</h1>
+                <h1 class="h3 mb-2 text-gray-800">Add account</h1>
 
 
                 <!-- Page Heading -->
@@ -70,67 +70,56 @@
                         <h1 class="page-header">
                             <div class="text-center">
 
-                                <h10 class="h6 text-gray-900 mb-4">You can add transactions manually.
-                                    Please be sure not to duplicate them with once from CSV import.
+                                <h10 class="h6 text-gray-900 mb-4">lorem ipsum
                                 </h10>
                             </div>
                         </h1>
                     </div>
                 </div>
                 <div class="card shadow mb-4">
-                    <div class="card-header">
+                    <div class="card-header py-3">
                         <div class="row">
                             <div class="col-lg-24">
-                                <form:form action="/transaction/add" method="post"
-                                           modelAttribute="transaction">
+
+                                <form action="" method="post">
 
 
                                     <div class="form-group">
-                                        <label>Date</label>
-                                        <form:input type="date" path="transactionDate" class="form-control" id="transactionDate"></form:input>
+                                        <label>Name</label>
+                                        <input class="form-control" id="name" name="name">
                                     </div>
 
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <form:input path="description" class="form-control" id="description"></form:input>
+                                        <input class="form-control" id="description" name="description">
                                         <p class="help-block"></p>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Amount</label>
-                                        <form:input path="amount" class="form-control" id="amount"></form:input>
+                                        <label>Number</label>
+                                        <input class="form-control" id="number" name="number">
+                                        <%--    <form:errors path="keywords" cssClass="error" element="div"></form:errors>--%>
+                                        <%--    <div id="username.errors" class="error">keyword already used</div>--%>
+                                        <p class="help-block"></p>
 
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Transaction Partner</label>
-                                        <form:input path="party" class="form-control" id="party"></form:input>
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Bank</label>
-                                    <form:select path="bank" class="form-control" id="bankId">
-                                        <c:forEach items="${banks}" var="bank">
-                                            <option value="${bank.id}">${bank.name}</option>
-                                        </c:forEach>
-                                    </form:select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Category</label>
-                                        <form:select path="categories" class="form-control" id="categoryId">
+                                        <label>Select parent category</label>
+                                        <select class="form-control" id="parent" name="parent">
+                                            <option value="0"> --select category if it is not a parent category--
+                                            </option>
                                             <c:forEach items="${categories}" var="category">
                                                 <option value="${category.id}">${category.name}</option>
                                             </c:forEach>
-                                        </form:select>
+                                        </select>
                                     </div>
-
 
 
                                     <button type="submit" class="btn btn-default">Save</button>
                                     <button type="reset" class="btn btn-default">Reset</button>
 
-                                </form:form>
+                                </form>
                             </div>
                         </div>
                         <!-- /.row -->
@@ -142,8 +131,8 @@
                 <!-- /#page-wrapper -->
 
             </div>
-            <!-- /#wrapper -->
 
+            <!-- Bootstrap Core JavaScript -->
             <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
             <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -152,3 +141,6 @@
 
             <!-- Custom scripts for all pages-->
             <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
+</body>
+
+</html>

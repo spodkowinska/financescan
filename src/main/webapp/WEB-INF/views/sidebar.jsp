@@ -52,8 +52,8 @@
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/fileimport">Import Transactions</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/add">Add New Transaction</a>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/list">Transaction List</a>
-                <a class="collapse-item" href="utilities-animation.html">Animations</a>
                 <a class="collapse-item" href="utilities-other.html">Other</a>
             </div>
         </div>
