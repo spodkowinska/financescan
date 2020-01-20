@@ -52,7 +52,7 @@ public class TransactionController {
         model.addAttribute("bl", banksList);
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
-        return "transactions-list";
+        return "list-transactions";
     }
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
@@ -79,7 +79,7 @@ public class TransactionController {
         Long bank = Long.parseLong(request.getParameter("bank"));
         transactionService.scanDocument(filePart.getInputStream(), datePosition, descriptionPosition,
                 partyPosition, amountPosition, separator, skippedLines, importName, bank, user1);
-        return "good";
+        return "redirect: /list";
     }
 
     @GetMapping("/add")
@@ -117,20 +117,20 @@ public class TransactionController {
         return "redirect:../transaction/list";
     }
 
-    @GetMapping("/setcategories/{transactionId}/{categories}")
-    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
-        User user1 = userService.findById(2l);
-        Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getUser() == user1) {
-            if (categories.equals("0")) {
-                transaction.setCategories(null);
-            } else {
-                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
-                transactionService.save(transaction);
-            }
-        }
-        return "transactions-list";
-    }
+//    @GetMapping("/setcategories/{transactionId}/{categories}")
+//    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
+//        User user1 = userService.findById(2l);
+//        Transaction transaction = transactionService.findById(transactionId);
+//        if (transaction.getUser() == user1) {
+//            if (categories.equals("0")) {
+//                transaction.setCategories(null);
+//            } else {
+//                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
+//                transactionService.save(transaction);
+//            }
+//        }
+//        return "transactions-list";
+//    }
 
 
 

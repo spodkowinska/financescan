@@ -12,6 +12,7 @@ public class BankService {
     public BankService(BankRepository bankRepository) {
         this.bankRepository = bankRepository;
     }
+    public void save(Bank bank){ bankRepository.save(bank);}
 
     public Bank findBankById(Long id){
        return bankRepository.getOne(id);

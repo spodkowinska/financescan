@@ -81,37 +81,41 @@
                         <div class="row">
                             <div class="col-lg-24">
 
-                                <form action="" method="post">
+                                <form:form action="../../account/add" method="post"
+                                           modelAttribute="bank">
 
 
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <input class="form-control" id="name" name="name">
+                                        <form:input path="name" class="form-control" id="categoryName"></form:input>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <input class="form-control" id="description" name="description">
+                                        <form:input path="description" class="form-control" id="description"
+                                                    name="description"></form:input>
                                         <p class="help-block"></p>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Number</label>
-                                        <input class="form-control" id="number" name="number">
-                                        <%--    <form:errors path="keywords" cssClass="error" element="div"></form:errors>--%>
-                                        <%--    <div id="username.errors" class="error">keyword already used</div>--%>
-                                        <p class="help-block"></p>
+                                        <label>Keywords</label>
+                                        <form:input path="keywords" class="form-control" id="keywords"
+                                                    name="keywords"></form:input>
+                                        <p class="help-block">Words that will be used to assign categories to your
+                                            transactions</p>
 
                                     </div>
 
                                     <div class="form-group">
                                         <label>Select parent category</label>
-                                        <select class="form-control" id="parent" name="parent">
+                                        <form:select path="parentCategoryId" class="form-control" id="parent"
+                                                     name="parent">
                                             <option value="0"> --select category if it is not a parent category--
                                             </option>
                                             <c:forEach items="${categories}" var="category">
                                                 <option value="${category.id}">${category.name}</option>
                                             </c:forEach>
+                                        </form:select>
                                         </select>
                                     </div>
 
@@ -119,7 +123,7 @@
                                     <button type="submit" class="btn btn-default">Save</button>
                                     <button type="reset" class="btn btn-default">Reset</button>
 
-                                </form>
+                                </form:form>
                             </div>
                         </div>
                         <!-- /.row -->

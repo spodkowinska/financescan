@@ -61,7 +61,7 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         List<Category>categoriesList = categoryService.findByUserId(2l);
         model.addAttribute("cl", categoriesList);
-        return "categories-list";
+        return "list-categories";
     }
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {

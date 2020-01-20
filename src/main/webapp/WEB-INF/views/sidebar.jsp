@@ -43,17 +43,33 @@
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-           aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+           aria-expanded="true" aria-controls="collapseThree">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Transactions</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/fileimport">Import Transactions</a>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/add">Add New Transaction</a>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/list">Transaction List</a>
+                <a class="collapse-item" href="utilities-other.html">Other</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
+           aria-expanded="true" aria-controls="collapseFour">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Account</span>
+        </a>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="${pageContext.request.contextPath}/account/add">Add New Account</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/account/list">Account List</a>
                 <a class="collapse-item" href="utilities-other.html">Other</a>
             </div>
         </div>
