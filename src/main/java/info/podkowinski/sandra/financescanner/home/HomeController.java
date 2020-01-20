@@ -1,8 +1,7 @@
 package info.podkowinski.sandra.financescanner.home;
 
 import com.opencsv.exceptions.CsvValidationException;
-import info.podkowinski.sandra.financescanner.bank.Bank;
-import info.podkowinski.sandra.financescanner.bank.BankService;
+import info.podkowinski.sandra.financescanner.account.AccountService;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.transaction.Transaction;
@@ -19,11 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.net.http.HttpRequest;
-import java.sql.Date;
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,13 +28,13 @@ public class HomeController {
     private final TransactionService transactionService;
     private final UserService userService;
     private final CsvSettingsService csvSettingsService;
-    private final BankService bankService;
+    private final AccountService accountService;
 
-    public HomeController(TransactionService transactionService, UserService userService, BankService bankService, CsvSettingsService csvSettingsService) {
+    public HomeController(TransactionService transactionService, UserService userService, AccountService accountService, CsvSettingsService csvSettingsService) {
         this.transactionService = transactionService;
         this.userService = userService;
         this.csvSettingsService = csvSettingsService;
-        this.bankService = bankService;
+        this.accountService = accountService;
     }
 
     @GetMapping("/home")

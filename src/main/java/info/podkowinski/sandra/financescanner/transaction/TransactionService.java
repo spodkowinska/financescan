@@ -1,7 +1,7 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
 import com.opencsv.exceptions.CsvValidationException;
-import info.podkowinski.sandra.financescanner.bank.BankRepository;
+import info.podkowinski.sandra.financescanner.account.AccountRepository;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryRepository;
 import info.podkowinski.sandra.financescanner.csvScanner.Formatter;
@@ -23,14 +23,14 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
-    private final BankRepository bankRepository;
+    private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
     public TransactionService(TransactionRepository transactionRepository, CategoryRepository categoryRepository,
-                              BankRepository bankRepository, UserRepository userRepository) {
+                              AccountRepository accountRepository, UserRepository userRepository) {
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
-        this.bankRepository = bankRepository;
+        this.accountRepository = accountRepository;
         this.userRepository = userRepository;
     }
 
@@ -62,7 +62,7 @@ public class TransactionService {
                     .replace("\"", "")
                     .replace(" ", ""));
             newTransaction.importName = importName;
-            newTransaction.bank = bankRepository.getOne(bankId);
+            newTransaction.account = accountRepository.getOne(bankId);
             newTransaction.user = user;
             transactionRepository.save(newTransaction);
         }

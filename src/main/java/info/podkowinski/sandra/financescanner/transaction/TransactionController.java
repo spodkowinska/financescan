@@ -1,8 +1,8 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
 import com.opencsv.exceptions.CsvValidationException;
-import info.podkowinski.sandra.financescanner.bank.Bank;
-import info.podkowinski.sandra.financescanner.bank.BankService;
+import info.podkowinski.sandra.financescanner.account.Account;
+import info.podkowinski.sandra.financescanner.account.AccountService;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryService;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
@@ -28,15 +28,15 @@ public class TransactionController {
 
     private final TransactionService transactionService;
     private final UserService userService;
-    private final BankService bankService;
+    private final AccountService accountService;
     private final CategoryService categoryService;
     private final CsvSettingsService csvSettingsService;
 
-    public TransactionController(TransactionService transactionService, UserService userService, BankService bankService,
+    public TransactionController(TransactionService transactionService, UserService userService, AccountService accountService,
                                  CategoryService categoryService, CsvSettingsService csvSettingsService) {
         this.transactionService = transactionService;
         this.userService = userService;
-        this.bankService = bankService;
+        this.accountService = accountService;
         this.categoryService = categoryService;
         this.csvSettingsService = csvSettingsService;
     }
@@ -45,11 +45,11 @@ public class TransactionController {
     public String transaction(Model model) {
         User user2 = userService.findById(2l);
         List<Transaction> transactionsList = transactionService.findByUsersId(2l);
-        List<Bank> banksList = bankService.findByUserId(2l);
+        List<Account> accountsList = accountService.findByUserId(2l);
         List<Category> categoriesList = categoryService.findByUserId(2l);
         HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(2l);
         model.addAttribute("tl", transactionsList);
-        model.addAttribute("bl", banksList);
+        model.addAttribute("bl", accountsList);
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
         return "list-transactions";
@@ -57,10 +57,10 @@ public class TransactionController {
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
         User user1 = userService.findById(1l);
-        List<Bank>banksList = bankService.findByUserId(1l);
+        List<Account>accountsList = accountService.findByUserId(1l);
         List<CsvSettings> csvSettingsList = csvSettingsService.findByUserId(user1.getId());
         model.addAttribute("csvSettingsList", csvSettingsList);
-        model.addAttribute("banksList", banksList);
+        model.addAttribute("accountsList", accountsList);
         return "file-import";
     }
 
@@ -76,9 +76,9 @@ public class TransactionController {
         int skippedLines = Integer.parseInt(request.getParameter("skipLines"));
         char separator = request.getParameter("separator").charAt(0);
         String importName = request.getParameter("importName");
-        Long bank = Long.parseLong(request.getParameter("bank"));
+        Long account = Long.parseLong(request.getParameter("account"));
         transactionService.scanDocument(filePart.getInputStream(), datePosition, descriptionPosition,
-                partyPosition, amountPosition, separator, skippedLines, importName, bank, user1);
+                partyPosition, amountPosition, separator, skippedLines, importName, account, user1);
         return "redirect: /list";
     }
 
@@ -86,10 +86,10 @@ public class TransactionController {
     public String add(Model model) {
         User user1 = userService.findById(2l);
         List<Category> categories = categoryService.findByUserId(2l);
-        List<Bank> banks = bankService.findByUserId(2l);
+        List<Account> accounts = accountService.findByUserId(2l);
         Transaction transaction = new Transaction();
         model.addAttribute("categories", categories);
-        model.addAttribute("banks", banks);
+        model.addAttribute("Accounts", accounts);
         model.addAttribute("transaction", transaction);
         return "add-transaction";
     }
@@ -101,7 +101,7 @@ public class TransactionController {
         Float amount = Float.parseFloat(request.getParameter("amount"));
         String description = request.getParameter("description");
         String party = request.getParameter("party");
-        Bank bank = bankService.findBankById(Long.parseLong(request.getParameter("bankId")));
+        Account account = accountService.findById(Long.parseLong(request.getParameter("accountId")));
         String importName = "Imported manually on " + LocalDate.now();
         //todo multiple select
         List <Category> categories = Arrays.asList(categoryService.findById(Long.parseLong(request.getParameter("category"))));
@@ -110,7 +110,7 @@ public class TransactionController {
         transaction.amount = amount;
         transaction.description = description;
         transaction.categories = categories;
-        transaction.bank = bank;
+        transaction.account = account;
         transaction.party = party;
         transaction.importName = importName;
         transaction.user = user1;

@@ -1,12 +1,12 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
 
+import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.user.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import info.podkowinski.sandra.financescanner.bank.Bank;
+import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.category.Category;
 
 import javax.persistence.*;
@@ -33,8 +33,8 @@ public class Transaction {
     float amount;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bank_id")
-    Bank bank;
+    @JoinColumn(name = "account_id")
+    Account account;
 
     @JoinColumn(name = "categories_id")
     @ManyToMany(fetch = FetchType.EAGER)

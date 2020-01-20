@@ -82,41 +82,27 @@
                             <div class="col-lg-24">
 
                                 <form:form action="../../account/add" method="post"
-                                           modelAttribute="bank">
+                                           modelAttribute="account">
 
 
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <form:input path="name" class="form-control" id="categoryName"></form:input>
+                                        <form:input path="name" class="form-control" id="name"></form:input>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <form:input path="description" class="form-control" id="description"
-                                                    name="description"></form:input>
+                                        <form:input path="number" class="form-control" id="number"
+                                                    name="number"></form:input>
                                         <p class="help-block"></p>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Keywords</label>
-                                        <form:input path="keywords" class="form-control" id="keywords"
-                                                    name="keywords"></form:input>
+                                        <form:input path="institutionName" class="form-control" id="institutionName"
+                                                    name="institutionName"></form:input>
                                         <p class="help-block">Words that will be used to assign categories to your
                                             transactions</p>
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Select parent category</label>
-                                        <form:select path="parentCategoryId" class="form-control" id="parent"
-                                                     name="parent">
-                                            <option value="0"> --select category if it is not a parent category--
-                                            </option>
-                                            <c:forEach items="${categories}" var="category">
-                                                <option value="${category.id}">${category.name}</option>
-                                            </c:forEach>
-                                        </form:select>
-                                        </select>
                                     </div>
 
 

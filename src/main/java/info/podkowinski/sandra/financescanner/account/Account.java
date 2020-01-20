@@ -1,4 +1,4 @@
-package info.podkowinski.sandra.financescanner.bank;
+package info.podkowinski.sandra.financescanner.account;
 
 import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
@@ -8,14 +8,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "banks")
-public class Bank {
+@Table(name = "accounts")
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
-    String address;
-    String phone;
+    String number;
+    String institutionName;
 
     @JoinColumn(name = "user_id")
     @ManyToOne
