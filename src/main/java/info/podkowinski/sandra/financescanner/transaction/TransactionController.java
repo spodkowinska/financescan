@@ -44,7 +44,7 @@ public class TransactionController {
     @RequestMapping("/list")
     public String transaction(Model model) {
         User user2 = userService.findById(2l);
-        List<Transaction> transactionsList = transactionService.findByUsersId(2l);
+        List<Transaction> transactionsList = transactionService.findByUserId(2l);
         List<Account> accountsList = accountService.findByUserId(2l);
         List<Category> categoriesList = categoryService.findByUserId(2l);
         HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(2l);
@@ -54,10 +54,11 @@ public class TransactionController {
         model.addAttribute("transCategories", transactionCategory);
         return "list-transactions";
     }
+
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
         User user1 = userService.findById(1l);
-        List<Account>accountsList = accountService.findByUserId(1l);
+        List<Account> accountsList = accountService.findByUserId(1l);
         List<CsvSettings> csvSettingsList = csvSettingsService.findByUserId(user1.getId());
         model.addAttribute("csvSettingsList", csvSettingsList);
         model.addAttribute("accountsList", accountsList);
@@ -69,10 +70,10 @@ public class TransactionController {
     public String fileimportPost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
         User user1 = userService.findById(1l);
-        int datePosition = Integer.parseInt(request.getParameter("datePosition"))-1;
-        int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition"))-1;
-        int partyPosition = Integer.parseInt(request.getParameter("partyPosition"))-1;
-        int amountPosition = Integer.parseInt(request.getParameter("amountPosition"))-1;
+        int datePosition = Integer.parseInt(request.getParameter("datePosition")) - 1;
+        int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition")) - 1;
+        int partyPosition = Integer.parseInt(request.getParameter("partyPosition")) - 1;
+        int amountPosition = Integer.parseInt(request.getParameter("amountPosition")) - 1;
         int skippedLines = Integer.parseInt(request.getParameter("skipLines"));
         char separator = request.getParameter("separator").charAt(0);
         String importName = request.getParameter("importName");
@@ -93,6 +94,7 @@ public class TransactionController {
         model.addAttribute("transaction", transaction);
         return "add-transaction";
     }
+
     //todo frontend validation
     @PostMapping("/add")
     public String addPost(HttpServletRequest request) {
@@ -104,7 +106,7 @@ public class TransactionController {
         Account account = accountService.findById(Long.parseLong(request.getParameter("accountId")));
         String importName = "Imported manually on " + LocalDate.now();
         //todo multiple select
-        List <Category> categories = Arrays.asList(categoryService.findById(Long.parseLong(request.getParameter("category"))));
+        List<Category> categories = Arrays.asList(categoryService.findById(Long.parseLong(request.getParameter("category"))));
         Transaction transaction = new Transaction();
         transaction.transactionDate = date;
         transaction.amount = amount;
@@ -117,22 +119,20 @@ public class TransactionController {
         return "redirect:../transaction/list";
     }
 
-//    @GetMapping("/setcategories/{transactionId}/{categories}")
-//    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
-//        User user1 = userService.findById(2l);
-//        Transaction transaction = transactionService.findById(transactionId);
-//        if (transaction.getUser() == user1) {
-//            if (categories.equals("0")) {
-//                transaction.setCategories(null);
-//            } else {
-//                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
-//                transactionService.save(transaction);
-//            }
-//        }
-//        return "transactions-list";
-//    }
-
-
+    @GetMapping("/setcategories/{transactionId}/{categories}")
+    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
+        User user1 = userService.findById(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        if (transaction.getUser() == user1) {
+            if (categories.equals("0")) {
+                transaction.setCategories(null);
+            } else {
+                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
+                transactionService.save(transaction);
+            }
+        }
+        return "transactions-list";
+    }
 
     @RequestMapping("/home/sum")
     @ResponseBody
@@ -150,6 +150,16 @@ public class TransactionController {
     @GetMapping("/index")
     public String index() {
         return "index";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, Model model) {
+        User user1 = userService.findById(2l);
+        Transaction transaction = transactionService.findById(id);
+        transactionService.delete(transaction);
+        List<Transaction> transactionsList = transactionService.findByUserId(2l);
+        model.addAttribute("tl", transactionsList);
+        return "redirect: list-transactions";
     }
 
 }

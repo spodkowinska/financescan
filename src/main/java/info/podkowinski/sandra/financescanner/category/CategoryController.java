@@ -73,4 +73,14 @@ public class CategoryController {
         categoryService.save(category);
         return "redirect:../../category/list";
     }
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, Model model) {
+        User user1 = userService.findById(2l);
+        Category category = categoryService.findById(id);
+        categoryService.delete(category);
+        List<Category>categoriesList = categoryService.findByUserId(2l);
+        model.addAttribute("cl", categoriesList);
+        return "redirect: list-categories";
+    }
+
 }

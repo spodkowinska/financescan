@@ -20,4 +20,5 @@ public class AccountService {
     public List<Account>findByUserId(Long id){
        return accountRepository.findByUserId(id);
     }
+    void delete(Account account){accountRepository.delete(account);}
 }

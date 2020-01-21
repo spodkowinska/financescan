@@ -77,7 +77,8 @@
                                     <td>${category.name}</td>
                                     <td>${category.description}</td>
                                     <td>${category.keywords}</td>
-                                    <td><a href="${pageContext.request.contextPath}/category/edit/${category.id}">Edit</a> </td>
+                                    <td><a href="${pageContext.request.contextPath}/category/edit/${category.id}">Edit</a>
+                                    <a href="${pageContext.request.contextPath}/category/delete/${category.id}">Delete</a></td>
                                 </tr>
                                 </c:forEach>
                                 </tbody>

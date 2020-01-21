@@ -62,6 +62,7 @@ public class CategoryService {
         }
         return category;
     }
+    void delete(Category category){categoryRepository.delete(category);}
 }
 
 

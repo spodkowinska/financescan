@@ -63,7 +63,7 @@ public class HomeController {
 //        Date date1 = Date.valueOf(str);
 //        String str2 = "2019-11-31";
 //        Date date2 = Date.valueOf(str2);
-        List<Transaction> allTransactions = transactionService.findByUsersId(2l);
+        List<Transaction> allTransactions = transactionService.findByUserId(2l);
         Map<String, Double> lastYearBalances = transactionService.lastYearBalances(2l);
         Map<String, Float> categoriesAndAmounts = transactionService.mapExpensesToCategoriesWithAmounts(allTransactions, 2l);
         model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);

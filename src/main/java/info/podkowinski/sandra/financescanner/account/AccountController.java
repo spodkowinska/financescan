@@ -64,5 +64,15 @@ public class AccountController {
         return "redirect:../account/list";
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, Model model) {
+        User user1 = userService.findById(2l);
+        Account account = accountService.findById(id);
+        accountService.delete(account);
+        List<Account>accountsList = accountService.findByUserId(2l);
+        model.addAttribute("accountsList", accountsList);
+        return "redirect:../list";
+    }
+
 
 }

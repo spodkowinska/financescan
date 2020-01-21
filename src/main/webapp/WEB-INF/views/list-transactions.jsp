@@ -90,6 +90,7 @@
                                     <th>Party</th>
                                     <th>Bank</th>
                                     <th>Category</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -100,6 +101,7 @@
                                     <th>Party</th>
                                     <th>Bank</th>
                                     <th>Category</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -126,6 +128,8 @@
                                                 </c:forEach>
                                             </select>
                                         </td>
+                                        <td><a href="${pageContext.request.contextPath}/transaction/edit/${trans.id}">Edit</a>
+                                            <a href="${pageContext.request.contextPath}/transaction/delete/${trans.id}">Delete</a></td>
 
                                     </tr>
                                 </c:forEach>

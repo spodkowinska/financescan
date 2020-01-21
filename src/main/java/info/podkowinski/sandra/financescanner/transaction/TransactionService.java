@@ -68,7 +68,7 @@ public class TransactionService {
         }
     }
 
-    public List<Transaction> findByUsersId(long id) {
+    public List<Transaction> findByUserId(long id) {
         return transactionRepository.findAllByUserId(id);
     }
 
@@ -171,7 +171,7 @@ public class TransactionService {
 
     public HashMap<Long, List<String>> transactionIdCategories(Long userId) {
         HashMap<Long, List<String>> transactionIdCategories = new HashMap<>();
-        List<Transaction> transactionsList = findByUsersId(userId);
+        List<Transaction> transactionsList = findByUserId(userId);
         for (Transaction t : transactionsList) {
             List<String> categoriesNames = new ArrayList<>();
             t.getCategories().forEach(c -> categoriesNames.add(c.getName()));
@@ -206,5 +206,6 @@ public class TransactionService {
         }
         return categoriesWithAmounts;
     }
+    void delete(Transaction transaction){transactionRepository.delete(transaction);}
 
 }

@@ -89,7 +89,7 @@
                                     <td>${account.number}</td>
                                     <td>${account.institutionName}</td>
                                     <td><a href="${pageContext.request.contextPath}/account/edit/${account.id}">Edit</a>
-                                    <a href="${pageContext.request.contextPath}/category/delete/${account.id}">Delete</a></td>
+                                    <a href="${pageContext.request.contextPath}/account/delete/${account.id}">Delete</a></td>
                                     </c:forEach>
                                 </tbody>
                             </table>
