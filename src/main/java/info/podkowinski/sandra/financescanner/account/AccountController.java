@@ -6,10 +6,7 @@ import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +36,7 @@ public class AccountController {
     @PostMapping("/add")
     public String addPost(@ModelAttribute Account account) {
         User user1 = userService.findById(2l);
+        account.user=user1;
         accountService.save(account);
         return "redirect:../account/list";
     }
@@ -48,6 +46,22 @@ public class AccountController {
         List<Account> accountsList = accountService.findByUserId(2l);
         model.addAttribute("accountsList", accountsList);
         return "list-accounts";
+    }
+
+    @GetMapping("/edit/{accountId}")
+    public String edit(Model model, @PathVariable Long accountId) {
+        Account account = accountService.findById(accountId);
+        model.addAttribute("account", account);
+        return "edit-account";
+    }
+
+    @PostMapping("/edit/{accountId}")
+    public String editPost(@ModelAttribute Account account) {
+//        User user1 = userService.findById(2l);
+//        account.user=user1;
+        Account account1= account;
+        accountService.save(account1);
+        return "redirect:../account/list";
     }
 
 

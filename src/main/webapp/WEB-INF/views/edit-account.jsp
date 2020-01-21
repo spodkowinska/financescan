@@ -85,24 +85,25 @@
                                            modelAttribute="account">
 
 
+                                        <form:input path="id" type="hidden" id="id"></form:input>
+
                                     <div class="form-group">
                                         <label>Name</label>
                                         <form:input path="name" class="form-control" id="name"></form:input>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Description</label>
+                                        <label>Number</label>
                                         <form:input path="number" class="form-control" id="number"
                                                     name="number"></form:input>
                                         <p class="help-block"></p>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Keywords</label>
+                                        <label>Institution Name</label>
                                         <form:input path="institutionName" class="form-control" id="institutionName"
                                                     name="institutionName"></form:input>
-                                        <p class="help-block">Words that will be used to assign categories to your
-                                            transactions</p>
+                                        <p class="help-block">lorem ipsum</p>
                                     </div>
 
 

@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Table With Transactions</title>
+    <title>Accounts</title>
 
     <!-- Custom fonts for this template -->
     <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
@@ -29,22 +29,6 @@
 
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vanillaSelectBox.css">
-
-    <script src="${pageContext.request.contextPath}/js//vanillaSelectBox.js"></script>
-    <script>
-        function sendData(selectId) {
-            var category = $('#changeCategory' + selectId);
-                var categoryIds = category.val();
-            if (categoryIds == ""){
-                $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId + "/0");
-            }
-            else {
-                $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/" + categoryIds.join(","));
-               }
-        }
-    </script>
-
 
 </head>
 
@@ -64,85 +48,64 @@
         <div id="content">
 
             <!-- Topbar -->
-<jsp:include page="topbar.jsp"></jsp:include>
+            <jsp:include page="topbar.jsp"></jsp:include>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Table With Transactions</h1>
+                <h1 class="h3 mb-2 text-gray-800">Table With Accounts</h1>
 
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Accounts</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Description</th>
-                                    <th>Party</th>
-                                    <th>Bank</th>
-                                    <th>Category</th>
+                                    <th>Name</th>
+                                    <th>Number</th>
+                                    <th>Institution</th>
+                                    <td>Action</td>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Description</th>
-                                    <th>Party</th>
-                                    <th>Bank</th>
-                                    <th>Category</th>
+                                    <th>Name</th>
+                                    <th>Number</th>
+                                    <th>Institution</th>
+                                    <td>Action</td>
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <c:forEach items="${tl}" var="trans">
-                                    <tr>
-                                        <td>${trans.transactionDate}</td>
-                                        <td>${trans.amount}</td>
-                                        <td>${trans.description}</td>
-                                        <td>${trans.party}</td>
-                                        <td>${trans.bank.name}</td>
-                                        <td>
-                                            <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"
-                                                    multiple size="4" onchange="sendData(${trans.id})" >
-                                                <c:forEach items="${categoriesList}" var="category">
-                                                    <c:choose>
-                                                        <c:when test="${fn:contains(trans.categories, category)}">
-                                                            <option selected="selected"
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    value="${category.id}">${category.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-
-                                    </tr>
-                                </c:forEach>
+                                <c:forEach items="${accountsList}" var="account">
+                                <tr>
+                                    <td>${account.name}</td>
+                                    <td>${account.number}</td>
+                                    <td>${account.institutionName}</td>
+                                    <td><a href="${pageContext.request.contextPath}/account/edit/${account.id}">Edit</a>
+                                    <a href="${pageContext.request.contextPath}/category/delete/${account.id}">Delete</a></td>
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
                 </div>
+                <!-- /.container-fluid -->
 
             </div>
-            <!-- /.container-fluid -->
-
         </div>
+
         <!-- End of Main Content -->
 
         <!-- Footer -->
-     <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="footer.jsp"></jsp:include>
         <!-- End of Footer -->
 
     </div>
@@ -175,12 +138,6 @@
         </div>
     </div>
 </div>
-<script> <c:forEach items="${tl}" var="trans"> var mySelect = new vanillaSelectBox("#changeCategory${trans.id}",{
-    placeHolder: "Uncategorised",  search: true});
-<%--mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> ${category.id}</c:forEach>]);--%>
-
-    </c:forEach></script>
-
 
 
 <!-- Bootstrap core JavaScript-->
