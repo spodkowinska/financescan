@@ -111,7 +111,7 @@
                                         <td>${trans.amount}</td>
                                         <td>${trans.description}</td>
                                         <td>${trans.party}</td>
-                                        <td>${trans.bank.name}</td>
+                                        <td>${trans.account.name}</td>
                                         <td>
                                             <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"
                                                     multiple size="4" onchange="sendData(${trans.id})" >

@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +72,7 @@ public class HomeController {
         model.addAttribute("lastYearBalances", lastYearBalances);
         return "report";
     }
+
 
 }
 

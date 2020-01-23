@@ -159,7 +159,7 @@ public class TransactionController {
         transactionService.delete(transaction);
         List<Transaction> transactionsList = transactionService.findByUserId(2l);
         model.addAttribute("tl", transactionsList);
-        return "redirect: list-transactions";
+        return "redirect: ../../list";
     }
 
 }

@@ -80,7 +80,7 @@ public class CategoryController {
         categoryService.delete(category);
         List<Category>categoriesList = categoryService.findByUserId(2l);
         model.addAttribute("cl", categoriesList);
-        return "redirect: list-categories";
+        return "redirect:../../category/list";
     }
 
 }
