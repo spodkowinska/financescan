@@ -71,7 +71,7 @@
                             <div class="text-center">
 
                                 <h10 class="h6 text-gray-900 mb-4">You can add transactions manually.
-                                    Please be sure not to duplicate them with once from CSV import.
+                                    Please make sure not to duplicate them with once from CSV import.
                                 </h10>
                             </div>
                         </h1>
@@ -87,7 +87,7 @@
 
                                     <div class="form-group">
                                         <label>Date</label>
-                                        <form:input type="date" path="transactionDate" class="form-control" id="transactionDate"></form:input>
+                                        <input type="date"  class="form-control" name="specialDate" id="specialDate">
                                     </div>
 
                                     <div class="form-group">
@@ -110,9 +110,9 @@
 
                                     <div class="form-group">
                                         <label>Bank</label>
-                                    <form:select path="bank" class="form-control" id="bankId">
-                                        <c:forEach items="${banks}" var="bank">
-                                            <option value="${bank.id}">${bank.name}</option>
+                                    <form:select path="account" class="form-control" id="accountId">
+                                        <c:forEach items="${accounts}" var="account">
+                                            <option value="${account.id}">${account.name}</option>
                                         </c:forEach>
                                     </form:select>
                                     </div>

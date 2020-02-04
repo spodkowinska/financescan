@@ -20,7 +20,11 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+
+
+import static java.sql.Date.*;
 
 @Controller
 @RequestMapping("/transaction")
@@ -90,33 +94,24 @@ public class TransactionController {
         List<Account> accounts = accountService.findByUserId(2l);
         Transaction transaction = new Transaction();
         model.addAttribute("categories", categories);
-        model.addAttribute("Accounts", accounts);
+        model.addAttribute("accounts", accounts);
         model.addAttribute("transaction", transaction);
         return "add-transaction";
     }
 
     //todo frontend validation
     @PostMapping("/add")
-    public String addPost(HttpServletRequest request) {
+    public String addPost(HttpServletRequest request, @ModelAttribute Transaction transaction1) {
         User user1 = userService.findById(2l);
-        Date date = Date.valueOf(request.getParameter("date"));
-        Float amount = Float.parseFloat(request.getParameter("amount"));
-        String description = request.getParameter("description");
-        String party = request.getParameter("party");
-        Account account = accountService.findById(Long.parseLong(request.getParameter("accountId")));
-        String importName = "Imported manually on " + LocalDate.now();
-        //todo multiple select
-        List<Category> categories = Arrays.asList(categoryService.findById(Long.parseLong(request.getParameter("category"))));
-        Transaction transaction = new Transaction();
-        transaction.transactionDate = date;
-        transaction.amount = amount;
-        transaction.description = description;
-        transaction.categories = categories;
-        transaction.account = account;
-        transaction.party = party;
-        transaction.importName = importName;
-        transaction.user = user1;
-        return "redirect:../transaction/list";
+        transaction1.setUser(user1);
+        transaction1.setImportName("Imported manually on " + LocalDate.now());
+        String date = request.getParameter("specialDate");
+        System.out.println("------");
+        System.out.println(date);
+        transaction1.setTransactionDate(Date.valueOf(date));
+        System.out.println(transaction1.transactionDate);
+        transactionService.save(transaction1);
+        return "redirect:/transaction/list";
     }
 
     @GetMapping("/setcategories/{transactionId}/{categories}")
@@ -139,9 +134,9 @@ public class TransactionController {
     public String sumBtn() {
 
         String str = "2019-10-31";
-        Date date1 = Date.valueOf(str);
+        Date date1 = valueOf(str);
         String str2 = "2019-11-31";
-        Date date2 = Date.valueOf(str2);
+        Date date2 = valueOf(str2);
         User user1 = userService.findById(2l);
 //        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
         return transactionService.balancesByDatesForAllCategories(user1.getId(), date1, date2).toString();
