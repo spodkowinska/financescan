@@ -3,7 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,9 +14,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Edit category</title>
+    <title>Add account</title>
 
-    <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template -->
     <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
           type="text/css">
 
@@ -32,6 +31,7 @@
 
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
 
 </head>
 
@@ -60,7 +60,7 @@
                 <%--todo frontend validation--%>
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Edit category</h1>
+                <h1 class="h3 mb-2 text-gray-800">Add account</h1>
 
 
                 <!-- Page Heading -->
@@ -70,7 +70,7 @@
                         <h1 class="page-header">
                             <div class="text-center">
 
-                                <h10 class="h6 text-gray-900 mb-4">You can manage your categories as you wish
+                                <h10 class="h6 text-gray-900 mb-4">lorem ipsum
                                 </h10>
                             </div>
                         </h1>
@@ -80,43 +80,30 @@
                     <div class="card-header py-3">
                         <div class="row">
                             <div class="col-lg-24">
-                                <form:form action="../../category/edit/${category.id}" method="post"
-                                           modelAttribute="category">
 
-                                    <form:input path="id" type="hidden" id="id"></form:input>
+                                <form:form action="../../account/add" method="post"
+                                           modelAttribute="account">
+
+
+                                        <form:input path="id" type="hidden" id="id"></form:input>
 
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <form:input path="name" class="form-control" id="categoryName"></form:input>
+                                        <form:input path="name" class="form-control" id="name"></form:input>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Description</label>
-                                        <form:input path="description" class="form-control" id="description"
-                                                    name="description"></form:input>
+                                        <label>Number</label>
+                                        <form:input path="number" class="form-control" id="number"
+                                                    name="number"></form:input>
                                         <p class="help-block"></p>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Keywords</label>
-                                        <form:input path="keywords" class="form-control" id="keywords"
-                                                    name="keywords"></form:input>
-                                        <p class="help-block">Words that will be used to assign categories to your
-                                            transactions</p>
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Select parent category</label>
-                                        <form:select path="parentCategoryId" class="form-control" id="parent"
-                                                     name="parent">
-                                            <option value="0"> --select category if it is not a parent category--
-                                            </option>
-                                            <c:forEach items="${categories}" var="category">
-                                                <option value="${category.id}">${category.name}</option>
-                                            </c:forEach>
-                                        </form:select>
-                                        </select>
+                                        <label>Institution Name</label>
+                                        <form:input path="institutionName" class="form-control" id="institutionName"
+                                                    name="institutionName"></form:input>
+                                        <p class="help-block">lorem ipsum</p>
                                     </div>
 
 
@@ -136,6 +123,7 @@
 
             </div>
 
+            <!-- Bootstrap Core JavaScript -->
             <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
             <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

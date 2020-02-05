@@ -61,8 +61,8 @@ public class TransactionController {
 
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
-        User user1 = userService.findById(1l);
-        List<Account> accountsList = accountService.findByUserId(1l);
+        User user1 = userService.findById(2l);
+        List<Account> accountsList = accountService.findByUserId(2l);
         List<CsvSettings> csvSettingsList = csvSettingsService.findByUserId(user1.getId());
         model.addAttribute("csvSettingsList", csvSettingsList);
         model.addAttribute("accountsList", accountsList);
@@ -70,10 +70,9 @@ public class TransactionController {
     }
 
     @PostMapping("/fileimport")
-    @ResponseBody
     public String fileimportPost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
-        User user1 = userService.findById(1l);
+        User user1 = userService.findById(2l);
         int datePosition = Integer.parseInt(request.getParameter("datePosition")) - 1;
         int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition")) - 1;
         int partyPosition = Integer.parseInt(request.getParameter("partyPosition")) - 1;
@@ -81,10 +80,10 @@ public class TransactionController {
         int skippedLines = Integer.parseInt(request.getParameter("skipLines"));
         char separator = request.getParameter("separator").charAt(0);
         String importName = request.getParameter("importName");
-        Long account = Long.parseLong(request.getParameter("account"));
+        Long account = Long.parseLong(request.getParameter("selectAccount"));
         transactionService.scanDocument(filePart.getInputStream(), datePosition, descriptionPosition,
                 partyPosition, amountPosition, separator, skippedLines, importName, account, user1);
-        return "redirect: /list";
+        return "redirect:/transaction/list";
     }
 
     @GetMapping("/add")
@@ -105,10 +104,37 @@ public class TransactionController {
         User user1 = userService.findById(2l);
         transaction1.setUser(user1);
         transaction1.setImportName("Imported manually on " + LocalDate.now());
-        String date = request.getParameter("specialDate");
+        String date = request.getParameter("transactionDate");
         System.out.println("------");
         System.out.println(date);
-        transaction1.setTransactionDate(Date.valueOf(date));
+        transaction1.setTransactionDate(LocalDate.parse(date));
+        System.out.println(transaction1.transactionDate);
+        transactionService.save(transaction1);
+        return "redirect:/transaction/list";
+    }
+
+    @GetMapping("/edit/{transactionId}")
+    public String edit(Model model, @PathVariable Long transactionId) {
+        User user1 = userService.findById(2l);
+        List<Category> categories = categoryService.findByUserId(2l);
+        List<Account> accounts = accountService.findByUserId(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        model.addAttribute("categories", categories);
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("transaction", transaction);
+        return "edit-transaction";
+    }
+
+    //todo frontend validation
+    @PostMapping("/edit/{transactionId}")
+    public String editPost(HttpServletRequest request, @ModelAttribute Transaction transaction1) {
+        User user1 = userService.findById(2l);
+        transaction1.setUser(user1);
+        transaction1.setImportName("Imported manually on " + LocalDate.now());
+        String date = request.getParameter("transactionDate");
+        System.out.println("------");
+        System.out.println(date);
+        transaction1.setTransactionDate(LocalDate.parse(date));
         System.out.println(transaction1.transactionDate);
         transactionService.save(transaction1);
         return "redirect:/transaction/list";
@@ -154,7 +180,7 @@ public class TransactionController {
         transactionService.delete(transaction);
         List<Transaction> transactionsList = transactionService.findByUserId(2l);
         model.addAttribute("tl", transactionsList);
-        return "redirect: ../../list";
+        return "redirect:/../list";
     }
 
 }

@@ -11,6 +11,7 @@ import info.podkowinski.sandra.financescanner.category.Category;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -24,7 +25,7 @@ public class Transaction {
     Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date transactionDate;
+    LocalDate transactionDate;
 
     String description;
 

@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -26,7 +27,7 @@
     <link href="${pageContext.request.contextPath}/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css"/>"
+    <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css"
           rel="stylesheet">
 
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -97,7 +98,7 @@
                         <div class="row">
                             <div class="col-lg-24">
 
-                                <form action="/fileimport" method="post" enctype="multipart/form-data">
+                                <form action="/transaction/fileimport" method="post" enctype="multipart/form-data">
 
                                     <div class="form-group">
                                         <label>Select Your CSV File</label>
@@ -121,10 +122,10 @@
 
 
                                     <div class="form-group">
-                                        <label>Select bank</label>
-                                        <select class="form-control" id="selectBank" name="bank">
-                                            <c:forEach items="${banksList}" var="bank">
-                                                <option value="${bank.id}">${bank.name}</option>
+                                        <label>Select account</label>
+                                        <select class="form-control" id="selectAccount" name="selectAccount">
+                                            <c:forEach items="${accountsList}" var="account">
+                                                <option value="${account.id}">${account.name}</option>
                                             </c:forEach>
                                         </select>
                                     </div>

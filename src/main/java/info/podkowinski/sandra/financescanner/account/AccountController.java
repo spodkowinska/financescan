@@ -38,7 +38,7 @@ public class AccountController {
         User user1 = userService.findById(2l);
         account.user=user1;
         accountService.save(account);
-        return "redirect:../account/list";
+        return "redirect:list";
     }
 
     @GetMapping("/list")
@@ -57,11 +57,10 @@ public class AccountController {
 
     @PostMapping("/edit/{accountId}")
     public String editPost(@ModelAttribute Account account) {
-//        User user1 = userService.findById(2l);
-//        account.user=user1;
-        Account account1= account;
-        accountService.save(account1);
-        return "redirect:../account/list";
+        User user1 = userService.findById(2l);
+        account.user=user1;
+        accountService.save(account);
+        return "redirect:/../list";
     }
 
     @GetMapping("/delete/{id}")

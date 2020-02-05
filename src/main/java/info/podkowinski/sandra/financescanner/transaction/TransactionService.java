@@ -54,7 +54,7 @@ public class TransactionService {
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
             Formatter formatter = new Formatter();
-            newTransaction.transactionDate = formatter.sqlDate(trans.get(transactionDatePosition));
+            newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition));
             newTransaction.party = trans.get(partyPosition);
             newTransaction.description = trans.get(descriptionPosition);
             newTransaction.amount = Float.parseFloat(trans.get(amountPosition)

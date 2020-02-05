@@ -14,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add account</title>
+    <title>Edit account</title>
 
     <!-- Custom fonts for this template -->
     <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
@@ -60,7 +60,7 @@
                 <%--todo frontend validation--%>
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Add account</h1>
+                <h1 class="h3 mb-2 text-gray-800">Edit account</h1>
 
 
                 <!-- Page Heading -->
@@ -81,7 +81,7 @@
                         <div class="row">
                             <div class="col-lg-24">
 
-                                <form:form action="../../account/add" method="post"
+                                <form:form action="../../account/edit/${account.id}"  method="post"
                                            modelAttribute="account">
 
 

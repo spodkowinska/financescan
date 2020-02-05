@@ -15,9 +15,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Edit category</title>
+    <title>Edit transaction</title>
 
-    <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template -->
     <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
           type="text/css">
 
@@ -25,7 +25,7 @@
           rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="${pageContext.request.contextPath}/css/sb-admin-2.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -60,64 +60,59 @@
                 <%--todo frontend validation--%>
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Edit category</h1>
+                <h1 class="h3 mb-2 text-gray-800">Edit Transaction</h1>
 
 
                 <!-- Page Heading -->
 
-                <div class="row">
-                    <div class="col-lg-24">
-                        <h1 class="page-header">
-                            <div class="text-center">
-
-                                <h10 class="h6 text-gray-900 mb-4">You can manage your categories as you wish
-                                </h10>
-                            </div>
-                        </h1>
-                    </div>
-                </div>
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
+                    <div class="card-header">
                         <div class="row">
                             <div class="col-lg-24">
-                                <form:form action="../../category/edit/${category.id}" method="post"
-                                           modelAttribute="category">
-
+                                <form:form action="/transaction/edit/${transaction.id}" method="post"
+                                           modelAttribute="transaction">
                                     <form:input path="id" type="hidden" id="id"></form:input>
 
                                     <div class="form-group">
-                                        <label>Name</label>
-                                        <form:input path="name" class="form-control" id="categoryName"></form:input>
+                                        <label>Date</label>
+                                        <form:input path="transactionDate" type="date"  class="form-control" name="transactionDate" id="transactionDate"></form:input>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <form:input path="description" class="form-control" id="description"
-                                                    name="description"></form:input>
+                                        <form:input path="description" class="form-control" id="description"></form:input>
                                         <p class="help-block"></p>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Keywords</label>
-                                        <form:input path="keywords" class="form-control" id="keywords"
-                                                    name="keywords"></form:input>
-                                        <p class="help-block">Words that will be used to assign categories to your
-                                            transactions</p>
+                                        <label>Amount</label>
+                                        <form:input path="amount" class="form-control" id="amount"></form:input>
 
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Select parent category</label>
-                                        <form:select path="parentCategoryId" class="form-control" id="parent"
-                                                     name="parent">
-                                            <option value="0"> --select category if it is not a parent category--
-                                            </option>
+                                        <label>Transaction Partner</label>
+                                        <form:input path="party" class="form-control" id="party"></form:input>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Bank</label>
+                                    <form:select path="account" class="form-control" id="accountId">
+                                        <c:forEach items="${accounts}" var="account">
+                                            <option value="${account.id}">${account.name}</option>
+                                        </c:forEach>
+                                    </form:select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                        <form:select path="categories" class="form-control" id="categoryId">
                                             <c:forEach items="${categories}" var="category">
                                                 <option value="${category.id}">${category.name}</option>
                                             </c:forEach>
                                         </form:select>
-                                        </select>
                                     </div>
+
 
 
                                     <button type="submit" class="btn btn-default">Save</button>
@@ -135,6 +130,7 @@
                 <!-- /#page-wrapper -->
 
             </div>
+            <!-- /#wrapper -->
 
             <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
             <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -144,6 +140,3 @@
 
             <!-- Custom scripts for all pages-->
             <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
-</body>
-
-</html>
