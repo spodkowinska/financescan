@@ -177,10 +177,11 @@ public class TransactionController {
     public String delete(@PathVariable Long id, Model model) {
         User user1 = userService.findById(2l);
         Transaction transaction = transactionService.findById(id);
+        transaction.categories.clear();
         transactionService.delete(transaction);
         List<Transaction> transactionsList = transactionService.findByUserId(2l);
         model.addAttribute("tl", transactionsList);
-        return "redirect:/../list";
+        return "redirect:/transaction/list";
     }
 
 }
