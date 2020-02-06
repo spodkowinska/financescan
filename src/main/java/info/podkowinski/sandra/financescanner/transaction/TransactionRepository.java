@@ -8,15 +8,16 @@ import org.springframework.stereotype.Repository;
 
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findAllByUserId(Long userId);
+    ArrayList<Transaction> findAllByUserId(Long userId);
 
-    @Query(value = "SELECT * FROM transactions t WHERE t.category_id is null and t.user_id =?", nativeQuery = true)
-    List<Transaction> findAllNoncategorizedByUserId(Long userId);
+    @Query(value = "SELECT * FROM transactions t, transactions_categories tc WHERE t.id not in (tc.transaction_id) and t.user_id =?", nativeQuery = true)
+    ArrayList<Transaction> findAllNoncategorizedByUserId(Long userId);
 
   //  List<Transaction> findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(Date after, Date before, User user);
 

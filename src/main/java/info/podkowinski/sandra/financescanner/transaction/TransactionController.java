@@ -168,11 +168,6 @@ public class TransactionController {
         return transactionService.balancesByDatesForAllCategories(user1.getId(), date1, date2).toString();
     }
 
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
-
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
         User user1 = userService.findById(2l);
@@ -183,5 +178,12 @@ public class TransactionController {
         model.addAttribute("tl", transactionsList);
         return "redirect:/transaction/list";
     }
-
+    @GetMapping("/assign")
+    public String assign( Model model) {
+        User user1 = userService.findById(2l);
+        transactionService.assignDefaultCategoriesInTransactions(user1);
+        List<Transaction> transactionsList = transactionService.findByUserId(2l);
+        model.addAttribute("tl", transactionsList);
+        return "redirect:/transaction/list";
+    }
 }

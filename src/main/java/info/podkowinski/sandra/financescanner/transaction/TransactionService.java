@@ -73,14 +73,16 @@ public class TransactionService {
     }
 
     public void assignDefaultCategoriesInTransactions(User user) {
-        List<Transaction> transactionList = transactionRepository.findAllByUserId(user.getId());
+        ArrayList<Transaction> transactionList = transactionRepository.findAllNoncategorizedByUserId(user.getId());
         for (Transaction transaction : transactionList) {
             for (Category category : categoryRepository.findAllByUserId(user.getId())) {
                 boolean keywordFound = false;
                 for (String keyword : category.getKeywords().split(",")) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
+                        transactionRepository.delete(transaction);
                         transaction.setCategories(Arrays.asList(category));
                         transactionRepository.save(transaction);
+                        System.out.println("---------------------------------------------------------------------------------------------");
                         keywordFound = true;
                         break;
                     }
