@@ -1,5 +1,7 @@
 package info.podkowinski.sandra.financescanner.category;
 
+import info.podkowinski.sandra.financescanner.transaction.Transaction;
+import info.podkowinski.sandra.financescanner.transaction.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -11,9 +13,11 @@ import java.util.Map;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final TransactionRepository transactionRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, TransactionRepository transactionRepository) {
         this.categoryRepository = categoryRepository;
+        this.transactionRepository = transactionRepository;
     }
 
 
@@ -62,7 +66,9 @@ public class CategoryService {
         }
         return category;
     }
-    void delete(Category category){categoryRepository.delete(category);}
+    void delete(Category category){
+        if(transactionRepository.findByCategoryId(category.id)==null)
+            categoryRepository.delete(category);}
 }
 
 
