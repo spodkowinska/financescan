@@ -79,10 +79,13 @@ public class TransactionService {
                 boolean keywordFound = false;
                 for (String keyword : category.getKeywords().split(",")) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
-                        transactionRepository.delete(transaction);
+                        System.out.println(transaction.getDescription());
+                        System.out.println(keyword);
+                        System.out.println("----------------------------------------------------------------------------------------");
                         transaction.setCategories(Arrays.asList(category));
-                        transactionRepository.save(transaction);
-                        System.out.println("---------------------------------------------------------------------------------------------");
+//                        transactionRepository.save(transaction);
+                        System.out.println(transaction.getId() + " + " + category.getId());
+                        transactionRepository.setCategory(transaction.getId(), category.getId());
                         keywordFound = true;
                         break;
                     }

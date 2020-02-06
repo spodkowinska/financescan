@@ -105,7 +105,6 @@ public class TransactionController {
         transaction1.setUser(user1);
         transaction1.setImportName("Imported manually on " + LocalDate.now());
         String date = request.getParameter("transactionDate");
-        System.out.println("------");
         System.out.println(date);
         transaction1.setTransactionDate(LocalDate.parse(date));
         System.out.println(transaction1.transactionDate);
@@ -180,8 +179,8 @@ public class TransactionController {
     }
     @GetMapping("/assign")
     public String assign( Model model) {
-        User user1 = userService.findById(2l);
-        transactionService.assignDefaultCategoriesInTransactions(user1);
+        User user2 = userService.findById(2l);
+        transactionService.assignDefaultCategoriesInTransactions(user2);
         List<Transaction> transactionsList = transactionService.findByUserId(2l);
         model.addAttribute("tl", transactionsList);
         return "redirect:/transaction/list";

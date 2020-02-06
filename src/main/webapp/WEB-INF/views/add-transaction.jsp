@@ -87,7 +87,7 @@
 
                                     <div class="form-group">
                                         <label>Date</label>
-                                        <input type="date"  class="form-control" name="specialDate" id="specialDate">
+                                        <input type="date"  class="form-control" name="transactionDate" id="transactionDate">
                                     </div>
 
                                     <div class="form-group">

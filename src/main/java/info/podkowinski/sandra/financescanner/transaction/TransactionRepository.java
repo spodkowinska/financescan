@@ -3,8 +3,10 @@ package info.podkowinski.sandra.financescanner.transaction;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.sql.Date;
@@ -18,6 +20,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query(value = "SELECT * FROM transactions t, transactions_categories tc WHERE t.id not in (tc.transaction_id) and t.user_id =?", nativeQuery = true)
     ArrayList<Transaction> findAllNoncategorizedByUserId(Long userId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO transactions_categories (transaction_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
+    void setCategory (Long transactionId, Long categoryId);
 
   //  List<Transaction> findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(Date after, Date before, User user);
 
