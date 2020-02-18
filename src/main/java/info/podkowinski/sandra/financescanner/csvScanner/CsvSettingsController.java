@@ -34,8 +34,7 @@ public class CsvSettingsController {
     public String fileCsvsettings(HttpServletRequest request) {
         CsvSettings csvSettings = new CsvSettings();
         csvSettings.setName(request.getParameter("importName"));
-        System.out.println(csvSettings.name);
-//        csvSettings.setAmountPosition(Integer.parseInt(request.getParameter("datePosition"))-1);
+        csvSettings.setAmountPosition(Integer.parseInt(request.getParameter("datePosition"))-1);
         csvSettings.setDescriptionPosition(Integer.parseInt(request.getParameter("descriptionPosition")) - 1);
         csvSettings.setPartyPosition(Integer.parseInt(request.getParameter("partyPosition")) - 1);
         csvSettings.setAmountPosition(Integer.parseInt(request.getParameter("amountPosition")) - 1);

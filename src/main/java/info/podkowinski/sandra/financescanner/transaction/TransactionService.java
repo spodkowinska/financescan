@@ -65,10 +65,18 @@ public class TransactionService {
             }
             newTransaction.party = trans.get(partyPosition);
             newTransaction.description = trans.get(descriptionPosition);
-            newTransaction.amount = Float.parseFloat(trans.get(amountPosition)
-                    .replace(',', '.')
-                    .replace("\"", "")
-                    .replace(" ", ""));
+            //todo fix getting amount in Millennium two column version
+            if(trans.get(amountPosition).isEmpty()){
+                newTransaction.amount = Float.parseFloat(trans.get(amountPosition+1)
+                        .replace(',', '.')
+                        .replace("\"", "")
+                        .replace(" ", ""));
+            }else {
+                newTransaction.amount = Float.parseFloat(trans.get(amountPosition)
+                        .replace(',', '.')
+                        .replace("\"", "")
+                        .replace(" ", ""));
+            }
             newTransaction.importName = importName;
             newTransaction.account = accountRepository.getOne(bankId);
             newTransaction.user = user;

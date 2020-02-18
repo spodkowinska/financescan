@@ -136,6 +136,8 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+
+                            <a href="${pageContext.request.contextPath}/transaction/assign">Assign Default Categories To Transactions</a>
                         </div>
                     </div>
                 </div>
