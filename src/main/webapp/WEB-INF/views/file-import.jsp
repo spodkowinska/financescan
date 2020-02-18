@@ -174,7 +174,7 @@
 
                                     <button type="submit" class="btn btn-default">Submit CSV</button>
                                     <button type="reset" class="btn btn-default">Reset</button>
-                                    <button type="submit" class="btn btn-default">Save settings</button>
+                                    <a href="${pageContext.request.contextPath}/file/csvSettings" class="btn btn-default">Save settings</a>
 
                                 </form>
                             </div>

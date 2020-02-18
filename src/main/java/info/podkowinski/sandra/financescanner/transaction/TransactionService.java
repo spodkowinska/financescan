@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -51,10 +52,17 @@ public class TransactionService {
             throws IOException, CsvValidationException, ParseException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
         List<List<String>> transactions = parser.csvTransactions(inputStream, separator, skipLines);
+        System.out.println(bankId);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
-            Formatter formatter = new Formatter();
-            newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            // todo fix this ugly hack (detecting santander) to parse Date
+            if(bankId==1l){
+                newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition), formatter);
+            }
+            else {
+                newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition));
+            }
             newTransaction.party = trans.get(partyPosition);
             newTransaction.description = trans.get(descriptionPosition);
             newTransaction.amount = Float.parseFloat(trans.get(amountPosition)

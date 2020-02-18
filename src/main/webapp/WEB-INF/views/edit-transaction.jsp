@@ -32,6 +32,9 @@
 
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vanillaSelectBox.css">
+
+    <script src="${pageContext.request.contextPath}/js//vanillaSelectBox.js"></script>
 
 </head>
 
