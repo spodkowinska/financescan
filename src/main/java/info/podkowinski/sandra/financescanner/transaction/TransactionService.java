@@ -39,14 +39,14 @@ public class TransactionService {
         return transactionRepository.findById(id).orElse(null);
     }
 
-    public List<Category> categoriesFromUrlString(String categoriesIds) {
-        String[] categoriesIdsList = categoriesIds.split(",");
-        List<Category> categoriesList = new ArrayList<>();
-        for (String id : categoriesIdsList) {
-            categoriesList.add(categoryRepository.getOne(Long.parseLong(id)));
-        }
-        return categoriesList;
-    }
+//    public List<Category> categoriesFromUrlString(String categoriesIds) {
+//        String[] categoriesIdsList = categoriesIds.split(",");
+//        List<Category> categoriesList = new ArrayList<>();
+//        for (String id : categoriesIdsList) {
+//            categoriesList.add(categoryRepository.getOne(Long.parseLong(id)));
+//        }
+//        return categoriesList;
+//    }
 
     public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, String importName, Long bankId, User user)
             throws IOException, CsvValidationException, ParseException {
@@ -88,29 +88,29 @@ public class TransactionService {
         return transactionRepository.findAllByUserId(id);
     }
 
-    public void assignDefaultCategoriesInTransactions(User user) {
-        ArrayList<Transaction> transactionList = transactionRepository.findAllNoncategorizedByUserId(user.getId());
-        for (Transaction transaction : transactionList) {
-            for (Category category : categoryRepository.findAllByUserId(user.getId())) {
-                boolean keywordFound = false;
-                for (String keyword : category.getKeywords().split(",")) {
-                    if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
-                        System.out.println(transaction.getDescription());
-                        System.out.println(keyword);
-                        System.out.println("----------------------------------------------------------------------------------------");
-                        transaction.setCategories(Arrays.asList(category));
-//                        transactionRepository.save(transaction);
-                        System.out.println(transaction.getId() + " + " + category.getId());
-                        transactionRepository.setCategory(transaction.getId(), category.getId());
-                        keywordFound = true;
-                        break;
-                    }
-                }
-                if (keywordFound)
-                    break;
-            }
-        }
-    }
+//    public void assignDefaultCategoriesInTransactions(User user) {
+//        ArrayList<Transaction> transactionList = transactionRepository.findAllNoncategorizedByUserId(user.getId());
+//        for (Transaction transaction : transactionList) {
+//            for (Category category : categoryRepository.findAllByUserId(user.getId())) {
+//                boolean keywordFound = false;
+//                for (String keyword : category.getKeywords().split(",")) {
+//                    if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
+//                        System.out.println(transaction.getDescription());
+//                        System.out.println(keyword);
+//                        System.out.println("----------------------------------------------------------------------------------------");
+//                        transaction.setCategories(Arrays.asList(category));
+////                        transactionRepository.save(transaction);
+//                        System.out.println(transaction.getId() + " + " + category.getId());
+//                        transactionRepository.setCategory(transaction.getId(), category.getId());
+//                        keywordFound = true;
+//                        break;
+//                    }
+//                }
+//                if (keywordFound)
+//                    break;
+//            }
+//        }
+//    }
 
     //todo what to do if transaction doesn't exist, itp?
     public void assignCategoryInTransaction(User user, Long transactionId, Long categoryId) {

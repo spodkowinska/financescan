@@ -103,7 +103,6 @@
                                         <%--    <div id="username.errors" class="error">keyword already used</div>--%>
                                         <p class="help-block">Words that will be used to assign categories to your
                                             transactions</p>
-
                                     </div>
 
                                     <div class="form-group">

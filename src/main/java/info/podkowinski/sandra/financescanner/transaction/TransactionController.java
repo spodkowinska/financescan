@@ -139,20 +139,20 @@ public class TransactionController {
         return "redirect:/transaction/list";
     }
 
-    @GetMapping("/setcategories/{transactionId}/{categories}")
-    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
-        User user1 = userService.findById(2l);
-        Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getUser() == user1) {
-            if (categories.equals("0")) {
-                transaction.setCategories(null);
-            } else {
-                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
-                transactionService.save(transaction);
-            }
-        }
-        return "transactions-list";
-    }
+//    @GetMapping("/setcategories/{transactionId}/{categories}")
+//    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
+//        User user1 = userService.findById(2l);
+//        Transaction transaction = transactionService.findById(transactionId);
+//        if (transaction.getUser() == user1) {
+//            if (categories.equals("0")) {
+//                transaction.setCategories(null);
+//            } else {
+//                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
+//                transactionService.save(transaction);
+//            }
+//        }
+//        return "transactions-list";
+//    }
 
     @RequestMapping("/home/sum")
     @ResponseBody
@@ -177,12 +177,12 @@ public class TransactionController {
         model.addAttribute("tl", transactionsList);
         return "redirect:/transaction/list";
     }
-    @GetMapping("/assign")
-    public String assign( Model model) {
-        User user2 = userService.findById(2l);
-        transactionService.assignDefaultCategoriesInTransactions(user2);
-        List<Transaction> transactionsList = transactionService.findByUserId(2l);
-        model.addAttribute("tl", transactionsList);
-        return "redirect:/transaction/list";
-    }
+//    @GetMapping("/assign")
+//    public String assign( Model model) {
+//        User user2 = userService.findById(2l);
+//        transactionService.assignDefaultCategoriesInTransactions(user2);
+//        List<Transaction> transactionsList = transactionService.findByUserId(2l);
+//        model.addAttribute("tl", transactionsList);
+//        return "redirect:/transaction/list";
+//    }
 }

@@ -1,10 +1,12 @@
 package info.podkowinski.sandra.financescanner.category;
 
+import info.podkowinski.sandra.financescanner.keyword.Keyword;
 import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,10 +16,9 @@ import javax.persistence.*;
 )
 public class Category {
 
-    public Category(String name, String description, String keywords, Long parentCategoryId, User user) {
+    public Category(String name, String description, Long parentCategoryId, User user) {
         this.name = name;
         this.description = description;
-        this.keywords = keywords;
         this.parentCategoryId = parentCategoryId;
         this.user = user;
     }
@@ -34,8 +35,8 @@ public class Category {
 
     String description;
 
-    @Column(nullable = false)
-    String keywords;
+    @OneToMany(mappedBy ="category")
+    List<Keyword> keywords;
 
     Long parentCategoryId;
 

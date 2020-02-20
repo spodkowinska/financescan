@@ -1,5 +1,6 @@
 package info.podkowinski.sandra.financescanner.csvScanner;
 
+import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,10 @@ public class CsvSettings {
     @JoinColumn(name = "user_id")
     @ManyToOne
     User user;
+
+    @JoinColumn(name = "account_id")
+    @ManyToOne
+    Account account;
 
 
 }

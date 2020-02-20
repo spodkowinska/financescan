@@ -77,8 +77,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
-                        <a href="${pageContext.request.contextPath}/transaction/assign">Assign categories</a>
+<%--                        <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>--%>
+                        <a href="${pageContext.request.contextPath}/transaction/assign">Assign Default Categories to Transactions</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -136,8 +136,6 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
-
-                            <a href="${pageContext.request.contextPath}/transaction/assign">Assign Default Categories To Transactions</a>
                         </div>
                     </div>
                 </div>

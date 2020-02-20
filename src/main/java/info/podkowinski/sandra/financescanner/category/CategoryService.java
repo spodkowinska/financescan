@@ -25,47 +25,48 @@ public class CategoryService {
         return categoryRepository.findAllByUserId(id);
     }
 
-    public Map<String, String>usedKeywords(Long userId){
-        Map<String, String>usedKeywords = new HashMap<>();
-        List <Category> categoriesByUser = findByUserId(userId);
-        for (Category category: categoriesByUser) {
-            String keywords = category.keywords;
-            List<String> keywordsList = Arrays.asList(keywords.split(",. "));
-            for (String word : keywordsList) {
-                usedKeywords.put(word, category.name);
-            }
-        }
-        return usedKeywords;
-    }
+//    public Map<String, String>usedKeywords(Long userId){
+//        Map<String, String>usedKeywords = new HashMap<>();
+//        List <Category> categoriesByUser = findByUserId(userId);
+//        for (Category category: categoriesByUser) {
+//            String keywords = category.keywords;
+//            List<String> keywordsList = Arrays.asList(keywords.split(",. "));
+//            for (String word : keywordsList) {
+//                usedKeywords.put(word, category.name);
+//            }
+//        }
+//        return usedKeywords;
+//    }
+
     public void save(Category category){
         categoryRepository.save(category);
     }
 
-    String filterKeywords(String keywords){
-        Map<String, String> usedKeywords =usedKeywords(1l);
-        StringBuilder sb = new StringBuilder();
-        for (String keyword: keywords.split(",. ")) {
-            if(!usedKeywords.containsKey(keyword.toLowerCase())){
-                sb.append(keyword);
-            }
-        }
-        return sb.toString();
-    }
+//    String filterKeywords(String keywords){
+//        Map<String, String> usedKeywords =usedKeywords(1l);
+//        StringBuilder sb = new StringBuilder();
+//        for (String keyword: keywords.split(",. ")) {
+//            if(!usedKeywords.containsKey(keyword.toLowerCase())){
+//                sb.append(keyword);
+//            }
+//        }
+//        return sb.toString();
+//    }
 
     public Category findById(Long id){
         return categoryRepository.findById(id).orElse(null);
     }
 
-    Category compareCategories(Long categoryId, Category newCategory){
-        Category category = categoryRepository.findById(categoryId).orElse(null);
-        if (!category.equals(newCategory)){
-            category.name=newCategory.name;
-            category.description=newCategory.description;
-            category.keywords=filterKeywords(newCategory.keywords);
-            category.parentCategoryId=newCategory.parentCategoryId;
-        }
-        return category;
-    }
+//    Category compareCategories(Long categoryId, Category newCategory){
+//        Category category = categoryRepository.findById(categoryId).orElse(null);
+//        if (!category.equals(newCategory)){
+//            category.name=newCategory.name;
+//            category.description=newCategory.description;
+//            category.keywords=filterKeywords(newCategory.keywords);
+//            category.parentCategoryId=newCategory.parentCategoryId;
+//        }
+//        return category;
+//    }
     void delete(Category category){
         if(transactionRepository.findByCategoryId(category.id)==null)
             categoryRepository.delete(category);}

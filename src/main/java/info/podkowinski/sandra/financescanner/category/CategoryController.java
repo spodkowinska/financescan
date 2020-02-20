@@ -29,8 +29,8 @@ public class CategoryController {
     public String add(Model model) {
         User user1 = userService.findById(2l);
         List<Category> categories = categoryService.findByUserId(2l);
-        Map<String, String> usedKeywords = categoryService.usedKeywords(2l);
-        model.addAttribute("usedKeywords", usedKeywords);
+//        Map<String, String> usedKeywords = categoryService.usedKeywords(2l);
+//        model.addAttribute("usedKeywords", usedKeywords);
         model.addAttribute("categories", categories);
         return "add-category";
     }
@@ -40,9 +40,9 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         String name = request.getParameter("name");
         String description = request.getParameter("description");
-        String keywords= categoryService.filterKeywords(request.getParameter("keywords"));
+//        String keywords= categoryService.filterKeywords(request.getParameter("keywords"));
         Long parent = Long.parseLong(request.getParameter("parent"));
-        Category category = new Category(name, description, keywords, parent, user1);
+        Category category = new Category(name, description, parent, user1);
         categoryService.save(category);
         return "redirect:../category/list";
     }
@@ -58,21 +58,21 @@ public class CategoryController {
     public String edit(@PathVariable Long id, Model model) {
         User user1 = userService.findById(2l);
         List<Category> categories = categoryService.findByUserId(2l);
-        Map<String, String> usedKeywords = categoryService.usedKeywords(2l);
+//        Map<String, String> usedKeywords = categoryService.usedKeywords(2l);
         Category category = categoryService.findById(id);
         model.addAttribute("category", category);
-        model.addAttribute("usedKeywords", usedKeywords);
+//        model.addAttribute("usedKeywords", usedKeywords);
         model.addAttribute("categories", categories);
         return "edit-category";
     }
-    @PostMapping("/edit/{id}")
-    public String editPost(@PathVariable Long id, @ModelAttribute Category category1) {
-        User user1 = userService.findById(2l);
-        Category category = categoryService.compareCategories(id, category1);
-        category.user=user1;
-        categoryService.save(category);
-        return "redirect:../../category/list";
-    }
+//    @PostMapping("/edit/{id}")
+//    public String editPost(@PathVariable Long id, @ModelAttribute Category category1) {
+//        User user1 = userService.findById(2l);
+//        Category category = categoryService.compareCategories(id, category1);
+//        category.user=user1;
+//        categoryService.save(category);
+//        return "redirect:../../category/list";
+//    }
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
         User user1 = userService.findById(2l);
