@@ -72,14 +72,21 @@
                         </div>
                         <div class="form-group">
                             <label>Keywords</label>
-                            <input class="form-control" id="keywords" name="keywords">
+                            <input class="form-control" id="keyword1" name="keyword1">
                             <p class="help-block">Words that will be used to assign categories to your
                                 transactions</p>
                         </div>
 
                         <div class="form-group">
                             <label>Keywords</label>
-                            <input class="form-control" id="keywords" name="keywords">
+                            <input class="form-control" id="keyword2" name="keyword2">
+                            <p class="help-block">Words that will be used to assign categories to your
+                                transactions</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Keywords</label>
+                            <input class="form-control" id="keyword3" name="keyword3">
                             <p class="help-block">Words that will be used to assign categories to your
                                 transactions</p>
                         </div>

@@ -32,6 +32,10 @@ public class KeywordService {
         return keywordRepository.findAllByCategoryId(categoryId);
     }
 
+    Keyword findById(Long id){
+        return keywordRepository.findById(id).orElse(null);
+    }
+
 
 }
 

@@ -15,6 +15,11 @@ import javax.persistence.*;
 )
 public class Keyword {
 
+    Keyword (String name, Category category, User user) {
+        this.name = name;
+        this.category = category;
+        this.user = user;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
