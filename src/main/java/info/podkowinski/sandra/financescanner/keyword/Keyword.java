@@ -15,7 +15,9 @@ import javax.persistence.*;
 )
 public class Keyword {
 
-    Keyword (String name, Category category, User user) {
+    public Keyword(){}
+
+    public Keyword (String name, Category category, User user) {
         this.name = name;
         this.category = category;
         this.user = user;
