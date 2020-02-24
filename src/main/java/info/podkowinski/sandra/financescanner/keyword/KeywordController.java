@@ -53,9 +53,9 @@ public class KeywordController {
     public String keywordList(Model model) {
         User user1 = userService.findById(2l);
         List<Category>categoriesList = categoryService.findByUserId(2l);
-        List<Keyword>keywordsList = keywordService.findByUserId(2l);
+//        List<Keyword>keywordsList = keywordService.findByUserId(2l);
         model.addAttribute("categories", categoriesList);
-        model.addAttribute("keywords", keywordsList);
+//        model.addAttribute("keywords", keywordsList);
         return "list-keywords";
     }
 

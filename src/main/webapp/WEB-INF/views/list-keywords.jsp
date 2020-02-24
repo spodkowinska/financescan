@@ -72,7 +72,7 @@
                                 <tbody>
                                 <c:forEach items="${categories}" var="category">
                                     <tr>
-                                    <c:forEach items="${keywords}" var="keyword">
+                                    <c:forEach items="${category.keywords}" var="keyword">
                                         <td>${keyword.name}</td>
                                         <td>${category.name}</td>
                                         <td>
