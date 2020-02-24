@@ -43,9 +43,9 @@ public class KeywordController {
         Keyword keyword1 = new Keyword(request.getParameter("keyword1"), category, user1);
         Keyword keyword2 = new Keyword(request.getParameter("keyword2"), category, user1);
         Keyword keyword3 = new Keyword(request.getParameter("keyword3"), category, user1);
-        keywordService.save(keyword1);
-        keywordService.save(keyword2);
-        keywordService.save(keyword3);
+        if(keyword1!=null){keywordService.save(keyword1);}
+        if(keyword1!=null){keywordService.save(keyword2);}
+        if(keyword1!=null){keywordService.save(keyword3);}
         return "redirect:../keyword/list";
     }
 
@@ -56,7 +56,7 @@ public class KeywordController {
         List<Keyword>keywordsList = keywordService.findByUserId(2l);
         model.addAttribute("categories", categoriesList);
         model.addAttribute("keywords", keywordsList);
-        return "list-categories";
+        return "list-keywords";
     }
 
     @GetMapping("/edit/{id}")
@@ -66,7 +66,7 @@ public class KeywordController {
         Keyword keyword = keywordService.findById(id);
         model.addAttribute("keyword", keyword);
         model.addAttribute("categories", categories);
-        return "edit-category";
+        return "edit-keyword";
     }
 
     @PostMapping("/edit/{id}")
