@@ -177,12 +177,12 @@ public class TransactionController {
         model.addAttribute("tl", transactionsList);
         return "redirect:/transaction/list";
     }
-//    @GetMapping("/assign")
-//    public String assign( Model model) {
-//        User user2 = userService.findById(2l);
-//        transactionService.assignDefaultCategoriesInTransactions(user2);
-//        List<Transaction> transactionsList = transactionService.findByUserId(2l);
-//        model.addAttribute("tl", transactionsList);
-//        return "redirect:/transaction/list";
-//    }
+    @GetMapping("/assign")
+    public String assign( Model model) {
+        User user2 = userService.findById(2l);
+        transactionService.assignDefaultCategoriesInTransactions(user2);
+        List<Transaction> transactionsList = transactionService.findByUserId(2l);
+        model.addAttribute("tl", transactionsList);
+        return "redirect:/transaction/list";
+    }
 }

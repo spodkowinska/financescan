@@ -6,6 +6,7 @@ import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryRepository;
 import info.podkowinski.sandra.financescanner.csvScanner.Formatter;
 import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
+import info.podkowinski.sandra.financescanner.keyword.Keyword;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -88,29 +89,33 @@ public class TransactionService {
         return transactionRepository.findAllByUserId(id);
     }
 
-//    public void assignDefaultCategoriesInTransactions(User user) {
-//        ArrayList<Transaction> transactionList = transactionRepository.findAllNoncategorizedByUserId(user.getId());
-//        for (Transaction transaction : transactionList) {
-//            for (Category category : categoryRepository.findAllByUserId(user.getId())) {
-//                boolean keywordFound = false;
-//                for (String keyword : category.getKeywords().split(",")) {
-//                    if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
-//                        System.out.println(transaction.getDescription());
-//                        System.out.println(keyword);
-//                        System.out.println("----------------------------------------------------------------------------------------");
-//                        transaction.setCategories(Arrays.asList(category));
-////                        transactionRepository.save(transaction);
-//                        System.out.println(transaction.getId() + " + " + category.getId());
+    public void assignDefaultCategoriesInTransactions(User user) {
+        User user1 = userRepository.getOne(2l);
+        ArrayList<Long> transactionIdList = transactionRepository.findAllNoncategorizedByUserId(2l);
+        for (Long transactionId : transactionIdList) {
+            Transaction transaction = transactionRepository.findById(transactionId).orElse(null);
+            for (Category category : categoryRepository.findAllByUserId(user.getId())) {
+                boolean keywordFound = false;
+                for (Keyword keyword : category.getKeywords()) {
+                    if (transaction.getDescription().toLowerCase().contains(keyword.name.toLowerCase().trim())) {
+                        System.out.println(transaction.getDescription());
+                        System.out.println(keyword);
+                        List<Category>categories = transaction.categories;
+                        categories.add(category);
+                        transaction.setCategories(categories);
+                        transactionRepository.save(transaction);
+                        System.out.println(transaction.getId() + " + " + category.getId());
 //                        transactionRepository.setCategory(transaction.getId(), category.getId());
-//                        keywordFound = true;
-//                        break;
-//                    }
-//                }
+                        keywordFound = true;
+                        break;
+                    }
+                }
 //                if (keywordFound)
 //                    break;
-//            }
-//        }
-//    }
+//                transactionRepository.setCategory(5l,5l);
+            }
+        }
+    }
 
     //todo what to do if transaction doesn't exist, itp?
     public void assignCategoryInTransaction(User user, Long transactionId, Long categoryId) {

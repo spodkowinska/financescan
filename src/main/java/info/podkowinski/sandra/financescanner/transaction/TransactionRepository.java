@@ -18,13 +18,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     ArrayList<Transaction> findAllByUserId(Long userId);
 
-    @Query(value = "SELECT * FROM transactions t, transactions_categories tc WHERE t.id not in (tc.transaction_id) and t.user_id =?", nativeQuery = true)
-    ArrayList<Transaction> findAllNoncategorizedByUserId(Long userId);
+    @Query(value = "SELECT t.id FROM transactions t LEFT OUTER JOIN transactions_categories tc ON t.id = tc.transaction_id WHERE tc.categories_id IS NULL AND t.user_id=?", nativeQuery = true)
+    ArrayList<Long> findAllNoncategorizedByUserId(Long userId);
 
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO transactions_categories (transaction_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
-    void setCategory (Long transactionId, Long categoryId);
+//    @Modifying
+//    @Transactional
+//    @Query(value = "INSERT INTO transactions_categories (transaction_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
+//    void setCategory (Long transactionId, Long categoryId);
 
   //  List<Transaction> findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(Date after, Date before, User user);
 
