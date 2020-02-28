@@ -110,8 +110,8 @@ public class TransactionService {
                         break;
                     }
                 }
-//                if (keywordFound)
-//                    break;
+                if (keywordFound)
+                    break;
 //                transactionRepository.setCategory(5l,5l);
             }
         }

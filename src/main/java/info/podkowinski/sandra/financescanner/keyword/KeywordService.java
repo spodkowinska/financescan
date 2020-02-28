@@ -36,6 +36,17 @@ public class KeywordService {
         return keywordRepository.findById(id).orElse(null);
     }
 
+    boolean isValidKeyword(String keywordToCheck){
+        if(keywordToCheck==null || keywordToCheck.length()==0 || keywordToCheck==" "){
+            return false;
+        }
+        for(Keyword keyword: keywordRepository.findAllByUserId(2l)){
+            if(keyword.name.equals(keywordToCheck)){
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
 

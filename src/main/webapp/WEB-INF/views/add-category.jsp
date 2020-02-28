@@ -105,6 +105,7 @@
                                             transactions</p>
                                     </div>
 
+
                                     <div class="form-group">
                                         <label>Select parent category</label>
                                         <select class="form-control" id="parent" name="parent">

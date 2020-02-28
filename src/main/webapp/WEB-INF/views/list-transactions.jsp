@@ -130,8 +130,8 @@
                                             </select>
                                         </td>
                                         <td><a href="${pageContext.request.contextPath}/transaction/edit/${trans.id}">Edit</a>
-                                            <a href="${pageContext.request.contextPath}/transaction/delete/${trans.id}">Delete</a></td>
-
+                                            <a href="${pageContext.request.contextPath}/transaction/delete/${trans.id}">Delete</a>
+                                            <a href="${pageContext.request.contextPath}/keyword/add/${trans.id}">Add keyword</a></td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

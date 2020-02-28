@@ -21,6 +21,7 @@ public class Category {
         this.description = description;
         this.parentCategoryId = parentCategoryId;
         this.user = user;
+
     }
 
     public Category() {
@@ -43,5 +44,6 @@ public class Category {
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
+
 
 }

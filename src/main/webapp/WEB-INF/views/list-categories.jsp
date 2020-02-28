@@ -76,7 +76,11 @@
                                 <tr>
                                     <td>${category.name}</td>
                                     <td>${category.description}</td>
-                                    <td>${category.keywords}</td>
+                                    <td>
+                                    <c:forEach items="${category.keywords}" var="keyword">
+                                       ${keyword.name},
+                                    </c:forEach>
+                                    </td>
                                     <td><a href="${pageContext.request.contextPath}/category/edit/${category.id}">Edit</a>
                                     <a href="${pageContext.request.contextPath}/category/delete/${category.id}">Delete</a></td>
                                 </tr>
