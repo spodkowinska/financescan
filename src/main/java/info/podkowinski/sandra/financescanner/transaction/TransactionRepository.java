@@ -21,6 +21,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "SELECT t.id FROM transactions t LEFT OUTER JOIN transactions_categories tc ON t.id = tc.transaction_id WHERE tc.categories_id IS NULL AND t.user_id=?", nativeQuery = true)
     ArrayList<Long> findAllNoncategorizedByUserId(Long userId);
 
+    @Query(value = "SELECT * FROM transactions t WHERE t.amount<0", nativeQuery = true)
+    ArrayList<Transaction>findSpendings(Long userId);
+
 //    @Modifying
 //    @Transactional
 //    @Query(value = "INSERT INTO transactions_categories (transaction_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)

@@ -34,19 +34,6 @@ public class HomeController {
         return "index";
     }
 //
-//    @PostMapping("/home")
-//    @ResponseBody
-//    public String homePost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
-//        Part filePart = request.getPart("fileToUpload");
-//        User user1 = userService.findById(2l);
-//        CsvSettings mBankSettings = csvSettingsService.findById(1l);
-//        CsvSettings santanderSettings = csvSettingsService.findById(2l);
-////        transactionService.scanDocument(filePart.getInputStream(), mBankSettings.getDatePosition(), mBankSettings.getDescriptionPosition(),
-////                mBankSettings.getPartyPosition(), mBankSettings.getAmountPosition(), mBankSettings.getCsvSeparator(), mBankSettings.getSkipLines(), 1l, user1);
-////        transactionService.scanDocument(filePart.getInputStream(), santanderSettings.getDatePosition(), santanderSettings.getDescriptionPosition(),
-////                santanderSettings.getPartyPosition(), santanderSettings.getAmountPosition(), santanderSettings.getCsvSeparator(), santanderSettings.getSkipLines(), 2l, user1);
-//        return "good";
-  //  }
 
     @GetMapping("/report")
     public String present(Model model) {

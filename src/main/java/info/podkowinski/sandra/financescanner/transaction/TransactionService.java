@@ -58,21 +58,20 @@ public class TransactionService {
             Transaction newTransaction = new Transaction();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             // todo fix this ugly hack (detecting santander) to parse Date
-            if(bankId==1l){
+            if (bankId == 1l) {
                 newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition), formatter);
-            }
-            else {
+            } else {
                 newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition));
             }
             newTransaction.party = trans.get(partyPosition);
             newTransaction.description = trans.get(descriptionPosition);
             //todo fix getting amount in Millennium two column version
-            if(trans.get(amountPosition).isEmpty()){
-                newTransaction.amount = Float.parseFloat(trans.get(amountPosition+1)
+            if (trans.get(amountPosition).isEmpty()) {
+                newTransaction.amount = Float.parseFloat(trans.get(amountPosition + 1)
                         .replace(',', '.')
                         .replace("\"", "")
                         .replace(" ", ""));
-            }else {
+            } else {
                 newTransaction.amount = Float.parseFloat(trans.get(amountPosition)
                         .replace(',', '.')
                         .replace("\"", "")
@@ -100,7 +99,7 @@ public class TransactionService {
                     if (transaction.getDescription().toLowerCase().contains(keyword.name.toLowerCase().trim())) {
                         System.out.println(transaction.getDescription());
                         System.out.println(keyword);
-                        List<Category>categories = transaction.categories;
+                        List<Category> categories = transaction.categories;
                         categories.add(category);
                         transaction.setCategories(categories);
                         transactionRepository.save(transaction);
@@ -139,32 +138,34 @@ public class TransactionService {
         return balance;
     }
 
-    public Map<String, Double> lastYearBalances(Long userId){
+    public Map<String, Double> lastYearBalances(Long userId) {
         SortedMap<String, Double> lastYearBalances = new TreeMap<>();
         Date dateNow = Date.valueOf(LocalDate.now());
         StringBuilder sb = new StringBuilder();
-        sb.append(dateNow.toLocalDate().getYear()).append("-").append(dateNow.toLocalDate().getMonthValue ()).append("-").append("01");
+        sb.append(dateNow.toLocalDate().getYear()).append("-").append(dateNow.toLocalDate().getMonthValue()).append("-").append("01");
         String monthBegin = sb.toString();
         StringBuilder sb1 = new StringBuilder();
         int month = dateNow.toLocalDate().getMonthValue();
-        String yearMonth ="";
-        if(month<10){
-            yearMonth = sb1.append(dateNow.toLocalDate().getYear()).append(" ").append("0").append(month).toString();}
-        else{
-            yearMonth = sb1.append(dateNow.toLocalDate().getYear()).append(" ").append(month).toString();}
+        String yearMonth = "";
+        if (month < 10) {
+            yearMonth = sb1.append(dateNow.toLocalDate().getYear()).append(" ").append("0").append(month).toString();
+        } else {
+            yearMonth = sb1.append(dateNow.toLocalDate().getYear()).append(" ").append(month).toString();
+        }
         lastYearBalances.put(yearMonth, balanceByDates(userId, Date.valueOf(monthBegin), dateNow));
-        for(int i=0; i<11; i++) {
+        for (int i = 0; i < 11; i++) {
             Date monthBeginDate = Date.valueOf(monthBegin);
             sb.delete(0, sb.length());
-            sb1.delete(0,sb1.length());
+            sb1.delete(0, sb1.length());
             LocalDate previousMonthEnd = monthBeginDate.toLocalDate().minusDays(1l);
             String previousMonthBegin = sb.append(previousMonthEnd.getYear()).append("-").append(previousMonthEnd.getMonthValue()).append("-").append("01").toString();
-            int previousMonth=Date.valueOf(previousMonthBegin).toLocalDate().getMonthValue();
+            int previousMonth = Date.valueOf(previousMonthBegin).toLocalDate().getMonthValue();
             String previousYearMonth;
-            if(previousMonth<10){
-                previousYearMonth = sb1.append(previousMonthEnd.getYear()).append(" ").append("0").append(previousMonth).toString();}
-            else{
-                previousYearMonth = sb1.append(previousMonthEnd.getYear()).append(" ").append(previousMonth).toString();}
+            if (previousMonth < 10) {
+                previousYearMonth = sb1.append(previousMonthEnd.getYear()).append(" ").append("0").append(previousMonth).toString();
+            } else {
+                previousYearMonth = sb1.append(previousMonthEnd.getYear()).append(" ").append(previousMonth).toString();
+            }
             lastYearBalances.put(previousYearMonth, balanceByDates(userId, Date.valueOf(previousMonthBegin), Date.valueOf(previousMonthEnd)));
             monthBegin = previousMonthBegin;
         }
@@ -232,6 +233,13 @@ public class TransactionService {
         }
         return categoriesWithAmounts;
     }
-    void delete(Transaction transaction){transactionRepository.delete(transaction);}
+
+    void delete(Transaction transaction) {
+        transactionRepository.delete(transaction);
+    }
+
+    public List<Transaction> findSpendings(Long userId) {
+        return transactionRepository.findSpendings(userId);
+    }
 
 }
