@@ -1,12 +1,9 @@
 package info.podkowinski.sandra.financescanner.home;
 
-import com.opencsv.exceptions.CsvValidationException;
 import info.podkowinski.sandra.financescanner.account.AccountService;
-import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
-import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,9 +41,11 @@ public class HomeController {
 //        Date date2 = Date.valueOf(str2);
         List<Transaction> allTransactions = transactionService.findByUserId(2l);
         Map<String, Double> lastYearBalances = transactionService.lastYearBalances(2l);
-        Map<String, Float> categoriesAndAmounts = transactionService.mapExpensesToCategoriesWithAmounts(allTransactions, 2l);
+        Map<String, Float> categoriesAndAmounts = transactionService.mapTransactionsToCategoriesWithAmounts(allTransactions, 2l);
+        Map<String, Float> categoriesAndSpendings = transactionService.mapTransactionsToCategoriesWithAmounts(transactionService.findSpendings(2l), 2l);
         model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);
         model.addAttribute("lastYearBalances", lastYearBalances);
+        model.addAttribute("categoriesWithSpendings", categoriesAndSpendings);
         return "report";
     }
 

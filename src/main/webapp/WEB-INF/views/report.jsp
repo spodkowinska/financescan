@@ -158,51 +158,51 @@
 <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
 <!-- Page level plugins -->
 <script src="${pageContext.request.contextPath}/vendor/chart.js/Chart.min.js"></script>
-<script type="text/javascript">
+<%--<script type="text/javascript">--%>
 
-    // Set new default font family and font color to mimic Bootstrap's default styling
-    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#858796';
+<%--    // Set new default font family and font color to mimic Bootstrap's default styling--%>
+<%--    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';--%>
+<%--    Chart.defaults.global.defaultFontColor = '#858796';--%>
 
-    // Pie Chart All Transactions by Categories
-    var ctx = document.getElementById("PieChartAllTransactions");
-    var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [
-                <c:forEach items="${categoriesWithAmounts}" var="category">
-                "${category.key}", </c:forEach>
-            ],
-            datasets: [{
-                data: [
-                    <c:forEach items="${categoriesWithAmounts.values()}" var="amount">
-                    ${amount}.toFixed(2), </c:forEach>
-                ],
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-        }]
-            },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,
-        },
-    });
+<%--    // Pie Chart All Transactions by Categories--%>
+<%--    var ctx = document.getElementById("PieChartAllTransactions");--%>
+<%--    var myPieChart = new Chart(ctx, {--%>
+<%--        type: 'doughnut',--%>
+<%--        data: {--%>
+<%--            labels: [--%>
+<%--                <c:forEach items="${categoriesWithAmounts}" var="category">--%>
+<%--                "${category.key}", </c:forEach>--%>
+<%--            ],--%>
+<%--            datasets: [{--%>
+<%--                data: [--%>
+<%--                    <c:forEach items="${categoriesWithAmounts.values()}" var="amount">--%>
+<%--                    ${amount}.toFixed(2), </c:forEach>--%>
+<%--                ],--%>
+<%--                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],--%>
+<%--                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],--%>
+<%--                hoverBorderColor: "rgba(234, 236, 244, 1)",--%>
+<%--        }]--%>
+<%--            },--%>
+<%--        options: {--%>
+<%--            maintainAspectRatio: false,--%>
+<%--            tooltips: {--%>
+<%--                backgroundColor: "rgb(255,255,255)",--%>
+<%--                bodyFontColor: "#858796",--%>
+<%--                borderColor: '#dddfeb',--%>
+<%--                borderWidth: 1,--%>
+<%--                xPadding: 15,--%>
+<%--                yPadding: 15,--%>
+<%--                displayColors: false,--%>
+<%--                caretPadding: 10,--%>
+<%--            },--%>
+<%--            legend: {--%>
+<%--                display: false--%>
+<%--            },--%>
+<%--            cutoutPercentage: 80,--%>
+<%--        },--%>
+<%--    });--%>
 
-</script>
+<%--</script>--%>
 <script>
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
@@ -326,6 +326,51 @@
             }
         }
     });
+</script>
+<script type="text/javascript">
+
+    // Set new default font family and font color to mimic Bootstrap's default styling
+    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#858796';
+
+// Pie Chart All Spendings by Categories
+var ctx = document.getElementById("PieChartAllTransactions");
+var myPieChart = new Chart(ctx, {
+type: 'doughnut',
+data: {
+labels: [
+<c:forEach items="${categoriesWithSpendings}" var="category">
+    "${category.key}", </c:forEach>
+],
+datasets: [{
+data: [
+<c:forEach items="${categoriesWithSpendings.values()}" var="amount">
+    ${amount}.toFixed(2), </c:forEach>
+],
+backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+hoverBorderColor: "rgba(234, 236, 244, 1)",
+}]
+},
+options: {
+maintainAspectRatio: false,
+tooltips: {
+backgroundColor: "rgb(255,255,255)",
+bodyFontColor: "#858796",
+borderColor: '#dddfeb',
+borderWidth: 1,
+xPadding: 15,
+yPadding: 15,
+displayColors: false,
+caretPadding: 10,
+},
+legend: {
+display: false
+},
+cutoutPercentage: 80,
+},
+});
+
 </script>
 
 
