@@ -1,11 +1,8 @@
 package info.podkowinski.sandra.financescanner.category;
 
-import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {

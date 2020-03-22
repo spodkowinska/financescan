@@ -4,7 +4,6 @@ import com.opencsv.exceptions.CsvValidationException;
 import info.podkowinski.sandra.financescanner.account.AccountRepository;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryRepository;
-import info.podkowinski.sandra.financescanner.csvScanner.Formatter;
 import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
 import info.podkowinski.sandra.financescanner.keyword.Keyword;
 import info.podkowinski.sandra.financescanner.user.User;

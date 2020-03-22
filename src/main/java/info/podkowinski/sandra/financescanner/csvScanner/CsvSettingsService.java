@@ -1,6 +1,5 @@
 package info.podkowinski.sandra.financescanner.csvScanner;
 
-import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

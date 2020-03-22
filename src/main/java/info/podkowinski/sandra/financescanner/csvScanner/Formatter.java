@@ -1,7 +1,6 @@
 package info.podkowinski.sandra.financescanner.csvScanner;
 
 import java.sql.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 

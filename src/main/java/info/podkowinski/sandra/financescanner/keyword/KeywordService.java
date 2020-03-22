@@ -1,8 +1,5 @@
 package info.podkowinski.sandra.financescanner.keyword;
 
-import info.podkowinski.sandra.financescanner.category.Category;
-import info.podkowinski.sandra.financescanner.category.CategoryRepository;
-import info.podkowinski.sandra.financescanner.transaction.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

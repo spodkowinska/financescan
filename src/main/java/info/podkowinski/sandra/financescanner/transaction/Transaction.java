@@ -6,11 +6,9 @@ import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.category.Category;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -8,7 +8,6 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 
 
-import javax.xml.bind.ValidationException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
