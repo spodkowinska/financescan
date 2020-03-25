@@ -130,8 +130,9 @@
                     {
                         color: rgb(226, 0, 0);
                     }
-                    .raf div.tag
+                    .raf a.tag
                     {
+                        display: block;
                         font-size: 10px;
                         padding: 2px;
                         padding-left: 10px;
@@ -139,32 +140,34 @@
                         border-radius: 3px;
                         color: white;
                         display: inline-block;
-                        vertical-align: middle;
                     }
-                    .raf div.tag:hover
+                    .raf a.tag:hover
                     {
                         cursor: pointer;
-                        filter: brightness(110%);
+                        filter: brightness(120%);
+                        color: white;
                     }
-                    .raf div.tag-add
+                    .raf a.tag-add
                     {
                         background: rgb(207, 207, 207);
                         float: right;
+                        text-decoration: none;
                     }
-                    .raf div.tag1 { background: green; }
-                    .raf div.tag2 { background: red; }
-                    .raf div.tag3 { background: rgb(0, 171, 214); }
-                    .raf div.tag4 { background: yellow; }
-                    .raf div.tag5 { background: brown; }
-                    .raf div.tag6 { background: gray; }
-                    .raf div.tag7 { background: blue; }
-                    .raf div.tag8 { background: navy; }
-                    .raf div.tag9 { background: gold; }
-                    .raf div.tag10 { background: pink; }
-                    .raf div.tag11 { background: black; }
-                    .raf div.tag12 { background: cyan; }
 
-                    .raf div.tag-add:hover
+                    .raf a.tag1 { background: green; }
+                    .raf a.tag2 { background: red; }
+                    .raf a.tag3 { background: rgb(0, 171, 214); }
+                    .raf a.tag4 { background: yellow; }
+                    .raf a.tag5 { background: brown; }
+                    .raf a.tag6 { background: gray; }
+                    .raf a.tag7 { background: blue; }
+                    .raf a.tag8 { background: navy; }
+                    .raf a.tag9 { background: gold; }
+                    .raf a.tag10 { background: pink; }
+                    .raf a.tag11 { background: black; }
+                    .raf a.tag12 { background: cyan; }
+
+                    .raf a.tag-add:hover
                     {
                         background: gray;
                     }
@@ -242,10 +245,26 @@
                                             <c:forEach items="${categoriesList}" var="category">
                                                 <c:choose>
                                                     <c:when test="${fn:contains(trans.categories, category)}">
-                                                        <div class="tag tag${category.id}">${category.name}</div>
+                                                        <a class="tag tag${category.id}">${category.name}</a>
                                                     </c:when>
                                                 </c:choose>
                                             </c:forEach>
+
+                                            <a tabindex="0" class="tag tag-add" data-html="true" data-toggle="popover" data-trigger="focus"
+                                                data-content="
+                                                
+                                                <c:forEach items="${categoriesList}" var="category">
+                                                    <c:choose>
+                                                        <c:when test="${fn:contains(trans.categories, category)}">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a class='tag tag${category.id}'>${category.name}</a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                                
+                                                " >+</a>
+
                                             <div class="tag tag-add">+</div>
                                         </td>
                                         <td>${trans.description}</td>
@@ -441,6 +460,8 @@
 <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
 <!--datatables-->
 <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<script>$('.tag-add').popover({ trigger: 'focus' })</script>
 
 </body>
 
