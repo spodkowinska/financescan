@@ -1,3 +1,3 @@
-# financescan
+# Finance Scanner
 
-Financescan is a project that alows to upload csv files from a bank account in order to create a managable database with transactions. Project will give possibility to create diagrams and analyse expenses.
+**Finance Scanner** is a project that allows you to upload CSV files exported from a bank account in order to create a managable database with transactions. It also gives you the possibility to create diagrams and analyse expenses.
