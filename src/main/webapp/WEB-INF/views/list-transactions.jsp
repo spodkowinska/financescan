@@ -130,44 +130,43 @@
                     {
                         color: rgb(226, 0, 0);
                     }
-                    .raf a.tag
+                    a.tag
                     {
-                        display: block;
+                        display: inline-block;
                         font-size: 10px;
                         padding: 2px;
                         padding-left: 10px;
                         padding-right: 10px;
                         border-radius: 3px;
                         color: white;
-                        display: inline-block;
+                        text-decoration: none;
                     }
-                    .raf a.tag:hover
+                    a.tag:hover
                     {
                         cursor: pointer;
                         filter: brightness(120%);
                         color: white;
                     }
-                    .raf a.tag-add
+                    a.tag-add
                     {
                         background: rgb(207, 207, 207);
                         float: right;
-                        text-decoration: none;
                     }
 
-                    .raf a.tag1 { background: green; }
-                    .raf a.tag2 { background: red; }
-                    .raf a.tag3 { background: rgb(0, 171, 214); }
-                    .raf a.tag4 { background: yellow; }
-                    .raf a.tag5 { background: brown; }
-                    .raf a.tag6 { background: gray; }
-                    .raf a.tag7 { background: blue; }
-                    .raf a.tag8 { background: navy; }
-                    .raf a.tag9 { background: gold; }
-                    .raf a.tag10 { background: pink; }
-                    .raf a.tag11 { background: black; }
-                    .raf a.tag12 { background: cyan; }
+                    a.tag1 { background: green; }
+                    a.tag2 { background: red; }
+                    a.tag3 { background: rgb(0, 171, 214); }
+                    a.tag4 { background: darkorchid; }
+                    a.tag5 { background: darkgoldenrod; }
+                    a.tag6 { background: gray; }
+                    a.tag7 { background: blue; }
+                    a.tag8 { background: navy; }
+                    a.tag9 { background: darkslateblue; }
+                    a.tag10 { background: darkslategrey; }
+                    a.tag11 { background: black; }
+                    a.tag12 { background: darkred; }
 
-                    .raf a.tag-add:hover
+                    a.tag-add:hover
                     {
                         background: gray;
                     }
@@ -245,7 +244,7 @@
                                             <c:forEach items="${categoriesList}" var="category">
                                                 <c:choose>
                                                     <c:when test="${fn:contains(trans.categories, category)}">
-                                                        <a class="tag tag${category.id}">${category.name}</a>
+                                                        <a href="#" class="tag tag${category.id}">${category.name}</a>
                                                     </c:when>
                                                 </c:choose>
                                             </c:forEach>
@@ -258,14 +257,12 @@
                                                         <c:when test="${fn:contains(trans.categories, category)}">
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a class='tag tag${category.id}'>${category.name}</a>
+                                                            <a href='#' class='tag tag${category.id}'>${category.name}</a>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>
                                                 
                                                 " >+</a>
-
-                                            <div class="tag tag-add">+</div>
                                         </td>
                                         <td>${trans.description}</td>
                                     </tr>
