@@ -151,18 +151,19 @@
                         background: rgb(207, 207, 207);
                         float: right;
                     }
-                    .raf div.tag1
-                    {
-                        background: green;
-                    }
-                    .raf div.tag2
-                    {
-                        background: red;
-                    }
-                    .raf div.tag3
-                    {
-                        background: rgb(0, 171, 214);
-                    }
+                    .raf div.tag1 { background: green; }
+                    .raf div.tag2 { background: red; }
+                    .raf div.tag3 { background: rgb(0, 171, 214); }
+                    .raf div.tag4 { background: yellow; }
+                    .raf div.tag5 { background: brown; }
+                    .raf div.tag6 { background: gray; }
+                    .raf div.tag7 { background: blue; }
+                    .raf div.tag8 { background: navy; }
+                    .raf div.tag9 { background: gold; }
+                    .raf div.tag10 { background: pink; }
+                    .raf div.tag11 { background: black; }
+                    .raf div.tag12 { background: cyan; }
+
                     .raf div.tag-add:hover
                     {
                         background: gray;
@@ -218,7 +219,7 @@
                             <!-- TABLE HEADER -->
                             <thead>
                                 <tr>
-                                    <th style="width: 80px">Actions</th>
+                                    <th style="width: 85px">Actions</th>
                                     <th style="width: 100px">Date</th>
                                     <th style="width: 100px">Amount</th>
                                     <th style="width: 250px">Categories</th>
@@ -234,11 +235,18 @@
                                             <a data-toggle="tooltip" title="Edit transaction" href="${pageContext.request.contextPath}/transaction/edit/${trans.id}"><span class="fa fa-edit"></span></a>
                                             <a data-toggle="tooltip" title="Create keyword from this transaction" href="${pageContext.request.contextPath}/keyword/add/${trans.id}"><span class="fa fa-key"></span></a>
                                             <a data-toggle="tooltip" title="Delete transaction" href="${pageContext.request.contextPath}/transaction/delete/${trans.id}"><span class="fa fa-trash-alt"></span></a>
-                                        </td>")
+                                        </td>
                                         <td class="center">${trans.transactionDate}</td>
                                         <td class="negative right">${trans.amount} zł</td>
                                         <td>
-                                            <div class="tag tag-add">+</div>")
+                                            <c:forEach items="${categoriesList}" var="category">
+                                                <c:choose>
+                                                    <c:when test="${fn:contains(trans.categories, category)}">
+                                                        <div class="tag tag${category.id}">${category.name}</div>
+                                                    </c:when>
+                                                </c:choose>
+                                            </c:forEach>
+                                            <div class="tag tag-add">+</div>
                                         </td>
                                         <td>${trans.description}</td>
                                     </tr>
