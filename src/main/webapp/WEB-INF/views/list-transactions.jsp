@@ -70,6 +70,233 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
+
+
+                <!-- NEW TABLE - WORK IN PROGRESS -->
+                <style>
+                    .raf
+                    {
+                        width: 100%;
+                        font-size: 12px;
+                        font-family: Arial;
+                        color: black;
+                    }
+                    .raf table
+                    {
+                        border-spacing: 0;
+                        border: 1px solid black;
+                    }
+                    .raf tr:hover
+                    {
+                        background: #F7F7F7;
+                    }
+                    .raf th, td
+                    {
+                        border: 1px solid lightgray;
+                        padding: 2px;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                    }
+                    .raf th
+                    {
+                        border-color: #858796;
+                        text-align: center;
+                        color: #858796;
+                        background: white;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-size: 14px;
+                        font-weight: normal;
+                    }
+                    .raf td.actions a
+                    {
+                        display: inline-block;
+                        margin-left: 5px;
+                        margin-right: 5px;
+                        color: rgb(207, 207, 207);
+                    }
+                    .raf td.actions a:hover
+                    {
+                        color: gray;
+                    }
+                    .raf .center
+                    {
+                        text-align: center;
+                    }
+                    .raf .right
+                    {
+                        text-align: right;
+                    }
+                    .raf td.negative
+                    {
+                        color: rgb(226, 0, 0);
+                    }
+                    .raf div.tag
+                    {
+                        font-size: 10px;
+                        padding: 2px;
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        border-radius: 3px;
+                        color: white;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                    .raf div.tag:hover
+                    {
+                        cursor: pointer;
+                        filter: brightness(110%);
+                    }
+                    .raf div.tag-add
+                    {
+                        background: rgb(207, 207, 207);
+                        float: right;
+                    }
+                    .raf div.tag1
+                    {
+                        background: green;
+                    }
+                    .raf div.tag2
+                    {
+                        background: red;
+                    }
+                    .raf div.tag3
+                    {
+                        background: rgb(0, 171, 214);
+                    }
+                    .raf div.tag-add:hover
+                    {
+                        background: gray;
+                    }
+                </style>
+
+                <h1 class="h3 mb-2 text-gray-800">Transactions</h1>
+
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        
+                        <!-- YEARS -->
+                        <!-- todo: fill with actual years from db -->
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-secondary btn-sm">
+                                <input type="radio" name="options" id="option1" autocomplete="off">2019
+                            </label>
+                            <label class="btn btn-outline-secondary btn-sm active">
+                                <input type="radio" name="options" id="option2" autocomplete="off" checked>2020
+                            </label>
+                        </div>
+
+                        <!-- MONTHS -->
+                        <!-- todo: remove script -->
+                        <!-- todo: fill with actual months for the chosen year from db -->
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-secondary btn-sm active">
+                                <input type="radio" name="options" id="option0" autocomplete="off" checked>January
+                            </label>
+        
+                            <script>
+                                var months = [ "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+
+                                for (var i = 0; i < 11; i++) {
+                                    document.write("<label class=\"btn btn-outline-secondary btn-sm\">");
+                                    document.write("    <input type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
+                                    document.write(months[i]);
+                                    document.write("</label>");
+                                };
+                            </script>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3" style="width: 300px; margin-top: 10px;">
+                            <input type="text" class="form-control" placeholder="Filter by description..." aria-label="Filter by description..." aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button">Filter</button>
+                            </div>
+                        </div>
+        
+                        <div style="height: 15px"></div>
+
+                        <table class="raf">
+                            <!-- TABLE HEADER -->
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px">Actions</th>
+                                    <th style="width: 100px">Date</th>
+                                    <th style="width: 100px">Amount</th>
+                                    <th style="width: 250px">Categories</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <!-- TABLE DATA -->
+                            <tbody>
+                                <c:forEach items="${tl}" var="trans">
+
+                                    <tr>
+                                        <td class="actions">
+                                            <a data-toggle="tooltip" title="Edit transaction" href="${pageContext.request.contextPath}/transaction/edit/${trans.id}"><span class="fa fa-edit"></span></a>
+                                            <a data-toggle="tooltip" title="Create keyword from this transaction" href="${pageContext.request.contextPath}/keyword/add/${trans.id}"><span class="fa fa-key"></span></a>
+                                            <a data-toggle="tooltip" title="Delete transaction" href="${pageContext.request.contextPath}/transaction/delete/${trans.id}"><span class="fa fa-trash-alt"></span></a>
+                                        </td>")
+                                        <td class="center">${trans.transactionDate}</td>
+                                        <td class="negative right">${trans.amount} zł</td>
+                                        <td>
+                                            <div class="tag tag-add">+</div>")
+                                        </td>
+                                        <td>${trans.description}</td>
+                                    </tr>
+
+                                </c:forEach>
+
+                                <!-- todo: handle changing categories -->
+                                <!-- <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"
+                                        multiple size="4" onchange="sendData(${trans.id})" >
+                                    <c:forEach items="${categoriesList}" var="category">
+                                        <c:choose>
+                                            <c:when test="${fn:contains(trans.categories, category)}">
+                                                <option selected="selected"
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option
+                                            </c:otherwise>
+                                        </c:choose>
+                                        value="${category.id}">${category.name}</option>
+                                    </c:forEach>
+                                </select> -->
+
+                                <!-- todo: uncomment this for some dummy data; remove this when not needed -->
+                                <!-- <script>
+                                    for (var i = 0; i < 30; i++)
+                                    {
+                                        document.write("<tr>");
+                                        document.write("<td class=\"actions\">");
+
+                                        document.write("<a data-toggle=\"tooltip\" title=\"Edit transaction\" href=\"#\"><span class=\"fa fa-edit\"></span></a>");
+                                        document.write("<a data-toggle=\"tooltip\" title=\"Create keyword from this transaction\" href=\"#\"><span class=\"fa fa-key\"></span></a>");
+                                        document.write("<a data-toggle=\"tooltip\" title=\"Delete transaction\" href=\"#\"><span class=\"fa fa-trash-alt\"></span></a>");
+
+                                        document.write("</td>")
+                                        document.write("<td class=\"center\">20-01-2020</td>");
+                                        document.write("<td class=\"negative right\">-666,00 zł</td>");
+                                        document.write("<td>");
+                                        if (i % 2 == 0)
+                                            document.write("    <div class=\"tag tag1\">Dom</div>");
+                                        if (i % 3 == 0)
+                                            document.write("    <div class=\"tag tag2\">Samochód</div>");
+                                        if (i % 5 == 0)
+                                            document.write("    <div class=\"tag tag3\">Dzieci</div>");
+                                        document.write("    <div class=\"tag tag-add\">+</div>")
+                                        document.write("</td>");
+                                        document.write("<td>CARREFOUR EXPRESS P/WARSZAWA                                          DATA TRANSAKCJI: 2019-01-02</td>");
+                                        document.write("</tr>");
+                                    }
+                                </script> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- NEW TABLE - WORK IN PROGRESS -->
+
+
+
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">Table With Transactions</h1>
 
