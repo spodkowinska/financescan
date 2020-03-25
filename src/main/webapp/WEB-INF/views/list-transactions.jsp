@@ -285,33 +285,6 @@
                                     </c:forEach>
                                 </select> -->
 
-                                <!-- todo: uncomment this for some dummy data; remove this when not needed -->
-                                <!-- <script>
-                                    for (var i = 0; i < 30; i++)
-                                    {
-                                        document.write("<tr>");
-                                        document.write("<td class=\"actions\">");
-
-                                        document.write("<a data-toggle=\"tooltip\" title=\"Edit transaction\" href=\"#\"><span class=\"fa fa-edit\"></span></a>");
-                                        document.write("<a data-toggle=\"tooltip\" title=\"Create keyword from this transaction\" href=\"#\"><span class=\"fa fa-key\"></span></a>");
-                                        document.write("<a data-toggle=\"tooltip\" title=\"Delete transaction\" href=\"#\"><span class=\"fa fa-trash-alt\"></span></a>");
-
-                                        document.write("</td>")
-                                        document.write("<td class=\"center\">20-01-2020</td>");
-                                        document.write("<td class=\"negative right\">-666,00 zł</td>");
-                                        document.write("<td>");
-                                        if (i % 2 == 0)
-                                            document.write("    <div class=\"tag tag1\">Dom</div>");
-                                        if (i % 3 == 0)
-                                            document.write("    <div class=\"tag tag2\">Samochód</div>");
-                                        if (i % 5 == 0)
-                                            document.write("    <div class=\"tag tag3\">Dzieci</div>");
-                                        document.write("    <div class=\"tag tag-add\">+</div>")
-                                        document.write("</td>");
-                                        document.write("<td>CARREFOUR EXPRESS P/WARSZAWA                                          DATA TRANSAKCJI: 2019-01-02</td>");
-                                        document.write("</tr>");
-                                    }
-                                </script> -->
                             </tbody>
                         </table>
                     </div>
