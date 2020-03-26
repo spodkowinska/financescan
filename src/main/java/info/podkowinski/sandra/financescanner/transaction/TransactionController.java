@@ -162,7 +162,7 @@ public class TransactionController {
                 transaction.addCategory(categoryService.findById(categoryId));
                 transactionService.save(transaction);
             }
-        return "transactions-list";
+        return "redirect:/transaction/list";
     }
 
     @GetMapping("/removecategory/{transactionId}/{categoryId}")
@@ -173,7 +173,7 @@ public class TransactionController {
             transaction.removeCategory(categoryService.findById(categoryId));
             transactionService.save(transaction);
         }
-        return "transactions-list";
+        return "redirect:/transaction/list";
     }
 //    @RequestMapping("/home/sum")
 //    @ResponseBody

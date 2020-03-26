@@ -254,7 +254,7 @@
                                             <c:forEach items="${categoriesList}" var="category">
                                                 <c:choose>
                                                     <c:when test="${fn:contains(trans.categories, category)}">
-                                                        <a href="#" class="tag tag${category.id}">${category.name}</a>
+                                                        <a href="${pageContext.request.contextPath}/transaction/removecategory/${trans.id}/${category.id}" class="tag tag${category.id}">${category.name}</a>
                                                     </c:when>
                                                 </c:choose>
                                             </c:forEach>
@@ -267,11 +267,11 @@
                                                         <c:when test="${fn:contains(trans.categories, category)}">
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a href='#' class='tag tag${category.id}'>${category.name}</a>
+                                                            <a href='${pageContext.request.contextPath}/transaction/addcategory/${trans.id}/${category.id}' class='tag tag${category.id}'>${category.name}</a>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>
-                                                
+
                                                 " >+</a>
                                         </td>
                                         <td>${trans.description}</td>
