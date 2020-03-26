@@ -130,6 +130,10 @@
                     {
                         color: rgb(226, 0, 0);
                     }
+                    .raf td.positive
+                    {
+                        color: rgb(0, 150, 0);
+                    }
                     a.tag
                     {
                         display: inline-block;
@@ -193,13 +197,13 @@
                         <!-- todo: fill with actual months for the chosen year from db -->
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-outline-secondary btn-sm active">
-                                <input type="radio" name="options" id="option0" autocomplete="off" checked>January
+                                <input type="radio" name="options" id="option0" autocomplete="off" checked>ALL
                             </label>
         
                             <script>
-                                var months = [ "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+                                var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-                                for (var i = 0; i < 11; i++) {
+                                for (var i = 0; i < 12; i++) {
                                     document.write("<label class=\"btn btn-outline-secondary btn-sm\">");
                                     document.write("    <input type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
                                     document.write(months[i]);
@@ -239,7 +243,13 @@
                                             <a data-toggle="tooltip" title="Delete transaction" href="${pageContext.request.contextPath}/transaction/delete/${trans.id}"><span class="fa fa-trash-alt"></span></a>
                                         </td>
                                         <td class="center">${trans.transactionDate}</td>
-                                        <td class="negative right">${trans.amount} zł</td>
+                                        <td class="
+                                            <c:choose>
+                                                <c:when test="${trans.amount lt 0}">negative</c:when>
+                                                <c:otherwise>positive</c:otherwise>
+                                            </c:choose> right">
+                                            ${trans.amount} zł
+                                        </td>
                                         <td>
                                             <c:forEach items="${categoriesList}" var="category">
                                                 <c:choose>

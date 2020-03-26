@@ -39,14 +39,14 @@ public class TransactionService {
         return transactionRepository.findById(id).orElse(null);
     }
 
-//    public List<Category> categoriesFromUrlString(String categoriesIds) {
-//        String[] categoriesIdsList = categoriesIds.split(",");
-//        List<Category> categoriesList = new ArrayList<>();
-//        for (String id : categoriesIdsList) {
-//            categoriesList.add(categoryRepository.getOne(Long.parseLong(id)));
-//        }
-//        return categoriesList;
-//    }
+    public List<Category> categoriesFromUrlString(String categoriesIds) {
+        String[] categoriesIdsList = categoriesIds.split(",");
+        List<Category> categoriesList = new ArrayList<>();
+        for (String id : categoriesIdsList) {
+            categoriesList.add(categoryRepository.getOne(Long.parseLong(id)));
+        }
+        return categoriesList;
+    }
 
     public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, String importName, Long bankId, User user)
             throws IOException, CsvValidationException, ParseException {

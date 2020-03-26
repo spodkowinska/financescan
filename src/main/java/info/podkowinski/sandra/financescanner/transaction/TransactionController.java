@@ -139,33 +139,54 @@ public class TransactionController {
         return "redirect:/transaction/list";
     }
 
-//    @GetMapping("/setcategories/{transactionId}/{categories}")
-//    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
-//        User user1 = userService.findById(2l);
-//        Transaction transaction = transactionService.findById(transactionId);
-//        if (transaction.getUser() == user1) {
-//            if (categories.equals("0")) {
-//                transaction.setCategories(null);
-//            } else {
-//                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
-//                transactionService.save(transaction);
-//            }
-//        }
-//        return "transactions-list";
-//    }
-
-    @RequestMapping("/home/sum")
-    @ResponseBody
-    public String sumBtn() {
-
-        String str = "2019-10-31";
-        Date date1 = valueOf(str);
-        String str2 = "2019-11-31";
-        Date date2 = valueOf(str2);
+    @GetMapping("/setcategories/{transactionId}/{categories}")
+    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
         User user1 = userService.findById(2l);
-//        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
-        return transactionService.balancesByDatesForAllCategories(user1.getId(), date1, date2).toString();
+        Transaction transaction = transactionService.findById(transactionId);
+        if (transaction.getUser() == user1) {
+            if (categories.equals("0")) {
+                transaction.setCategories(null);
+            } else {
+                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
+                transactionService.save(transaction);
+            }
+        }
+        return "transactions-list";
     }
+
+    @GetMapping("/addcategory/{transactionId}/{categoryId}")
+    public String addCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
+        User user1 = userService.findById(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        if (transaction.getUser() == user1) {
+                transaction.addCategory(categoryService.findById(categoryId));
+                transactionService.save(transaction);
+            }
+        return "transactions-list";
+    }
+
+    @GetMapping("/removecategory/{transactionId}/{categoryId}")
+    public String removeCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
+        User user1 = userService.findById(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        if (transaction.getUser() == user1) {
+            transaction.removeCategory(categoryService.findById(categoryId));
+            transactionService.save(transaction);
+        }
+        return "transactions-list";
+    }
+//    @RequestMapping("/home/sum")
+//    @ResponseBody
+//    public String sumBtn() {
+//
+//        String str = "2019-10-31";
+//        Date date1 = valueOf(str);
+//        String str2 = "2019-11-31";
+//        Date date2 = valueOf(str2);
+//        User user1 = userService.findById(2l);
+////        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
+//        return transactionService.balancesByDatesForAllCategories(user1.getId(), date1, date2).toString();
+//    }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {

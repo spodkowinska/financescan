@@ -39,6 +39,14 @@ public class Transaction {
     @ManyToMany(fetch = FetchType.EAGER)
     List<Category> categories;
 
+    void addCategory(Category category){
+        this.categories.add(category);
+    }
+
+    void removeCategory(Category category){
+        this.categories.remove(this.categories.indexOf(category));
+    }
+
     @JoinColumn(name = "user_id")
     @ManyToOne
     User user;
