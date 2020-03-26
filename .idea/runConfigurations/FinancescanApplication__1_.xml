@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FinancescanApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="financescan" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="info.podkowinski.sandra.financescanner.FinancescannerApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
