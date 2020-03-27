@@ -212,6 +212,21 @@
                             </script>
                         </div>
 
+                        <!-- Three Dots Dropdown -->
+                        <div class="btn-group" style="float: right">
+                            <!-- Three Dots -->
+                            <a href="#" id="transOperationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <i class="fas fa-ellipsis-v mr-2 text-gray-600"></i>
+                            </a>
+                            <!-- Actual Dropdown -->
+                            <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="transOperationsDropdown">
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/assign">
+                                    <i class="fas fa-magic mr-2 text-gray-600"></i>
+                                    Assign default keywords
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="input-group input-group-sm mb-3" style="width: 300px; margin-top: 10px;">
                             <input type="text" class="form-control" placeholder="Filter by description..." aria-label="Filter by description..." aria-describedby="basic-addon2">
                             <div class="input-group-append">
