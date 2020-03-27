@@ -211,6 +211,8 @@ public class TransactionController {
     public String table( Model model, @PathVariable String year, @PathVariable String month) {
         User user2 = userService.findById(2l);
         List<Transaction> transactionsList = transactionService.transactionsByDate(year, month, user2);
+        List<Category> categories = categoryService.findByUserId(2l);
+        model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactionsList);
         return "table-transactions";
     }

@@ -42,12 +42,19 @@
                 $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId + "/" + categoryIds.join(","));
             }
         }
+
+        function getData(year, month) {
+            $.get("${pageContext.request.contextPath}/transaction/table/" + year + "/" + month, function (data) {
+                $('#list').html(data);
+            });
+        }
+
     </script>
 
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="getData('all','all')">
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -281,7 +288,7 @@
                             </tr>
                             </thead>
                             <!-- TABLE DATA -->
-                            <%--                            <tbody>--%>
+                                                        <tbody id="list">
                             <%--                                <c:forEach items="${tl}" var="trans">--%>
 
                             <%--                                    <tr>--%>
@@ -343,8 +350,8 @@
                             <%--                                    </c:forEach>--%>
                             <%--                                </select> -->--%>
 
-                            <%--                            </tbody>--%>
-                            <jsp:include page="table-transactions.jsp"></jsp:include>
+                                                        </tbody>
+<%--                            <jsp:include page="table-transactions.jsp"></jsp:include>--%>
                         </table>
                     </div>
                 </div>

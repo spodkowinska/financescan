@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<tbody>
+<%--<tbody>--%>
 <c:forEach items="${tl}" var="trans">
 
     <tr>
@@ -70,4 +70,4 @@
                                     </c:forEach>
                                 </select> -->
 
-</tbody>
+<%--</tbody>--%>
