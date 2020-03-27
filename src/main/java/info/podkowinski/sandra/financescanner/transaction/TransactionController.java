@@ -206,4 +206,12 @@ public class TransactionController {
         model.addAttribute("tl", transactionsList);
         return "redirect:/transaction/list";
     }
+
+    @GetMapping("/table/{year}/{month}")
+    public String table( Model model, @PathVariable String year, @PathVariable String month) {
+        User user2 = userService.findById(2l);
+        List<Transaction> transactionsList = transactionService.transactionsByDate(year, month, user2);
+        model.addAttribute("tl", transactionsList);
+        return "table-transactions";
+    }
 }

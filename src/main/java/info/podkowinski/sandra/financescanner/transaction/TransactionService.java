@@ -10,6 +10,7 @@ import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -239,6 +240,28 @@ public class TransactionService {
 
     public List<Transaction> findSpendings(Long userId) {
         return transactionRepository.findSpendings(userId);
+    }
+
+    List <Transaction> transactionsByDate(String year, String month, User user){
+        List <Transaction> transactionsList= new ArrayList<>();
+        Date start;
+        Date end;
+        if (year.equals("all")){
+            transactionsList = transactionRepository.findAllByUserId(user.getId());
+        } else if(month.equals("all")) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(year).append("-").append("01").append("-").append("01");
+            start = Date.valueOf(sb.toString());
+            end = Date.valueOf(sb.replace(5, 9, "12-31").toString());
+            transactionsList = transactionRepository.findByDates(start, end, user.getId());
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append(year).append("-").append(month).append("-").append("01");
+            start = Date.valueOf(sb.toString());
+            end = Date.valueOf(sb.replace(8, 9, "31").toString());
+            transactionsList = transactionRepository.findByDates(start, end, user.getId());
+        }
+        return transactionsList;
     }
 
 }

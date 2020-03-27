@@ -35,13 +35,12 @@
     <script>
         function sendData(selectId) {
             var category = $('#changeCategory' + selectId);
-                var categoryIds = category.val();
-            if (categoryIds == ""){
+            var categoryIds = category.val();
+            if (categoryIds == "") {
                 $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId + "/0");
+            } else {
+                $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId + "/" + categoryIds.join(","));
             }
-            else {
-                $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId +"/" + categoryIds.join(","));
-               }
         }
     </script>
 
@@ -64,41 +63,39 @@
         <div id="content">
 
             <!-- Topbar -->
-<jsp:include page="topbar.jsp"></jsp:include>
+            <jsp:include page="topbar.jsp"></jsp:include>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
 
-
                 <!-- NEW TABLE - WORK IN PROGRESS -->
                 <style>
-                    .raf
-                    {
+                    .raf {
                         width: 100%;
                         font-size: 12px;
                         font-family: Arial;
                         color: black;
                     }
-                    .raf table
-                    {
+
+                    .raf table {
                         border-spacing: 0;
                         border: 1px solid black;
                     }
-                    .raf tr:hover
-                    {
+
+                    .raf tr:hover {
                         background: #F7F7F7;
                     }
-                    .raf th, td
-                    {
+
+                    .raf th, td {
                         border: 1px solid lightgray;
                         padding: 2px;
                         padding-left: 5px;
                         padding-right: 5px;
                     }
-                    .raf th
-                    {
+
+                    .raf th {
                         border-color: #858796;
                         text-align: center;
                         color: #858796;
@@ -107,35 +104,35 @@
                         font-size: 14px;
                         font-weight: normal;
                     }
-                    .raf td.actions a
-                    {
+
+                    .raf td.actions a {
                         display: inline-block;
                         margin-left: 5px;
                         margin-right: 5px;
                         color: rgb(207, 207, 207);
                     }
-                    .raf td.actions a:hover
-                    {
+
+                    .raf td.actions a:hover {
                         color: gray;
                     }
-                    .raf .center
-                    {
+
+                    .raf .center {
                         text-align: center;
                     }
-                    .raf .right
-                    {
+
+                    .raf .right {
                         text-align: right;
                     }
-                    .raf td.negative
-                    {
+
+                    .raf td.negative {
                         color: rgb(226, 0, 0);
                     }
-                    .raf td.positive
-                    {
+
+                    .raf td.positive {
                         color: rgb(0, 150, 0);
                     }
-                    a.tag
-                    {
+
+                    a.tag {
                         display: inline-block;
                         font-size: 10px;
                         padding: 2px;
@@ -145,33 +142,67 @@
                         color: white;
                         text-decoration: none;
                     }
-                    a.tag:hover
-                    {
+
+                    a.tag:hover {
                         cursor: pointer;
                         filter: brightness(120%);
                         color: white;
                     }
-                    a.tag-add
-                    {
+
+                    a.tag-add {
                         background: rgb(207, 207, 207);
                         float: right;
                     }
 
-                    a.tag1 { background: green; }
-                    a.tag2 { background: red; }
-                    a.tag3 { background: rgb(0, 171, 214); }
-                    a.tag4 { background: darkorchid; }
-                    a.tag5 { background: darkgoldenrod; }
-                    a.tag6 { background: gray; }
-                    a.tag7 { background: blue; }
-                    a.tag8 { background: navy; }
-                    a.tag9 { background: darkslateblue; }
-                    a.tag10 { background: darkslategrey; }
-                    a.tag11 { background: black; }
-                    a.tag12 { background: darkred; }
+                    a.tag1 {
+                        background: green;
+                    }
 
-                    a.tag-add:hover
-                    {
+                    a.tag2 {
+                        background: red;
+                    }
+
+                    a.tag3 {
+                        background: rgb(0, 171, 214);
+                    }
+
+                    a.tag4 {
+                        background: darkorchid;
+                    }
+
+                    a.tag5 {
+                        background: darkgoldenrod;
+                    }
+
+                    a.tag6 {
+                        background: gray;
+                    }
+
+                    a.tag7 {
+                        background: blue;
+                    }
+
+                    a.tag8 {
+                        background: navy;
+                    }
+
+                    a.tag9 {
+                        background: darkslateblue;
+                    }
+
+                    a.tag10 {
+                        background: darkslategrey;
+                    }
+
+                    a.tag11 {
+                        background: black;
+                    }
+
+                    a.tag12 {
+                        background: darkred;
+                    }
+
+                    a.tag-add:hover {
                         background: gray;
                     }
                 </style>
@@ -180,7 +211,7 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-body">
-                        
+
                         <!-- YEARS -->
                         <!-- todo: fill with actual years from db -->
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -199,109 +230,111 @@
                             <label class="btn btn-outline-secondary btn-sm active">
                                 <input type="radio" name="options" id="option0" autocomplete="off" checked>ALL
                             </label>
-        
+
                             <script>
-                                var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+                                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
                                 for (var i = 0; i < 12; i++) {
                                     document.write("<label class=\"btn btn-outline-secondary btn-sm\">");
                                     document.write("    <input type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
                                     document.write(months[i]);
                                     document.write("</label>");
-                                };
+                                }
+                                ;
                             </script>
                         </div>
 
                         <div class="input-group input-group-sm mb-3" style="width: 300px; margin-top: 10px;">
-                            <input type="text" class="form-control" placeholder="Filter by description..." aria-label="Filter by description..." aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" placeholder="Filter by description..."
+                                   aria-label="Filter by description..." aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Filter</button>
                             </div>
                         </div>
-        
+
                         <div style="height: 15px"></div>
 
                         <table class="raf">
                             <!-- TABLE HEADER -->
                             <thead>
-                                <tr>
-                                    <th style="width: 85px">Actions</th>
-                                    <th style="width: 100px">Date</th>
-                                    <th style="width: 100px">Amount</th>
-                                    <th style="width: 250px">Categories</th>
-                                    <th>Description</th>
-                                </tr>
+                            <tr>
+                                <th style="width: 85px">Actions</th>
+                                <th style="width: 100px">Date</th>
+                                <th style="width: 100px">Amount</th>
+                                <th style="width: 250px">Categories</th>
+                                <th>Description</th>
+                            </tr>
                             </thead>
                             <!-- TABLE DATA -->
-                            <tbody>
-                                <c:forEach items="${tl}" var="trans">
+                            <%--                            <tbody>--%>
+                            <%--                                <c:forEach items="${tl}" var="trans">--%>
 
-                                    <tr>
-                                        <td class="actions">
-                                            <a data-toggle="tooltip" title="Edit transaction" href="${pageContext.request.contextPath}/transaction/edit/${trans.id}"><span class="fa fa-edit"></span></a>
-                                            <a data-toggle="tooltip" title="Create keyword from this transaction" href="${pageContext.request.contextPath}/keyword/add/${trans.id}"><span class="fa fa-key"></span></a>
-                                            <a data-toggle="tooltip" title="Delete transaction" href="${pageContext.request.contextPath}/transaction/delete/${trans.id}"><span class="fa fa-trash-alt"></span></a>
-                                        </td>
-                                        <td class="center">${trans.transactionDate}</td>
-                                        <td class="
-                                            <c:choose>
-                                                <c:when test="${trans.amount lt 0}">negative</c:when>
-                                                <c:otherwise>positive</c:otherwise>
-                                            </c:choose> right">
-                                            ${trans.amount} zł
-                                        </td>
-                                        <td>
-                                            <c:forEach items="${categoriesList}" var="category">
-                                                <c:choose>
-                                                    <c:when test="${fn:contains(trans.categories, category)}">
-                                                        <a href="${pageContext.request.contextPath}/transaction/removecategory/${trans.id}/${category.id}" class="tag tag${category.id}">${category.name}</a>
-                                                    </c:when>
-                                                </c:choose>
-                                            </c:forEach>
+                            <%--                                    <tr>--%>
+                            <%--                                        <td class="actions">--%>
+                            <%--                                            <a data-toggle="tooltip" title="Edit transaction" href="${pageContext.request.contextPath}/transaction/edit/${trans.id}"><span class="fa fa-edit"></span></a>--%>
+                            <%--                                            <a data-toggle="tooltip" title="Create keyword from this transaction" href="${pageContext.request.contextPath}/keyword/add/${trans.id}"><span class="fa fa-key"></span></a>--%>
+                            <%--                                            <a data-toggle="tooltip" title="Delete transaction" href="${pageContext.request.contextPath}/transaction/delete/${trans.id}"><span class="fa fa-trash-alt"></span></a>--%>
+                            <%--                                        </td>--%>
+                            <%--                                        <td class="center">${trans.transactionDate}</td>--%>
+                            <%--                                        <td class="--%>
+                            <%--                                            <c:choose>--%>
+                            <%--                                                <c:when test="${trans.amount lt 0}">negative</c:when>--%>
+                            <%--                                                <c:otherwise>positive</c:otherwise>--%>
+                            <%--                                            </c:choose> right">--%>
+                            <%--                                            ${trans.amount} zł--%>
+                            <%--                                        </td>--%>
+                            <%--                                        <td>--%>
+                            <%--                                            <c:forEach items="${categoriesList}" var="category">--%>
+                            <%--                                                <c:choose>--%>
+                            <%--                                                    <c:when test="${fn:contains(trans.categories, category)}">--%>
+                            <%--                                                        <a href="${pageContext.request.contextPath}/transaction/removecategory/${trans.id}/${category.id}" class="tag tag${category.id}">${category.name}</a>--%>
+                            <%--                                                    </c:when>--%>
+                            <%--                                                </c:choose>--%>
+                            <%--                                            </c:forEach>--%>
 
-                                            <a tabindex="0" class="tag tag-add" data-html="true" data-toggle="popover" data-trigger="focus"
-                                                data-content="
-                                                
-                                                <c:forEach items="${categoriesList}" var="category">
-                                                    <c:choose>
-                                                        <c:when test="${fn:contains(trans.categories, category)}">
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <a href='${pageContext.request.contextPath}/transaction/addcategory/${trans.id}/${category.id}' class='tag tag${category.id}'>${category.name}</a>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
+                            <%--                                            <a tabindex="0" class="tag tag-add" data-html="true" data-toggle="popover" data-trigger="focus"--%>
+                            <%--                                                data-content="--%>
+                            <%--                                                --%>
+                            <%--                                                <c:forEach items="${categoriesList}" var="category">--%>
+                            <%--                                                    <c:choose>--%>
+                            <%--                                                        <c:when test="${fn:contains(trans.categories, category)}">--%>
+                            <%--                                                        </c:when>--%>
+                            <%--                                                        <c:otherwise>--%>
+                            <%--                                                            <a href='${pageContext.request.contextPath}/transaction/addcategory/${trans.id}/${category.id}' class='tag tag${category.id}'>${category.name}</a>--%>
+                            <%--                                                        </c:otherwise>--%>
+                            <%--                                                    </c:choose>--%>
+                            <%--                                                </c:forEach>--%>
 
-                                                " >+</a>
-                                        </td>
-                                        <td>${trans.description}</td>
-                                    </tr>
+                            <%--                                                " >+</a>--%>
+                            <%--                                        </td>--%>
+                            <%--                                        <td>${trans.description}</td>--%>
+                            <%--                                    </tr>--%>
 
-                                </c:forEach>
+                            <%--                                </c:forEach>--%>
 
-                                <!-- todo: handle changing categories -->
-                                <!-- <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"
-                                        multiple size="4" onchange="sendData(${trans.id})" >
-                                    <c:forEach items="${categoriesList}" var="category">
-                                        <c:choose>
-                                            <c:when test="${fn:contains(trans.categories, category)}">
-                                                <option selected="selected"
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option
-                                            </c:otherwise>
-                                        </c:choose>
-                                        value="${category.id}">${category.name}</option>
-                                    </c:forEach>
-                                </select> -->
+                            <%--                                <!-- todo: handle changing categories -->--%>
+                            <%--                                <!-- <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"--%>
+                            <%--                                        multiple size="4" onchange="sendData(${trans.id})" >--%>
+                            <%--                                    <c:forEach items="${categoriesList}" var="category">--%>
+                            <%--                                        <c:choose>--%>
+                            <%--                                            <c:when test="${fn:contains(trans.categories, category)}">--%>
+                            <%--                                                <option selected="selected"--%>
+                            <%--                                            </c:when>--%>
+                            <%--                                            <c:otherwise>--%>
+                            <%--                                                <option--%>
+                            <%--                                            </c:otherwise>--%>
+                            <%--                                        </c:choose>--%>
+                            <%--                                        value="${category.id}">${category.name}</option>--%>
+                            <%--                                    </c:forEach>--%>
+                            <%--                                </select> -->--%>
 
-                            </tbody>
+                            <%--                            </tbody>--%>
+                            <jsp:include page="table-transactions.jsp"></jsp:include>
                         </table>
                     </div>
                 </div>
 
                 <!-- NEW TABLE - WORK IN PROGRESS -->
-
 
 
                 <!-- Page Heading -->
@@ -311,8 +344,9 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-<%--                        <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>--%>
-                        <a href="${pageContext.request.contextPath}/transaction/assign">Assign Default Categories to Transactions</a>
+                        <%--                        <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>--%>
+                        <a href="${pageContext.request.contextPath}/transaction/assign">Assign Default Categories to
+                            Transactions</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -348,8 +382,9 @@
                                         <td>${trans.party}</td>
                                         <td>${trans.account.name}</td>
                                         <td>
-                                            <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"
-                                                    multiple size="4" onchange="sendData(${trans.id})" >
+                                            <select class="form-control" id="changeCategory${trans.id}"
+                                                    name="changeCategory"
+                                                    multiple size="4" onchange="sendData(${trans.id})">
                                                 <c:forEach items="${categoriesList}" var="category">
                                                     <c:choose>
                                                         <c:when test="${fn:contains(trans.categories, category)}">
@@ -365,7 +400,8 @@
                                         </td>
                                         <td><a href="${pageContext.request.contextPath}/transaction/edit/${trans.id}">Edit</a>
                                             <a href="${pageContext.request.contextPath}/transaction/delete/${trans.id}">Delete</a>
-                                            <a href="${pageContext.request.contextPath}/keyword/add/${trans.id}">Add keyword</a></td>
+                                            <a href="${pageContext.request.contextPath}/keyword/add/${trans.id}">Add
+                                                keyword</a></td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
@@ -381,7 +417,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-     <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="footer.jsp"></jsp:include>
         <!-- End of Footer -->
 
     </div>
@@ -414,12 +450,13 @@
         </div>
     </div>
 </div>
-<script> <c:forEach items="${tl}" var="trans"> var mySelect = new vanillaSelectBox("#changeCategory${trans.id}",{
-    placeHolder: "Uncategorised",  search: true});
+<script> <c:forEach items="${tl}" var="trans">
+var mySelect = new vanillaSelectBox("#changeCategory${trans.id}", {
+    placeHolder: "Uncategorised", search: true
+});
 <%--mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> ${category.id}</c:forEach>]);--%>
 
     </c:forEach></script>
-
 
 
 <!-- Bootstrap core JavaScript-->
@@ -441,7 +478,7 @@
 <!--datatables-->
 <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 
-<script>$('.tag-add').popover({ trigger: 'focus' })</script>
+<script>$('.tag-add').popover({trigger: 'focus'})</script>
 
 </body>
 
