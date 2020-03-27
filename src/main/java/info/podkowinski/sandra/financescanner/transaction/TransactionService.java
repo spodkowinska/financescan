@@ -250,15 +250,15 @@ public class TransactionService {
             transactionsList = transactionRepository.findAllByUserId(user.getId());
         } else if(month.equals("all")) {
             StringBuilder sb = new StringBuilder();
-            sb.append(year).append("-").append("01").append("-").append("01");
-            start = Date.valueOf(sb.toString());
-            end = Date.valueOf(sb.replace(5, 9, "12-31").toString());
+            StringBuilder sb2 = new StringBuilder();
+            start = Date.valueOf(sb.append(year).append("-").append("01").append("-").append("01").toString());
+            end = Date.valueOf(sb2.append(year).append("-").append("12").append("-").append("31").toString());
             transactionsList = transactionRepository.findByDates(start, end, user.getId());
         } else {
             StringBuilder sb = new StringBuilder();
-            sb.append(year).append("-").append(month).append("-").append("01");
-            start = Date.valueOf(sb.toString());
-            end = Date.valueOf(sb.replace(8, 9, "31").toString());
+            StringBuilder sb2 = new StringBuilder();
+            start = Date.valueOf(sb.append(year).append("-").append(month).append("-").append("01").toString());
+            end = Date.valueOf(sb2.append(year).append("-").append(month).append("-").append("31").toString());
             transactionsList = transactionRepository.findByDates(start, end, user.getId());
         }
         return transactionsList;
