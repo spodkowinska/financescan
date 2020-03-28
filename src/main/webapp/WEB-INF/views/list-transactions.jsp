@@ -59,6 +59,10 @@
                 // This line is needed to prevent category drop-right from disappearing
                 $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
             });
+
+            // Update year & month buttons state
+            $('#btn_year_' + gYear).addClass('active').siblings().removeClass('active');
+            $('#btn_month_' + gMonth).addClass('active').siblings().removeClass('active');
         }
 
         function changeCategory(transactionId, categoryId) {
@@ -268,36 +272,32 @@
                 <div class="card shadow mb-4">
                     <div class="card-body">
 
-                        <!-- YEARS -->
-                        <!-- todo: fill with actual years from db -->
+                        <%-- YEARS --%>
                         <div class="btn-group">
-                            <label class="btn btn-outline-secondary btn-sm active">
-                                <input onclick="getData('all', null)" type="radio" name="options" id="option2" autocomplete="off" checked>ALL
-                            </label>
+                            <button id="btn_year_all" class="btn btn-outline-secondary btn-sm active" onclick="getData('all', null)">
+                                ALL
+                            </button>
                             <c:forEach items="${years}" var="year">
-                                <label class="btn btn-outline-secondary btn-sm">
-                                    <input onclick="getData(${year}, null)" type="radio" name="options" id="option1" autocomplete="off">${year}
-                                </label>
+                                <button id="btn_year_${year}" class="btn btn-outline-secondary btn-sm" onclick="getData(${year}, null)">
+                                    ${year}
+                                </button>
                             </c:forEach>
-
                         </div>
 
-                        <!-- MONTHS -->
-                        <!-- todo: remove script -->
-                        <!-- todo: fill with actual months for the chosen year from db -->
+                        <%-- MONTHS --%>
                         <div class="btn-group">
-                            <label class="btn btn-outline-secondary btn-sm active">
-                                <input onclick="getData(null, 'all')" type="radio" name="options" id="option0" autocomplete="off" checked>ALL
-                            </label>
+                            <button id="btn_month_all" class="btn btn-outline-secondary btn-sm active" onclick="getData(null, 'all')">
+                                ALL
+                            </button>
 
                             <script>
-                                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                                let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
                                 for (var i = 0; i < 12; i++) {
-                                    document.write("<label class=\"btn btn-outline-secondary btn-sm\">");
-                                    document.write("    <input onclick='getData(null," + (i + 1) + ")' type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
+                                    let monthId = i + 1;
+                                    document.write("<button id=\"btn_month_" + monthId + "\" class=\"btn btn-outline-secondary btn-sm\" onclick='getData(null," + monthId + ")'>");
                                     document.write(months[i]);
-                                    document.write("</label>");
+                                    document.write("</button>");
                                 }
                             </script>
                         </div>
