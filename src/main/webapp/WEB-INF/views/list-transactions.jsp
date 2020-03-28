@@ -29,7 +29,9 @@
 
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
- b d
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vanillaSelectBox.css">
+
+    <script src="${pageContext.request.contextPath}/js//vanillaSelectBox.js"></script>
     <script>
         function sendData(selectId) {
             var category = $('#changeCategory' + selectId);
@@ -53,19 +55,29 @@
             }
             $.get("${pageContext.request.contextPath}/transaction/table/" + gYear + "/" + gMonth, function (data) {
                 $('#list').html(data);
-                $('.tag-add').popover({trigger: 'focus'});
+
+                // This line is needed to prevent category drop-right from disappearing
+                $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
             });
         }
 
-        function addCategory(transactionId, categoryId) {
-            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
-                $('row').html(data);
+        function changeCategory(transactionId, categoryId) {
+            let parentId = $('#cat_tag_' + transactionId + '_' + categoryId).parent().attr('id');
 
-            });
+            if (parentId === ('cat_current_' + transactionId))
+                removeCategory(transactionId, categoryId);
+            else
+                addCategory(transactionId, categoryId);
+        }
+
+        function addCategory(transactionId, categoryId) {
+            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId);
+            $('#cat_tag_' + transactionId + '_' + categoryId).appendTo('#cat_current_' + transactionId);
         }
 
         function removeCategory(transactionId, categoryId) {
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId);
+            $('#cat_tag_' + transactionId + '_' + categoryId).appendTo('#cat_others_' + transactionId);
         }
     </script>
 
@@ -251,26 +263,24 @@
 
                         <!-- YEARS -->
                         <!-- todo: fill with actual years from db -->
-                        <div class="btn-group">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-outline-secondary btn-sm active">
-                                <input onclick="getData('all', null)" type="radio" name="options" id="option2" autocomplete="off" checked>ALL
+                                <input type="radio" name="options" id="option2" autocomplete="off" checked>ALL
                             </label>
                             <c:forEach items="${years}" var="year">
                                 <label class="btn btn-outline-secondary btn-sm">
-                                    <input onclick="getData(${year}, null)" type="radio" name="options" id="option1" autocomplete="off">${year}
+                                    <input type="radio" name="options" id="option1" autocomplete="off">${year}
                                 </label>
                             </c:forEach>
-
 
                         </div>
 
                         <!-- MONTHS -->
-
                         <!-- todo: remove script -->
                         <!-- todo: fill with actual months for the chosen year from db -->
-                        <div class="btn-group">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-outline-secondary btn-sm active">
-                                <input onclick="getData(null, 'all')" type="radio" name="options" id="option0" autocomplete="off" checked>ALL
+                                <input type="radio" name="options" id="option0" autocomplete="off" checked>ALL
                             </label>
 
                             <script>
@@ -278,7 +288,7 @@
 
                                 for (var i = 0; i < 12; i++) {
                                     document.write("<label class=\"btn btn-outline-secondary btn-sm\">");
-                                    document.write("    <input onclick='getData(null," + (i+1) + ")' type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
+                                    document.write("    <input type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
                                     document.write(months[i]);
                                     document.write("</label>");
                                 }
@@ -402,6 +412,7 @@
         <!-- Footer -->
         <jsp:include page="footer.jsp"></jsp:include>
         <!-- End of Footer -->
+
     </div>
     <!-- End of Content Wrapper -->
 
