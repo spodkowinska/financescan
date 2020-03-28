@@ -29,9 +29,7 @@
 
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vanillaSelectBox.css">
-
-    <script src="${pageContext.request.contextPath}/js//vanillaSelectBox.js"></script>
+ b d
     <script>
         function sendData(selectId) {
             var category = $('#changeCategory' + selectId);
@@ -62,6 +60,7 @@
         function addCategory(transactionId, categoryId) {
             $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
                 $('row').html(data);
+
             });
         }
 
@@ -252,24 +251,26 @@
 
                         <!-- YEARS -->
                         <!-- todo: fill with actual years from db -->
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <div class="btn-group">
                             <label class="btn btn-outline-secondary btn-sm active">
-                                <input type="radio" name="options" id="option2" autocomplete="off" checked>ALL
+                                <input onclick="getData('all', null)" type="radio" name="options" id="option2" autocomplete="off" checked>ALL
                             </label>
                             <c:forEach items="${years}" var="year">
                                 <label class="btn btn-outline-secondary btn-sm">
-                                    <input type="radio" name="options" id="option1" autocomplete="off">${year}
+                                    <input onclick="getData(${year}, null)" type="radio" name="options" id="option1" autocomplete="off">${year}
                                 </label>
                             </c:forEach>
+
 
                         </div>
 
                         <!-- MONTHS -->
+
                         <!-- todo: remove script -->
                         <!-- todo: fill with actual months for the chosen year from db -->
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <div class="btn-group">
                             <label class="btn btn-outline-secondary btn-sm active">
-                                <input type="radio" name="options" id="option0" autocomplete="off" checked>ALL
+                                <input onclick="getData(null, 'all')" type="radio" name="options" id="option0" autocomplete="off" checked>ALL
                             </label>
 
                             <script>
@@ -277,7 +278,7 @@
 
                                 for (var i = 0; i < 12; i++) {
                                     document.write("<label class=\"btn btn-outline-secondary btn-sm\">");
-                                    document.write("    <input type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
+                                    document.write("    <input onclick='getData(null," + (i+1) + ")' type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
                                     document.write(months[i]);
                                     document.write("</label>");
                                 }
@@ -401,7 +402,6 @@
         <!-- Footer -->
         <jsp:include page="footer.jsp"></jsp:include>
         <!-- End of Footer -->
-
     </div>
     <!-- End of Content Wrapper -->
 
@@ -413,32 +413,26 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
-            </div>
-        </div>
-    </div>
-</div>
-<script> <c:forEach items="${tl}" var="trans">
-var mySelect = new vanillaSelectBox("#changeCategory${trans.id}", {
-    placeHolder: "Uncategorised", search: true
-});
-<%--mySelect.setValue([<c:forEach items="${trans.categories}" var="category"> ${category.id}</c:forEach>]);--%>
+<%--<!-- Logout Modal-->--%>
+<%--<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"--%>
+<%--     aria-hidden="true">--%>
+<%--    <div class="modal-dialog" role="document">--%>
+<%--        <div class="modal-content">--%>
+<%--            <div class="modal-header">--%>
+<%--                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>--%>
+<%--                <button class="close" type="button" data-dismiss="modal" aria-label="Close">--%>
+<%--                    <span aria-hidden="true">×</span>--%>
+<%--                </button>--%>
+<%--            </div>--%>
+<%--            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>--%>
+<%--            <div class="modal-footer">--%>
+<%--                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>--%>
+<%--                <a class="btn btn-primary" href="login.html">Logout</a>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
-    </c:forEach></script>
 
 
 <!-- Bootstrap core JavaScript-->

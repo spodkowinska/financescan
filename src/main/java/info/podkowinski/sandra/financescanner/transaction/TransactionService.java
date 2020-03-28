@@ -273,7 +273,7 @@ public class TransactionService {
         Transaction lastTransaction = transactionRepository.findLastTransaction(userId);
         Integer lastYear =lastTransaction.transactionDate.getYear();
         List<Integer> years = new ArrayList<>();
-        for (int i = currentYear; i>=lastYear; i--){
+        for (int i = lastYear; i<=currentYear; i++){
             years.add(i);
         }
         return years;
