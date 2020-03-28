@@ -31,7 +31,8 @@
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vanillaSelectBox.css">
 
-    <script src="${pageContext.request.contextPath}/js//vanillaSelectBox.js"></script>
+    <script src="${pageContext.request.contextPath}/js/sorttable.js"></script>
+
     <script>
         function sendData(selectId) {
             var category = $('#changeCategory' + selectId);
@@ -339,6 +340,10 @@
                     a.tag-add:hover {
                         background: gray;
                     }
+
+                    table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+                        content: " \25B4\25BE"
+                    }
                 </style>
 
                 <h1 class="h3 mb-2 text-gray-800">Transactions</h1>
@@ -405,15 +410,15 @@
 
                         <div style="height: 15px"></div>
 
-                        <table id="transaction_table" class="raf">
+                        <table id="transaction_table" class="raf sortable">
                             <!-- TABLE HEADER -->
                             <thead>
                             <tr>
-                                <th style="width: 85px">Actions</th>
+                                <th style="width: 85px" class="sorttable_nosort">Actions</th>
                                 <th style="width: 100px" data-searchable="true">Date</th>
-                                <th style="width: 100px" data-searchable="true">Amount</th>
-                                <th colspan="2" style="width: 250px">Categories</th>
-                                <th data-searchable="true">Description</th>
+                                <th style="width: 100px" data-searchable="true" class="sorttable_numeric">Amount</th>
+                                <th colspan="2" style="width: 250px" class="sorttable_nosort">Categories</th>
+                                <th data-searchable="true" class="sorttable_nosort">Description</th>
                             </tr>
                             </thead>
                             <!-- TABLE DATA -->

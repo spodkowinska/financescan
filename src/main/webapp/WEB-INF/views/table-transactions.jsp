@@ -29,10 +29,10 @@
 
         <c:choose>
             <c:when test="${trans.amount lt 0}">
-                <td class="negative right">${trans.amount} zł</td>
+                <td class="negative right" sorttable_customkey="${trans.amount}">${trans.amount} zł</td>
             </c:when>
             <c:otherwise>
-                <td class="positive right">${trans.amount} zł</td>
+                <td class="positive right" sorttable_customkey="${trans.amount}">${trans.amount} zł</td>
             </c:otherwise>
         </c:choose>
 
