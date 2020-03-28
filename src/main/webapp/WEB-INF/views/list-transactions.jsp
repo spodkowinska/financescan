@@ -55,6 +55,9 @@
             }
             $.get("${pageContext.request.contextPath}/transaction/table/" + gYear + "/" + gMonth, function (data) {
                 $('#list').html(data);
+
+                // This line is needed to prevent category drop-right from disappearing
+                $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
             });
         }
 
