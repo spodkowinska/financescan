@@ -47,22 +47,22 @@
         var gYear = "all";
 
         function getData(year, month) {
-            if (year !== null){
+            if (year !== null) {
                 gYear = year;
             }
-            if (month !== null){
+            if (month !== null) {
                 gMonth = month;
             }
             $.get("${pageContext.request.contextPath}/transaction/table/" + gYear + "/" + gMonth, function (data) {
                 $('#list').html(data);
-            $('.tag-add').popover({trigger: 'focus'});
+                $('.tag-add').popover({trigger: 'focus'});
             });
         }
 
         function addCategory(transactionId, categoryId) {
-            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data){
+            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
                 $('row').html(data);
-            };
+            });
         }
 
         function removeCategory(transactionId, categoryId) {
@@ -138,6 +138,10 @@
                         color: rgb(207, 207, 207);
                     }
 
+                    .raf td.categories {
+                        padding-left: 2px;
+                    }
+
                     .raf td.actions a:hover {
                         color: gray;
                     }
@@ -158,8 +162,16 @@
                         color: rgb(0, 150, 0);
                     }
 
+                    div.tag-add-popover {
+                        text-align: center;
+                        margin-left: 10px;
+                        padding: 5px;
+                        min-width: 400px;
+                    }
+
                     a.tag {
                         display: inline-block;
+                        margin: 1px;
                         font-size: 10px;
                         padding: 2px;
                         padding-left: 10px;
@@ -245,9 +257,9 @@
                                 <input type="radio" name="options" id="option2" autocomplete="off" checked>ALL
                             </label>
                             <c:forEach items="${years}" var="year">
-                            <label class="btn btn-outline-secondary btn-sm">
-                                <input type="radio" name="options" id="option1" autocomplete="off">${year}
-                            </label>
+                                <label class="btn btn-outline-secondary btn-sm">
+                                    <input type="radio" name="options" id="option1" autocomplete="off">${year}
+                                </label>
                             </c:forEach>
 
                         </div>
@@ -276,11 +288,13 @@
                         <!-- Three Dots Dropdown -->
                         <div class="btn-group" style="float: right">
                             <!-- Three Dots -->
-                            <a href="#" id="transOperationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <a href="#" id="transOperationsDropdown" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="true">
                                 <i class="fas fa-ellipsis-v mr-2 text-gray-600"></i>
                             </a>
                             <!-- Actual Dropdown -->
-                            <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="transOperationsDropdown">
+                            <div class="dropdown-menu dropdown-menu-right shadow"
+                                 aria-labelledby="transOperationsDropdown">
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/assign">
                                     <i class="fas fa-magic mr-2 text-gray-600"></i>
                                     Assign default keywords
@@ -310,7 +324,7 @@
                             </tr>
                             </thead>
                             <!-- TABLE DATA -->
-                                                        <tbody id="list">
+                            <tbody id="list">
                             <%--                                <c:forEach items="${tl}" var="trans">--%>
 
                             <%--                                    <tr>--%>
@@ -372,8 +386,8 @@
                             <%--                                    </c:forEach>--%>
                             <%--                                </select> -->--%>
 
-                                                        </tbody>
-<%--                            <jsp:include page="table-transactions.jsp"></jsp:include>--%>
+                            </tbody>
+                            <%--                            <jsp:include page="table-transactions.jsp"></jsp:include>--%>
                         </table>
                     </div>
                 </div>
