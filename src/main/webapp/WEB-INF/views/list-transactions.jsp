@@ -149,8 +149,17 @@
                         color: rgb(207, 207, 207);
                     }
 
-                    .raf td.categories {
+                    .raf td.categories-list {
+                        width: 230px;
                         padding-left: 2px;
+                        border-right: 0;
+                    }
+
+                    .raf td.categories-add {
+                        width: 20px;
+                        border-left: 0;
+                        padding-right: 2px;
+                        vertical-align: top;
                     }
 
                     .raf td.actions a:hover {
@@ -175,9 +184,8 @@
 
                     div.tag-add-popover {
                         text-align: center;
-                        margin-left: 10px;
                         padding: 5px;
-                        min-width: 400px;
+                        min-width: 300px;
                     }
 
                     a.tag {
@@ -200,7 +208,6 @@
 
                     a.tag-add {
                         background: rgb(207, 207, 207);
-                        float: right;
                     }
 
                     a.tag1 {
@@ -330,7 +337,7 @@
                                 <th style="width: 85px">Actions</th>
                                 <th style="width: 100px">Date</th>
                                 <th style="width: 100px">Amount</th>
-                                <th style="width: 250px">Categories</th>
+                                <th colspan="2" style="width: 250px">Categories</th>
                                 <th>Description</th>
                             </tr>
                             </thead>
