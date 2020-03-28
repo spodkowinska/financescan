@@ -268,5 +268,15 @@ public class TransactionService {
         }
         return transactionsList;
     }
+    List<Integer> findYearsByUserId(Long userId){
+        Integer currentYear = LocalDate.now().getYear();
+        Transaction lastTransaction = transactionRepository.findLastTransaction(userId);
+        Integer lastYear =lastTransaction.transactionDate.getYear();
+        List<Integer> years = new ArrayList<>();
+        for (int i = currentYear; i>=lastYear; i--){
+            years.add(i);
+        }
+        return years;
+    }
 
 }
