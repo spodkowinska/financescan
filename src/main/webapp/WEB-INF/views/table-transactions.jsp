@@ -38,23 +38,22 @@
 
             <%-- COLUMN: CATEGORIES --%>
 
-        <td class="categories">
+        <td class="categories" id="cat_current_${trans.id}">
 
-            <div id="cat_current_${trans.id}">
-                <c:forEach items="${categoriesList}" var="category"><c:choose><c:when
-                        test="${fn:contains(trans.categories, category)}"><a
-                        id="cat_tag_${trans.id}_${category.id}"
-                        tabindex="0"
-                        onclick="changeCategory(${trans.id},${category.id})"
-                        class="tag tag${category.id}">${category.name}</a></c:when></c:choose></c:forEach>
-            </div>
+            <c:forEach items="${categoriesList}" var="category"><c:choose><c:when
+                    test="${fn:contains(trans.categories, category)}"><a
+                    id="cat_tag_${trans.id}_${category.id}"
+                    tabindex="0"
+                    onclick="changeCategory(${trans.id},${category.id})"
+                    class="tag tag${category.id}">${category.name}</a></c:when></c:choose></c:forEach>
 
             <div class="btn-group dropright" style="float: right">
                 <a tabindex="0" class="tag tag-add" id="cat_drop_${trans.id}" data-toggle="dropdown"
                    aria-haspopup="true"
                    aria-expanded="true">+</a>
 
-                <div id="cat_others_${trans.id}" class="dropdown-menu shadow tag-add-popover" aria-labelledby="cat_drop_${trans.id}" >
+                <div id="cat_others_${trans.id}" class="dropdown-menu shadow tag-add-popover"
+                     aria-labelledby="cat_drop_${trans.id}">
 
                     <c:forEach items="${categoriesList}" var="category"><c:choose><c:when
                             test="${!fn:contains(trans.categories, category)}"><a
