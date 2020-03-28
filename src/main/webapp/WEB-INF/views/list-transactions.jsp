@@ -75,17 +75,22 @@
         }
 
         function getData(year, month) {
+
             if (year !== null) {
                 gYear = year;
             }
             if (month !== null) {
                 gMonth = month;
             }
+
             $.get("${pageContext.request.contextPath}/transaction/table/" + gYear + "/" + gMonth, function (data) {
                 $('#list').html(data);
 
                 // This line is needed to prevent category drop-right from disappearing
                 $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
+
+                // Update text filtering
+                applyTextFilter();
             });
 
             // Update year & month buttons state
@@ -123,7 +128,7 @@
             $('#cat_tag_' + transactionId + '_' + categoryId).appendTo('#cat_others_' + transactionId);
         }
 
-        function textFilter() {
+        function applyTextFilter() {
             let input = document.getElementById("text_filter");
             let filter = input.value.toUpperCase();
             let table = document.getElementById("transaction_table");
@@ -392,7 +397,7 @@
                         <div class="input-group input-group-sm mb-3" style="width: 300px; margin-top: 10px;">
                             <input type="text" class="form-control" placeholder="Filter by description..."
                                    aria-label="Filter by description..." aria-describedby="basic-addon2"
-                                   id="text_filter" onkeyup="textFilter()">
+                                   id="text_filter" onkeyup="applyTextFilter()">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Filter</button>
                             </div>
