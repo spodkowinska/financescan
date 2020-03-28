@@ -55,7 +55,6 @@
             }
             $.get("${pageContext.request.contextPath}/transaction/table/" + gYear + "/" + gMonth, function (data) {
                 $('#list').html(data);
-                $('.tag-add').popover({trigger: 'focus'});
             });
         }
 
