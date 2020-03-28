@@ -270,13 +270,13 @@
 
                         <!-- YEARS -->
                         <!-- todo: fill with actual years from db -->
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <div class="btn-group">
                             <label class="btn btn-outline-secondary btn-sm active">
-                                <input type="radio" name="options" id="option2" autocomplete="off" checked>ALL
+                                <input onclick="getData('all', null)" type="radio" name="options" id="option2" autocomplete="off" checked>ALL
                             </label>
                             <c:forEach items="${years}" var="year">
                                 <label class="btn btn-outline-secondary btn-sm">
-                                    <input type="radio" name="options" id="option1" autocomplete="off">${year}
+                                    <input onclick="getData(${year}, null)" type="radio" name="options" id="option1" autocomplete="off">${year}
                                 </label>
                             </c:forEach>
 
@@ -285,9 +285,9 @@
                         <!-- MONTHS -->
                         <!-- todo: remove script -->
                         <!-- todo: fill with actual months for the chosen year from db -->
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <div class="btn-group">
                             <label class="btn btn-outline-secondary btn-sm active">
-                                <input type="radio" name="options" id="option0" autocomplete="off" checked>ALL
+                                <input onclick="getData(null, 'all')" type="radio" name="options" id="option0" autocomplete="off" checked>ALL
                             </label>
 
                             <script>
@@ -295,11 +295,10 @@
 
                                 for (var i = 0; i < 12; i++) {
                                     document.write("<label class=\"btn btn-outline-secondary btn-sm\">");
-                                    document.write("    <input type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
+                                    document.write("    <input onclick='getData(null," + (i + 1) + ")' type=\"radio\" name=\"options\" id=\"option" + (i + 1) + "\" autocomplete=\"off\">");
                                     document.write(months[i]);
                                     document.write("</label>");
                                 }
-                                ;
                             </script>
                         </div>
 
