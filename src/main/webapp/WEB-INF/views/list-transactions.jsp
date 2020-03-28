@@ -43,8 +43,36 @@
             }
         }
 
+        var gSearchableColumnsIds = [];
+
         var gMonth = "all";
         var gYear = "all";
+        
+        function init() {
+            getData('all','all');
+            gatherSearchableColumnsIds();
+        }
+        
+        function gatherSearchableColumnsIds() {
+            gSearchableColumnsIds = [];
+
+            let table = document.getElementById("transaction_table");
+            let firstRow = table.getElementsByTagName("tr")[0];
+            let ths = firstRow.getElementsByTagName("th");
+            var offset = 0;
+
+            for (var i = 0; i < ths.length; i++) {
+                let th = ths[i];
+                if (th) {
+                    if (th.getAttribute('data-searchable') === 'true')
+                        gSearchableColumnsIds.push(i + offset);
+                    let colspan = th.getAttribute('colspan');
+                    if (colspan) {
+                        offset += parseInt(colspan) - 1;
+                    }
+                }
+            }
+        }
 
         function getData(year, month) {
             if (year !== null) {
@@ -94,12 +122,42 @@
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId);
             $('#cat_tag_' + transactionId + '_' + categoryId).appendTo('#cat_others_' + transactionId);
         }
+
+        function textFilter() {
+            let input = document.getElementById("text_filter");
+            let filter = input.value.toUpperCase();
+            let table = document.getElementById("transaction_table");
+            let trs = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those which don't match the search query
+            for (var i = 0; i < trs.length; i++) {
+                let tds = trs[i].getElementsByTagName("td");
+
+                if (tds.length == 0)
+                    continue;
+
+                var vis = false;
+
+                for (let j of gSearchableColumnsIds) {
+                    let td = tds[j];
+                    if (td) {
+                        let txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            vis = true;
+                            break;
+                        }
+                    }
+                }
+
+                trs[i].style.display = vis ? "" : "none";
+            }
+        }
     </script>
 
 
 </head>
 
-<body id="page-top" onload="getData('all','all')">
+<body id="page-top" onload="init()">
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -330,9 +388,11 @@
                             </div>
                         </div>
 
+                        <!-- Filter -->
                         <div class="input-group input-group-sm mb-3" style="width: 300px; margin-top: 10px;">
                             <input type="text" class="form-control" placeholder="Filter by description..."
-                                   aria-label="Filter by description..." aria-describedby="basic-addon2">
+                                   aria-label="Filter by description..." aria-describedby="basic-addon2"
+                                   id="text_filter" onkeyup="textFilter()">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Filter</button>
                             </div>
@@ -340,15 +400,15 @@
 
                         <div style="height: 15px"></div>
 
-                        <table class="raf">
+                        <table id="transaction_table" class="raf">
                             <!-- TABLE HEADER -->
                             <thead>
                             <tr>
                                 <th style="width: 85px">Actions</th>
-                                <th style="width: 100px">Date</th>
-                                <th style="width: 100px">Amount</th>
+                                <th style="width: 100px" data-searchable="true">Date</th>
+                                <th style="width: 100px" data-searchable="true">Amount</th>
                                 <th colspan="2" style="width: 250px">Categories</th>
-                                <th>Description</th>
+                                <th data-searchable="true">Description</th>
                             </tr>
                             </thead>
                             <!-- TABLE DATA -->
