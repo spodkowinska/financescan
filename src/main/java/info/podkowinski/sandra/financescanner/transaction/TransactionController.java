@@ -51,11 +51,13 @@ public class TransactionController {
         List<Transaction> transactionsList = transactionService.findByUserId(2l);
         List<Account> accountsList = accountService.findByUserId(2l);
         List<Category> categoriesList = categoryService.findByUserId(2l);
+        List<Integer> years = transactionService.findYearsByUserId(2l);
         HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(2l);
         model.addAttribute("tl", transactionsList);
         model.addAttribute("bl", accountsList);
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
+        model.addAttribute("years", years);
         return "list-transactions";
     }
 

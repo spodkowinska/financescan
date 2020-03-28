@@ -38,4 +38,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query(value = "SELECT * FROM transactions_categories tc WHERE tc.categories_id =?", nativeQuery = true)
     public Transaction findByCategoryId(Long categoryId);
+
+    @Query(value = "SELECT * FROM transactions t ORDER BY transaction_date ASC LIMIT 1", nativeQuery = true)
+    Transaction findLastTransaction(Long userId);
 }
