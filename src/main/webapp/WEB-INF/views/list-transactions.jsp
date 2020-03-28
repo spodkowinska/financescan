@@ -58,14 +58,23 @@
             });
         }
 
+        function changeCategory(transactionId, categoryId) {
+            let parentId = $('#cat_tag_' + transactionId + '_' + categoryId).parent().attr('id');
+
+            if (parentId === ('cat_current_' + transactionId))
+                removeCategory(transactionId, categoryId);
+            else
+                addCategory(transactionId, categoryId);
+        }
+
         function addCategory(transactionId, categoryId) {
-            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
-                $('row').html(data);
-            });
+            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId);
+            $('#cat_tag_' + transactionId + '_' + categoryId).appendTo('#cat_current_' + transactionId);
         }
 
         function removeCategory(transactionId, categoryId) {
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId);
+            $('#cat_tag_' + transactionId + '_' + categoryId).appendTo('#cat_others_' + transactionId);
         }
     </script>
 
