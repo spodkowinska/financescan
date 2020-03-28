@@ -62,7 +62,18 @@
 
             // Update year & month buttons state
             $('#btn_year_' + gYear).addClass('active').siblings().removeClass('active');
-            $('#btn_month_' + gMonth).addClass('active').siblings().removeClass('active');
+
+            if (gYear === 'all') {
+                // Hide months if all years are displayed
+                $('#months').hide('fast');
+            }
+            else {
+                // Show months if only a specific year is displayed
+                $('#months').show('fast');
+
+                // Activate only current month button if a specific year is displayed
+                $('#btn_month_' + gMonth).addClass('active').siblings().removeClass('active');
+            }
         }
 
         function changeCategory(transactionId, categoryId) {
@@ -285,7 +296,7 @@
                         </div>
 
                         <%-- MONTHS --%>
-                        <div class="btn-group">
+                        <div id="months" class="btn-group">
                             <button id="btn_month_all" class="btn btn-outline-secondary btn-sm active" onclick="getData(null, 'all')">
                                 ALL
                             </button>
