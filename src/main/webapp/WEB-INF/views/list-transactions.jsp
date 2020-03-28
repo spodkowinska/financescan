@@ -43,12 +43,31 @@
             }
         }
 
+        var gMonth = "all";
+        var gYear = "all";
+
         function getData(year, month) {
-            $.get("${pageContext.request.contextPath}/transaction/table/" + year + "/" + month, function (data) {
+            if (year !== null){
+                gYear = year;
+            }
+            if (month !== null){
+                gMonth = month;
+            }
+            $.get("${pageContext.request.contextPath}/transaction/table/" + gYear + "/" + gMonth, function (data) {
                 $('#list').html(data);
+            $('.tag-add').popover({trigger: 'focus'});
             });
         }
 
+        function addCategory(transactionId, categoryId) {
+            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data){
+                $('row').html(data);
+            };
+        }
+
+        function removeCategory(transactionId, categoryId) {
+            $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId);
+        }
     </script>
 
 
@@ -222,12 +241,15 @@
                         <!-- YEARS -->
                         <!-- todo: fill with actual years from db -->
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-outline-secondary btn-sm">
-                                <input type="radio" name="options" id="option1" autocomplete="off">2019
-                            </label>
                             <label class="btn btn-outline-secondary btn-sm active">
-                                <input type="radio" name="options" id="option2" autocomplete="off" checked>2020
+                                <input type="radio" name="options" id="option2" autocomplete="off" checked>ALL
                             </label>
+                            <c:forEach items="${years}" var="year">
+                            <label class="btn btn-outline-secondary btn-sm">
+                                <input type="radio" name="options" id="option1" autocomplete="off">${year}
+                            </label>
+                            </c:forEach>
+
                         </div>
 
                         <!-- MONTHS -->
@@ -423,8 +445,6 @@ var mySelect = new vanillaSelectBox("#changeCategory${trans.id}", {
 <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
 <!--datatables-->
 <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-
-<script>$('.tag-add').popover({trigger: 'focus'})</script>
 
 </body>
 

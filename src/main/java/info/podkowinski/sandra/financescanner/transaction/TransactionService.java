@@ -257,8 +257,13 @@ public class TransactionService {
         } else {
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
+            if(month.length()==1){
+                start = Date.valueOf(sb.append(year).append("-").append(month).append("-").append("01").toString());
+                end = Date.valueOf(sb2.append(year).append("-").append("0").append(month).append("-").append("31").toString());
+            } else{
             start = Date.valueOf(sb.append(year).append("-").append(month).append("-").append("01").toString());
             end = Date.valueOf(sb2.append(year).append("-").append(month).append("-").append("31").toString());
+            }
             transactionsList = transactionRepository.findByDates(start, end, user.getId());
         }
         return transactionsList;

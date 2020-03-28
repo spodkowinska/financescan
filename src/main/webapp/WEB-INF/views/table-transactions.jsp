@@ -28,7 +28,7 @@
             <c:forEach items="${categoriesList}" var="category">
                 <c:choose>
                     <c:when test="${fn:contains(trans.categories, category)}">
-                        <a href="${pageContext.request.contextPath}/transaction/removecategory/${trans.id}/${category.id}"
+                        <a onclick="removeCategory(${trans.id},${category.id})"
                            class="tag tag${category.id}">${category.name}</a>
                     </c:when>
                 </c:choose>
@@ -42,9 +42,10 @@
                                                         <c:when test="${fn:contains(trans.categories, category)}">
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a href='${pageContext.request.contextPath}/transaction/addcategory/${trans.id}/${category.id}' class='tag tag${category.id}'>${category.name}</a>
+                                                            <a onclick='addCategory(${trans.id},${category.id})' class='tag tag${category.id}'>${category.name}</a>
                                                         </c:otherwise>
                                                     </c:choose>
+
                                                 </c:forEach>
 
                                                 ">+</a>
@@ -54,20 +55,4 @@
 
 </c:forEach>
 
-<!-- todo: handle changing categories -->
-<!-- <select class="form-control" id="changeCategory${trans.id}" name="changeCategory"
-                                        multiple size="4" onchange="sendData(${trans.id})" >
-                                    <c:forEach items="${categoriesList}" var="category">
-                                        <c:choose>
-                                            <c:when test="${fn:contains(trans.categories, category)}">
-                                                <option selected="selected"
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option
-                                            </c:otherwise>
-                                        </c:choose>
-                                        value="${category.id}">${category.name}</option>
-                                    </c:forEach>
-                                </select> -->
 
-<%--</tbody>--%>
