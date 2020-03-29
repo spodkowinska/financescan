@@ -40,7 +40,8 @@
 
     <style>
         .tag-check {
-            opacity: 0.4;
+            opacity: 0.3;
+            font-size: 14px;
         }
         .tag-check-container input:checked ~ .tag-check {
             opacity: 1;
