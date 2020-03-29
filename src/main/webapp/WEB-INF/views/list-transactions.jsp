@@ -400,7 +400,8 @@
 
                                 for (var i = 0; i < 12; i++) {
                                     let monthId = i + 1;
-                                    document.write("<button id=\"btn_month_" + monthId + "\" class=\"btn btn-outline-secondary btn-sm\" onclick='getData(null," + monthId + ")'>");
+                                    document.write("<button id=\"btn_month_" + monthId + "\" class=\"btn btn-outline-secondary btn-sm\" " +
+                                        "onclick='getData(null," + monthId + ")'>");
                                     document.write(months[i]);
                                     document.write("</button>");
                                 }

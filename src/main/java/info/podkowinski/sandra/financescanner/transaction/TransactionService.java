@@ -126,9 +126,7 @@ public class TransactionService {
     }
 
     public double balanceByDates(Long userId, Date start, Date end) {
-        String startDate = start.toString();
-        String endDate = end.toString();
-        List<Transaction> transactionList = transactionRepository.findByDates(startDate, endDate, userId);
+        List<Transaction> transactionList = transactionRepository.findByDates(start, end, userId);
         double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
         return balance;
     }
@@ -246,27 +244,16 @@ public class TransactionService {
 
     List <Transaction> transactionsByDate(String year, String month, User user){
         List <Transaction> transactionsList= new ArrayList<>();
-        String start;
-        String end;
         if (year.equals("all")){
             transactionsList = transactionRepository.findAllByUserId(user.getId());
         } else if(month.equals("all")) {
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
-            start = sb.append(year).append("-").append("01").append("-").append("01").toString();
-            end = sb2.append(year).append("-").append("12").append("-").append("31").toString();
-            transactionsList = transactionRepository.findByDates(start, end, user.getId());
+            transactionsList = transactionRepository.findByMonth(year, month, user.getId());
         } else {
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
-            if(month.length()==1){
-                start = sb.append(year).append("-").append(month).append("-").append("01").toString();
-                end = sb2.append(year).append("-").append("0").append(month).append("-").append("31").toString();
-            } else{
-            start = sb.append(year).append("-").append(month).append("-").append("01").toString();
-            end = sb2.append(year).append("-").append(month).append("-").append("31").toString();
-            }
-            transactionsList = transactionRepository.findByDates(start, end, user.getId());
+            transactionsList = transactionRepository.findByMonth(year, month, user.getId());
         }
         return transactionsList;
     }

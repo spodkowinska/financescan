@@ -34,11 +34,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             (Date after, Date before, User user, Category category);
 
     @Query(value = "SELECT * FROM transactions t WHERE t.transaction_date>=? and t.transaction_date<=? and user_id=?", nativeQuery = true)
-    List<Transaction> findByDates(String after, String before, Long userId);
+    List<Transaction> findByDates(Date after, Date before, Long userId);
 
     @Query(value = "SELECT * FROM transactions_categories tc WHERE tc.categories_id =?", nativeQuery = true)
     public Transaction findByCategoryId(Long categoryId);
 
     @Query(value = "SELECT * FROM transactions t ORDER BY transaction_date ASC LIMIT 1", nativeQuery = true)
     Transaction findLastTransaction(Long userId);
+
+    @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and MONTH(t.transaction_date)=? and user_id=?", nativeQuery = true)
+    List<Transaction> findByMonth(String year, String month, Long userId);
 }
