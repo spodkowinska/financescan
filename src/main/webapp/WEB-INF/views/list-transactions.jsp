@@ -90,6 +90,9 @@
                 // This line is needed to prevent category drop-right from disappearing
                 $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
 
+                // Update sorting
+                applySorting();
+
                 // Update text filtering
                 applyTextFilter();
             });
@@ -157,6 +160,29 @@
 
                 trs[i].style.display = vis ? "" : "none";
             }
+        }
+
+        function applySorting() {
+            // Get all <th>s from the transaction table
+            $('table#transaction_table thead tr th').each(function() {
+                // If the <th> has 'sorttable_sorted' then it was sorted.
+                // We have to remove the class first to allow sorting on new data.
+                if ($(this).hasClass('sorttable_sorted')) {
+                    $(this).removeClass('sorttable_sorted');
+                    sorttable.innerSortFunction.apply($(this)[0], []);
+                    return;
+                }
+                // If the <th> has 'sorttable_sorted_reverse' then it was sorted in reversed order.
+                // We have to remove the class first to allow sorting on new data.
+                // We have to sort TWICE to achieve reversed order (first is standard).
+                // Fortunately the second sort is only a reverse - no actual sorting is performed.
+                else if ($(this).hasClass('sorttable_sorted_reverse')) {
+                    $(this).removeClass('sorttable_sorted_reverse');
+                    sorttable.innerSortFunction.apply($(this)[0], []);
+                    sorttable.innerSortFunction.apply($(this)[0], []);
+                    return;
+                }
+            });
         }
     </script>
 
