@@ -614,6 +614,8 @@
                 $.post(transEditLink, $('#editModalForm').serialize(), function(newRowData) {
                     $('#cat_row_' + transId).replaceWith(newRowData);
                 });
+                // Unbind handlers to avoid situations in which this button has more than one onclick handler
+                $(this).unbind();
             });
         });
     })
