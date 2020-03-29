@@ -304,6 +304,10 @@
                         text-decoration: none;
                     }
 
+                    .tag-disabled {
+                        opacity: 0.35;
+                    }
+
                     .tag-add {
                         background: rgb(207, 207, 207);
                     }

@@ -42,8 +42,16 @@
         <label>Categories</label>
         <div style="text-align: center">
             <c:forEach items="${categories}" var="category">
-                <input type="checkbox" id="category_${category.id}" style="display: none">
-                <label class="tag tag${category.id}" for="category_${category.id}">${category.name}</label>
+                <c:choose>
+                    <c:when test="${fn:contains(transaction.categories, category)}">
+                        <input type="checkbox" id="category_${category.id}" style="display: none" checked>
+                        <label class="tag tag${category.id}" for="category_${category.id}">${category.name}</label>
+                    </c:when>
+                    <c:otherwise>
+                        <input type="checkbox" id="category_${category.id}" style="display: none" checked>
+                        <label class="tag tag${category.id} tag-disabled" for="category_${category.id}">${category.name}</label>
+                    </c:otherwise>
+                </c:choose>
             </c:forEach>
         </div>
     </div>
