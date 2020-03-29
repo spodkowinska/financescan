@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -222,10 +224,10 @@ public class TransactionController {
     @GetMapping("/table/gettransaction/{transactionId}")
     public String tableRow( Model model, @PathVariable Long transactionId) {
         User user2 = userService.findById(2l);
-        Transaction transaction = transactionService.findById(transactionId);
+        List <Transaction> transactions = Arrays.asList(transactionService.findById(transactionId));
         List<Category> categories = categoryService.findByUserId(2l);
         model.addAttribute("categoriesList", categories);
-        model.addAttribute("transaction", transaction);
+        model.addAttribute("tl", transactions);
         return "table-transactions";
     }
 }
