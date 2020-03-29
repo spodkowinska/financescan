@@ -1,145 +1,44 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<form:form action="/transaction/edit/${transaction.id}" method="post" modelAttribute="transaction">
+    <form:input path="id" type="hidden" id="id"></form:input>
 
+    <div class="form-group">
+        <label>Date</label>
+        <form:input path="transactionDate" type="date"  class="form-control" name="transactionDate" id="transactionDate"></form:input>
+    </div>
 
-<!DOCTYPE html>
-<html lang="en">
+    <div class="form-group">
+        <label>Description</label>
+        <form:input path="description" class="form-control" id="description"></form:input>
+        <p class="help-block"></p>
+    </div>
 
-<head>
+    <div class="form-group">
+        <label>Amount</label>
+        <form:input path="amount" class="form-control" id="amount"></form:input>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    </div>
 
-    <title>Edit transaction</title>
+    <div class="form-group">
+        <label>Transaction Partner</label>
+        <form:input path="party" class="form-control" id="party"></form:input>
 
-    <!-- Custom fonts for this template -->
-    <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-          type="text/css">
+    </div>
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
+    <div class="form-group">
+        <label>Bank</label>
+        <form:select path="account" class="form-control" id="accountId">
+            <c:forEach items="${accounts}" var="account">
+                <option value="${account.id}">${account.name}</option>
+            </c:forEach>
+        </form:select>
+    </div>
+    <div class="form-group">
+        <label>Category</label>
+        <form:select path="categories" class="form-control" id="categoryId">
+            <c:forEach items="${categories}" var="category">
+                <option value="${category.id}">${category.name}</option>
+            </c:forEach>
+        </form:select>
+    </div>
 
-    <!-- Custom styles for this template-->
-    <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vanillaSelectBox.css">
-
-    <script src="${pageContext.request.contextPath}/js//vanillaSelectBox.js"></script>
-
-</head>
-
-<body id="page-top">
-
-<!-- Page Wrapper -->
-<div id="wrapper">
-
-    <!-- Sidebar -->
-    <jsp:include page="sidebar.jsp"></jsp:include>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            <!-- Topbar -->
-            <jsp:include page="topbar.jsp"></jsp:include>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                <%--todo frontend validation--%>
-
-                <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Edit Transaction</h1>
-
-
-                <!-- Page Heading -->
-
-                <div class="card shadow mb-4">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-lg-24">
-                                <form:form action="/transaction/edit/${transaction.id}" method="post"
-                                           modelAttribute="transaction">
-                                    <form:input path="id" type="hidden" id="id"></form:input>
-
-                                    <div class="form-group">
-                                        <label>Date</label>
-                                        <form:input path="transactionDate" type="date"  class="form-control" name="transactionDate" id="transactionDate"></form:input>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Description</label>
-                                        <form:input path="description" class="form-control" id="description"></form:input>
-                                        <p class="help-block"></p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Amount</label>
-                                        <form:input path="amount" class="form-control" id="amount"></form:input>
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Transaction Partner</label>
-                                        <form:input path="party" class="form-control" id="party"></form:input>
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Bank</label>
-                                    <form:select path="account" class="form-control" id="accountId">
-                                        <c:forEach items="${accounts}" var="account">
-                                            <option value="${account.id}">${account.name}</option>
-                                        </c:forEach>
-                                    </form:select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Category</label>
-                                        <form:select path="categories" class="form-control" id="categoryId">
-                                            <c:forEach items="${categories}" var="category">
-                                                <option value="${category.id}">${category.name}</option>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
-
-
-
-                                    <button type="submit" class="btn btn-default">Save</button>
-                                    <button type="reset" class="btn btn-default">Reset</button>
-
-                                </form:form>
-                            </div>
-                        </div>
-                        <!-- /.row -->
-
-                    </div>
-                    <!-- /.container-fluid -->
-
-                </div>
-                <!-- /#page-wrapper -->
-
-            </div>
-            <!-- /#wrapper -->
-
-            <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
-            <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-            <!-- Core plugin JavaScript-->
-            <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-            <!-- Custom scripts for all pages-->
-            <script src="${pageContext.request.contextPath}/js/sb-admin-2.min.js"></script>
+</form:form>

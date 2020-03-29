@@ -368,6 +368,29 @@
                     }
                 </style>
 
+                <%-- TRANSACTION ADD/EDIT MODAL --%>
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit Transaction</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="editModalBody">
+                                <%-- Filled by AJAX from edit-transaction.jsp --%>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%-- TRANSACTION TABLE --%>
+
                 <h1 class="h3 mb-2 text-gray-800">Transactions</h1>
 
                 <div class="card shadow mb-4">
@@ -574,6 +597,16 @@
 <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
 <!--datatables-->
 <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $('#editModal').on('show.bs.modal', function(event) {
+        let transId = $(event.relatedTarget).data('transaction-id');
+
+        $.get('${pageContext.request.contextPath}/transaction/edit/' + transId, function(data) {
+            $('#editModalBody').html(data);
+        });
+    })
+</script>
 
 </body>
 
