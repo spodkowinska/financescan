@@ -34,16 +34,6 @@
     <script src="${pageContext.request.contextPath}/js/sorttable.js"></script>
 
     <script>
-        function sendData(selectId) {
-            var category = $('#changeCategory' + selectId);
-            var categoryIds = category.val();
-            if (categoryIds == "") {
-                $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId + "/0");
-            } else {
-                $.get("${pageContext.request.contextPath}/transaction/setcategories/" + selectId + "/" + categoryIds.join(","));
-            }
-        }
-
         var gSearchableColumnsIds = [];
 
         var gMonth = "all";
@@ -142,7 +132,7 @@
             for (var i = 0; i < trs.length; i++) {
                 let tds = trs[i].getElementsByTagName("td");
 
-                if (tds.length == 0)
+                if (tds.length === 0)
                     continue;
 
                 var vis = false;
@@ -150,7 +140,7 @@
                 for (let j of gSearchableColumnsIds) {
                     let td = tds[j];
                     if (td) {
-                        let txtValue = td.textContent || td.innerText;
+                        let txtValue = td.getAttribute('sorttable_customkey') || td.textContent || td.innerText;
                         if (txtValue.toUpperCase().indexOf(filter) > -1) {
                             vis = true;
                             break;
@@ -170,7 +160,6 @@
                 if ($(this).hasClass('sorttable_sorted')) {
                     $(this).removeClass('sorttable_sorted');
                     sorttable.innerSortFunction.apply($(this)[0], []);
-                    return;
                 }
                 // If the <th> has 'sorttable_sorted_reverse' then it was sorted in reversed order.
                 // We have to remove the class first to allow sorting on new data.
@@ -180,13 +169,10 @@
                     $(this).removeClass('sorttable_sorted_reverse');
                     sorttable.innerSortFunction.apply($(this)[0], []);
                     sorttable.innerSortFunction.apply($(this)[0], []);
-                    return;
                 }
             });
         }
     </script>
-
-
 </head>
 
 <body id="page-top" onload="init()">
