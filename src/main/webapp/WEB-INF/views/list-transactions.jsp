@@ -105,7 +105,8 @@
 
         function getTransaction(transactionId){
             $.get("${pageContext.request.contextPath}/transaction/gettransaction/" + transactionId, function (data) {
-                $('#line').html(data);
+                $('#list').html(data);
+            })
         }
 
         function changeCategory(transactionId, categoryId) {

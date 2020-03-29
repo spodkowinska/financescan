@@ -220,7 +220,7 @@ public class TransactionController {
     }
 
     @GetMapping("/table/gettransaction/{transactionId}")
-    public String table( Model model, @PathVariable Long transactionId) {
+    public String tableRow( Model model, @PathVariable Long transactionId) {
         User user2 = userService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
         List<Category> categories = categoryService.findByUserId(2l);

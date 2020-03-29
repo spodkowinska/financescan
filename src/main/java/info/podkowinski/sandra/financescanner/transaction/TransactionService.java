@@ -85,7 +85,7 @@ public class TransactionService {
     }
 
     public List<Transaction> findByUserId(long id) {
-        return transactionRepository.findAllByUserId(id);
+        return transactionRepository.findAllByUserIdOrderByTransactionDateAsc(id);
     }
 
     public void assignDefaultCategoriesInTransactions(User user) {
@@ -245,14 +245,10 @@ public class TransactionService {
     List <Transaction> transactionsByDate(String year, String month, User user){
         List <Transaction> transactionsList= new ArrayList<>();
         if (year.equals("all")){
-            transactionsList = transactionRepository.findAllByUserId(user.getId());
+            transactionsList = transactionRepository.findAllByUserIdOrderByTransactionDateAsc(user.getId());
         } else if(month.equals("all")) {
-            StringBuilder sb = new StringBuilder();
-            StringBuilder sb2 = new StringBuilder();
-            transactionsList = transactionRepository.findByMonth(year, month, user.getId());
+            transactionsList = transactionRepository.findByYear(year, user.getId());
         } else {
-            StringBuilder sb = new StringBuilder();
-            StringBuilder sb2 = new StringBuilder();
             transactionsList = transactionRepository.findByMonth(year, month, user.getId());
         }
         return transactionsList;
