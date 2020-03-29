@@ -383,7 +383,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-primary" id="editModalSubmit">Save</button>
                             </div>
                         </div>
                     </div>
@@ -601,9 +601,15 @@
 <script>
     $('#editModal').on('show.bs.modal', function(event) {
         let transId = $(event.relatedTarget).data('transaction-id');
+        let transEditLink = '${pageContext.request.contextPath}/transaction/edit/' + transId;
 
-        $.get('${pageContext.request.contextPath}/transaction/edit/' + transId, function(data) {
+        $.get(transEditLink, function(data) {
             $('#editModalBody').html(data);
+            $('#editModalSubmit').click(function(event) {
+                $.post(transEditLink, $('#editModalForm').serialize(), function(newRowData) {
+                    $('#cat_row_' + transId).replaceWith(newRowData);
+                });
+            });
         });
     })
 </script>

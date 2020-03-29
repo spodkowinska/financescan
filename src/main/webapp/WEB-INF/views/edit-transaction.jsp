@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<form:form action="/transaction/edit/${transaction.id}" method="post" modelAttribute="transaction">
+<form:form action="/transaction/edit/${transaction.id}" method="post" modelAttribute="transaction" id="editModalForm">
 
     <form:input path="id" type="hidden" id="id"></form:input>
 

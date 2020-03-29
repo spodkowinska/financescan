@@ -140,7 +140,7 @@ public class TransactionController {
         transaction1.setTransactionDate(LocalDate.parse(date));
         System.out.println(transaction1.transactionDate);
         transactionService.save(transaction1);
-        return "redirect:/transaction/list";
+        return "redirect:/transaction/table/gettransaction/" + transaction1.id;
     }
 
     @GetMapping("/setcategories/{transactionId}/{categories}")

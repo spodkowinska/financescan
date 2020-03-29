@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <c:forEach items="${tl}" var="trans">
-    <tr>
+    <tr id="cat_row_${trans.id}">
             <%-- COLUMN: ACTIONS --%>
 
         <td class="actions">
