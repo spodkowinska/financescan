@@ -3,12 +3,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <c:forEach items="${tl}" var="trans">
-    <tr>
+    <tr id="cat_row_${trans.id}">
             <%-- COLUMN: ACTIONS --%>
 
         <td class="actions">
-            <a data-toggle="tooltip" title="Edit transaction"
-               href="${pageContext.request.contextPath}/transaction/edit/${trans.id}">
+            <a data-toggle="modal" data-target="#editModal" data-transaction-id="${trans.id}"
+               data-toggle="tooltip" title="Edit transaction" tabindex="0">
                 <span class="fa fa-edit"></span>
             </a>
             <a data-toggle="tooltip" title="Create keyword from this transaction"

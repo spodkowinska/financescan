@@ -362,7 +362,34 @@
                     table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
                         content: " \25B3\25BD"
                     }
+
+                    table.sortable th:not(.sorttable_nosort) {
+                        cursor: pointer;
+                    }
                 </style>
+
+                <%-- TRANSACTION ADD/EDIT MODAL --%>
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit Transaction</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="editModalBody">
+                                <%-- Filled by AJAX from edit-transaction.jsp --%>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="editModalSubmit">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%-- TRANSACTION TABLE --%>
 
                 <h1 class="h3 mb-2 text-gray-800">Transactions</h1>
 
@@ -570,6 +597,22 @@
 <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
 <!--datatables-->
 <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $('#editModal').on('show.bs.modal', function(event) {
+        let transId = $(event.relatedTarget).data('transaction-id');
+        let transEditLink = '${pageContext.request.contextPath}/transaction/edit/' + transId;
+
+        $.get(transEditLink, function(data) {
+            $('#editModalBody').html(data);
+            $('#editModalSubmit').click(function(event) {
+                $.post(transEditLink, $('#editModalForm').serialize(), function(newRowData) {
+                    $('#cat_row_' + transId).replaceWith(newRowData);
+                });
+            });
+        });
+    })
+</script>
 
 </body>
 
