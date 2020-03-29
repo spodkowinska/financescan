@@ -107,16 +107,8 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Select parent category</label>
-                                        <form:select path="parentCategoryId" class="form-control" id="parent"
-                                                     name="parent">
-                                            <option value="0"> --select category if it is not a parent category--
-                                            </option>
-                                            <c:forEach items="${categories}" var="category">
-                                                <option value="${category.id}">${category.name}</option>
-                                            </c:forEach>
-                                        </form:select>
-                                        </select>
+                                        <label>Select color for category label</label>
+                                        <form:input path="color" type="color" id="color" name="color" value="#ff0000"></form:input>
                                     </div>
 
 

@@ -13,8 +13,12 @@ public class KeywordService {
         this.keywordRepository = keywordRepository;
     }
 
-    void save(Keyword keyword){
+    public void save(Keyword keyword){
         keywordRepository.save(keyword);
+    }
+
+    public Keyword saveAndFlush(Keyword keyword){
+        return keywordRepository.saveAndFlush(keyword);
     }
 
     void delete(Keyword keyword){
@@ -29,11 +33,11 @@ public class KeywordService {
         return keywordRepository.findAllByCategoryId(categoryId);
     }
 
-    Keyword findById(Long id){
+    public Keyword findById(Long id){
         return keywordRepository.findById(id).orElse(null);
     }
 
-    boolean isValidKeyword(String keywordToCheck){
+    public boolean isValidKeyword(String keywordToCheck){
         if(keywordToCheck==null || keywordToCheck.length()==0 || keywordToCheck==" "){
             return false;
         }
