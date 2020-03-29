@@ -368,7 +368,7 @@
                     }
 
                     table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
-                        content: " \25B4\25BE"
+                        content: " \25B3\25BD"
                     }
                 </style>
 
