@@ -126,7 +126,9 @@ public class TransactionService {
     }
 
     public double balanceByDates(Long userId, Date start, Date end) {
-        List<Transaction> transactionList = transactionRepository.findByDates(start, end, userId);
+        String startDate = start.toString();
+        String endDate = end.toString();
+        List<Transaction> transactionList = transactionRepository.findByDates(startDate, endDate, userId);
         double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
         return balance;
     }
@@ -173,28 +175,28 @@ public class TransactionService {
         return lastYearBalances;
     }
 
-    public HashMap<String, Double> balancesByDatesForAllCategories(Long userId, Date start, Date end) {
-        List<Transaction> transactionList = transactionRepository.findByDates(start, end, userId);
-        HashMap<String, Double> balanceByCategory = new HashMap<>();
-        for (Category category : categoryRepository.findAllByUserId(userId)) {
-            Double categorySum = 0.0;
-            for (Transaction transaction : transactionList) {
-                if (transaction.getCategories().contains(category)) {
-                    categorySum += transaction.amount;
-                }
-            }
-
-            balanceByCategory.put(category.getName(), categorySum);
-        }
-        Double sum = 0.0;
-        for (Transaction transaction : transactionList) {
-            if (transaction.getCategories() == null) {
-                sum += transaction.amount;
-            }
-        }
-        balanceByCategory.put("Bez kategorii", sum);
-        return balanceByCategory;
-    }
+//    public HashMap<String, Double> balancesByDatesForAllCategories(Long userId, Date start, Date end) {
+//        List<Transaction> transactionList = transactionRepository.findByDates(start, end, userId);
+//        HashMap<String, Double> balanceByCategory = new HashMap<>();
+//        for (Category category : categoryRepository.findAllByUserId(userId)) {
+//            Double categorySum = 0.0;
+//            for (Transaction transaction : transactionList) {
+//                if (transaction.getCategories().contains(category)) {
+//                    categorySum += transaction.amount;
+//                }
+//            }
+//
+//            balanceByCategory.put(category.getName(), categorySum);
+//        }
+//        Double sum = 0.0;
+//        for (Transaction transaction : transactionList) {
+//            if (transaction.getCategories() == null) {
+//                sum += transaction.amount;
+//            }
+//        }
+//        balanceByCategory.put("Bez kategorii", sum);
+//        return balanceByCategory;
+//    }
 
     public HashMap<Long, List<String>> transactionIdCategories(Long userId) {
         HashMap<Long, List<String>> transactionIdCategories = new HashMap<>();
@@ -244,25 +246,25 @@ public class TransactionService {
 
     List <Transaction> transactionsByDate(String year, String month, User user){
         List <Transaction> transactionsList= new ArrayList<>();
-        Date start;
-        Date end;
+        String start;
+        String end;
         if (year.equals("all")){
             transactionsList = transactionRepository.findAllByUserId(user.getId());
         } else if(month.equals("all")) {
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
-            start = Date.valueOf(sb.append(year).append("-").append("01").append("-").append("01").toString());
-            end = Date.valueOf(sb2.append(year).append("-").append("12").append("-").append("31").toString());
+            start = sb.append(year).append("-").append("01").append("-").append("01").toString();
+            end = sb2.append(year).append("-").append("12").append("-").append("31").toString();
             transactionsList = transactionRepository.findByDates(start, end, user.getId());
         } else {
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
             if(month.length()==1){
-                start = Date.valueOf(sb.append(year).append("-").append(month).append("-").append("01").toString());
-                end = Date.valueOf(sb2.append(year).append("-").append("0").append(month).append("-").append("31").toString());
+                start = sb.append(year).append("-").append(month).append("-").append("01").toString();
+                end = sb2.append(year).append("-").append("0").append(month).append("-").append("31").toString();
             } else{
-            start = Date.valueOf(sb.append(year).append("-").append(month).append("-").append("01").toString());
-            end = Date.valueOf(sb2.append(year).append("-").append(month).append("-").append("31").toString());
+            start = sb.append(year).append("-").append(month).append("-").append("01").toString();
+            end = sb2.append(year).append("-").append(month).append("-").append("31").toString();
             }
             transactionsList = transactionRepository.findByDates(start, end, user.getId());
         }
