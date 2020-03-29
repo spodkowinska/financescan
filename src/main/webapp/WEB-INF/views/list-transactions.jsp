@@ -356,6 +356,10 @@
                     table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
                         content: " \25B3\25BD"
                     }
+
+                    table.sortable th:not(.sorttable_nosort) {
+                        cursor: pointer;
+                    }
                 </style>
 
                 <h1 class="h3 mb-2 text-gray-800">Transactions</h1>
