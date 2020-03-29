@@ -285,7 +285,7 @@
                         min-width: 300px;
                     }
 
-                    a.tag {
+                    .tag {
                         display: inline-block;
                         margin: 1px;
                         font-size: 10px;
@@ -297,65 +297,66 @@
                         text-decoration: none;
                     }
 
-                    a.tag:hover {
+                    .tag:hover {
                         cursor: pointer;
                         filter: brightness(120%);
                         color: white;
+                        text-decoration: none;
                     }
 
-                    a.tag-add {
+                    .tag-add {
                         background: rgb(207, 207, 207);
                     }
 
-                    a.tag1 {
+                    .tag1 {
                         background: green;
                     }
 
-                    a.tag2 {
+                    .tag2 {
                         background: red;
                     }
 
-                    a.tag3 {
+                    .tag3 {
                         background: rgb(0, 171, 214);
                     }
 
-                    a.tag4 {
+                    .tag4 {
                         background: darkorchid;
                     }
 
-                    a.tag5 {
+                    .tag5 {
                         background: darkgoldenrod;
                     }
 
-                    a.tag6 {
+                    .tag6 {
                         background: gray;
                     }
 
-                    a.tag7 {
+                    .tag7 {
                         background: blue;
                     }
 
-                    a.tag8 {
+                    .tag8 {
                         background: navy;
                     }
 
-                    a.tag9 {
+                    .tag9 {
                         background: darkslateblue;
                     }
 
-                    a.tag10 {
+                    .tag10 {
                         background: darkslategrey;
                     }
 
-                    a.tag11 {
+                    .tag11 {
                         background: black;
                     }
 
-                    a.tag12 {
+                    .tag12 {
                         background: darkred;
                     }
 
-                    a.tag-add:hover {
+                    .tag-add:hover {
                         background: gray;
                     }
 

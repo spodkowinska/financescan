@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
@@ -38,12 +39,13 @@
     </div>
 
     <div class="form-group">
-        <label>Category</label>
-        <form:select path="categories" class="form-control" id="categoryId">
+        <label>Categories</label>
+        <div style="text-align: center">
             <c:forEach items="${categories}" var="category">
-                <option value="${category.id}">${category.name}</option>
+                <input type="checkbox" id="category_${category.id}" style="display: none">
+                <label class="tag tag${category.id}" for="category_${category.id}">${category.name}</label>
             </c:forEach>
-        </form:select>
+        </div>
     </div>
 
 </form:form>
