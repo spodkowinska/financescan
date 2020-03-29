@@ -34,7 +34,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             (Date after, Date before, User user, Category category);
 
     @Query(value = "SELECT * FROM transactions t WHERE t.transaction_date>=? and t.transaction_date<=? and user_id=?", nativeQuery = true)
-    List<Transaction> findByDates(Date after, Date before, Long userId);
+    List<Transaction> findByDates(String after, String before, Long userId);
 
     @Query(value = "SELECT * FROM transactions_categories tc WHERE tc.categories_id =?", nativeQuery = true)
     public Transaction findByCategoryId(Long categoryId);
