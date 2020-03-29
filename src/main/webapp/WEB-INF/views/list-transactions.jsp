@@ -150,7 +150,7 @@
                 for (let j of gSearchableColumnsIds) {
                     let td = tds[j];
                     if (td) {
-                        let txtValue = td.textContent || td.innerText;
+                        let txtValue = td.getAttribute('sorttable_customkey') || td.textContent || td.innerText;
                         if (txtValue.toUpperCase().indexOf(filter) > -1) {
                             vis = true;
                             break;
