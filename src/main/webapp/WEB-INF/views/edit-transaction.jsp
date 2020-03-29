@@ -54,10 +54,12 @@
                 <label class="tag-check-container">
                     <c:choose>
                         <c:when test="${fn:contains(transaction.categories, category)}">
-                            <input type="checkbox" id="category_${category.id}" style="display: none" checked>
+                            <input type="checkbox" id="category_${category.id}" name="category_${category.id}"
+                                   style="display: none" value="${category.id}" checked>
                         </c:when>
                         <c:otherwise>
-                            <input type="checkbox" id="category_${category.id}" style="display: none">
+                            <input type="checkbox" id="category_${category.id}" name="category_${category.id}"
+                                   style="display: none" value="${category.id}">
                         </c:otherwise>
                     </c:choose>
                     <label class="tag tag${category.id} tag-check" for="category_${category.id}">${category.name}</label>
