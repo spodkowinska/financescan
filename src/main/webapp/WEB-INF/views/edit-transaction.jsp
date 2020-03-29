@@ -1,4 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <form:form action="/transaction/edit/${transaction.id}" method="post" modelAttribute="transaction">
+
     <form:input path="id" type="hidden" id="id"></form:input>
 
     <div class="form-group">
@@ -15,13 +21,11 @@
     <div class="form-group">
         <label>Amount</label>
         <form:input path="amount" class="form-control" id="amount"></form:input>
-
     </div>
 
     <div class="form-group">
         <label>Transaction Partner</label>
         <form:input path="party" class="form-control" id="party"></form:input>
-
     </div>
 
     <div class="form-group">
@@ -32,6 +36,7 @@
             </c:forEach>
         </form:select>
     </div>
+
     <div class="form-group">
         <label>Category</label>
         <form:select path="categories" class="form-control" id="categoryId">
