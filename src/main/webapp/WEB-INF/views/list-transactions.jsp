@@ -103,6 +103,11 @@
             }
         }
 
+        function getTransaction(transactionId){
+            $.get("${pageContext.request.contextPath}/transaction/gettransaction/" + transactionId, function (data) {
+                $('#line').html(data);
+        }
+
         function changeCategory(transactionId, categoryId) {
             let parentId = $('#cat_tag_' + transactionId + '_' + categoryId).parent().attr('id');
 
