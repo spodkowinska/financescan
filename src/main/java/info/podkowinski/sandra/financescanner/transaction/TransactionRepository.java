@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    ArrayList<Transaction> findAllByUserId(Long userId);
+    ArrayList<Transaction> findAllByUserIdOrderByTransactionDateAsc(Long userId);
 
     @Query(value = "SELECT t.id FROM transactions t LEFT OUTER JOIN transactions_categories tc ON t.id = tc.transaction_id WHERE tc.categories_id IS NULL AND t.user_id=?", nativeQuery = true)
     ArrayList<Long> findAllNoncategorizedByUserId(Long userId);
@@ -33,7 +33,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findByDateAndUserAndCategory
             (Date after, Date before, User user, Category category);
 
-    @Query(value = "SELECT * FROM transactions t WHERE t.transaction_date>=? and t.transaction_date<=? and user_id=?", nativeQuery = true)
+    @Query(value = "SELECT * FROM transactions t WHERE t.transaction_date>=? and t.transaction_date<=? and user_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByDates(Date after, Date before, Long userId);
 
     @Query(value = "SELECT * FROM transactions_categories tc WHERE tc.categories_id =?", nativeQuery = true)
@@ -42,6 +42,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "SELECT * FROM transactions t ORDER BY transaction_date ASC LIMIT 1", nativeQuery = true)
     Transaction findLastTransaction(Long userId);
 
-    @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and MONTH(t.transaction_date)=? and user_id=?", nativeQuery = true)
+    @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and MONTH(t.transaction_date)=? and user_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByMonth(String year, String month, Long userId);
+
+    @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and user_id=? ORDER BY transaction_date ASC", nativeQuery = true)
+    List<Transaction> findByYear(String year, Long userId);
 }

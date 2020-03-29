@@ -218,4 +218,14 @@ public class TransactionController {
         model.addAttribute("tl", transactionsList);
         return "table-transactions";
     }
+
+    @GetMapping("/table/gettransaction/{transactionId}")
+    public String tableRow( Model model, @PathVariable Long transactionId) {
+        User user2 = userService.findById(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        List<Category> categories = categoryService.findByUserId(2l);
+        model.addAttribute("categoriesList", categories);
+        model.addAttribute("transaction", transaction);
+        return "table-transactions";
+    }
 }
