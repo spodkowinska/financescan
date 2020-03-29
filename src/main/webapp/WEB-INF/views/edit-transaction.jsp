@@ -38,20 +38,30 @@
         </form:select>
     </div>
 
+    <style>
+        .tag-check {
+            opacity: 0.4;
+        }
+        .tag-check-container input:checked ~ .tag-check {
+            opacity: 1;
+        }
+    </style>
+
     <div class="form-group">
         <label>Categories</label>
         <div style="text-align: center">
             <c:forEach items="${categories}" var="category">
-                <c:choose>
-                    <c:when test="${fn:contains(transaction.categories, category)}">
-                        <input type="checkbox" id="category_${category.id}" style="display: none" checked>
-                        <label class="tag tag${category.id}" for="category_${category.id}">${category.name}</label>
-                    </c:when>
-                    <c:otherwise>
-                        <input type="checkbox" id="category_${category.id}" style="display: none" checked>
-                        <label class="tag tag${category.id} tag-disabled" for="category_${category.id}">${category.name}</label>
-                    </c:otherwise>
-                </c:choose>
+                <label class="tag-check-container">
+                    <c:choose>
+                        <c:when test="${fn:contains(transaction.categories, category)}">
+                            <input type="checkbox" id="category_${category.id}" style="display: none" checked>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="checkbox" id="category_${category.id}" style="display: none">
+                        </c:otherwise>
+                    </c:choose>
+                    <label class="tag tag${category.id} tag-check" for="category_${category.id}">${category.name}</label>
+                </label>
             </c:forEach>
         </div>
     </div>
