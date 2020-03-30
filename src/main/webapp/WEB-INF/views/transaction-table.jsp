@@ -317,53 +317,12 @@
                         background: rgb(207, 207, 207);
                     }
 
-                    .tag1 {
-                        background: green;
+                    <c:forEach items="${categoriesList}" var="category">
+                    .tag${category.id} {
+                        background: ${category.color};
                     }
 
-                    .tag2 {
-                        background: red;
-                    }
-
-                    .tag3 {
-                        background: rgb(0, 171, 214);
-                    }
-
-                    .tag4 {
-                        background: darkorchid;
-                    }
-
-                    .tag5 {
-                        background: darkgoldenrod;
-                    }
-
-                    .tag6 {
-                        background: gray;
-                    }
-
-                    .tag7 {
-                        background: blue;
-                    }
-
-                    .tag8 {
-                        background: navy;
-                    }
-
-                    .tag9 {
-                        background: darkslateblue;
-                    }
-
-                    .tag10 {
-                        background: darkslategrey;
-                    }
-
-                    .tag11 {
-                        background: black;
-                    }
-
-                    .tag12 {
-                        background: darkred;
-                    }
+                    </c:forEach>
 
                     .tag-add:hover {
                         background: gray;
