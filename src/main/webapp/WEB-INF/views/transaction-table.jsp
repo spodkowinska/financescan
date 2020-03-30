@@ -379,6 +379,27 @@
                     </div>
                 </div>
 
+                <%-- KEYWORD MODAL --%>
+                <div class="modal fade" id="keywordModal" tabindex="-1" role="dialog" aria-labelledby="keywordModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header alert-secondary">
+                                <h5 class="modal-title" id="keywordModalLabel">Add Keyword</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="keywordModalBody">
+                                <%-- Filled by AJAX from edit-keyword.jsp --%>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="keywordModalSubmit">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <%-- TRANSACTION TABLE --%>
 
                 <h1 class="h3 mb-2 text-gray-800">Transactions</h1>
@@ -632,6 +653,21 @@
                         reloadTransactionTable(null, null);
                     }
                 });
+                // Unbind handlers to avoid situations in which this button has more than one onclick handler
+                $(this).unbind();
+            });
+        });
+    });
+
+    $('#keywordModal').on('show.bs.modal', function(event) {
+        let transId = $(event.relatedTarget).data('transaction-id');
+        let getLink = '${pageContext.request.contextPath}/category/keyword/add/' + transId;
+        let postLink = '${pageContext.request.contextPath}/category/keyword/add';
+
+        $.get(getLink, function(data) {
+            $('#keywordModalBody').html(data);
+            $('#keywordModalSubmit').click(function(event) {
+                $.post(postLink, $('#keywordModalForm').serialize());
                 // Unbind handlers to avoid situations in which this button has more than one onclick handler
                 $(this).unbind();
             });

@@ -11,8 +11,8 @@
                data-toggle="tooltip" title="Edit transaction" tabindex="0">
                 <span class="fa fa-edit"></span>
             </a>
-            <a data-toggle="tooltip" title="Create keyword from this transaction"
-               href="${pageContext.request.contextPath}/keyword/add/${trans.id}">
+            <a data-toggle="modal" data-target="#keywordModal" data-transaction-id="${trans.id}"
+               data-toggle="tooltip" title="Create keyword from this transaction"
                 <span class="fa fa-key"></span>
             </a>
             <a tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" data-transaction-id="${trans.id}"
