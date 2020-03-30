@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -65,21 +66,26 @@ public class CategoryController {
     public String edit(@PathVariable Long id, Model model) {
         User user1 = userService.findById(2l);
         List<Category> categories = categoryService.findByUserId(2l);
-//        Map<String, String> usedKeywords = categoryService.usedKeywords(2l);
+        List<Keyword>keywordList = categoryService.findById(id).keywords;
         Category category = categoryService.findById(id);
         model.addAttribute("category", category);
-//        model.addAttribute("usedKeywords", usedKeywords);
+        model.addAttribute("keywords", keywordList);
         model.addAttribute("categories", categories);
         return "edit-category";
     }
-//    @PostMapping("/edit/{id}")
-//    public String editPost(@PathVariable Long id, @ModelAttribute Category category1) {
-//        User user1 = userService.findById(2l);
-//        Category category = categoryService.compareCategories(id, category1);
-//        category.user=user1;
-//        categoryService.save(category);
-//        return "redirect:../../category/list";
-//    }
+
+    @PostMapping("/edit/{id}")
+    public String editPost(@PathVariable Long id, @ModelAttribute Category category1, HttpServletRequest request) {
+        User user1 = userService.findById(2l);
+        category1.user=user1;
+        categoryService.save(category1);
+        String allKeywords = request.getParameter("keywordsList");
+        List<String> wordsList = Arrays.asList(allKeywords.split(","));
+        List<Keyword> keywordList = keywordService.checkKeywords(wordsList, category1.getId(), user1.getId());
+        keywordService.saveKeywords(keywordList);
+        return "redirect:../../category/list";
+    }
+
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
         User user1 = userService.findById(2l);

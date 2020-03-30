@@ -46,7 +46,7 @@ public class Category {
 
     String description;
 
-    @OneToMany(mappedBy ="category")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy ="category")
     List<Keyword> keywords;
 
     void addKeyword(Keyword keyword){

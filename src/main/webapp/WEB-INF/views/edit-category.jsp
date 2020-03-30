@@ -99,8 +99,9 @@
 
                                     <div class="form-group">
                                         <label>Keywords</label>
-                                        <form:input path="keywords" class="form-control" id="keywords"
-                                                    name="keywords"></form:input>
+                                        <textarea class="form-control" id="keywordsList"
+                                                  name="keywordsList" ><c:forEach items="${keywords}" var="keyword">${keyword.name}, </c:forEach>"</textarea>
+
                                         <p class="help-block">Words that will be used to assign categories to your
                                             transactions</p>
 

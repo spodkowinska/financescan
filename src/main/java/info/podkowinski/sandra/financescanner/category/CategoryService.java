@@ -72,9 +72,14 @@ public class CategoryService {
 //        }
 //        return category;
 //    }
-    void delete(Category category){
-        if(transactionRepository.findByCategoryId(category.id)==null)
-            categoryRepository.delete(category);}
+    void delete(Category category) {
+        if (transactionRepository.findByCategoryId(category.id) != null) {
+            for (Keyword keyword: category.keywords) {
+                keywordRepository.delete(keyword);
+            }
+            categoryRepository.delete(category);
+        }
+    }
 }
 
 
