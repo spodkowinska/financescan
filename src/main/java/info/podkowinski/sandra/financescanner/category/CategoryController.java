@@ -1,6 +1,7 @@
 package info.podkowinski.sandra.financescanner.category;
 
 
+import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
@@ -87,4 +88,75 @@ public class CategoryController {
         return "redirect:../../category/list";
     }
 
+
+    @GetMapping("/keyword/add")
+    public String addKeyword(Model model) {
+        User user1 = userService.findById(2l);
+        List<Category> categories = categoryService.findByUserId(2l);
+        model.addAttribute("categories", categories);
+        return "add-keyword";
+    }
+    //todo frontend validation
+    @PostMapping("/keyword/add")
+    public String addKeywordPost(HttpServletRequest request) {
+        User user1 = userService.findById(2l);
+        Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
+        List<String> validetedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
+        category.keywords.addAll(validetedKeywords);
+
+        categoryService.save(category);
+        return "redirect:../keyword/list";
+    }
+    @GetMapping("/keyword/add/{transactionId}")
+    public String addKeywordFromTransaction(Model model, @PathVariable Long transactionId) {
+        User user1 = userService.findById(2l);
+        List<Category> categories = categoryService.findByUserId(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        String keyword = transaction.getDescription();
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("categories", categories);
+        return "add-keyword";
+    }
+    @PostMapping("/keyword/add/{transactionId}")
+    public String addKeywordFromTransactionPost(HttpServletRequest request, @PathVariable Long transactionId) {
+        User user1 = userService.findById(2l);
+        Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
+        categoryService.save(category);
+        return "redirect:../../transaction/list";
+    }
+
+    @RequestMapping("/keyword/list")
+    public String keywordList(Model model) {
+        User user1 = userService.findById(2l);
+        List<Category>categoriesList = categoryService.findByUserId(2l);
+        model.addAttribute("categories", categoriesList);
+        return "list-keywords";
+    }
+
+    @GetMapping("/keyword/edit")
+    public String editKeyword(@PathVariable Long id, Model model) {
+        User user1 = userService.findById(2l);
+        List<Category> categories = categoryService.findByUserId(2l);
+        model.addAttribute("categories", categories);
+        return "edit-keyword";
+    }
+
+    @PostMapping("/keyword/edit")
+    public String editKeywordPost(@PathVariable Long id) {
+        User user1 = userService.findById(2l);
+
+        return "redirect:../../keyword/list";
+    }
+
+//    @GetMapping("/keyword/delete/{id}")
+//    public String deleteKeyword(@PathVariable Long id, Model model) {
+//        User user1 = userService.findById(2l);
+//        Keyword keyword = keywordService.findById(id);
+//        keywordService.delete(keyword);
+//        List<Category>categoriesList = categoryService.findByUserId(2l);
+//        model.addAttribute("categories", categoriesList);
+//        List<Keyword>keywordsList = keywordService.findByUserId(2l);
+//        model.addAttribute("keywords",keywordsList);
+//        return "redirect:../../keyword/list";
+//    }
 }
