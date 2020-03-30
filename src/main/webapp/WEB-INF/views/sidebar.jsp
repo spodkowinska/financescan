@@ -37,8 +37,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="${pageContext.request.contextPath}/category/add">Add New Category</a>
                 <a class="collapse-item" href="${pageContext.request.contextPath}/category/list">Category List</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/keyword/add">Add New Keywords</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/keyword/list">Keywords List</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/category/keyword/add">Add New Keywords</a>
+                <a class="collapse-item" href="${pageContext.request.contextPath}/category/keyword/list">Keywords List</a>
             </div>
         </div>
     </li>

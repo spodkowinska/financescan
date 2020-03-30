@@ -5,12 +5,10 @@ package info.podkowinski.sandra.financescanner.category;
 import info.podkowinski.sandra.financescanner.transaction.TransactionRepository;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserRepository;
+import javassist.compiler.ast.Keyword;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CategoryService {
@@ -52,6 +50,16 @@ public class CategoryService {
 //    }
     void delete(Category category) {
             categoryRepository.delete(category);
+    }
+
+    public List<String> areValidKeywords(String [] keywordToCheck) {
+        List<String> keywordsList = new ArrayList<>();
+        for (String word : keywordToCheck) {
+            if (word != null && word.length() != 0 && word != " ") {
+                keywordsList.add(word);
+            }
+        }
+        return keywordsList;
     }
 }
 

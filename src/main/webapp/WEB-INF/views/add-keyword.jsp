@@ -75,34 +75,12 @@
                         </div>
                         <div class="form-group">
                             <label>Keywords</label>
-                            <input class="form-control" id="keyword1" name="keyword1" value = "${keyword}">
+                            <input class="form-control" id="keywords" name="keywords"
+<%--                                   value = "${keyword}"--%>
+                            >
                             <p class="help-block">Words that will be used to assign categories to your
-                                transactions</p>
+                                transactions. They should be separated with coma.</p>
                         </div>
-
-                        <div class="form-group">
-                            <label>Keywords</label>
-                            <input class="form-control" id="keyword2" name="keyword2">
-                            <p class="help-block">Words that will be used to assign categories to your
-                                transactions</p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Keywords</label>
-                            <input class="form-control" id="keyword3" name="keyword3">
-                            <p class="help-block">Words that will be used to assign categories to your
-                                transactions</p>
-                        </div>
-
-<%--                        todo create working button--%>
-                        <button>Add more keywords</button>
-
-
-
-
-
-
-
 
                         <button type="submit" class="btn btn-default">Save</button>
                         <button type="reset" class="btn btn-default">Reset</button>
