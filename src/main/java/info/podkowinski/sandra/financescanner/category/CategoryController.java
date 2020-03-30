@@ -100,8 +100,8 @@ public class CategoryController {
     public String addKeywordPost(HttpServletRequest request) {
         User user1 = userService.findById(2l);
         Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
-        List<String> validetedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
-        category.keywords.addAll(validetedKeywords);
+        List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
+        category.keywords.addAll(validatedKeywords);
 
         categoryService.save(category);
         return "redirect:../keyword/list";
@@ -133,17 +133,23 @@ public class CategoryController {
     }
 
     @GetMapping("/keyword/edit/{categoryId}/{keyword}")
-    public String editKeyword(@PathVariable Long id, Model model) {
+    public String editKeyword(@PathVariable String keyword, @PathVariable Long categoryId, Model model) {
         User user1 = userService.findById(2l);
         List<Category> categories = categoryService.findByUserId(2l);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("category", categoryService.findById(categoryId));
         model.addAttribute("categories", categories);
         return "edit-keyword";
     }
 
     @PostMapping("/keyword/edit/{categoryId}/{keyword}")
-    public String editKeywordPost(@PathVariable String keyword, @PathVariable Long categoryId) {
+    public String editKeywordPost(@PathVariable String keyword, @PathVariable Long categoryId, HttpServletRequest request) {
         User user1 = userService.findById(2l);
-
+        Category category = categoryService.findById(categoryId);
+        category.keywords.remove(keyword);
+        List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
+        category.keywords.addAll(validatedKeywords);
+        categoryService.save(category);
         return "redirect:../../keyword/list";
     }
 

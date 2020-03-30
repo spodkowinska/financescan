@@ -80,33 +80,28 @@
                     <div class="card-header py-3">
                         <div class="row">
                             <div class="col-lg-24">
-                                <form:form action="../../keyword/edit/${keyword.id}" method="post"
-                                           modelAttribute="keyword">
-
-                                    <form:input path="id" type="hidden" id="id"></form:input>
+                                <form action="" method="post">
 
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <form:input path="name" class="form-control" id="categoryName"></form:input>
+                                        <input name="keyword" class="form-control" id="keyword" value="${keyword}">
                                     </div>
 
 
                                     <div class="form-group">
                                         <label>Select category</label>
-                                        <form:select path="category" class="form-control" id="category"
+                                        <select class="form-control" id="category"
                                                      name="category">
                                             <c:forEach items="${categories}" var="category">
                                                 <option value="${category.id}">${category.name}</option>
                                             </c:forEach>
-                                        </form:select>
                                         </select>
                                     </div>
-                                    <form:input path="user" type="hidden" id="id"></form:input>
 
                                     <button type="submit" class="btn btn-default">Save</button>
                                     <button type="reset" class="btn btn-default">Reset</button>
 
-                                </form:form>
+                                </form>
                             </div>
                         </div>
                         <!-- /.row -->
