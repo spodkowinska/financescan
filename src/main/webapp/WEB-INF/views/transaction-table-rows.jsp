@@ -15,7 +15,8 @@
                href="${pageContext.request.contextPath}/keyword/add/${trans.id}">
                 <span class="fa fa-key"></span>
             </a>
-            <a data-toggle="tooltip" title="Delete transaction" onclick="deleteTransaction(${trans.id})">
+            <a tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" data-transaction-id="${trans.id}"
+               data-content="<a class='delete-confirm btn btn-sm btn-danger' id=delete-confirm-${trans.id}>Delete</a>">
                 <span class="fa fa-trash-alt"></span>
             </a>
         </td>

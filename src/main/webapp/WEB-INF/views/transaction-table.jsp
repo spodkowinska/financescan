@@ -78,6 +78,20 @@
             $.get("${pageContext.request.contextPath}/transaction/table/" + gYear + "/" + gMonth, function (data) {
                 $('#list').html(data);
 
+                // Enable popovers
+                let pops = $('[data-toggle="popover"]')
+                pops.popover();
+                pops.on('shown.bs.popover', function () {
+                    let transId = $(this).data('transaction-id');
+                    // Deletion confirmation popover
+                    let deleteButton = $('#delete-confirm-' + transId);
+                    deleteButton.css('color', 'white');
+                    deleteButton.unbind();
+                    deleteButton.click(function() {
+                        deleteTransaction(transId);
+                    });
+                });
+
                 // This line is needed to prevent category drop-right from disappearing
                 $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
 
