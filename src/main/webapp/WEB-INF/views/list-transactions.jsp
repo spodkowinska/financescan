@@ -40,7 +40,7 @@
         var gYear = "all";
         
         function init() {
-            getData('all','all');
+            reloadTransactionTable('all','all');
             gatherSearchableColumnsIds();
         }
         
@@ -65,7 +65,8 @@
             }
         }
 
-        function getData(year, month) {
+        function reloadTransactionTable(year, month) {
+            console.log('reloading transaction table');
 
             if (year !== null) {
                 gYear = year;
@@ -206,6 +207,10 @@
 
                 <!-- NEW TABLE - WORK IN PROGRESS -->
                 <style>
+                    a {
+                        cursor: pointer;
+                    }
+
                     .raf {
                         width: 100%;
                         font-size: 12px;
@@ -336,7 +341,7 @@
                 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header alert-secondary">
                                 <h5 class="modal-title" id="editModalLabel">Edit Transaction</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -362,11 +367,11 @@
 
                         <%-- YEARS --%>
                         <div class="btn-group">
-                            <button id="btn_year_all" class="btn btn-outline-secondary btn-sm active" onclick="getData('all', null)">
+                            <button id="btn_year_all" class="btn btn-outline-secondary btn-sm active" onclick="reloadTransactionTable('all', null)">
                                 ALL
                             </button>
                             <c:forEach items="${years}" var="year">
-                                <button id="btn_year_${year}" class="btn btn-outline-secondary btn-sm" onclick="getData(${year}, null)">
+                                <button id="btn_year_${year}" class="btn btn-outline-secondary btn-sm" onclick="reloadTransactionTable(${year}, null)">
                                     ${year}
                                 </button>
                             </c:forEach>
@@ -374,7 +379,7 @@
 
                         <%-- MONTHS --%>
                         <div id="months" class="btn-group">
-                            <button id="btn_month_all" class="btn btn-outline-secondary btn-sm active" onclick="getData(null, 'all')">
+                            <button id="btn_month_all" class="btn btn-outline-secondary btn-sm active" onclick="reloadTransactionTable(null, 'all')">
                                 ALL
                             </button>
 
@@ -384,7 +389,7 @@
                                 for (var i = 0; i < 12; i++) {
                                     let monthId = i + 1;
                                     document.write("<button id=\"btn_month_" + monthId + "\" class=\"btn btn-outline-secondary btn-sm\" " +
-                                        "onclick='getData(null," + monthId + ")'>");
+                                        "onclick='reloadTransactionTable(null," + monthId + ")'>");
                                     document.write(months[i]);
                                     document.write("</button>");
                                 }
@@ -401,6 +406,12 @@
                             <!-- Actual Dropdown -->
                             <div class="dropdown-menu dropdown-menu-right shadow"
                                  aria-labelledby="transOperationsDropdown">
+                                <!-- Dropdown Item: Add new transaction -->
+                                <a class="dropdown-item" data-toggle="modal" data-target="#editModal" tabindex="0">
+                                    <i class="fas fa-plus mr-2 text-gray-600"></i>
+                                    Add new transaction
+                                </a>
+                                <!-- Dropdown Item: Assign default keywords -->
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/assign">
                                     <i class="fas fa-magic mr-2 text-gray-600"></i>
                                     Assign default keywords
@@ -565,19 +576,34 @@
 <script>
     $('#editModal').on('show.bs.modal', function(event) {
         let transId = $(event.relatedTarget).data('transaction-id');
-        let transEditLink = '${pageContext.request.contextPath}/transaction/edit/' + transId;
 
-        $.get(transEditLink, function(data) {
+        let link = transId
+            // If transId is valid, then we are in edit mode
+            ? '${pageContext.request.contextPath}/transaction/edit/' + transId
+            // Otherwise we are in creation mode
+            : '${pageContext.request.contextPath}/transaction/add';
+
+        // Update modal's title depending on mode
+        $('#editModalLabel').text(transId ? 'Edit Transaction' : 'Add New Transaction');
+
+        $.get(link, function(data) {
             $('#editModalBody').html(data);
             $('#editModalSubmit').click(function(event) {
-                $.post(transEditLink, $('#editModalForm').serialize(), function(newRowData) {
-                    $('#cat_row_' + transId).replaceWith(newRowData);
+                $.post(link, $('#editModalForm').serialize(), function(newRowData) {
+                    if (transId) {
+                        // Edit mode: update the edited row
+                        $('#cat_row_' + transId).replaceWith(newRowData);
+                    }
+                    else {
+                        // Add mode: update whole table
+                        reloadTransactionTable(null, null);
+                    }
                 });
                 // Unbind handlers to avoid situations in which this button has more than one onclick handler
                 $(this).unbind();
             });
         });
-    })
+    });
 </script>
 
 </body>

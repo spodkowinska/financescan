@@ -94,7 +94,7 @@ public class TransactionController {
         model.addAttribute("categories", categories);
         model.addAttribute("accounts", accounts);
         model.addAttribute("transaction", transaction);
-        return "add-transaction";
+        return "edit-transaction";
     }
 
     //todo frontend validation
@@ -103,12 +103,27 @@ public class TransactionController {
         User user1 = userService.findById(2l);
         transaction1.setUser(user1);
         transaction1.setImportName("Imported manually on " + LocalDate.now());
+
         String date = request.getParameter("transactionDate");
         System.out.println(date);
         transaction1.setTransactionDate(LocalDate.parse(date));
         System.out.println(transaction1.transactionDate);
+
+        // todo: this is a very brutal approach and should be rewritten; list of categories should be filled in JSP
+        transaction1.categories = new ArrayList<>();
+        var paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement();
+            if (paramName.startsWith("category_")) {
+                long catId = Integer.parseInt(request.getParameter(paramName));
+                Category cat = categoryService.findById(catId);
+                transaction1.categories.add(cat);
+            }
+        }
+
         transactionService.save(transaction1);
-        return "redirect:/transaction/list";
+
+        return "redirect:/transaction/table/gettransaction/" + transaction1.id;
     }
 
     @GetMapping("/edit/{transactionId}")
