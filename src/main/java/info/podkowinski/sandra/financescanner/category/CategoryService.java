@@ -56,7 +56,7 @@ public class CategoryService {
         List<String> keywordsList = new ArrayList<>();
         for (String word : keywordToCheck) {
             if (word != null && word.length() != 0 && word != " ") {
-                keywordsList.add(word);
+                keywordsList.add(word.trim());
             }
         }
         return keywordsList;
