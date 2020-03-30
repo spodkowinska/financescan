@@ -452,6 +452,18 @@
                                     <i class="fas fa-plus mr-2 text-gray-600"></i>
                                     Add new transaction
                                 </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Dropdown Item: Import from CSV -->
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/fileimport">
+                                    <i class="fas fa-file-upload mr-2 text-gray-600"></i>
+                                    Import from CSV
+                                </a>
+                                <!-- Dropdown Item: CSV Import Settings -->
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/csvsettings">
+                                    <i class="fas fa-cog mr-2 text-gray-600"></i>
+                                    CSV Import Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <!-- Dropdown Item: Assign default keywords -->
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/assign">
                                     <i class="fas fa-magic mr-2 text-gray-600"></i>
