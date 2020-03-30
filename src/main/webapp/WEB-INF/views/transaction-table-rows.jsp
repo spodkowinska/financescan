@@ -15,8 +15,7 @@
                href="${pageContext.request.contextPath}/keyword/add/${trans.id}">
                 <span class="fa fa-key"></span>
             </a>
-            <a data-toggle="tooltip" title="Delete transaction"
-               href="${pageContext.request.contextPath}/transaction/delete/${trans.id}">
+            <a data-toggle="tooltip" title="Delete transaction" onclick="deleteTransaction(${trans.id})">
                 <span class="fa fa-trash-alt"></span>
             </a>
         </td>

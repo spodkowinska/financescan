@@ -104,6 +104,13 @@
             }
         }
 
+        function deleteTransaction(transId) {
+            $.get('${pageContext.request.contextPath}/transaction/delete/' + transId);
+            let row = $('#cat_row_' + transId);
+            if (row)
+                row.remove();
+        }
+
         function getTransaction(transactionId){
             $.get("${pageContext.request.contextPath}/transaction/gettransaction/" + transactionId, function (data) {
                 $('#list').html(data);
