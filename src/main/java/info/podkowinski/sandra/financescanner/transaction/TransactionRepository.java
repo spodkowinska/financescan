@@ -22,13 +22,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "SELECT * FROM transactions t WHERE t.amount<0", nativeQuery = true)
     ArrayList<Transaction>findSpendings(Long userId);
 
-//    @Modifying
-//    @Transactional
-//    @Query(value = "INSERT INTO transactions_categories (transaction_id, categories_id) VALUES (?1, ?2)", nativeQuery = true)
-//    void setCategory (Long transactionId, Long categoryId);
-
-  //  List<Transaction> findAllByTransactionDateAfterAndTransactionDateBeforeAndUser(Date after, Date before, User user);
-
     @Query(value = "SELECT * FROM transactions t WHERE t.transaction_date>=? and t.transaction_date<=? and user_id=? and t.categories like '%?%'", nativeQuery = true)
     List<Transaction> findByDateAndUserAndCategory
             (Date after, Date before, User user, Category category);

@@ -1,7 +1,7 @@
 package info.podkowinski.sandra.financescanner.category;
-
-import info.podkowinski.sandra.financescanner.keyword.Keyword;
-import info.podkowinski.sandra.financescanner.keyword.KeywordRepository;
+//
+//import info.podkowinski.sandra.financescanner.keyword.Keyword;
+//import info.podkowinski.sandra.financescanner.keyword.KeywordRepository;
 import info.podkowinski.sandra.financescanner.transaction.TransactionRepository;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserRepository;
@@ -17,14 +17,13 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
-    private final KeywordRepository keywordRepository;
+//    private final KeywordRepository keywordRepository;
     private final UserRepository userRepository;
 
     public CategoryService(CategoryRepository categoryRepository, TransactionRepository transactionRepository,
-                           KeywordRepository keywordRepository, UserRepository userRepository) {
+                           UserRepository userRepository) {
         this.categoryRepository = categoryRepository;
         this.transactionRepository = transactionRepository;
-        this.keywordRepository = keywordRepository;
         this.userRepository = userRepository;
     }
 
@@ -33,30 +32,9 @@ public class CategoryService {
         return categoryRepository.findAllByUserId(id);
     }
 
-//    public Map<String, String>usedKeywords(Long userId){
-//        Map<String, String>usedKeywords = new HashMap<>();
-//        List <Category> categoriesByUser = findByUserId(userId);
-//        for (Category category: categoriesByUser) {
-//            String keywords = category.keywords;
-//            List<String> keywordsList = Arrays.asList(keywords.split(",. "));
-//            for (String word : keywordsList) {
-//                usedKeywords.put(word, category.name);
-//            }
-//        }
-//        return usedKeywords;
-//    }
-
-    public void save(Category category){ categoryRepository.save(category);
-    }
-    public Category saveAndFlush(Category category){
-        return categoryRepository.saveAndFlush(category);
-    }
 
 
-    public void addKeywordAndSave (Category category, Keyword keyword){
-        category.addKeyword(keyword);
-        categoryRepository.save(category);
-    }
+    public void save(Category category){ categoryRepository.save(category); }
 
     public Category findById(Long id){
         return categoryRepository.findById(id).orElse(null);
@@ -73,12 +51,7 @@ public class CategoryService {
 //        return category;
 //    }
     void delete(Category category) {
-        if (transactionRepository.findByCategoryId(category.id) != null) {
-            for (Keyword keyword: category.keywords) {
-                keywordRepository.delete(keyword);
-            }
             categoryRepository.delete(category);
-        }
     }
 }
 

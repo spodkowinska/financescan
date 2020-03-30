@@ -5,12 +5,9 @@ import info.podkowinski.sandra.financescanner.account.AccountRepository;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryRepository;
 import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
-import info.podkowinski.sandra.financescanner.keyword.Keyword;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -95,8 +92,8 @@ public class TransactionService {
             Transaction transaction = transactionRepository.findById(transactionId).orElse(null);
             for (Category category : categoryRepository.findAllByUserId(user.getId())) {
                 boolean keywordFound = false;
-                for (Keyword keyword : category.getKeywords()) {
-                    if (transaction.getDescription().toLowerCase().contains(keyword.name.toLowerCase().trim())) {
+                for (String keyword : category.getKeywords()) {
+                    if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
                         System.out.println(transaction.getDescription());
                         System.out.println(keyword);
                         List<Category> categories = transaction.categories;
@@ -111,7 +108,6 @@ public class TransactionService {
                 }
                 if (keywordFound)
                     break;
-//                transactionRepository.setCategory(5l,5l);
             }
         }
     }

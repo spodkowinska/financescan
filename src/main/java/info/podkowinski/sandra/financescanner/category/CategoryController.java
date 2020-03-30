@@ -1,17 +1,16 @@
 package info.podkowinski.sandra.financescanner.category;
 
 
-import info.podkowinski.sandra.financescanner.keyword.Keyword;
-import info.podkowinski.sandra.financescanner.keyword.KeywordService;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
+import javassist.compiler.ast.Keyword;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.awt.*;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,13 +20,13 @@ public class CategoryController {
     private final UserService userService;
     private final TransactionService transactionService;
     private final CategoryService categoryService;
-    private final KeywordService keywordService;
 
-    public CategoryController(UserService userService, TransactionService transactionService, CategoryService categoryService, KeywordService keywordService) {
+
+    public CategoryController(UserService userService, TransactionService transactionService, CategoryService categoryService) {
         this.userService = userService;
         this.transactionService = transactionService;
         this.categoryService = categoryService;
-        this.keywordService = keywordService;
+
     }
 
     @GetMapping("/add")
@@ -44,14 +43,10 @@ public class CategoryController {
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String color = request.getParameter("color");
-        Category category = new Category(name, description, color, user1);
-        category = categoryService.saveAndFlush(category);
-        String keywordName = request.getParameter("keywords");
-        if(keywordService.isValidKeyword(keywordName)){
-            Keyword keyword = new Keyword(keywordName, category, user1);
-            keywordService.saveAndFlush(keyword);
-            categoryService.addKeywordAndSave(category, keywordService.findById(keyword.getId()));
-        }
+        String keywords = request.getParameter("keywords");
+        List<String> keywordsList = Arrays.asList(keywords.split(","));
+        Category category = new Category(name, description, keywordsList, color, user1);
+        categoryService.save(category);
         return "redirect:../category/list";
     }
 
@@ -66,7 +61,7 @@ public class CategoryController {
     public String edit(@PathVariable Long id, Model model) {
         User user1 = userService.findById(2l);
         List<Category> categories = categoryService.findByUserId(2l);
-        List<Keyword>keywordList = categoryService.findById(id).keywords;
+        List<String>keywordList = categoryService.findById(id).keywords;
         Category category = categoryService.findById(id);
         model.addAttribute("category", category);
         model.addAttribute("keywords", keywordList);
@@ -79,10 +74,6 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         category1.user=user1;
         categoryService.save(category1);
-        String allKeywords = request.getParameter("keywordsList");
-        List<String> wordsList = Arrays.asList(allKeywords.split(","));
-        List<Keyword> keywordList = keywordService.checkKeywords(wordsList, category1.getId(), user1.getId());
-        keywordService.saveKeywords(keywordList);
         return "redirect:../../category/list";
     }
 

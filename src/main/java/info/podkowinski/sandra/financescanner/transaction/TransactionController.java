@@ -17,13 +17,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
 
 
-import static java.sql.Date.*;
 
 @Controller
 @RequestMapping("/transaction")
@@ -133,8 +131,6 @@ public class TransactionController {
         transaction1.setImportName("Imported manually on " + LocalDate.now());
 
         String date = request.getParameter("transactionDate");
-        System.out.println("------");
-        System.out.println(date);
         transaction1.setTransactionDate(LocalDate.parse(date));
 
         // todo: this is a very brutal approach and should be rewritten; list of categories should be filled in JSP
@@ -190,18 +186,6 @@ public class TransactionController {
         }
         return "redirect:/transaction/list";
     }
-//    @RequestMapping("/home/sum")
-//    @ResponseBody
-//    public String sumBtn() {
-//
-//        String str = "2019-10-31";
-//        Date date1 = valueOf(str);
-//        String str2 = "2019-11-31";
-//        Date date2 = valueOf(str2);
-//        User user1 = userService.findById(2l);
-////        return String.valueOf(transactionService.balanceByDatesAndCategory(user1, date1, date2, 2l));
-//        return transactionService.balancesByDatesForAllCategories(user1.getId(), date1, date2).toString();
-//    }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {

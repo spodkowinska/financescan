@@ -78,7 +78,7 @@
                                     <td>${category.description}</td>
                                     <td>
                                     <c:forEach items="${category.keywords}" var="keyword">
-                                       ${keyword.name},
+                                       ${keyword},
                                     </c:forEach>
                                     </td>
                                     <td><a href="${pageContext.request.contextPath}/category/edit/${category.id}">Edit</a>
