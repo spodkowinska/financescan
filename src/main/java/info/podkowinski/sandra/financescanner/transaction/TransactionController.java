@@ -55,7 +55,7 @@ public class TransactionController {
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
         model.addAttribute("years", years);
-        return "list-transactions";
+        return "transaction-table";
     }
 
     @GetMapping("/fileimport")
@@ -94,7 +94,7 @@ public class TransactionController {
         model.addAttribute("categories", categories);
         model.addAttribute("accounts", accounts);
         model.addAttribute("transaction", transaction);
-        return "edit-transaction";
+        return "transaction-edit";
     }
 
     //todo frontend validation
@@ -135,7 +135,7 @@ public class TransactionController {
         model.addAttribute("categories", categories);
         model.addAttribute("accounts", accounts);
         model.addAttribute("transaction", transaction);
-        return "edit-transaction";
+        return "transaction-edit";
     }
 
     //todo frontend validation
@@ -228,7 +228,7 @@ public class TransactionController {
         List<Category> categories = categoryService.findByUserId(2l);
         model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactionsList);
-        return "table-transactions";
+        return "transaction-table-rows";
     }
 
     @GetMapping("/table/gettransaction/{transactionId}")
@@ -238,6 +238,6 @@ public class TransactionController {
         List<Category> categories = categoryService.findByUserId(2l);
         model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactions);
-        return "table-transactions";
+        return "transaction-table-rows";
     }
 }

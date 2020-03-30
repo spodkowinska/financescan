@@ -389,7 +389,7 @@
                                 </button>
                             </div>
                             <div class="modal-body" id="editModalBody">
-                                <%-- Filled by AJAX from edit-transaction.jsp --%>
+                                <%-- Filled by AJAX from transaction-edit.jsp --%>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -547,7 +547,7 @@
                             <%--                                </select> -->--%>
 
                             </tbody>
-                            <%--                            <jsp:include page="table-transactions.jsp"></jsp:include>--%>
+                            <%--                            <jsp:include page="transaction-table-rows.jsp"></jsp:include>--%>
                         </table>
                     </div>
                 </div>
