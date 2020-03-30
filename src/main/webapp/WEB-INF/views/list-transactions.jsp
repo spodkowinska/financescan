@@ -316,7 +316,7 @@
                     .tag${category.id} {
                         background: ${category.color};
                     }
-                    
+
                     </c:forEach>
 
                     .tag-add:hover {
