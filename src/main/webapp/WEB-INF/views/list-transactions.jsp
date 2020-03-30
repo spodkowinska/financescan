@@ -285,7 +285,7 @@
                         min-width: 300px;
                     }
 
-                    a.tag {
+                    .tag {
                         display: inline-block;
                         margin: 1px;
                         font-size: 10px;
@@ -297,65 +297,70 @@
                         text-decoration: none;
                     }
 
-                    a.tag:hover {
+                    .tag:hover {
                         cursor: pointer;
                         filter: brightness(120%);
                         color: white;
+                        text-decoration: none;
                     }
 
-                    a.tag-add {
+                    .tag-disabled {
+                        opacity: 0.35;
+                    }
+
+                    .tag-add {
                         background: rgb(207, 207, 207);
                     }
 
-                    a.tag1 {
+                    .tag1 {
                         background: green;
                     }
 
-                    a.tag2 {
+                    .tag2 {
                         background: red;
                     }
 
-                    a.tag3 {
+                    .tag3 {
                         background: rgb(0, 171, 214);
                     }
 
-                    a.tag4 {
+                    .tag4 {
                         background: darkorchid;
                     }
 
-                    a.tag5 {
+                    .tag5 {
                         background: darkgoldenrod;
                     }
 
-                    a.tag6 {
+                    .tag6 {
                         background: gray;
                     }
 
-                    a.tag7 {
+                    .tag7 {
                         background: blue;
                     }
 
-                    a.tag8 {
+                    .tag8 {
                         background: navy;
                     }
 
-                    a.tag9 {
+                    .tag9 {
                         background: darkslateblue;
                     }
 
-                    a.tag10 {
+                    .tag10 {
                         background: darkslategrey;
                     }
 
-                    a.tag11 {
+                    .tag11 {
                         background: black;
                     }
 
-                    a.tag12 {
+                    .tag12 {
                         background: darkred;
                     }
 
-                    a.tag-add:hover {
+                    .tag-add:hover {
                         background: gray;
                     }
 
@@ -370,7 +375,7 @@
 
                 <%-- TRANSACTION ADD/EDIT MODAL --%>
                 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editModalLabel">Edit Transaction</h5>
@@ -609,6 +614,8 @@
                 $.post(transEditLink, $('#editModalForm').serialize(), function(newRowData) {
                     $('#cat_row_' + transId).replaceWith(newRowData);
                 });
+                // Unbind handlers to avoid situations in which this button has more than one onclick handler
+                $(this).unbind();
             });
         });
     })
