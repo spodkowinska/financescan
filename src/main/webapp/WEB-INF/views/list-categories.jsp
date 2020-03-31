@@ -39,6 +39,14 @@
             color: white;
             font-size: 12px;
         }
+        .keyword {
+            font-size: 12px;
+            background: #EEE;
+            font-weight: normal;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            border: 1px solid lightgray;
+        }
     </style>
 
     <script>
@@ -179,7 +187,7 @@
 
                                         <td>
                                             <c:forEach items="${category.keywords}" var="keyword">
-                                                ${keyword},
+                                                <span class="badge badge-light keyword">${keyword}</span>
                                             </c:forEach>
                                         </td>
                                     </tr>
