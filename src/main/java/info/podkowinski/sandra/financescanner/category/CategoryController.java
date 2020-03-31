@@ -93,7 +93,7 @@ public class CategoryController {
         model.addAttribute("categories", categories);
         return "add-keyword";
     }
-    //todo frontend validation
+    @ResponseBody
     @PostMapping("/keyword/add")
     public String addKeywordPost(HttpServletRequest request) {
         User user1 = userService.findById(2l);
@@ -102,7 +102,7 @@ public class CategoryController {
         category.keywords.addAll(validatedKeywords);
 
         categoryService.save(category);
-        return "redirect:../keyword/list";
+        return "";
     }
     @GetMapping("/keyword/add/{transactionId}")
     public String addKeywordFromTransaction(Model model, @PathVariable Long transactionId) {
@@ -114,13 +114,6 @@ public class CategoryController {
         model.addAttribute("categories", categories);
         return "add-keyword-modal";
     }
-//    @PostMapping("/keyword/add/{transactionId}")
-//    public String addKeywordFromTransactionPost(HttpServletRequest request, @PathVariable Long transactionId) {
-//        User user1 = userService.findById(2l);
-//        Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
-//        categoryService.save(category);
-//        return "redirect:../../transaction/list";
-//    }
 
     @RequestMapping("/keyword/list")
     public String keywordList(Model model) {
