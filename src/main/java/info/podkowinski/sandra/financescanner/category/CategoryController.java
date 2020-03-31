@@ -75,6 +75,18 @@ public class CategoryController {
         return "redirect:../../category/list";
     }
 
+    @ResponseBody
+    @PostMapping("/setcolor/{id}")
+    public String setColorPost(@PathVariable Long id, HttpServletRequest request) {
+        User user1 = userService.findById(2l);
+        Category category = categoryService.findById(id);
+        if (category != null) {
+            category.color = request.getParameter("color");
+            categoryService.save(category);
+        }
+        return "";
+    }
+
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
         User user1 = userService.findById(2l);

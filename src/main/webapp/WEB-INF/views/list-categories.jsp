@@ -67,6 +67,13 @@
             console.log('reload');
             window.location.reload();
         }
+
+        function updateColor(categoryId) {
+            let color = $('#category_color_' + categoryId).val();
+            $.post('${pageContext.request.contextPath}/category/setcolor/' + categoryId, { 'color' : color }, function () {
+                reloadCategoryTable();
+            });
+        }
     </script>
 </head>
 
@@ -140,8 +147,10 @@
                                                data-toggle="tooltip" title="Edit category" tabindex="0">
                                                 <span class="fa fa-edit"></span>
                                             </a>
-                                            <a data-toggle="tooltip" title="Change category color" tabindex="0">
-                                                <span class="fa fa-paint-roller"></span>
+                                            <a data-toggle="tooltip" title="Change category color" tabindex="0" style="cursor: default">
+                                                <input type="color" value="${category.color}" style="display: none"
+                                                       id="category_color_${category.id}" onchange="updateColor(${category.id})" />
+                                                <label for="category_color_${category.id}" class="fa fa-paint-roller" style="margin: 0; cursor: pointer;"></label>
                                             </a>
                                             <a tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" data-category-id="${category.id}"
                                                data-content="<a class='delete-confirm btn btn-sm btn-danger' id=delete-confirm-${category.id}>Delete</a>">
