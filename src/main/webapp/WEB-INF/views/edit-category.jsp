@@ -109,10 +109,8 @@
 
                                     <div class="form-group">
                                         <label>Select color for category label</label>
-                                        <form:input path="color" type="color" id="color" name="color" value="#ff0000"></form:input>
+                                        <form:input path="color" type="color" id="color" name="color"></form:input>
                                     </div>
-
-
                                     <button type="submit" class="btn btn-default">Save</button>
                                     <button type="reset" class="btn btn-default">Reset</button>
 

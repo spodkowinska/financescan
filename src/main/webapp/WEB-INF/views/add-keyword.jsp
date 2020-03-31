@@ -66,7 +66,6 @@
                         <div class="form-group">
                             <label>Select category</label>
                             <select class="form-control" id="category" name="category">
-<%--                                <option value="0"> --select category if it is not a parent category----%>
                                 </option>
                                 <c:forEach items="${categories}" var="category">
                                     <option value="${category.id}">${category.name}</option>

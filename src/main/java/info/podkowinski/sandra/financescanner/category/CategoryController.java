@@ -5,14 +5,12 @@ import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserService;
-import javassist.compiler.ast.Keyword;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -114,7 +112,7 @@ public class CategoryController {
         String keyword = transaction.getDescription();
         model.addAttribute("keywords", keyword);
         model.addAttribute("categories", categories);
-        return "add-keyword";
+        return "add-keyword-modal";
     }
 //    @PostMapping("/keyword/add/{transactionId}")
 //    public String addKeywordFromTransactionPost(HttpServletRequest request, @PathVariable Long transactionId) {
@@ -132,26 +130,26 @@ public class CategoryController {
         return "list-keywords";
     }
 
-    @GetMapping("/keyword/edit/{categoryId}/{keyword}")
-    public String editKeyword(@PathVariable String keyword, @PathVariable Long categoryId, Model model) {
-        User user1 = userService.findById(2l);
-        List<Category> categories = categoryService.findByUserId(2l);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("category", categoryService.findById(categoryId));
-        model.addAttribute("categories", categories);
-        return "edit-keyword";
-    }
-
-    @PostMapping("/keyword/edit/{categoryId}/{keyword}")
-    public String editKeywordPost(@PathVariable String keyword, @PathVariable Long categoryId, HttpServletRequest request) {
-        User user1 = userService.findById(2l);
-        Category category = categoryService.findById(categoryId);
-        category.keywords.remove(keyword);
-        List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
-        category.keywords.addAll(validatedKeywords);
-        categoryService.save(category);
-        return "redirect:../../keyword/list";
-    }
+//    @GetMapping("/keyword/edit/{categoryId}/{keyword}")
+//    public String editKeyword(@PathVariable String keyword, @PathVariable Long categoryId, Model model) {
+//        User user1 = userService.findById(2l);
+//        List<Category> categories = categoryService.findByUserId(2l);
+//        model.addAttribute("keyword", keyword);
+//        model.addAttribute("category", categoryService.findById(categoryId));
+//        model.addAttribute("categories", categories);
+//        return "edit-keyword";
+//    }
+//
+//    @PostMapping("/keyword/edit/{categoryId}/{keyword}")
+//    public String editKeywordPost(@PathVariable String keyword, @PathVariable Long categoryId, HttpServletRequest request) {
+//        User user1 = userService.findById(2l);
+//        Category category = categoryService.findById(categoryId);
+//        category.keywords.remove(keyword);
+//        List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
+//        category.keywords.addAll(validatedKeywords);
+//        categoryService.save(category);
+//        return "redirect:../../keyword/list";
+//    }
 
     @GetMapping("/keyword/delete/{categoryId}/{keyword}")
     public String deleteKeyword(@PathVariable String keyword, @PathVariable Long categoryId) {
@@ -159,10 +157,6 @@ public class CategoryController {
         Category category = categoryService.findById(categoryId);
         category.keywords.remove(keyword);
         categoryService.save(category);
-//        List<Category>categoriesList = categoryService.findByUserId(2l);
-//        model.addAttribute("categories", categoriesList);
-//        List<Keyword>keywordsList = keywordService.findByUserId(2l);
-//        model.addAttribute("keywords",keywordsList);
         return "redirect:../../list";
     }
 }
