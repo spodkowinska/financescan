@@ -78,6 +78,20 @@
             $.get("${pageContext.request.contextPath}/transaction/table/" + gYear + "/" + gMonth, function (data) {
                 $('#list').html(data);
 
+                // Enable popovers
+                let pops = $('[data-toggle="popover"]')
+                pops.popover();
+                pops.on('shown.bs.popover', function () {
+                    let transId = $(this).data('transaction-id');
+                    // Deletion confirmation popover
+                    let deleteButton = $('#delete-confirm-' + transId);
+                    deleteButton.css('color', 'white');
+                    deleteButton.unbind();
+                    deleteButton.click(function() {
+                        deleteTransaction(transId);
+                    });
+                });
+
                 // This line is needed to prevent category drop-right from disappearing
                 $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
 
@@ -102,6 +116,13 @@
                 // Activate only current month button if a specific year is displayed
                 $('#btn_month_' + gMonth).addClass('active').siblings().removeClass('active');
             }
+        }
+
+        function deleteTransaction(transId) {
+            $.get('${pageContext.request.contextPath}/transaction/delete/' + transId);
+            let row = $('#cat_row_' + transId);
+            if (row)
+                row.remove();
         }
 
         function getTransaction(transactionId){
@@ -348,11 +369,32 @@
                                 </button>
                             </div>
                             <div class="modal-body" id="editModalBody">
-                                <%-- Filled by AJAX from edit-transaction.jsp --%>
+                                <%-- Filled by AJAX from transaction-edit.jsp --%>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="editModalSubmit">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%-- KEYWORD MODAL --%>
+                <div class="modal fade" id="keywordModal" tabindex="-1" role="dialog" aria-labelledby="keywordModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header alert-secondary">
+                                <h5 class="modal-title" id="keywordModalLabel">Add Keyword</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="keywordModalBody">
+                                <%-- Filled by AJAX from edit-keyword.jsp --%>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="keywordModalSubmit">Save</button>
                             </div>
                         </div>
                     </div>
@@ -411,6 +453,18 @@
                                     <i class="fas fa-plus mr-2 text-gray-600"></i>
                                     Add new transaction
                                 </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Dropdown Item: Import from CSV -->
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/fileimport">
+                                    <i class="fas fa-file-upload mr-2 text-gray-600"></i>
+                                    Import from CSV
+                                </a>
+                                <!-- Dropdown Item: CSV Import Settings -->
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/csvsettings">
+                                    <i class="fas fa-cog mr-2 text-gray-600"></i>
+                                    CSV Import Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <!-- Dropdown Item: Assign default keywords -->
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/assign">
                                     <i class="fas fa-magic mr-2 text-gray-600"></i>
@@ -506,7 +560,7 @@
                             <%--                                </select> -->--%>
 
                             </tbody>
-                            <%--                            <jsp:include page="table-transactions.jsp"></jsp:include>--%>
+                            <%--                            <jsp:include page="transaction-table-rows.jsp"></jsp:include>--%>
                         </table>
                     </div>
                 </div>
@@ -599,6 +653,21 @@
                         reloadTransactionTable(null, null);
                     }
                 });
+                // Unbind handlers to avoid situations in which this button has more than one onclick handler
+                $(this).unbind();
+            });
+        });
+    });
+
+    $('#keywordModal').on('show.bs.modal', function(event) {
+        let transId = $(event.relatedTarget).data('transaction-id');
+        let getLink = '${pageContext.request.contextPath}/category/keyword/add/' + transId;
+        let postLink = '${pageContext.request.contextPath}/category/keyword/add';
+
+        $.get(getLink, function(data) {
+            $('#keywordModalBody').html(data);
+            $('#keywordModalSubmit').click(function(event) {
+                $.post(postLink, $('#keywordModalForm').serialize());
                 // Unbind handlers to avoid situations in which this button has more than one onclick handler
                 $(this).unbind();
             });

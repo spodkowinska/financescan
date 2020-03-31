@@ -43,23 +43,10 @@
         </div>
     </li>
 
-
-    <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-           aria-expanded="true" aria-controls="collapseThree">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Transactions</span>
-        </a>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/fileimport">Import Transactions</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/add">Add New Transaction</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/transaction/list">Transaction List</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/csvsettings">CSV Import Settings</a>
-            </div>
-        </div>
+        <a class="nav-link" href="/transaction/list">
+            <i class="fas fa-fw fa-search-dollar"></i>
+            <span>Transactions</span></a>
     </li>
 
     <li class="nav-item">

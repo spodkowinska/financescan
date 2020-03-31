@@ -31,6 +31,18 @@
 
 <body id="page-top">
 
+<style>
+    td.tag-col {
+        padding-top: 0; padding-bottom: 0; vertical-align: middle;
+    }
+    label.tag {
+        margin: 0;
+        padding: 4px 10px;
+        border-radius: 3px;
+        color: white;
+    }
+</style>
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -74,7 +86,7 @@
                                 <tbody>
                                 <c:forEach items="${cl}" var="category">
                                 <tr>
-                                    <td>${category.name}</td>
+                                    <td class="tag-col"><label class="tag" style="background: ${category.color}">${category.name}</label></td>
                                     <td>${category.description}</td>
                                     <td>
                                     <c:forEach items="${category.keywords}" var="keyword">
