@@ -26,27 +26,17 @@
     <div class="sidebar-heading">
         Settings
     </div>
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-           aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Categories</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="${pageContext.request.contextPath}/category/add">Add New Category</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/category/list">Category List</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/category/keyword/add">Add New Keywords</a>
-                <a class="collapse-item" href="${pageContext.request.contextPath}/category/keyword/list">Keywords List</a>
-            </div>
-        </div>
-    </li>
 
     <li class="nav-item">
         <a class="nav-link" href="/transaction/list">
             <i class="fas fa-fw fa-search-dollar"></i>
             <span>Transactions</span></a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="/category/list">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Categories</span></a>
     </li>
 
     <li class="nav-item">
