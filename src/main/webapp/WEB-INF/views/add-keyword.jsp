@@ -76,7 +76,9 @@
                         <div class="form-group">
                             <label>Keywords</label>
                             <input class="form-control" id="keywords" name="keywords"
-<%--                                   value = "${keyword}"--%>
+                                   <c:if test="${keywords!=null}">
+                                   value = "${keywords}"
+                                   </c:if>
                             >
                             <p class="help-block">Words that will be used to assign categories to your
                                 transactions. They should be separated with coma.</p>

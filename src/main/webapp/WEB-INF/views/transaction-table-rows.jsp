@@ -21,7 +21,6 @@
             </a>
         </td>
 
-            <%-- COLUMN: ACTIONS --%>
 
         <td class="center">${trans.transactionDate}</td>
 

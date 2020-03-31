@@ -112,17 +112,17 @@ public class CategoryController {
         List<Category> categories = categoryService.findByUserId(2l);
         Transaction transaction = transactionService.findById(transactionId);
         String keyword = transaction.getDescription();
-        model.addAttribute("keyword", keyword);
+        model.addAttribute("keywords", keyword);
         model.addAttribute("categories", categories);
         return "add-keyword";
     }
-    @PostMapping("/keyword/add/{transactionId}")
-    public String addKeywordFromTransactionPost(HttpServletRequest request, @PathVariable Long transactionId) {
-        User user1 = userService.findById(2l);
-        Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
-        categoryService.save(category);
-        return "redirect:../../transaction/list";
-    }
+//    @PostMapping("/keyword/add/{transactionId}")
+//    public String addKeywordFromTransactionPost(HttpServletRequest request, @PathVariable Long transactionId) {
+//        User user1 = userService.findById(2l);
+//        Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
+//        categoryService.save(category);
+//        return "redirect:../../transaction/list";
+//    }
 
     @RequestMapping("/keyword/list")
     public String keywordList(Model model) {
