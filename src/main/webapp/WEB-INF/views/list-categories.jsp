@@ -43,6 +43,27 @@
     }
 </style>
 
+<%-- CATEGORY MODAL --%>
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h5 class="modal-title" id="categoryModalLabel">Edit Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="categoryModalBody">
+                <%-- Filled by AJAX from edit-category.jsp --%>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="categoryModalSubmit">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -93,7 +114,7 @@
                                        ${keyword},
                                     </c:forEach>
                                     </td>
-                                    <td><a href="${pageContext.request.contextPath}/category/edit/${category.id}">Edit</a>
+                                    <td><a data-toggle="modal" data-target="#categoryModal" data-category-id="${category.id}">Edit</a>
                                     <a href="${pageContext.request.contextPath}/category/delete/${category.id}">Delete</a></td>
                                 </tr>
                                 </c:forEach>
@@ -160,6 +181,22 @@
 
 <!-- Page level custom scripts -->
 <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
+
+<script>
+    $('#categoryModal').on('show.bs.modal', function(event) {
+        let categoryId = $(event.relatedTarget).data('category-id');
+        let link = '${pageContext.request.contextPath}/category/edit/' + categoryId;
+
+        $.get(link, function(data) {
+            $('#categoryModalBody').html(data);
+            $('#categoryModalSubmit').click(function(event) {
+                $.post(link, $('#categoryModalForm').serialize());
+                // Unbind handlers to avoid situations in which this button has more than one onclick handler
+                $(this).unbind();
+            });
+        });
+    });
+</script>
 
 </body>
 
