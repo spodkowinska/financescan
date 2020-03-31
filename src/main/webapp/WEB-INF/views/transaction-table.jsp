@@ -203,6 +203,14 @@
             });
         }
     </script>
+
+    <style>
+        <c:forEach items="${categoriesList}" var="category">
+            .tag${category.id} {
+                background: ${category.color};
+        }
+        </c:forEach>
+    </style>
 </head>
 
 <body id="page-top" onload="init()">
@@ -226,135 +234,6 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-
-
-                <!-- NEW TABLE - WORK IN PROGRESS -->
-                <style>
-                    .raf {
-                        width: 100%;
-                        font-size: 12px;
-                        font-family: Arial;
-                        color: black;
-                    }
-
-                    .raf table {
-                        border-spacing: 0;
-                        border: 1px solid black;
-                    }
-
-                    .raf tr:hover {
-                        background: #F7F7F7;
-                    }
-
-                    .raf th, td {
-                        border: 1px solid lightgray;
-                        padding: 2px;
-                        padding-left: 5px;
-                        padding-right: 5px;
-                    }
-
-                    .raf th {
-                        border-color: #858796;
-                        text-align: center;
-                        color: #858796;
-                        background: white;
-                        font-family: Arial, Helvetica, sans-serif;
-                        font-size: 14px;
-                        font-weight: normal;
-                    }
-
-                    .raf td.actions a {
-                        display: inline-block;
-                        margin-left: 5px;
-                        margin-right: 5px;
-                        color: rgb(207, 207, 207);
-                    }
-
-                    .raf td.categories-list {
-                        width: 230px;
-                        padding-left: 2px;
-                        border-right: 0;
-                    }
-
-                    .raf td.categories-add {
-                        width: 20px;
-                        border-left: 0;
-                        padding-right: 2px;
-                        vertical-align: top;
-                    }
-
-                    .raf td.actions a:hover {
-                        color: gray;
-                    }
-
-                    .raf .center {
-                        text-align: center;
-                    }
-
-                    .raf .right {
-                        text-align: right;
-                    }
-
-                    .raf td.negative {
-                        color: rgb(226, 0, 0);
-                    }
-
-                    .raf td.positive {
-                        color: rgb(0, 150, 0);
-                    }
-
-                    div.tag-add-popover {
-                        text-align: center;
-                        padding: 5px;
-                        min-width: 300px;
-                    }
-
-                    .tag {
-                        display: inline-block;
-                        margin: 1px;
-                        font-size: 10px;
-                        padding: 2px;
-                        padding-left: 10px;
-                        padding-right: 10px;
-                        border-radius: 3px;
-                        color: white;
-                        text-decoration: none;
-                    }
-
-                    .tag:hover {
-                        cursor: pointer;
-                        filter: brightness(120%);
-                        color: white;
-                        text-decoration: none;
-                    }
-
-                    .tag-disabled {
-                        opacity: 0.35;
-                    }
-
-                    .tag-add {
-                        background: rgb(207, 207, 207);
-                    }
-
-                    <c:forEach items="${categoriesList}" var="category">
-                    .tag${category.id} {
-                        background: ${category.color};
-                    }
-
-                    </c:forEach>
-
-                    .tag-add:hover {
-                        background: gray;
-                    }
-
-                    table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
-                        content: " \25B3\25BD"
-                    }
-
-                    table.sortable th:not(.sorttable_nosort) {
-                        cursor: pointer;
-                    }
-                </style>
 
                 <%-- TRANSACTION ADD/EDIT MODAL --%>
                 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -484,7 +363,7 @@
 
                         <div style="height: 15px"></div>
 
-                        <table id="transaction_table" class="raf sortable">
+                        <table id="transaction_table" class="finance_table sortable">
                             <!-- TABLE HEADER -->
                             <thead>
                             <tr>

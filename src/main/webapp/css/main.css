@@ -1,3 +1,121 @@
 a {
     cursor: pointer;
 }
+
+.finance_table {
+    width: 100%;
+    font-size: 12px;
+    font-family: Arial;
+    color: black;
+}
+
+.finance_table table {
+    border-spacing: 0;
+    border: 1px solid black;
+}
+
+.finance_table tr:hover {
+    background: #F7F7F7;
+}
+
+.finance_table th, td {
+    border: 1px solid lightgray;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.finance_table th {
+    border-color: #858796;
+    text-align: center;
+    color: #858796;
+    background: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.finance_table td.actions a {
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    color: rgb(207, 207, 207);
+}
+
+.finance_table td.categories-list {
+    width: 230px;
+    padding-left: 2px;
+    border-right: 0;
+}
+
+.finance_table td.categories-add {
+    width: 20px;
+    border-left: 0;
+    padding-right: 2px;
+    vertical-align: top;
+}
+
+.finance_table td.actions a:hover {
+    color: gray;
+}
+
+.finance_table .center {
+    text-align: center;
+}
+
+.finance_table .right {
+    text-align: right;
+}
+
+.finance_table td.negative {
+    color: rgb(226, 0, 0);
+}
+
+.finance_table td.positive {
+    color: rgb(0, 150, 0);
+}
+
+div.tag-add-popover {
+    text-align: center;
+    padding: 5px;
+    min-width: 300px;
+}
+
+.tag {
+    display: inline-block;
+    margin: 1px;
+    font-size: 10px;
+    padding: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+}
+
+.tag:hover {
+    cursor: pointer;
+    filter: brightness(120%);
+    color: white;
+    text-decoration: none;
+}
+
+.tag-disabled {
+    opacity: 0.35;
+}
+
+.tag-add {
+    background: rgb(207, 207, 207);
+}
+
+.tag-add:hover {
+    background: gray;
+}
+
+table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+    content: " \25B3\25BD"
+}
+
+table.sortable th:not(.sorttable_nosort) {
+    cursor: pointer;
+}
