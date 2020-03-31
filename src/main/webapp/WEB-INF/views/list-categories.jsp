@@ -26,6 +26,7 @@
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" />
 
 </head>
 

@@ -33,6 +33,8 @@
 
     <script src="${pageContext.request.contextPath}/js/sorttable.js"></script>
 
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" />
+
     <script>
         var gSearchableColumnsIds = [];
 
@@ -228,10 +230,6 @@
 
                 <!-- NEW TABLE - WORK IN PROGRESS -->
                 <style>
-                    a {
-                        cursor: pointer;
-                    }
-
                     .raf {
                         width: 100%;
                         font-size: 12px;
