@@ -33,9 +33,11 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         Category category = new Category();
         model.addAttribute("category", category);
-        return "add-category";
+        return "edit-category";
     }
-//todo frontend validation, name cannot be the same, keywords info about usage
+
+    //todo frontend validation, name cannot be the same, keywords info about usage
+    @ResponseBody
     @PostMapping("/add")
     public String addPost(HttpServletRequest request) {
         User user1 = userService.findById(2l);
@@ -45,7 +47,7 @@ public class CategoryController {
         List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
         Category category = new Category(name, description, validatedKeywords, color, user1);
         categoryService.save(category);
-        return "redirect:../category/list";
+        return "";
     }
 
     @RequestMapping("/list")

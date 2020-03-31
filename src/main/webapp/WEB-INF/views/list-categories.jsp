@@ -130,7 +130,11 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-800">Categories</h6>
+                        <h6 class="m-0 font-weight-bold text-gray-800" style="float: left">Categories</h6>
+                        <button class="btn btn-secondary btn-sm" style="float: right; margin-bottom: -6px; margin-top: -6px;"
+                                data-toggle="modal" data-target="#categoryModal">
+                            <span class="fa fa-plus"></span> Add new category
+                        </button>
                     </div>
                     <div class="card-body">
 
@@ -257,8 +261,18 @@
 
 <script>
     $('#categoryModal').on('show.bs.modal', function(event) {
+        // Unbind handlers to avoid situations in which this button has more than one onclick handler
+        $('#categoryModalSubmit').unbind();
+
         let categoryId = $(event.relatedTarget).data('category-id');
-        let link = '${pageContext.request.contextPath}/category/edit/' + categoryId;
+        let link = categoryId
+            // If categoryId is valid, then we are in edit mode
+            ? '${pageContext.request.contextPath}/category/edit/' + categoryId
+            // Otherwise we are in creation mode
+            : '${pageContext.request.contextPath}/category/add';
+
+        // Update modal's title depending on mode
+        $('#categoryModalLabel').text(categoryId ? 'Edit Category' : 'Add New Category');
 
         $.get(link, function(data) {
             $('#categoryModalBody').html(data);
@@ -266,8 +280,6 @@
                 $.post(link, $('#categoryModalForm').serialize(), function () {
                     reloadCategoryTable();
                 });
-                // Unbind handlers to avoid situations in which this button has more than one onclick handler
-                $(this).unbind();
             });
         });
     });
