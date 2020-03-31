@@ -28,21 +28,49 @@
 
     <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" />
 
+    <style>
+        .tag-col {
+            padding-top: 0; padding-bottom: 0; vertical-align: middle;
+        }
+        .tag {
+            margin: 0;
+            padding: 4px 10px;
+            border-radius: 3px;
+            color: white;
+            font-size: 12px;
+        }
+    </style>
+
+    <script>
+        function init() {
+            // Enable popovers
+            let pops = $('[data-toggle="popover"]')
+            pops.popover();
+            pops.on('shown.bs.popover', function () {
+                let categoryId = $(this).data('category-id');
+                // Deletion confirmation popover
+                let deleteButton = $('#delete-confirm-' + categoryId);
+                deleteButton.css('color', 'white');
+                deleteButton.unbind();
+                deleteButton.click(function() {
+                    deleteCategory(categoryId);
+                });
+            });
+        }
+
+        function deleteCategory(categoryId) {
+            console.log(categoryId);
+            window.location.href = '${pageContext.request.contextPath}/category/delete/' + categoryId;
+        }
+
+        function reloadCategoryTable() {
+            console.log('reload');
+            window.location.reload();
+        }
+    </script>
 </head>
 
-<body id="page-top">
-
-<style>
-    td.tag-col {
-        padding-top: 0; padding-bottom: 0; vertical-align: middle;
-    }
-    label.tag {
-        margin: 0;
-        padding: 4px 10px;
-        border-radius: 3px;
-        color: white;
-    }
-</style>
+<body id="page-top" onload="init()">
 
 <%-- CATEGORY MODAL --%>
 <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
@@ -90,33 +118,65 @@
                         <h6 class="m-0 font-weight-bold text-gray-800">Categories</h6>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Category Name</th>
-                                    <th>Description</th>
-                                    <th>Keywords</th>
-                                    <td>Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
+
+                        <table id="category_table" class="finance_table">
+                            <!-- TABLE HEADER -->
+                            <thead>
+                            <tr>
+                                <th style="width: 85px">Actions</th>
+                                <th style="width: 200px">Name</th>
+                                <th style="width: 400px">Description</th>
+                                <th>Keywords</th>
+                            </tr>
+                            </thead>
+                            <!-- TABLE DATA -->
+                            <tbody id="list">
                                 <c:forEach items="${cl}" var="category">
-                                <tr>
-                                    <td class="tag-col"><label class="tag" style="background: ${category.color}">${category.name}</label></td>
-                                    <td>${category.description}</td>
-                                    <td>
-                                    <c:forEach items="${category.keywords}" var="keyword">
-                                       ${keyword},
-                                    </c:forEach>
-                                    </td>
-                                    <td><a data-toggle="modal" data-target="#categoryModal" data-category-id="${category.id}">Edit</a>
-                                    <a href="${pageContext.request.contextPath}/category/delete/${category.id}">Delete</a></td>
-                                </tr>
+                                    <tr>
+                                            <%-- COLUMN: ACTIONS --%>
+
+                                        <td class="actions">
+                                            <a data-toggle="modal" data-target="#categoryModal" data-category-id="${category.id}"
+                                               data-toggle="tooltip" title="Edit category" tabindex="0">
+                                                <span class="fa fa-edit"></span>
+                                            </a>
+                                            <a data-toggle="tooltip" title="Change category color" tabindex="0">
+                                                <span class="fa fa-paint-roller"></span>
+                                            </a>
+                                            <a tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" data-category-id="${category.id}"
+                                               data-content="<a class='delete-confirm btn btn-sm btn-danger' id=delete-confirm-${category.id}>Delete</a>">
+                                                <span class="fa fa-trash-alt"></span>
+                                            </a>
+                                        </td>
+
+                                            <%-- COLUMN: NAME --%>
+
+                                        <td>
+
+                                            <a data-toggle="modal" data-target="#categoryModal" data-category-id="${category.id}"
+                                               data-toggle="tooltip" title="Edit category" tabindex="0"
+                                               class="tag" style="background: ${category.color}">
+                                                    ${category.name}
+                                            </a>
+                                        </td>
+
+                                            <%-- COLUMN: DESCRIPTION --%>
+
+                                        <td>
+                                            ${category.description}
+                                        </td>
+
+                                            <%-- COLUMN: KEYWORDS --%>
+
+                                        <td>
+                                            <c:forEach items="${category.keywords}" var="keyword">
+                                                ${keyword},
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
                                 </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -186,7 +246,9 @@
         $.get(link, function(data) {
             $('#categoryModalBody').html(data);
             $('#categoryModalSubmit').click(function(event) {
-                $.post(link, $('#categoryModalForm').serialize());
+                $.post(link, $('#categoryModalForm').serialize(), function () {
+                    reloadCategoryTable();
+                });
                 // Unbind handlers to avoid situations in which this button has more than one onclick handler
                 $(this).unbind();
             });
