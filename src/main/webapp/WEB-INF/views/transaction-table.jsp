@@ -446,6 +446,9 @@
 
 <script>
     $('#editModal').on('show.bs.modal', function(event) {
+        // Unbind handlers to avoid situations in which this button has more than one onclick handler
+        $('#editModalSubmit').unbind();
+
         let transId = $(event.relatedTarget).data('transaction-id');
 
         let link = transId
@@ -470,13 +473,14 @@
                         reloadTransactionTable(null, null);
                     }
                 });
-                // Unbind handlers to avoid situations in which this button has more than one onclick handler
-                $(this).unbind();
             });
         });
     });
 
     $('#keywordModal').on('show.bs.modal', function(event) {
+        // Unbind handlers to avoid situations in which this button has more than one onclick handler
+        $('#keywordModalSubmit').unbind();
+
         let transId = $(event.relatedTarget).data('transaction-id');
         let getLink = '${pageContext.request.contextPath}/category/keyword/add/' + transId;
         let postLink = '${pageContext.request.contextPath}/category/keyword/add';
@@ -485,8 +489,6 @@
             $('#keywordModalBody').html(data);
             $('#keywordModalSubmit').click(function(event) {
                 $.post(postLink, $('#keywordModalForm').serialize());
-                // Unbind handlers to avoid situations in which this button has more than one onclick handler
-                $(this).unbind();
             });
         });
     });

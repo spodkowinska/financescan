@@ -39,6 +39,14 @@
             color: white;
             font-size: 12px;
         }
+        .keyword {
+            font-size: 12px;
+            background: #EEE;
+            font-weight: normal;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            border: 1px solid lightgray;
+        }
     </style>
 
     <script>
@@ -66,6 +74,13 @@
         function reloadCategoryTable() {
             console.log('reload');
             window.location.reload();
+        }
+
+        function updateColor(categoryId) {
+            let color = $('#category_color_' + categoryId).val();
+            $.post('${pageContext.request.contextPath}/category/setcolor/' + categoryId, { 'color' : color }, function () {
+                reloadCategoryTable();
+            });
         }
     </script>
 </head>
@@ -115,7 +130,11 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-800">Categories</h6>
+                        <h6 class="m-0 font-weight-bold text-gray-800" style="float: left">Categories</h6>
+                        <button class="btn btn-secondary btn-sm" style="float: right; margin-bottom: -6px; margin-top: -6px;"
+                                data-toggle="modal" data-target="#categoryModal">
+                            <span class="fa fa-plus"></span> Add new category
+                        </button>
                     </div>
                     <div class="card-body">
 
@@ -140,8 +159,10 @@
                                                data-toggle="tooltip" title="Edit category" tabindex="0">
                                                 <span class="fa fa-edit"></span>
                                             </a>
-                                            <a data-toggle="tooltip" title="Change category color" tabindex="0">
-                                                <span class="fa fa-paint-roller"></span>
+                                            <a data-toggle="tooltip" title="Change category color" tabindex="0" style="cursor: default">
+                                                <input type="color" value="${category.color}" style="display: none"
+                                                       id="category_color_${category.id}" onchange="updateColor(${category.id})" />
+                                                <label for="category_color_${category.id}" class="fa fa-paint-roller" style="margin: 0; cursor: pointer;"></label>
                                             </a>
                                             <a tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" data-category-id="${category.id}"
                                                data-content="<a class='delete-confirm btn btn-sm btn-danger' id=delete-confirm-${category.id}>Delete</a>">
@@ -170,7 +191,7 @@
 
                                         <td>
                                             <c:forEach items="${category.keywords}" var="keyword">
-                                                ${keyword},
+                                                <span class="badge badge-light keyword">${keyword}</span>
                                             </c:forEach>
                                         </td>
                                     </tr>
@@ -240,8 +261,18 @@
 
 <script>
     $('#categoryModal').on('show.bs.modal', function(event) {
+        // Unbind handlers to avoid situations in which this button has more than one onclick handler
+        $('#categoryModalSubmit').unbind();
+
         let categoryId = $(event.relatedTarget).data('category-id');
-        let link = '${pageContext.request.contextPath}/category/edit/' + categoryId;
+        let link = categoryId
+            // If categoryId is valid, then we are in edit mode
+            ? '${pageContext.request.contextPath}/category/edit/' + categoryId
+            // Otherwise we are in creation mode
+            : '${pageContext.request.contextPath}/category/add';
+
+        // Update modal's title depending on mode
+        $('#categoryModalLabel').text(categoryId ? 'Edit Category' : 'Add New Category');
 
         $.get(link, function(data) {
             $('#categoryModalBody').html(data);
@@ -249,8 +280,6 @@
                 $.post(link, $('#categoryModalForm').serialize(), function () {
                     reloadCategoryTable();
                 });
-                // Unbind handlers to avoid situations in which this button has more than one onclick handler
-                $(this).unbind();
             });
         });
     });
