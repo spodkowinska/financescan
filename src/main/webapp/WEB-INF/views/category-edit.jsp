@@ -3,16 +3,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<script>
-    function changeColorPreview() {
-        $('#colorPreview').css('background', $('#color').val());
-    }
-</script>
-
 <form:form modelAttribute="category" id="categoryModalForm">
 
     <div style="text-align: center; vertical-align: middle; height: 30px">
-        <form:input path="color" type="color" id="color" name="color" style="display: none" onchange="changeColorPreview()" />
+        <form:input path="color" type="color" id="color" name="color" style="display: none"
+                    onchange="changeColorPreview()" onkeypress="changeColorPreview()" />
         <label for="color">
             <div class="tag" style="background: ${category.color}; font-size: 16px;" id="colorPreview">
                 ${category.name}
@@ -25,7 +20,7 @@
 
     <div class="form-group">
         <label>Name</label>
-        <form:input path="name" class="form-control" id="categoryName" />
+        <form:input path="name" class="form-control" id="categoryName" onkeyup="changeColorPreview()" />
     </div>
 
     <div class="form-group">
@@ -41,3 +36,18 @@
     </div>
 
 </form:form>
+
+<script>
+    function changeColorPreview() {
+        let colorPreview = $('#colorPreview');
+
+        let input = document.getElementById("categoryName");
+        let name = input.value;
+        let displayName = name && name !== "" ? name : 'Placeholder name';
+
+        colorPreview.css('background', $('#color').val());
+        colorPreview.text(displayName);
+    }
+
+    changeColorPreview();
+</script>
