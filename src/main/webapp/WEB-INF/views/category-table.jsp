@@ -89,7 +89,7 @@
 
 <%-- CATEGORY MODAL --%>
 <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header alert-secondary">
                 <h5 class="modal-title" id="categoryModalLabel">Edit Category</h5>
@@ -277,6 +277,16 @@
         $.get(link, function(data) {
             $('#categoryModalBody').html(data);
             $('#categoryModalSubmit').click(function(event) {
+                // Find all keyword inputs and merge them before submitting
+                let keywords = [];
+                $('#keywordList .keyword-text').each(function() {
+                    let val = $(this).val();
+                    if (val && val !== "")
+                        keywords.push(val);
+                });
+                $('#keywords').val(keywords.join(','));
+
+                // Submit
                 $.post(link, $('#categoryModalForm').serialize(), function () {
                     reloadCategoryTable();
                 });

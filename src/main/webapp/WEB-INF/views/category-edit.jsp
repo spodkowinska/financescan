@@ -7,7 +7,7 @@
 
     <div style="text-align: center; vertical-align: middle; height: 30px">
         <form:input path="color" type="color" id="color" name="color" style="display: none"
-                    onchange="changeColorPreview()" onkeypress="changeColorPreview()" />
+                    onchange="refreshColorPreview()" onkeypress="refreshColorPreview()" />
         <label for="color">
             <div class="tag" style="background: ${category.color}; font-size: 16px;" id="colorPreview">
                 ${category.name}
@@ -20,25 +20,28 @@
 
     <div class="form-group">
         <label>Name</label>
-        <form:input path="name" class="form-control" id="categoryName" onkeyup="changeColorPreview()" />
+        <form:input path="name" class="form-control" id="categoryName" onkeyup="refreshColorPreview()" />
     </div>
 
     <div class="form-group">
         <label>Description</label>
         <form:input path="description" class="form-control" id="description" name="description" />
-        <p class="help-block"></p>
     </div>
 
     <div class="form-group">
         <label>Keywords</label>
-        <form:input path="keywords" class="form-control" id="keywords" name="keywords" />
-        <p class="help-block">Words that will be used to assign categories to your transactions</p>
+        <small class="form-text text-muted">Words that will be used to automatically assign this category to your transactions.</small>
+        <form:input path="keywords" class="form-control" id="keywords" name="keywords" style="display: none" />
+        <div id="keywordList">
+            <%-- Filled by JS below --%>
+        </div>
+        <label class="btn btn-sm" onclick="addKeyword()" style="cursor: pointer"><span class="fa fa-plus"></span> Add new keyword</label>
     </div>
 
 </form:form>
 
 <script>
-    function changeColorPreview() {
+    function refreshColorPreview() {
         let colorPreview = $('#colorPreview');
 
         let input = document.getElementById("categoryName");
@@ -49,5 +52,33 @@
         colorPreview.text(displayName);
     }
 
-    changeColorPreview();
+    var keywordCounter = 0;
+
+    function refreshKeywordList() {
+        let keywordList = $('#keywordList');
+        let keywords = $('#keywords').val().split(',');
+        for (let keyword of keywords) {
+            addKeyword(keyword);
+            // keywordList.append('<input type="text" class="form-control keyword" value="' + keyword + '"><a class="fa fa-trash deleteKeyword"></a></input>');
+        }
+    }
+
+    function deleteKeyword(keywordNumber) {
+        $('#keyword' + keywordNumber).remove();
+    }
+
+    function addKeyword(keyword) {
+        keyword = keyword ? keyword : "";
+        $('#keywordList').append('<div class="input-group" id="keyword' + keywordCounter + '">' +
+            '  <input type="text" class="form-control keyword keyword-text" placeholder="Put a keyword here..." aria-label="Keyword" aria-describedby="button-addon-' + keywordCounter + '" value="' + keyword +'">' +
+            '  <div class="input-group-append">' +
+            '    <button onclick="deleteKeyword(' + keywordCounter + ')" class="btn btm-sm keyword" type="button" id="button-addon-' + keywordCounter + '" style="cursor: pointer;"><span class="fa fa-trash"></span></button>' +
+            '  </div>' +
+            '</div>');
+        keywordCounter++;
+        // $('#keywordList').append('<input type="text" class="form-control keyword" />')
+    }
+
+    refreshColorPreview();
+    refreshKeywordList();
 </script>
