@@ -5,12 +5,15 @@ import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 import info.podkowinski.sandra.financescanner.category.Category;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -37,14 +40,20 @@ public class Transaction {
 
     @JoinColumn(name = "categories_id")
     @ManyToMany(fetch = FetchType.EAGER)
-    List<Category> categories;
+    List <Category> categories;
+
+
+    @JoinColumn(name = "categories_id")
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    Set<Category> pendingCategories;
 
     void addCategory(Category category){
         this.categories.add(category);
     }
 
     void removeCategory(Category category){
-        this.categories.remove(this.categories.indexOf(category));
+        this.categories.remove(category);
     }
 
     @JoinColumn(name = "user_id")
