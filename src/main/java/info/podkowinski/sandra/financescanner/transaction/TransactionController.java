@@ -110,7 +110,7 @@ public class TransactionController {
         System.out.println(transaction1.transactionDate);
 
         // todo: this is a very brutal approach and should be rewritten; list of categories should be filled in JSP
-        transaction1.categories = new ArrayList<>();
+        transaction1.categories = new HashSet<>();
         var paramNames = request.getParameterNames();
         while (paramNames.hasMoreElements()) {
             String paramName = paramNames.nextElement();
@@ -149,7 +149,7 @@ public class TransactionController {
         transaction1.setTransactionDate(LocalDate.parse(date));
 
         // todo: this is a very brutal approach and should be rewritten; list of categories should be filled in JSP
-        transaction1.categories = new ArrayList<>();
+        transaction1.categories = new HashSet<>();
         var paramNames = request.getParameterNames();
         while (paramNames.hasMoreElements()) {
             String paramName = paramNames.nextElement();

@@ -40,7 +40,7 @@ public class Transaction {
 
     @JoinColumn(name = "categories_id")
     @ManyToMany(fetch = FetchType.EAGER)
-    List <Category> categories;
+    Set <Category> categories;
 
 
     @JoinColumn(name = "categories_id")
