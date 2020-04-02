@@ -37,9 +37,9 @@ public class TransactionService {
         return transactionRepository.findById(id).orElse(null);
     }
 
-    public List<Category> categoriesFromUrlString(String categoriesIds) {
+    public Set<Category> categoriesFromUrlString(String categoriesIds) {
         String[] categoriesIdsList = categoriesIds.split(",");
-        List<Category> categoriesList = new ArrayList<>();
+        Set<Category> categoriesList = new HashSet<>();
         for (String id : categoriesIdsList) {
             categoriesList.add(categoryRepository.getOne(Long.parseLong(id)));
         }
@@ -87,27 +87,32 @@ public class TransactionService {
 
     public void assignDefaultCategoriesInTransactions(User user) {
         User user1 = userRepository.getOne(2l);
-        ArrayList<Long> transactionIdList = transactionRepository.findAllNoncategorizedByUserId(2l);
-        for (Long transactionId : transactionIdList) {
-            Transaction transaction = transactionRepository.findById(transactionId).orElse(null);
+        List<Transaction> transactionIdList = transactionRepository.findAllByUserId(2l);
+        for (Transaction transaction : transactionIdList) {
             for (Category category : categoryRepository.findAllByUserId(user.getId())) {
-                boolean keywordFound = false;
+//                boolean keywordFound = false;
                 for (String keyword : category.getKeywords()) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
-                        System.out.println(transaction.getDescription());
-                        System.out.println(keyword);
-                        List<Category> categories = transaction.categories;
-                        categories.add(category);
-                        transaction.setCategories(categories);
+                        Set<Category> pendingCategories = transaction.pendingCategories;
+                        pendingCategories.add(category);
+                        transaction.setPendingCategories(pendingCategories);
                         transactionRepository.save(transaction);
-                        System.out.println(transaction.getId() + " + " + category.getId());
-//                        transactionRepository.setCategory(transaction.getId(), category.getId());
-                        keywordFound = true;
+//                        keywordFound = true;
                         break;
                     }
                 }
-                if (keywordFound)
-                    break;
+                for (String safeKeyword : category.getSafeKeywords()) {
+                    if (transaction.getDescription().toLowerCase().contains(safeKeyword.toLowerCase().trim())) {
+                        Set<Category> categories = transaction.categories;
+                        categories.add(category);
+                        transaction.setPendingCategories(categories);
+                        transactionRepository.save(transaction);
+//                        keywordFound = true;
+                        break;
+                    }
+                }
+//                if (keywordFound)
+//                    break;
             }
         }
     }
@@ -116,7 +121,7 @@ public class TransactionService {
     public void assignCategoryInTransaction(User user, Long transactionId, Long categoryId) {
         Transaction transaction = transactionRepository.getOne(transactionId);
         if (transaction.getUser().equals(user)) {
-            transaction.setCategories(Arrays.asList(categoryRepository.getOne(categoryId)));
+            transaction.addCategory(categoryRepository.getOne(categoryId));
             transactionRepository.save(transaction);
         }
     }

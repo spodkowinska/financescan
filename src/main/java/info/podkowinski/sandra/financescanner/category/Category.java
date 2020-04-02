@@ -48,6 +48,9 @@ public class Category {
     @ElementCollection
     List<String> keywords;
 
+    @ElementCollection
+    List<String> safeKeywords;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;

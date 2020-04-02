@@ -1,11 +1,8 @@
 package info.podkowinski.sandra.financescanner.category;
-//
-//import info.podkowinski.sandra.financescanner.keyword.Keyword;
-//import info.podkowinski.sandra.financescanner.keyword.KeywordRepository;
+
 import info.podkowinski.sandra.financescanner.transaction.TransactionRepository;
 import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserRepository;
-import javassist.compiler.ast.Keyword;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,7 +12,6 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
-//    private final KeywordRepository keywordRepository;
     private final UserRepository userRepository;
 
     public CategoryService(CategoryRepository categoryRepository, TransactionRepository transactionRepository,
@@ -61,6 +57,19 @@ public class CategoryService {
         }
         return keywordsList;
     }
+//    public Long doesKeywordExistInDifferentCategory(String keyword, Long categoryId){
+//        List<Category> usersCategories = categoryRepository.findAllByUserId(2l);
+//        for (Category category :usersCategories) {
+//            if (!category.equals(categoryRepository.findById(categoryId))) {
+//                for (String key : category.keywords) {
+//                    if (key.toLowerCase().equals(keyword.toLowerCase())) {
+//                        return category.getId();
+//                    }
+//                }
+//            }
+//        }
+//        return -1l;
+//    }
 }
 
 

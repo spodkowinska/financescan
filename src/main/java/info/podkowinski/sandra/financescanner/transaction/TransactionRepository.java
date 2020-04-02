@@ -40,4 +40,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and user_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByYear(String year, Long userId);
+
+    List<Transaction> findAllByUserId(Long userId);
 }

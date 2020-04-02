@@ -158,12 +158,21 @@ public class CategoryController {
 //        return "redirect:../../keyword/list";
 //    }
 
-    @GetMapping("/keyword/delete/{categoryId}/{keyword}")
-    public String deleteKeyword(@PathVariable String keyword, @PathVariable Long categoryId) {
+//    @PostMapping("/keyword/delete/{categoryId}")
+//    public String deleteKeyword(@PathVariable Long categoryId) {
+//        User user1 = userService.findById(2l);
+//        Category category = categoryService.findById(categoryId);
+//        category.keywords.remove(keyword);
+//        categoryService.save(category);
+//        return "redirect:../../list";
+//    }
+
+    @PostMapping("/keyword/validate/{categoryId}")
+    public String validateKeyword(@PathVariable Long categoryId, HttpServletRequest request, Model model) {
         User user1 = userService.findById(2l);
-        Category category = categoryService.findById(categoryId);
-        category.keywords.remove(keyword);
-        categoryService.save(category);
-        return "redirect:../../list";
+        String keyword = request.getParameter("keyword");
+//        Long usedCategory = categoryService.doesKeywordExistInDifferentCategory(keyword, categoryId);
+//        model.addAttribute("usedCategory", usedCategory);
+        return "redirect: ../../../list";
     }
 }
