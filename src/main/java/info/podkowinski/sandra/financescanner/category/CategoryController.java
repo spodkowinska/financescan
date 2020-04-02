@@ -33,7 +33,7 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         Category category = new Category();
         model.addAttribute("category", category);
-        return "edit-category";
+        return "category-edit";
     }
 
     //todo frontend validation, name cannot be the same, keywords info about usage
@@ -55,7 +55,7 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         List<Category>categoriesList = categoryService.findByUserId(2l);
         model.addAttribute("cl", categoriesList);
-        return "list-categories";
+        return "category-table";
     }
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
@@ -66,7 +66,7 @@ public class CategoryController {
         model.addAttribute("category", category);
         model.addAttribute("keywords", keywordList);
         model.addAttribute("categories", categories);
-        return "edit-category";
+        return "category-edit";
     }
 
     @PostMapping("/edit/{id}")
