@@ -29,8 +29,13 @@
     </div>
 
     <div class="form-group">
-        <label>Keywords</label>
-        <small class="form-text text-muted">Words that will be used to automatically assign this category to your transactions.</small>
+        <label>Keywords
+            <a tabindex="0" data-toggle="popover" data-trigger="focus" title="Keywords" data-html="true"
+               data-content="Words that will be used to automatically suggest this category for your transactions.
+            Use the checkbox to mark the keyword as trusted - it will be used to <b>assign</b> categories instead of just <b>suggesting</b> them.">
+                <span class="fa fa-lg fa-question-circle"></span>
+            </a>
+        </label>
         <form:input path="keywords" class="form-control" id="keywords" name="keywords" style="display: none" />
         <div id="keywordList">
             <%-- Filled by JS below --%>
@@ -59,7 +64,6 @@
         let keywords = $('#keywords').val().split(',');
         for (let keyword of keywords) {
             addKeyword(keyword);
-            // keywordList.append('<input type="text" class="form-control keyword" value="' + keyword + '"><a class="fa fa-trash deleteKeyword"></a></input>');
         }
     }
 
@@ -70,15 +74,19 @@
     function addKeyword(keyword) {
         keyword = keyword ? keyword : "";
         $('#keywordList').append('<div class="input-group" id="keyword' + keywordCounter + '">' +
+            '  <div class="input-group-prepend">' +
+            '    <div class="input-group-text keyword"><input type="checkbox" aria-label="Safe keyword"></div>' +
+            '  </div>' +
             '  <input type="text" class="form-control keyword keyword-text" placeholder="Put a keyword here..." aria-label="Keyword" aria-describedby="button-addon-' + keywordCounter + '" value="' + keyword +'">' +
             '  <div class="input-group-append">' +
             '    <button onclick="deleteKeyword(' + keywordCounter + ')" class="btn btm-sm keyword" type="button" id="button-addon-' + keywordCounter + '" style="cursor: pointer;"><span class="fa fa-trash"></span></button>' +
             '  </div>' +
             '</div>');
         keywordCounter++;
-        // $('#keywordList').append('<input type="text" class="form-control keyword" />')
     }
 
     refreshColorPreview();
     refreshKeywordList();
+
+    $('[data-toggle="popover"]').popover()
 </script>
