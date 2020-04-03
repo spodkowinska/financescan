@@ -37,6 +37,7 @@
             </a>
         </label>
         <form:input path="keywords" class="form-control" id="keywords" name="keywords" style="display: none" />
+        <form:input path="safeKeywords" class="form-control" id="safeKeywords" name="safeKeywords" style="display: none" />
         <div id="keywordList">
             <%-- Filled by JS below --%>
         </div>
@@ -61,9 +62,21 @@
 
     function refreshKeywordList() {
         let keywordList = $('#keywordList');
-        let keywords = $('#keywords').val().split(',');
-        for (let keyword of keywords) {
-            addKeyword(keyword);
+
+        let safeKeywordsStr = $('#safeKeywords').val();
+        if (safeKeywordsStr !== "") {
+            let safeKeywords = safeKeywordsStr.split(',');
+            for (let keyword of safeKeywords) {
+                addKeyword(keyword, true);
+            }
+        }
+
+        let keywordsStr = $('#keywords').val();
+        if (keywordsStr !== "") {
+            let keywords = keywordsStr.split(',');
+            for (let keyword of keywords) {
+                addKeyword(keyword);
+            }
         }
     }
 
@@ -71,13 +84,13 @@
         $('#keyword' + keywordNumber).remove();
     }
 
-    function addKeyword(keyword) {
+    function addKeyword(keyword, safe) {
         keyword = keyword ? keyword : "";
         $('#keywordList').append('<div class="input-group" id="keyword' + keywordCounter + '">' +
             '  <div class="input-group-prepend">' +
-            '    <div class="input-group-text keyword"><input type="checkbox" aria-label="Safe keyword"></div>' +
+            '    <div class="input-group-text keyword"><input type="checkbox" aria-label="Safe keyword" id="safe-keyword-check-' + keywordCounter + '"' + (safe ? ' checked' : '') + '></div>' +
             '  </div>' +
-            '  <input type="text" class="form-control keyword keyword-text" placeholder="Put a keyword here..." aria-label="Keyword" aria-describedby="button-addon-' + keywordCounter + '" value="' + keyword +'">' +
+            '  <input type="text" class="form-control keyword keyword-text" data-keyword-number="' + keywordCounter + '" placeholder="Put a keyword here..." aria-label="Keyword" aria-describedby="button-addon-' + keywordCounter + '" value="' + keyword +'">' +
             '  <div class="input-group-append">' +
             '    <button onclick="deleteKeyword(' + keywordCounter + ')" class="btn btm-sm keyword" type="button" id="button-addon-' + keywordCounter + '" style="cursor: pointer;"><span class="fa fa-trash"></span></button>' +
             '  </div>' +

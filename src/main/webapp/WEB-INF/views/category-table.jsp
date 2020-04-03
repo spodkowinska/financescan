@@ -278,13 +278,19 @@
             $('#categoryModalBody').html(data);
             $('#categoryModalSubmit').click(function(event) {
                 // Find all keyword inputs and merge them before submitting
-                let keywords = [];
+                let keywords = [], safeKeywords = [];
                 $('#keywordList .keyword-text').each(function() {
                     let val = $(this).val();
-                    if (val && val !== "")
-                        keywords.push(val);
+                    if (val && val !== "") {
+                        let keywordNumber = $(this).data('keyword-number');
+                        if ($('#safe-keyword-check-' + keywordNumber).is(':checked'))
+                            safeKeywords.push(val);
+                        else
+                            keywords.push(val);
+                    }
                 });
                 $('#keywords').val(keywords.join(','));
+                $('#safeKeywords').val(safeKeywords.join(','));
 
                 // Submit
                 $.post(link, $('#categoryModalForm').serialize(), function () {
