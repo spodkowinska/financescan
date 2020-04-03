@@ -32,7 +32,7 @@
         <label>Keywords
             <a tabindex="0" data-toggle="popover" data-trigger="focus" title="Keywords" data-html="true"
                data-content="Words that will be used to automatically suggest this category for your transactions.
-            Use the checkbox to mark the keyword as trusted - it will be used to <b>assign</b> categories instead of just <b>suggesting</b> them.">
+            Use the checkbox to mark the keyword as <i>safe</i> - it will be used to <b>assign</b> categories instead of just <b>suggesting</b> them.">
                 <span class="fa fa-lg fa-question-circle"></span>
             </a>
         </label>
