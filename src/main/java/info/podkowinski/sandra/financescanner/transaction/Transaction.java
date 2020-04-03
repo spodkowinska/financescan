@@ -50,10 +50,12 @@ public class Transaction {
 
     void addCategory(Category category){
         this.categories.add(category);
+        this.pendingCategories.remove(category);
     }
 
-    void removeCategory(Category category){
+    void removeCategory(Category category) {
         this.categories.remove(category);
+        this.pendingCategories.remove(category);
     }
 
     @JoinColumn(name = "user_id")
