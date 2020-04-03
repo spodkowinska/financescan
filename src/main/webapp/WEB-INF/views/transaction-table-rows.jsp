@@ -44,7 +44,19 @@
                     id="cat_tag_${trans.id}_${category.id}"
                     tabindex="0"
                     onclick="changeCategory(${trans.id},${category.id})"
-                    class="tag tag${category.id}">${category.name}</a></c:when></c:choose></c:forEach>
+                    class="tag tag${category.id}">${category.name}</a></c:when><c:when
+                    test="${fn:contains(trans.pendingCategories, category)}"><a
+                    id="cat_tag_${trans.id}_${category.id}"
+                    tabindex="0"
+                    style="display: none"
+                    onclick="changeCategory(${trans.id},${category.id})"
+                    class="tag tag${category.id}">${category.name}</a><a
+                    id="cat_tag_pending_${trans.id}_${category.id}"
+                    tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true"
+                    data-transaction-id="${trans.id}" data-category-id="${category.id}"
+                    data-content="<a class='category-confirm btn btn-sm btn-success' id=category-confirm-${trans.id}-${category.id}>Confirm</a>
+                    <a class='category-reject btn btn-sm btn-danger' id=category-reject-${trans.id}-${category.id}>Reject</a>"
+                    class="tag tag${category.id}">${category.name} <span class="fa fa-question"></span></a></c:when></c:choose></c:forEach>
 
         </td>
         <td class="categories-add">
@@ -57,7 +69,7 @@
                      aria-labelledby="cat_drop_${trans.id}">
 
                     <c:forEach items="${categoriesList}" var="category"><c:choose><c:when
-                            test="${!fn:contains(trans.categories, category)}"><a
+                            test="${!fn:contains(trans.categories, category) && !fn:contains(trans.pendingCategories, category)}"><a
                             id="cat_tag_${trans.id}_${category.id}"
                             tabindex="0"
                             onclick="changeCategory(${trans.id},${category.id})"
