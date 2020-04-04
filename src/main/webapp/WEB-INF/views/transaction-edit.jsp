@@ -85,39 +85,42 @@
 
 <script>
     // Enable popovers
-    let pops = $('.pending-cat');
-    pops.popover();
-    pops.on('shown.bs.popover', function () {
-        let catId = $(this).data('category-id');
+    {
+        let pops = $('.pending-cat');
+        pops.popover('disable');
+        pops.popover('enable');
+        pops.on('shown.bs.popover', function () {
+            let catId = $(this).data('category-id');
 
-        // Category confirmation button
-        let catConfirmButton = $('#category-confirm-' + catId);
-        if (catConfirmButton) {
-            catConfirmButton.css('color', 'white');
-            catConfirmButton.unbind();
-            catConfirmButton.click(function () {
-                $('#cat_label_pending_' + catId).remove();
-                $('#cat_label_' + catId).css('display', 'inline-block');
+            // Category confirmation button
+            let catConfirmButton = $('#category-confirm-' + catId);
+            if (catConfirmButton) {
+                catConfirmButton.css('color', 'white');
+                catConfirmButton.unbind();
+                catConfirmButton.click(function () {
+                    $('#cat_label_pending_' + catId).remove();
+                    $('#cat_label_' + catId).css('display', 'inline-block');
 
-                let input = $('#category_' + catId);
-                input.prop('checked', true);
-                input.attr('name', 'category_' + catId);
-            });
-        }
+                    let input = $('#category_' + catId);
+                    input.prop('checked', true);
+                    input.attr('name', 'category_' + catId);
+                });
+            }
 
-        // Category rejection button
-        let catRejectButton = $('#category-reject-' + catId);
-        if (catRejectButton) {
-            catRejectButton.css('color', 'white');
-            catRejectButton.unbind();
-            catRejectButton.click(function () {
-                $('#cat_label_pending_' + catId).remove();
-                $('#cat_label_' + catId).css('display', 'inline-block');
+            // Category rejection button
+            let catRejectButton = $('#category-reject-' + catId);
+            if (catRejectButton) {
+                catRejectButton.css('color', 'white');
+                catRejectButton.unbind();
+                catRejectButton.click(function () {
+                    $('#cat_label_pending_' + catId).remove();
+                    $('#cat_label_' + catId).css('display', 'inline-block');
 
-                let input = $('#category_' + catId);
-                input.prop('checked', false);
-                input.attr('name', 'category_' + catId);
-            });
-        }
-    });
+                    let input = $('#category_' + catId);
+                    input.prop('checked', false);
+                    input.attr('name', 'category_' + catId);
+                });
+            }
+        });
+    }
 </script>
