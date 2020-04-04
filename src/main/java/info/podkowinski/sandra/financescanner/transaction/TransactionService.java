@@ -107,7 +107,7 @@ public class TransactionService {
                     if (transaction.getDescription().toLowerCase().contains(safeKeyword.toLowerCase().trim())) {
                         Set<Category> categories = transaction.categories;
                         categories.add(category);
-                        transaction.setPendingCategories(categories);
+                        transaction.setCategories(categories);
                         transactionRepository.save(transaction);
 //                        keywordFound = true;
                         break;
