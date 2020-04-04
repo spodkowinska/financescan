@@ -44,8 +44,9 @@ public class CategoryController {
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String color = request.getParameter("color");
+        String fontColor = request.getParameter("fontColor");
         List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
-        Category category = new Category(name, description, validatedKeywords, color, user1);
+        Category category = new Category(name, description, validatedKeywords, color, fontColor, user1);
         categoryService.save(category);
         return "";
     }
@@ -84,6 +85,9 @@ public class CategoryController {
         Category category = categoryService.findById(id);
         if (category != null) {
             category.color = request.getParameter("color");
+            String fontColor = request.getParameter("fontColor");
+            if (fontColor != null)
+                category.fontColor = fontColor;
             categoryService.save(category);
         }
         return "";
@@ -98,7 +102,6 @@ public class CategoryController {
         model.addAttribute("cl", categoriesList);
         return "redirect:../../category/list";
     }
-
 
     @GetMapping("/keyword/add")
     public String addKeyword(Model model) {

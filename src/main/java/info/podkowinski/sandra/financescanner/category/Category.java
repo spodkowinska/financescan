@@ -17,20 +17,21 @@ import java.util.List;
 )
 public class Category {
 
-    public Category(String name, String description, List<String> keywords, String color, User user) {
+    public Category(String name, String description, List<String> keywords, String color, String fontColor, User user) {
         this.name = name;
         this.description = description;
         this.keywords = keywords;
         this.color = color;
+        this.fontColor = fontColor;
         this.user = user;
-
     }
-    public Category(String name, String description, String color, User user) {
+
+    public Category(String name, String description, String color, String fontColor, User user) {
         this.name = name;
         this.description = description;
         this.color = color;
+        this.fontColor = fontColor;
         this.user = user;
-
     }
 
     public Category() {
@@ -60,10 +61,4 @@ public class Category {
     
     @Column(length = 7)
     String fontColor;
-
-    void setFontColor(String fontColor){
-        this.fontColor = fontColor == null ? "#FFFFFF" : fontColor;
-    }
-
-
 }

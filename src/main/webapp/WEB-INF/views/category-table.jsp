@@ -76,9 +76,28 @@
             window.location.reload();
         }
 
+        // https://stackoverflow.com/a/5624139/1550934
+        function hexToRgb(hex) {
+            let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        // https://stackoverflow.com/a/1855903/1550934
+        function calculateContrastingColor(hex) {
+            let rgb = hexToRgb(hex);
+            // Counting the perceptive luminance - human eye favors green color...
+            let luminance = ( 0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b)/255;
+            return luminance > 0.5 ? '#000000' : '#FFFFFF';
+        }
+
         function updateColor(categoryId) {
             let color = $('#category_color_' + categoryId).val();
-            $.post('${pageContext.request.contextPath}/category/setcolor/' + categoryId, { 'color' : color }, function () {
+            let fontColor = calculateContrastingColor(color);
+            $.post('${pageContext.request.contextPath}/category/setcolor/' + categoryId, { 'color' : color, 'fontColor' : fontColor }, function () {
                 reloadCategoryTable();
             });
         }
