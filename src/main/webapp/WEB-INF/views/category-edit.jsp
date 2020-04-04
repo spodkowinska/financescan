@@ -6,6 +6,7 @@
 <form:form modelAttribute="category" id="categoryModalForm">
 
     <div style="text-align: center; vertical-align: middle; height: 30px">
+        <form:input path="fontColor" type="hidden" id="fontColor" name="fontColor" />
         <form:input path="color" type="color" id="color" name="color" style="display: none"
                     onchange="refreshColorPreview()" onkeypress="refreshColorPreview()" />
         <label for="color">
@@ -47,6 +48,24 @@
 </form:form>
 
 <script>
+    // https://stackoverflow.com/a/5624139/1550934
+    function hexToRgb(hex) {
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    // https://stackoverflow.com/a/1855903/1550934
+    function calculateContrastingColor(hex) {
+        let rgb = hexToRgb(hex);
+        // Counting the perceptive luminance - human eye favors green color...
+        let luminance = ( 0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b)/255;
+        return luminance > 0.5 ? '#000000' : '#FFFFFF';
+    }
+
     function refreshColorPreview() {
         let colorPreview = $('#colorPreview');
 
@@ -54,7 +73,12 @@
         let name = input.value;
         let displayName = name && name !== "" ? name : 'Placeholder name';
 
-        colorPreview.css('background', $('#color').val());
+        let backgroundColor = $('#color').val();
+        let fontColor = calculateContrastingColor(backgroundColor);
+        $('#fontColor').val(fontColor);
+
+        colorPreview.css('background', backgroundColor);
+        colorPreview.css('color', fontColor);
         colorPreview.text(displayName);
     }
 
