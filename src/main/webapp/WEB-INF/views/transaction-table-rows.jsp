@@ -15,7 +15,7 @@
                data-toggle="tooltip" title="Create keyword from this transaction"
                 <span class="fa fa-key"></span>
             </a>
-            <a tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" data-transaction-id="${trans.id}"
+            <a tabindex="0" data-toggle="popover" class="popover-button-${trans.id}" data-trigger="focus" data-html="true" data-transaction-id="${trans.id}"
                data-content="<a class='delete-confirm btn btn-sm btn-danger' id=delete-confirm-${trans.id}>Delete</a>">
                 <span class="fa fa-trash-alt"></span>
             </a>
@@ -56,7 +56,7 @@
                     data-transaction-id="${trans.id}" data-category-id="${category.id}"
                     data-content="<a class='category-confirm btn btn-sm btn-success' id=category-confirm-${trans.id}-${category.id}>Confirm</a>
                     <a class='category-reject btn btn-sm btn-danger' id=category-reject-${trans.id}-${category.id}>Reject</a>"
-                    class="tag tag${category.id}">${category.name} <span class="fa fa-question"></span></a></c:when></c:choose></c:forEach>
+                    class="tag tag${category.id} popover-button-${trans.id}">${category.name} <span class="fa fa-question"></span></a></c:when></c:choose></c:forEach>
 
         </td>
         <td class="categories-add">
