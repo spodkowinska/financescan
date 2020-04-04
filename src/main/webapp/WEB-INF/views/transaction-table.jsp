@@ -393,13 +393,30 @@
                             </div>
                         </div>
 
-                        <!-- Filter -->
-                        <div class="input-group input-group-sm mb-3" style="width: 300px; margin-top: 10px;">
-                            <input type="text" class="form-control" placeholder="Filter by description..."
-                                   aria-label="Filter by description..." aria-describedby="basic-addon2"
-                                   id="text_filter" onkeyup="applyTextFilter()">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">Filter</button>
+                        <div class="form-row align-items-center" style="margin-top: 10px;">
+                            <div class="col-auto">
+
+                                <!-- Filter: text -->
+                                <div class="input-group input-group-sm" style="width: 300px">
+                                    <input type="text" class="form-control" placeholder="Filter by description..."
+                                           aria-label="Filter by description..." aria-describedby="basic-addon2"
+                                           id="text_filter" onkeyup="applyTextFilter()">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button">Filter</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-auto">
+
+                                <!-- Filter: unreviewed suggestions -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="unreviewedCheck" style="margin-top: 6px">
+                                    <label class="form-check-label small" for="unreviewedCheck">
+                                        Show only unreviewed
+                                    </label>
+                                </div>
+
                             </div>
                         </div>
 
