@@ -85,13 +85,39 @@
                 pops.popover();
                 pops.on('shown.bs.popover', function () {
                     let transId = $(this).data('transaction-id');
-                    // Deletion confirmation popover
-                    let deleteButton = $('#delete-confirm-' + transId);
-                    deleteButton.css('color', 'white');
-                    deleteButton.unbind();
-                    deleteButton.click(function() {
-                        deleteTransaction(transId);
-                    });
+                    let catId = $(this).data('category-id');
+
+                    if (!catId) {
+                        // Deletion confirmation popover
+                        let deleteButton = $('#delete-confirm-' + transId);
+                        if (deleteButton) {
+                            deleteButton.css('color', 'white');
+                            deleteButton.unbind();
+                            deleteButton.click(function() {
+                                deleteTransaction(transId);
+                            });
+                        }
+                    }
+                    else {
+                        // Category confirmation button
+                        let catConfirmButton = $('#category-confirm-' + transId + '-' + catId);
+                        if (catConfirmButton) {
+                            catConfirmButton.css('color', 'white');
+                            catConfirmButton.unbind();
+                            catConfirmButton.click(function () {
+                                addCategory(transId, catId, true);
+                            });
+                        }
+                        // Category rejection button
+                        let catRejectButton = $('#category-reject-' + transId + '-' + catId);
+                        if (catRejectButton) {
+                            catRejectButton.css('color', 'white');
+                            catRejectButton.unbind();
+                            catRejectButton.click(function () {
+                                removeCategory(transId, catId, true);
+                            });
+                        }
+                    }
                 });
 
                 // This line is needed to prevent category drop-right from disappearing
@@ -142,14 +168,27 @@
                 addCategory(transactionId, categoryId);
         }
 
-        function addCategory(transactionId, categoryId) {
+        function addCategory(transactionId, categoryId, pending) {
             $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId);
-            $('#cat_tag_' + transactionId + '_' + categoryId).appendTo('#cat_current_' + transactionId);
+
+            let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
+            if (pending) {
+                $('#cat_tag_pending_' + transactionId + '_' + categoryId).remove();
+                catElem.css('display', 'inline-block');
+            }
+            else
+                catElem.appendTo('#cat_current_' + transactionId);
         }
 
-        function removeCategory(transactionId, categoryId) {
+        function removeCategory(transactionId, categoryId, pending) {
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId);
-            $('#cat_tag_' + transactionId + '_' + categoryId).appendTo('#cat_others_' + transactionId);
+
+            let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
+            if (pending) {
+                $('#cat_tag_pending_' + transactionId + '_' + categoryId).remove();
+                catElem.css('display', 'inline-block');
+            }
+            catElem.appendTo('#cat_others_' + transactionId);
         }
 
         function applyTextFilter() {
