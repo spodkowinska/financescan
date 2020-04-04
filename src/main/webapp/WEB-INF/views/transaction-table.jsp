@@ -40,6 +40,8 @@
 
         var gMonth = "all";
         var gYear = "all";
+
+        var gCategoryFilteringEnabled = false;
         
         function init() {
             reloadTransactionTable('all','all');
@@ -156,10 +158,22 @@
                 row.remove();
         }
 
-        function getTransaction(transactionId){
-            $.get("${pageContext.request.contextPath}/transaction/gettransaction/" + transactionId, function (data) {
-                $('#list').html(data);
-            })
+        function refreshRowForTransaction(transactionId, preloadedData){
+            if (preloadedData) {
+                $('#cat_row_' + transactionId).replaceWith(preloadedData);
+                afterRowRefreshed(transactionId);
+            }
+            else {
+                $.get("${pageContext.request.contextPath}/transaction/gettransaction/" + transactionId, function (data) {
+                    $('#cat_row_' + transactionId).replaceWith(data);
+                    afterRowRefreshed(transactionId);
+                })
+            }
+        }
+
+        function afterRowRefreshed(transactionId) {
+            enablePopovers($('.popover-button-' + transactionId));
+            applyFilters();
         }
 
         function changeCategory(transactionId, categoryId) {
@@ -172,7 +186,11 @@
         }
 
         function addCategory(transactionId, categoryId, pending) {
-            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId);
+            $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
+                if (gCategoryFilteringEnabled) {
+                    refreshRowForTransaction(transactionId, data);
+                }
+            });
 
             let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
             if (pending) {
@@ -184,7 +202,11 @@
         }
 
         function removeCategory(transactionId, categoryId, pending) {
-            $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId);
+            $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId, function (data) {
+                if (gCategoryFilteringEnabled) {
+                    refreshRowForTransaction(transactionId, data);
+                }
+            });
 
             let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
             if (pending) {
@@ -197,6 +219,8 @@
         function applyFilters() {
             const showOnlyUnreviewed = $('#unreviewedCheck').is(':checked');
             const showOnlyUncategorized = $('#uncategorizedCheck').is(':checked');
+
+            gCategoryFilteringEnabled = showOnlyUnreviewed || showOnlyUncategorized;
 
             const input = document.getElementById("text_filter");
             const filter = input.value.toUpperCase();
@@ -552,7 +576,7 @@
                     if (transId) {
                         // Edit mode: update the edited row
                         $('#cat_row_' + transId).replaceWith(newRowData);
-                        enablePopovers($('.popover-button-' + transId));
+                        afterRowRefreshed(transId);
                     }
                     else {
                         // Add mode: update whole table

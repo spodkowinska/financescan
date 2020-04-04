@@ -190,10 +190,10 @@ public class TransactionController {
         User user1 = userService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
         if (transaction.getUser() == user1) {
-                transaction.addCategory(categoryService.findById(categoryId));
-                transactionService.save(transaction);
-            }
-        return "redirect:/transaction/list";
+            transaction.addCategory(categoryService.findById(categoryId));
+            transactionService.save(transaction);
+        }
+        return "redirect:/transaction/table/gettransaction/" + transaction.id;
     }
 
     @GetMapping("/removecategory/{transactionId}/{categoryId}")
@@ -204,7 +204,7 @@ public class TransactionController {
             transaction.removeCategory(categoryService.findById(categoryId));
             transactionService.save(transaction);
         }
-        return "redirect:/transaction/list";
+        return "redirect:/transaction/table/gettransaction/" + transaction.id;
     }
 
     @ResponseBody
