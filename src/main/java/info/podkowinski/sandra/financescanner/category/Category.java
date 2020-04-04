@@ -57,5 +57,11 @@ public class Category {
 
     String color;
 
+    String fontColor;
+
+    void setFontColor(String fontColor){
+        this.fontColor = fontColor == null ? "#FFFFFF" : fontColor;
+    }
+
 
 }
