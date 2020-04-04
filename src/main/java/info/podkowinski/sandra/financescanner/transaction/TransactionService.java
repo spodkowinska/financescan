@@ -49,7 +49,9 @@ public class TransactionService {
     public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, String importName, Long bankId, User user)
             throws IOException, CsvValidationException, ParseException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
-        List<List<String>> transactions = parser.csvTransactions(inputStream, separator, skipLines);
+        // todo fix this ugly hack (detecting mBank) to pass encoding
+        String inputCharset = bankId == 5 ? "Cp1250" : "UTF-8";
+        List<List<String>> transactions = parser.csvTransactions(inputStream, separator, skipLines, inputCharset);
         System.out.println(bankId);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
