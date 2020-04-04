@@ -3,7 +3,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <c:forEach items="${tl}" var="trans">
-    <tr id="cat_row_${trans.id}">
+    <tr id="cat_row_${trans.id}"
+        data-uncategorized="${empty trans.categories && empty trans.pendingCategories ? 'true' : 'false'}"
+        data-unreviewed="${empty trans.pendingCategories ? 'false' : 'true'}">
             <%-- COLUMN: ACTIONS --%>
 
         <td class="actions">

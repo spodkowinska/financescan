@@ -129,8 +129,8 @@
                 // Update sorting
                 applySorting();
 
-                // Update text filtering
-                applyTextFilter();
+                // Update text and category filtering
+                applyFilters();
             });
 
             // Update year & month buttons state
@@ -194,33 +194,46 @@
             catElem.appendTo('#cat_others_' + transactionId);
         }
 
-        function applyTextFilter() {
-            let input = document.getElementById("text_filter");
-            let filter = input.value.toUpperCase();
-            let table = document.getElementById("transaction_table");
-            let trs = table.getElementsByTagName("tr");
+        function applyFilters() {
+            const showOnlyUnreviewed = $('#unreviewedCheck').is(':checked');
+            const showOnlyUncategorized = $('#uncategorizedCheck').is(':checked');
+
+            const input = document.getElementById("text_filter");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("transaction_table");
+            const trs = table.getElementsByTagName("tr");
 
             // Loop through all table rows, and hide those which don't match the search query
-            for (var i = 0; i < trs.length; i++) {
-                let tds = trs[i].getElementsByTagName("td");
+            for (let i = 0; i < trs.length; i++) {
+                const tds = trs[i].getElementsByTagName("td");
 
                 if (tds.length === 0)
                     continue;
 
-                var vis = false;
+                let show = true;
 
-                for (let j of gSearchableColumnsIds) {
-                    let td = tds[j];
-                    if (td) {
-                        let txtValue = td.getAttribute('sorttable_customkey') || td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            vis = true;
-                            break;
+                if (showOnlyUnreviewed || showOnlyUncategorized) {
+                    const rowUnreviewed = trs[i].getAttribute('data-unreviewed') === 'true';
+                    const rowUncategorized = trs[i].getAttribute('data-uncategorized') === 'true';
+                    show = showOnlyUnreviewed && rowUnreviewed || showOnlyUncategorized && rowUncategorized;
+                }
+
+                if (show) {
+                    show = false;
+
+                    for (let j of gSearchableColumnsIds) {
+                        const td = tds[j];
+                        if (td) {
+                            const txtValue = td.getAttribute('sorttable_customkey') || td.textContent || td.innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                show = true;
+                                break;
+                            }
                         }
                     }
                 }
 
-                trs[i].style.display = vis ? "" : "none";
+                trs[i].style.display = show ? "" : "none";
             }
         }
 
@@ -400,7 +413,7 @@
                                 <div class="input-group input-group-sm" style="width: 300px">
                                     <input type="text" class="form-control" placeholder="Filter by description..."
                                            aria-label="Filter by description..." aria-describedby="basic-addon2"
-                                           id="text_filter" onkeyup="applyTextFilter()">
+                                           id="text_filter" onkeyup="applyFilters()">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button">Filter</button>
                                     </div>
@@ -409,11 +422,24 @@
                             </div>
                             <div class="col-auto">
 
-                                <!-- Filter: unreviewed suggestions -->
+                                <!-- Filter: unreviewed category suggestions -->
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="unreviewedCheck" style="margin-top: 6px">
+                                    <input class="form-check-input" type="checkbox" id="unreviewedCheck"
+                                           style="margin-top: 6px" onclick="applyFilters()">
                                     <label class="form-check-label small" for="unreviewedCheck">
-                                        Show only unreviewed
+                                        Unreviewed categories
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="col-auto">
+
+                                <!-- Filter: uncategoried  -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="uncategorizedCheck"
+                                           style="margin-top: 6px" onclick="applyFilters()">
+                                    <label class="form-check-label small" for="uncategorizedCheck">
+                                        No categories
                                     </label>
                                 </div>
 
