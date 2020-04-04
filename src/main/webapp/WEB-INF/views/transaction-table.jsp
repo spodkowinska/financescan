@@ -42,6 +42,8 @@
         var gYear = "all";
 
         var gCategoryFilteringEnabled = false;
+        var gUncategorizedCount = 0;
+        var gUnreviewedCount = 0;
         
         function init() {
             reloadTransactionTable('all','all');
@@ -221,6 +223,8 @@
             const showOnlyUncategorized = $('#uncategorizedCheck').is(':checked');
 
             gCategoryFilteringEnabled = showOnlyUnreviewed || showOnlyUncategorized;
+            gUnreviewedCount = 0;
+            gUncategorizedCount = 0;
 
             const input = document.getElementById("text_filter");
             const filter = input.value.toUpperCase();
@@ -236,9 +240,15 @@
 
                 let show = true;
 
+                const rowUnreviewed = trs[i].getAttribute('data-unreviewed') === 'true';
+                if (rowUnreviewed)
+                    gUnreviewedCount++;
+
+                const rowUncategorized = trs[i].getAttribute('data-uncategorized') === 'true';
+                if (rowUncategorized)
+                    gUncategorizedCount++;
+
                 if (showOnlyUnreviewed || showOnlyUncategorized) {
-                    const rowUnreviewed = trs[i].getAttribute('data-unreviewed') === 'true';
-                    const rowUncategorized = trs[i].getAttribute('data-uncategorized') === 'true';
                     show = showOnlyUnreviewed && rowUnreviewed || showOnlyUncategorized && rowUncategorized;
                 }
 
@@ -258,6 +268,24 @@
                 }
 
                 trs[i].style.display = show ? "" : "none";
+            }
+
+            let unreviewedCount = $('#unreviewedCount');
+            if (gUnreviewedCount === 0) {
+                unreviewedCount.css('display', 'none');
+            }
+            else {
+                unreviewedCount.css('display', '');
+                unreviewedCount.text(gUnreviewedCount);
+            }
+
+            let uncategorizedCount = $('#uncategorizedCount');
+            if (gUncategorizedCount === 0) {
+                uncategorizedCount.css('display', 'none');
+            }
+            else {
+                uncategorizedCount.css('display', '');
+                uncategorizedCount.text(gUncategorizedCount);
             }
         }
 
@@ -452,6 +480,7 @@
                                            style="margin-top: 6px" onclick="applyFilters()">
                                     <label class="form-check-label small" for="unreviewedCheck">
                                         Unreviewed categories
+                                        <span class="badge badge-pill badge-danger" id="unreviewedCount" style="display: none"></span>
                                     </label>
                                 </div>
 
@@ -464,6 +493,7 @@
                                            style="margin-top: 6px" onclick="applyFilters()">
                                     <label class="form-check-label small" for="uncategorizedCheck">
                                         No categories
+                                        <span class="badge badge-pill badge-danger" id="uncategorizedCount" style="display: none"></span>
                                     </label>
                                 </div>
 
