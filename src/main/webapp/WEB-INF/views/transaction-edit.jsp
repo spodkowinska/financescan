@@ -46,9 +46,6 @@
         .tag-check-container input:checked ~ .tag-check {
             opacity: 1;
         }
-        .tag-check-container input:not(:checked) ~ .pending-cat {
-            opacity: 1;
-        }
     </style>
 
     <div class="form-group">
@@ -63,8 +60,8 @@
                             <label class="tag tag${category.id} tag-check" for="category_${category.id}">${category.name}</label>
                         </c:when>
                         <c:when test="${fn:contains(transaction.pendingCategories, category)}">
-                            <input type="checkbox" id="category_${category.id}" name="category_${category.id}"
-                                   style="display: none" value="${category.id}">
+                            <input type="checkbox" id="category_${category.id}" name="category_pending_${category.id}"
+                                   style="display: none" value="${category.id}" checked>
                             <label class="tag tag${category.id} tag-check pending-cat" tabindex="0" id="cat_label_pending_${category.id}"
                                    data-toggle="popover" data-trigger="focus" data-html="true" data-category-id="${category.id}"
                                    data-content="<a class='category-confirm btn btn-sm btn-success' id=category-confirm-${category.id}>Confirm</a>
@@ -101,7 +98,10 @@
             catConfirmButton.click(function () {
                 $('#cat_label_pending_' + catId).remove();
                 $('#cat_label_' + catId).css('display', 'inline-block');
-                $('#category_' + catId).prop('checked', true);
+
+                let input = $('#category_' + catId);
+                input.prop('checked', true);
+                input.attr('name', 'category_' + catId);
             });
         }
 
@@ -113,9 +113,11 @@
             catRejectButton.click(function () {
                 $('#cat_label_pending_' + catId).remove();
                 $('#cat_label_' + catId).css('display', 'inline-block');
-                $('#category_' + catId).prop('checked', false);
+
+                let input = $('#category_' + catId);
+                input.prop('checked', false);
+                input.attr('name', 'category_' + catId);
             });
         }
-
     });
 </script>
