@@ -195,7 +195,7 @@
 
                                             <a data-toggle="modal" data-target="#categoryModal" data-category-id="${category.id}"
                                                data-toggle="tooltip" title="Edit category" tabindex="0"
-                                               class="tag" style="background: ${category.color}; color: ${category.fontColor};">
+                                               class="tag" style="background: ${category.color}; color: ${category.fontColor} !important;">
                                                     ${category.name}
                                             </a>
                                         </td>

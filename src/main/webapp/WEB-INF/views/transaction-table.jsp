@@ -319,7 +319,8 @@
         <c:forEach items="${categoriesList}" var="category">
             .tag${category.id} {
                 background: ${category.color};
-        }
+                color: ${category.fontColor} !important;
+            }
         </c:forEach>
     </style>
 </head>

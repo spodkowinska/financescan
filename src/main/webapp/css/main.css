@@ -96,7 +96,6 @@ div.tag-add-popover {
 .tag:hover {
     cursor: pointer;
     filter: brightness(120%);
-    color: white;
     text-decoration: none;
 }
 
