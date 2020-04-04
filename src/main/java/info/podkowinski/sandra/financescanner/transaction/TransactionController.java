@@ -17,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -56,7 +55,7 @@ public class TransactionController {
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
         model.addAttribute("years", years);
-        return "transaction-table";
+        return "transactions/transaction-table";
     }
 
     @GetMapping("/fileimport")
@@ -95,7 +94,7 @@ public class TransactionController {
         model.addAttribute("categories", categories);
         model.addAttribute("accounts", accounts);
         model.addAttribute("transaction", transaction);
-        return "transaction-edit";
+        return "transactions/transaction-edit";
     }
 
     //todo frontend validation
@@ -136,7 +135,7 @@ public class TransactionController {
         model.addAttribute("categories", categories);
         model.addAttribute("accounts", accounts);
         model.addAttribute("transaction", transaction);
-        return "transaction-edit";
+        return "transactions/transaction-edit";
     }
 
     //todo frontend validation
@@ -170,6 +169,7 @@ public class TransactionController {
         return "redirect:/transaction/table/gettransaction/" + transaction1.id;
     }
 
+    @ResponseBody
     @GetMapping("/setcategories/{transactionId}/{categories}")
     public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
         User user1 = userService.findById(2l);
@@ -182,7 +182,7 @@ public class TransactionController {
                 transactionService.save(transaction);
             }
         }
-        return "transactions-list";
+        return "";
     }
 
     @GetMapping("/addcategory/{transactionId}/{categoryId}")
@@ -232,7 +232,7 @@ public class TransactionController {
         List<Category> categories = categoryService.findByUserId(2l);
         model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactionsList);
-        return "transaction-table-rows";
+        return "transactions/transaction-table-rows";
     }
 
     @GetMapping("/table/gettransaction/{transactionId}")
@@ -242,6 +242,6 @@ public class TransactionController {
         List<Category> categories = categoryService.findByUserId(2l);
         model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactions);
-        return "transaction-table-rows";
+        return "transactions/transaction-table-rows";
     }
 }

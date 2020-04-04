@@ -131,7 +131,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-   <jsp:include page="sidebar.jsp"></jsp:include>
+   <jsp:include page="/WEB-INF/views/sidebar.jsp"></jsp:include>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -141,7 +141,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <jsp:include page="topbar.jsp"></jsp:include>
+            <jsp:include page="/WEB-INF/views/topbar.jsp"></jsp:include>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -232,7 +232,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
         <!-- End of Footer -->
 
     </div>
@@ -260,7 +260,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="WEB-INF/views/login.html">Logout</a>
             </div>
         </div>
     </div>

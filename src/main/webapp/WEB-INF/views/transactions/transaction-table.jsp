@@ -331,7 +331,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <jsp:include page="sidebar.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/views/sidebar.jsp"></jsp:include>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -341,7 +341,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <jsp:include page="topbar.jsp"></jsp:include>
+            <jsp:include page="/WEB-INF/views/topbar.jsp"></jsp:include>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -379,7 +379,7 @@
                                 </button>
                             </div>
                             <div class="modal-body" id="keywordModalBody">
-                                <%-- Filled by AJAX from edit-keyword.jsp --%>
+                                <%-- Filled by AJAX from keyword-add.jsp --%>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -533,7 +533,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
         <!-- End of Footer -->
 
     </div>
