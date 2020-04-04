@@ -257,7 +257,13 @@ public class TransactionService {
     List<Integer> findYearsByUserId(Long userId){
         Integer currentYear = LocalDate.now().getYear();
         Transaction lastTransaction = transactionRepository.findLastTransaction(userId);
-        Integer lastYear = lastTransaction == null ? currentYear : lastTransaction.transactionDate.getYear();
+        Integer lastYear;
+        if(lastTransaction!=null){
+            lastYear = lastTransaction.transactionDate.getYear();
+        } else {
+            lastYear = currentYear;
+        }
+
         List<Integer> years = new ArrayList<>();
         for (int i = lastYear; i<=currentYear; i++){
             years.add(i);

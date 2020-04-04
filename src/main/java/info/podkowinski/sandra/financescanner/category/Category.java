@@ -55,8 +55,10 @@ public class Category {
     @JoinColumn(name = "user_id")
     User user;
 
+    @Column(length = 7)
     String color;
-
+    
+    @Column(length = 7)
     String fontColor;
 
     void setFontColor(String fontColor){

@@ -18,7 +18,7 @@ public class OpenCSVReadAndParse {
     public List<List<String>> csvTransactions(InputStream inputStream, char separator, int skipLines) throws IOException, CsvValidationException {
         List<List<String>> transactions = new ArrayList<>();
         try (InputStream fis = inputStream;
-             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
+             InputStreamReader isr = new InputStreamReader(fis, "UTF-8")) {
             CSVParser parser;
             if (separator == ',') {
                 parser = new CSVParserBuilder()
