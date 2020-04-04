@@ -57,16 +57,70 @@
                         <c:when test="${fn:contains(transaction.categories, category)}">
                             <input type="checkbox" id="category_${category.id}" name="category_${category.id}"
                                    style="display: none" value="${category.id}" checked>
+                            <label class="tag tag${category.id} tag-check" for="category_${category.id}">${category.name}</label>
                         </c:when>
-                        <c:otherwise>
+                        <c:when test="${fn:contains(transaction.pendingCategories, category)}">
+                            <input type="checkbox" id="category_${category.id}" name="category_pending_${category.id}"
+                                   style="display: none" value="${category.id}" checked>
+                            <label class="tag tag${category.id} tag-check pending-cat" tabindex="0" id="cat_label_pending_${category.id}"
+                                   data-toggle="popover" data-trigger="focus" data-html="true" data-category-id="${category.id}"
+                                   data-content="<a class='category-confirm btn btn-sm btn-success' id=category-confirm-${category.id}>Confirm</a>
+                                    <a class='category-reject btn btn-sm btn-danger' id=category-reject-${category.id}>Reject</a>">
+                                ${category.name} <span class="fa fa-question"></span>
+                            </label>
+                            <label class="tag tag${category.id} tag-check" for="category_${category.id}" style="display: none" id="cat_label_${category.id}">${category.name}</label>
+                        </c:when>
+                        <c:when test="${!fn:contains(trans.categories, category) && !fn:contains(trans.pendingCategories, category)}">
                             <input type="checkbox" id="category_${category.id}" name="category_${category.id}"
                                    style="display: none" value="${category.id}">
-                        </c:otherwise>
+                            <label class="tag tag${category.id} tag-check" for="category_${category.id}">${category.name}</label>
+                        </c:when>
                     </c:choose>
-                    <label class="tag tag${category.id} tag-check" for="category_${category.id}">${category.name}</label>
                 </label>
             </c:forEach>
         </div>
     </div>
 
 </form:form>
+
+<script>
+    // Enable popovers
+    {
+        let pops = $('.pending-cat');
+        pops.popover('disable');
+        pops.popover('enable');
+        pops.on('shown.bs.popover', function () {
+            let catId = $(this).data('category-id');
+
+            // Category confirmation button
+            let catConfirmButton = $('#category-confirm-' + catId);
+            if (catConfirmButton) {
+                catConfirmButton.css('color', 'white');
+                catConfirmButton.unbind();
+                catConfirmButton.click(function () {
+                    $('#cat_label_pending_' + catId).remove();
+                    $('#cat_label_' + catId).css('display', 'inline-block');
+
+                    let input = $('#category_' + catId);
+                    input.prop('checked', true);
+                    input.attr('name', 'category_' + catId);
+                });
+            }
+
+            // Category rejection button
+            let catRejectButton = $('#category-reject-' + catId);
+            if (catRejectButton) {
+                catRejectButton.css('color', 'white');
+                catRejectButton.unbind();
+                catRejectButton.click(function () {
+                    $('#cat_label_pending_' + catId).remove();
+                    $('#cat_label_' + catId).css('display', 'inline-block');
+
+                    let input = $('#category_' + catId);
+                    input.prop('checked', false);
+                    input.attr('name', 'category_' + catId);
+                });
+            }
+        });
+    }
+</script>

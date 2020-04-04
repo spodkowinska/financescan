@@ -151,13 +151,17 @@ public class TransactionController {
 
         // todo: this is a very brutal approach and should be rewritten; list of categories should be filled in JSP
         transaction1.categories = new HashSet<>();
+        transaction1.pendingCategories = new HashSet<>();
         var paramNames = request.getParameterNames();
         while (paramNames.hasMoreElements()) {
             String paramName = paramNames.nextElement();
             if (paramName.startsWith("category_")) {
                 long catId = Integer.parseInt(request.getParameter(paramName));
                 Category cat = categoryService.findById(catId);
-                transaction1.categories.add(cat);
+                if (paramName.startsWith("category_pending_"))
+                    transaction1.pendingCategories.add(cat);
+                else
+                    transaction1.categories.add(cat);
             }
         }
 

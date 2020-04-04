@@ -67,6 +67,49 @@
             }
         }
 
+        function enablePopovers(pops) {
+            pops.popover();
+            pops.on('shown.bs.popover', function () {
+                let transId = $(this).data('transaction-id');
+                let catId = $(this).data('category-id');
+
+                if (!catId) {
+                    // Deletion confirmation popover
+                    let deleteButton = $('#delete-confirm-' + transId);
+                    if (deleteButton) {
+                        deleteButton.css('color', 'white');
+                        deleteButton.unbind();
+                        deleteButton.click(function() {
+                            deleteTransaction(transId);
+                        });
+                    }
+                }
+                else {
+                    // Category confirmation button
+                    let catConfirmButton = $('#category-confirm-' + transId + '-' + catId);
+                    if (catConfirmButton) {
+                        catConfirmButton.css('color', 'white');
+                        catConfirmButton.unbind();
+                        catConfirmButton.click(function () {
+                            addCategory(transId, catId, true);
+                        });
+                    }
+                    // Category rejection button
+                    let catRejectButton = $('#category-reject-' + transId + '-' + catId);
+                    if (catRejectButton) {
+                        catRejectButton.css('color', 'white');
+                        catRejectButton.unbind();
+                        catRejectButton.click(function () {
+                            removeCategory(transId, catId, true);
+                        });
+                    }
+                }
+            });
+
+            // This line is needed to prevent category drop-right from disappearing
+            $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
+        }
+
         function reloadTransactionTable(year, month) {
             console.log('reloading transaction table');
 
@@ -81,47 +124,7 @@
                 $('#list').html(data);
 
                 // Enable popovers
-                let pops = $('[data-toggle="popover"]')
-                pops.popover();
-                pops.on('shown.bs.popover', function () {
-                    let transId = $(this).data('transaction-id');
-                    let catId = $(this).data('category-id');
-
-                    if (!catId) {
-                        // Deletion confirmation popover
-                        let deleteButton = $('#delete-confirm-' + transId);
-                        if (deleteButton) {
-                            deleteButton.css('color', 'white');
-                            deleteButton.unbind();
-                            deleteButton.click(function() {
-                                deleteTransaction(transId);
-                            });
-                        }
-                    }
-                    else {
-                        // Category confirmation button
-                        let catConfirmButton = $('#category-confirm-' + transId + '-' + catId);
-                        if (catConfirmButton) {
-                            catConfirmButton.css('color', 'white');
-                            catConfirmButton.unbind();
-                            catConfirmButton.click(function () {
-                                addCategory(transId, catId, true);
-                            });
-                        }
-                        // Category rejection button
-                        let catRejectButton = $('#category-reject-' + transId + '-' + catId);
-                        if (catRejectButton) {
-                            catRejectButton.css('color', 'white');
-                            catRejectButton.unbind();
-                            catRejectButton.click(function () {
-                                removeCategory(transId, catId, true);
-                            });
-                        }
-                    }
-                });
-
-                // This line is needed to prevent category drop-right from disappearing
-                $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
+                enablePopovers($('[data-toggle="popover"]'));
 
                 // Update sorting
                 applySorting();
@@ -506,6 +509,7 @@
                     if (transId) {
                         // Edit mode: update the edited row
                         $('#cat_row_' + transId).replaceWith(newRowData);
+                        enablePopovers($('.popover-button-' + transId));
                     }
                     else {
                         // Add mode: update whole table
