@@ -271,21 +271,25 @@
             }
 
             let unreviewedCount = $('#unreviewedCount');
+            unreviewedCount.text(gUnreviewedCount);
             if (gUnreviewedCount === 0) {
-                unreviewedCount.css('display', 'none');
+                unreviewedCount.removeClass('badge-danger');
+                unreviewedCount.addClass('badge-secondary');
             }
             else {
-                unreviewedCount.css('display', '');
-                unreviewedCount.text(gUnreviewedCount);
+                unreviewedCount.removeClass('badge-secondary');
+                unreviewedCount.addClass('badge-danger');
             }
 
             let uncategorizedCount = $('#uncategorizedCount');
+            uncategorizedCount.text(gUncategorizedCount);
             if (gUncategorizedCount === 0) {
-                uncategorizedCount.css('display', 'none');
+                uncategorizedCount.removeClass('badge-danger');
+                uncategorizedCount.addClass('badge-secondary');
             }
             else {
-                uncategorizedCount.css('display', '');
-                uncategorizedCount.text(gUncategorizedCount);
+                uncategorizedCount.removeClass('badge-secondary');
+                uncategorizedCount.addClass('badge-danger');
             }
         }
 
@@ -480,7 +484,7 @@
                                            style="margin-top: 6px" onclick="applyFilters()">
                                     <label class="form-check-label small" for="unreviewedCheck">
                                         Unreviewed categories
-                                        <span class="badge badge-pill badge-danger" id="unreviewedCount" style="display: none"></span>
+                                        <span class="badge badge-pill badge-danger" id="unreviewedCount"></span>
                                     </label>
                                 </div>
 
@@ -493,7 +497,7 @@
                                            style="margin-top: 6px" onclick="applyFilters()">
                                     <label class="form-check-label small" for="uncategorizedCheck">
                                         No categories
-                                        <span class="badge badge-pill badge-danger" id="uncategorizedCount" style="display: none"></span>
+                                        <span class="badge badge-pill badge-danger" id="uncategorizedCount"></span>
                                     </label>
                                 </div>
 
