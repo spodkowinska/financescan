@@ -229,13 +229,13 @@
                 console.log(catRow.data('uncategorized'), catRowWasUncategorized);
                 if (catRowUncategorized) {
                     if (!catRowWasUncategorized) {
-                        catRow.data('uncategorized', true);
+                        catRow.attr('data-uncategorized', true);
                         gUncategorizedCount++;
                         console.log('uc+', gUncategorizedCount);
                     }
                 }
                 else if (catRowWasUncategorized) {
-                    catRow.data('uncategorized', false);
+                    catRow.attr('data-uncategorized', false);
                     gUncategorizedCount--;
                     console.log('uc-', gUncategorizedCount);
                 }
@@ -247,13 +247,13 @@
                 console.log(catRow.data('unreviewed'), catRowWasUnreviewed);
                 if (catRowUnreviewed) {
                     if (!catRowWasUnreviewed) {
-                        catRow.data('unreviewed', true);
+                        catRow.attr('data-unreviewed', true);
                         gUnreviewedCount++;
                         console.log('ur+', gUnreviewedCount);
                     }
                 }
                 else if (catRowWasUnreviewed) {
-                    catRow.data('unreviewed', false);
+                    catRow.attr('data-unreviewed', false);
                     gUnreviewedCount--;
                     console.log('ur-', gUnreviewedCount);
                 }
@@ -284,11 +284,13 @@
 
                 let show = true;
 
-                const rowUnreviewed = trs[i].getAttribute('data-unreviewed') === 'true';
+                const rowUnreviewedVal = trs[i].getAttribute('data-unreviewed');
+                const rowUnreviewed = rowUnreviewedVal === 'true' || rowUnreviewedVal === true;
                 if (rowUnreviewed)
                     gUnreviewedCount++;
 
-                const rowUncategorized = trs[i].getAttribute('data-uncategorized') === 'true';
+                const rowUncategorizedVal = trs[i].getAttribute('data-uncategorized');
+                const rowUncategorized = rowUncategorizedVal === 'true' || rowUncategorizedVal === true;
                 if (rowUncategorized)
                     gUncategorizedCount++;
 
