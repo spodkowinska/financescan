@@ -211,7 +211,7 @@
                                         <td>
                                             <c:forEach items="${category.safeKeywords}" var="keyword">
                                                 <span class="badge badge-light keyword" data-toggle="tooltip" title="Safe keyword">
-                                                    <span class="fa fa-sm fa-check text-gray-600"></span> ${keyword}
+                                                    <span class="fa fa-sm fa-star text-gray-600"></span> ${keyword}
                                                 </span>
                                             </c:forEach>
                                             <c:forEach items="${category.keywords}" var="keyword">
