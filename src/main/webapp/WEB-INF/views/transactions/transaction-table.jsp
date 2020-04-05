@@ -189,9 +189,7 @@
 
         function addCategory(transactionId, categoryId, pending) {
             $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
-                if (gCategoryFilteringEnabled) {
-                    refreshRowForTransaction(transactionId, data);
-                }
+                afterCategoriesChangedForRow(transactionId, data);
             });
 
             let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
@@ -205,9 +203,7 @@
 
         function removeCategory(transactionId, categoryId, pending) {
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId, function (data) {
-                if (gCategoryFilteringEnabled) {
-                    refreshRowForTransaction(transactionId, data);
-                }
+                afterCategoriesChangedForRow(transactionId, data);
             });
 
             let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
@@ -216,6 +212,54 @@
                 catElem.css('display', 'inline-block');
             }
             catElem.appendTo('#cat_others_' + transactionId);
+        }
+
+        function afterCategoriesChangedForRow(transactionId, responseData) {
+            const catCnt = responseData.split(",").map(Number);
+            const catRowUncategorized = catCnt[0] === 0 && catCnt[1] === 0;
+            const catRowUnreviewed = catCnt[1] !== 0;
+
+            const catRow = $('#cat_row_' + transactionId);
+
+            console.log(catCnt, gUncategorizedCount, gUnreviewedCount);
+
+            // Uncategorized
+            {
+                const catRowWasUncategorized = catRow.data('uncategorized');
+                console.log(catRow.data('uncategorized'), catRowWasUncategorized);
+                if (catRowUncategorized) {
+                    if (!catRowWasUncategorized) {
+                        catRow.data('uncategorized', true);
+                        gUncategorizedCount++;
+                        console.log('uc+', gUncategorizedCount);
+                    }
+                }
+                else if (catRowWasUncategorized) {
+                    catRow.data('uncategorized', false);
+                    gUncategorizedCount--;
+                    console.log('uc-', gUncategorizedCount);
+                }
+            }
+
+            // Unreviewed
+            {
+                const catRowWasUnreviewed = catRow.data('unreviewed');
+                console.log(catRow.data('unreviewed'), catRowWasUnreviewed);
+                if (catRowUnreviewed) {
+                    if (!catRowWasUnreviewed) {
+                        catRow.data('unreviewed', true);
+                        gUnreviewedCount++;
+                        console.log('ur+', gUnreviewedCount);
+                    }
+                }
+                else if (catRowWasUnreviewed) {
+                    catRow.data('unreviewed', false);
+                    gUnreviewedCount--;
+                    console.log('ur-', gUnreviewedCount);
+                }
+            }
+
+            refreshCategoryFilterBadges();
         }
 
         function applyFilters() {
@@ -270,6 +314,10 @@
                 trs[i].style.display = show ? "" : "none";
             }
 
+            refreshCategoryFilterBadges();
+        }
+
+        function refreshCategoryFilterBadges() {
             let unreviewedCount = $('#unreviewedCount');
             unreviewedCount.text(gUnreviewedCount);
             if (gUnreviewedCount === 0) {

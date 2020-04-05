@@ -157,6 +157,7 @@ public class TransactionController {
         return "";
     }
 
+    @ResponseBody
     @GetMapping("/addcategory/{transactionId}/{categoryId}")
     public String addCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
         User user1 = userService.findById(2l);
@@ -165,9 +166,10 @@ public class TransactionController {
             transaction.addCategory(categoryService.findById(categoryId));
             transactionService.save(transaction);
         }
-        return "redirect:/transaction/table/gettransaction/" + transaction.id;
+        return transaction.categories.size() + "," + transaction.pendingCategories.size();
     }
 
+    @ResponseBody
     @GetMapping("/removecategory/{transactionId}/{categoryId}")
     public String removeCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
         User user1 = userService.findById(2l);
@@ -181,7 +183,7 @@ public class TransactionController {
             }
             transactionService.save(transaction);
         }
-        return "redirect:/transaction/table/gettransaction/" + transaction.id;
+        return transaction.categories.size() + "," + transaction.pendingCategories.size();
     }
 
     @ResponseBody
