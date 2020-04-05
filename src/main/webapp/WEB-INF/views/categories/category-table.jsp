@@ -296,7 +296,7 @@
             : '${pageContext.request.contextPath}/category/add';
 
         // Update modal's title depending on mode
-        $('#categoryModalLabel').text(categoryId ? 'Edit Category' : 'Add New Category');
+        $('#categoryModalLabel').html(categoryId ? 'Edit Category <span class="small text-gray-500">#' + categoryId + '</span>' : 'Add New Category');
 
         $.get(link, function(data) {
             $('#categoryModalBody').html(data);

@@ -602,7 +602,7 @@
             : '${pageContext.request.contextPath}/transaction/add';
 
         // Update modal's title depending on mode
-        $('#editModalLabel').text(transId ? 'Edit Transaction' : 'Add New Transaction');
+        $('#editModalLabel').html(transId ? 'Edit Transaction <span class="small text-gray-500">#' + transId + '</span>' : 'Add New Transaction');
 
         $.get(link, function(data) {
             $('#editModalBody').html(data);
