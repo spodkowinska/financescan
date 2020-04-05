@@ -443,7 +443,11 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-800">Transactions</h6>
+                        <h6 class="m-0 font-weight-bold text-gray-800" style="float: left">Transactions</h6>
+                        <button class="btn btn-secondary btn-sm" style="float: right; margin-bottom: -6px; margin-top: -6px;" data-toggle="modal" data-target="#editModal"
+                                data-toggle="modal" data-target="#categoryModal">
+                            <span class="fa fa-plus"></span> Add new transaction
+                        </button>
                     </div>
                     <div class="card-body">
 
@@ -488,12 +492,6 @@
                             <!-- Actual Dropdown -->
                             <div class="dropdown-menu dropdown-menu-right shadow"
                                  aria-labelledby="transOperationsDropdown">
-                                <!-- Dropdown Item: Add new transaction -->
-                                <a class="dropdown-item" data-toggle="modal" data-target="#editModal" tabindex="0">
-                                    <i class="fas fa-plus mr-2 text-gray-600"></i>
-                                    Add new transaction
-                                </a>
-                                <div class="dropdown-divider"></div>
                                 <!-- Dropdown Item: Import from CSV -->
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/fileimport">
                                     <i class="fas fa-file-upload mr-2 text-gray-600"></i>
