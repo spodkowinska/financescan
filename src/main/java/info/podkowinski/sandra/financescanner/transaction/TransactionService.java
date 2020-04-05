@@ -89,17 +89,18 @@ public class TransactionService {
 
     public void assignDefaultCategoriesInTransactions(User user) {
         User user1 = userRepository.getOne(2l);
-        List<Transaction> transactionIdList = transactionRepository.findAllByUserId(2l);
-        for (Transaction transaction : transactionIdList) {
+        List<Transaction> transactionList = transactionRepository.findAllByUserId(2l);
+        for (Transaction transaction : transactionList) {
             for (Category category : categoryRepository.findAllByUserId(user.getId())) {
 //                boolean keywordFound = false;
                 for (String keyword : category.getKeywords()) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
+                        if(!transaction.categories.contains(category)){
                         Set<Category> pendingCategories = transaction.pendingCategories;
                         pendingCategories.add(category);
                         transaction.setPendingCategories(pendingCategories);
                         transactionRepository.save(transaction);
-//                        keywordFound = true;
+                        }
                         break;
                     }
                 }
@@ -109,12 +110,9 @@ public class TransactionService {
                         categories.add(category);
                         transaction.setCategories(categories);
                         transactionRepository.save(transaction);
-//                        keywordFound = true;
                         break;
                     }
                 }
-//                if (keywordFound)
-//                    break;
             }
         }
     }

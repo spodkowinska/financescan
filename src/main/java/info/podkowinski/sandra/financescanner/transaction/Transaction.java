@@ -48,6 +48,11 @@ public class Transaction {
     @LazyCollection(LazyCollectionOption.FALSE)
     Set<Category> pendingCategories;
 
+    @JoinColumn(name = "categories_id")
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    Set<Category> rejectedCategories;
+
     void addCategory(Category category){
         this.categories.add(category);
         this.pendingCategories.remove(category);
@@ -56,6 +61,12 @@ public class Transaction {
     void removeCategory(Category category) {
         this.categories.remove(category);
         this.pendingCategories.remove(category);
+    }
+
+    void rejectCategory(Category category) {
+        this.categories.remove(category);
+        this.pendingCategories.remove(category);
+        this.rejectedCategories.add(category);
     }
 
     @JoinColumn(name = "user_id")
