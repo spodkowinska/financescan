@@ -199,9 +199,14 @@ public class TransactionController {
     @GetMapping("/removecategory/{transactionId}/{categoryId}")
     public String removeCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
         User user1 = userService.findById(2l);
+        Category categoryToRemove = categoryService.findById(categoryId);
         Transaction transaction = transactionService.findById(transactionId);
         if (transaction.getUser() == user1) {
-            transaction.removeCategory(categoryService.findById(categoryId));
+            if(transaction.pendingCategories.contains(categoryToRemove)){
+                transaction.rejectCategory(categoryToRemove);
+            } else {
+                transaction.removeCategory(categoryService.findById(categoryId));
+            }
             transactionService.save(transaction);
         }
         return "redirect:/transaction/table/gettransaction/" + transaction.id;
