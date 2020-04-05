@@ -607,6 +607,10 @@
         $.get(link, function(data) {
             $('#editModalBody').html(data);
             $('#editModalSubmit').click(function(event) {
+                $('#categories').val(gModalCategories.join(','));
+                $('#pendingCategories').val(gModalPendingCategories.join(','));
+                $('#rejectedCategories').val(gModalRejectedCategories.join(','));
+
                 $.post(link, $('#editModalForm').serialize(), function(newRowData) {
                     if (transId) {
                         // Edit mode: update the edited row
