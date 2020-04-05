@@ -57,6 +57,14 @@ public class CategoryService {
         }
         return keywordsList;
     }
+
+    Long findNumberOfTransactionsPerCategory(Long categoryId){
+      return  categoryRepository.findNumberOfTransactionsPerCategory(categoryId);
+    }
+
+    Long findNumberOfTransactionsPerPendingCategory(Long categoryId){
+        return  categoryRepository.findNumberOfTransactionsPerPendingCategory(categoryId);
+    }
 //    public Long doesKeywordExistInDifferentCategory(String keyword, Long categoryId){
 //        List<Category> usersCategories = categoryRepository.findAllByUserId(2l);
 //        for (Category category :usersCategories) {

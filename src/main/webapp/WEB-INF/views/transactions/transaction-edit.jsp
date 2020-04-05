@@ -50,6 +50,7 @@
 
     <div class="form-group">
         <label>Categories</label>
+        <form:input path="rejectedCategories" name="rejectedCategories" id="rejectedCategories" type="hidden"></form:input>
         <div style="text-align: center">
             <c:forEach items="${categories}" var="category">
                 <label class="tag-check-container">

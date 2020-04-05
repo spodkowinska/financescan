@@ -218,6 +218,8 @@ public class TransactionController {
         User user1 = userService.findById(2l);
         Transaction transaction = transactionService.findById(id);
         transaction.categories.clear();
+        transaction.pendingCategories.clear();
+        transaction.rejectedCategories.clear();
         transactionService.delete(transaction);
         return "";
     }

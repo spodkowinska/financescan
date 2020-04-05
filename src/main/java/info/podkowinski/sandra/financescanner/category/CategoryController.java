@@ -126,5 +126,13 @@ public class CategoryController {
         model.addAttribute("categories", categories);
         return "keywords/keyword-add";
     }
+    @ResponseBody
+    @GetMapping("/numberoftransactions/{categoryId}")
+    public String addKeywordFromTransaction(@PathVariable Long categoryId) {
+        User user1 = userService.findById(2l);
+        Long numberOTransactionsPerCategory = categoryService.findNumberOfTransactionsPerCategory(categoryId);
+        Long numberOTransactionsPerPendingCategory = categoryService.findNumberOfTransactionsPerPendingCategory(categoryId);
+        return numberOTransactionsPerCategory + " " + numberOTransactionsPerPendingCategory;
+    }
 
 }
