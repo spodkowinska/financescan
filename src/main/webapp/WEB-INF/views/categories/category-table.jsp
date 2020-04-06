@@ -127,6 +127,33 @@
     </div>
 </div>
 
+<%-- CATEGORY DELETE MODAL --%>
+<div class="modal fade" id="categoryDeleteModal" tabindex="-1" role="dialog" aria-labelledby="categoryDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h5 class="modal-title" id="categoryDeleteModalLabel">Delete Category
+                    <span class="small text-gray-500">#</span><span id="categoryDeleteModal-id" class="small text-gray-500"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="categoryDeleteModalBody">
+                <span id="categoryDeleteModal-assigned">This category is <b>assigned to <b id="categoryDeleteModal-assignedCount">0</b> transactions</b>.<br><br></span>
+                <span id="categoryDeleteModal-noAssigned">This category is not assigned to any transaction.<br><br></span>
+                <span id="categoryDeleteModal-unreviewed">This category is <b>suggested for <b id="categoryDeleteModal-unreviewedCount">0</b> transactions</b>.<br><br></span>
+                <span id="categoryDeleteModal-noUnreviewed">This category is not suggested for any transaction.<br><br></span>
+                <span id="categoryDeleteModal-conclusion-safe">It's safe to remove the category without modifying any transaction.</span>
+                <span id="categoryDeleteModal-conclusion-decide">Deleting this category will remove it from all transactions. Are you sure you want to delete it?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="categoryDeleteModalSubmit">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -183,8 +210,8 @@
                                                        id="category_color_${category.id}" onchange="updateColor(${category.id})" />
                                                 <label for="category_color_${category.id}" class="fa fa-paint-roller" style="margin: 0; cursor: pointer;"></label>
                                             </a>
-                                            <a tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" data-category-id="${category.id}"
-                                               data-content="<a class='delete-confirm btn btn-sm btn-danger' id=delete-confirm-${category.id}>Delete</a>">
+                                            <a data-toggle="modal" data-target="#categoryDeleteModal" data-category-id="${category.id}"
+                                               data-toggle="tooltip" title="Delete category" tabindex="0">
                                                 <span class="fa fa-trash-alt"></span>
                                             </a>
                                         </td>
@@ -318,6 +345,57 @@
 
                 // Submit
                 $.post(link, $('#categoryModalForm').serialize(), function () {
+                    reloadCategoryTable();
+                });
+            });
+        });
+    });
+
+    $('#categoryDeleteModal').on('show.bs.modal', function(event) {
+        // Unbind handlers to avoid situations in which this button has more than one onclick handler
+        $('#categoryDeleteModalSubmit').unbind();
+
+        let categoryId = $(event.relatedTarget).data('category-id');
+
+        $('#categoryDeleteModal-id').text(categoryId);
+
+        $.get('${pageContext.request.contextPath}/category/numberoftransactions/' + categoryId, function(data) {
+            const transCnt = data.split(',').map(Number);
+            const transAssignedCnt = transCnt[0];
+            const transPendingCnt = transCnt[1];
+
+            if (transAssignedCnt > 0) {
+                $('#categoryDeleteModal-assigned').show();
+                $('#categoryDeleteModal-noAssigned').hide();
+                $('#categoryDeleteModal-assignedCount').text(transAssignedCnt);
+            }
+            else {
+                $('#categoryDeleteModal-assigned').hide();
+                $('#categoryDeleteModal-noAssigned').show();
+            }
+
+            if (transPendingCnt > 0) {
+                $('#categoryDeleteModal-unreviewed').show();
+                $('#categoryDeleteModal-noUnreviewed').hide();
+                $('#categoryDeleteModal-unreviewedCount').text(transPendingCnt);
+            }
+            else {
+                $('#categoryDeleteModal-unreviewed').hide();
+                $('#categoryDeleteModal-noUnreviewed').show();
+            }
+
+            if (transAssignedCnt === 0 && transPendingCnt === 0) {
+                $('#categoryDeleteModal-conclusion-safe').show();
+                $('#categoryDeleteModal-conclusion-decide').hide();
+            }
+            else {
+                $('#categoryDeleteModal-conclusion-safe').hide();
+                $('#categoryDeleteModal-conclusion-decide').show();
+            }
+
+            // Submit
+            $('#categoryDeleteModalSubmit').click(function(event) {
+                $.get('${pageContext.request.contextPath}/category/delete/' + categoryId, function () {
                     reloadCategoryTable();
                 });
             });
