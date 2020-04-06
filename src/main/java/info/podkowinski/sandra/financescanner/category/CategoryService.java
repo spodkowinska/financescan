@@ -45,7 +45,8 @@ public class CategoryService {
 //        return category;
 //    }
     void delete(Category category) {
-            categoryRepository.delete(category);
+
+        categoryRepository.delete(category);
     }
 
     public List<String> areValidKeywords(String [] keywordToCheck) {

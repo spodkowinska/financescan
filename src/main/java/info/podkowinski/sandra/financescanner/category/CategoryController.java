@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/category")
@@ -94,11 +95,10 @@ public class CategoryController {
         return "";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, Model model) {
+    @GetMapping("/delete/{categoryId}")
+    public String delete(@PathVariable Long categoryId, Model model) {
         User user1 = userService.findById(2l);
-        Category category = categoryService.findById(id);
-        categoryService.delete(category);
+        transactionService.removeCategoryFromTransactions(categoryId);
         List<Category>categoriesList = categoryService.findByUserId(2l);
         model.addAttribute("cl", categoriesList);
         return "redirect:../../category/list";
@@ -132,7 +132,7 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         Long numberOTransactionsPerCategory = categoryService.findNumberOfTransactionsPerCategory(categoryId);
         Long numberOTransactionsPerPendingCategory = categoryService.findNumberOfTransactionsPerPendingCategory(categoryId);
-        return numberOTransactionsPerCategory + " " + numberOTransactionsPerPendingCategory;
+        return numberOTransactionsPerCategory + ", " + numberOTransactionsPerPendingCategory;
     }
 
 }

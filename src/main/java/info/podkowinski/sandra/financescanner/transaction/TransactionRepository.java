@@ -29,8 +29,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "SELECT * FROM transactions t WHERE t.transaction_date>=? and t.transaction_date<=? and user_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByDates(Date after, Date before, Long userId);
 
-    @Query(value = "SELECT * FROM transactions_categories tc WHERE tc.categories_id =?", nativeQuery = true)
-    public Transaction findByCategoryId(Long categoryId);
+    @Query(value = "SELECT transaction_id FROM transactions_categories tc WHERE tc.categories_id=?", nativeQuery = true)
+    List <Long> findTransactionIdsByCategoryId(Long categoryId);
+
+    @Query(value = "SELECT transaction_id FROM transactions_pending_categories tpc WHERE tpc.pending_categories_id=?", nativeQuery = true)
+    List <Long> findTransactionIdsByPendingCategoryId(Long categoryId);
+
+    @Query(value = "SELECT transaction_id FROM transactions_rejected_categories trc WHERE trc.rejected_categories_id=?", nativeQuery = true)
+    List <Long> findTransactionIdsByRejectedCategoryId(Long categoryId);
 
     @Query(value = "SELECT * FROM transactions t ORDER BY transaction_date ASC LIMIT 1", nativeQuery = true)
     Transaction findLastTransaction(Long userId);
@@ -42,4 +48,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findByYear(String year, Long userId);
 
     List<Transaction> findAllByUserId(Long userId);
+
+
 }
