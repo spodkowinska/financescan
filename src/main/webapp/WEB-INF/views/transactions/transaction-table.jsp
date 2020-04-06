@@ -114,8 +114,21 @@
             $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
         }
 
+        function enableLoadingEffect(enable) {
+            if (enable) {
+                $('#loading-indicator').show();
+                $('#list').css('filter', 'grayscale(1) opacity(0.5)');
+            }
+            else {
+                $('#loading-indicator').hide();
+                $('#list').css('filter', '');
+            }
+        }
+
         function reloadTransactionTable(year, month) {
             console.log('reloading transaction table');
+
+            enableLoadingEffect(true);
 
             if (year !== null) {
                 gYear = year;
@@ -135,6 +148,8 @@
 
                 // Update text and category filtering
                 applyFilters();
+
+                enableLoadingEffect(false);
             });
 
             // Update year & month buttons state
@@ -272,8 +287,8 @@
 
             const input = document.getElementById("text_filter");
             const filter = input.value.toUpperCase();
-            const table = document.getElementById("transaction_table");
-            const trs = table.getElementsByTagName("tr");
+            const tbody = document.getElementById("list");
+            const trs = tbody.getElementsByTagName("tr");
 
             // Loop through all table rows, and hide those which don't match the search query
             for (let i = 0; i < trs.length; i++) {
@@ -444,6 +459,11 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-gray-800" style="float: left">Transactions</h6>
+                        <div id="loading-indicator" style="position: absolute; margin-top: -5px; margin-left: 105px;">
+                            <div class="spinner-border spinner-border-sm text-gray-500" role="status" style="height: 20px; width: 20px">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
                         <button class="btn btn-secondary btn-sm" style="float: right; margin-bottom: -6px; margin-top: -6px;" data-toggle="modal" data-target="#editModal"
                                 data-toggle="modal" data-target="#categoryModal">
                             <span class="fa fa-plus"></span> Add new transaction
@@ -558,13 +578,13 @@
                         <table id="transaction_table" class="finance_table sortable">
                             <!-- TABLE HEADER -->
                             <thead>
-                            <tr>
-                                <th style="width: 85px" class="sorttable_nosort">Actions</th>
-                                <th style="width: 100px" data-searchable="true">Date</th>
-                                <th style="width: 100px" data-searchable="true" class="sorttable_numeric">Amount</th>
-                                <th colspan="2" style="width: 250px" class="sorttable_nosort">Categories</th>
-                                <th data-searchable="true" class="sorttable_nosort">Description</th>
-                            </tr>
+                                <tr>
+                                    <th style="width: 85px" class="sorttable_nosort">Actions</th>
+                                    <th style="width: 100px" data-searchable="true">Date</th>
+                                    <th style="width: 100px" data-searchable="true" class="sorttable_numeric">Amount</th>
+                                    <th colspan="2" style="width: 250px" class="sorttable_nosort">Categories</th>
+                                    <th data-searchable="true" class="sorttable_nosort">Description</th>
+                                </tr>
                             </thead>
                             <!-- TABLE DATA -->
                             <tbody id="list">
