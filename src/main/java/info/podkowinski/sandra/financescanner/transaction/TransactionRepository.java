@@ -2,9 +2,12 @@ package info.podkowinski.sandra.financescanner.transaction;
 
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.user.User;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.sql.Date;
@@ -29,15 +32,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "SELECT * FROM transactions t WHERE t.transaction_date>=? and t.transaction_date<=? and user_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByDates(Date after, Date before, Long userId);
 
-    @Query(value = "SELECT transaction_id FROM transactions_categories tc WHERE tc.categories_id=?", nativeQuery = true)
-    List <Long> findTransactionIdsByCategoryId(Long categoryId);
-
-    @Query(value = "SELECT transaction_id FROM transactions_pending_categories tpc WHERE tpc.pending_categories_id=?", nativeQuery = true)
-    List <Long> findTransactionIdsByPendingCategoryId(Long categoryId);
-
-    @Query(value = "SELECT transaction_id FROM transactions_rejected_categories trc WHERE trc.rejected_categories_id=?", nativeQuery = true)
-    List <Long> findTransactionIdsByRejectedCategoryId(Long categoryId);
-
     @Query(value = "SELECT * FROM transactions t ORDER BY transaction_date ASC LIMIT 1", nativeQuery = true)
     Transaction findLastTransaction(Long userId);
 
@@ -49,5 +43,18 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     List<Transaction> findAllByUserId(Long userId);
 
+    @Transactional
+    @Modifying(clearAutomatically=true, flushAutomatically=true)
+    @Query(value = "DELETE FROM transactions_categories tc WHERE tc.categories_id =?", nativeQuery = true)
+    void deleteAssignedCategoriesByCategoryId(Long categoryId);
 
+    @Transactional
+    @Modifying(clearAutomatically=true, flushAutomatically=true)
+    @Query(value = "DELETE FROM transactions_pending_categories tpc WHERE tpc.pending_categories_id =?", nativeQuery = true)
+    void deleteAssignedPendingCategoriesByCategoryId(Long categoryId);
+
+    @Transactional
+    @Modifying(clearAutomatically=true, flushAutomatically=true)
+    @Query(value = "DELETE FROM transactions_rejected_categories trc WHERE trc.rejected_categories_id =?", nativeQuery = true)
+    void deleteAssignedRejectedCategoriesByCategoryId(Long categoryId);
 }

@@ -272,19 +272,9 @@ public class TransactionService {
     }
 
     public void removeCategoryFromTransactions(Long categoryId){
-        List<Transaction>transactions = new ArrayList<>();
-        transactionRepository.findTransactionIdsByCategoryId(categoryId).stream().forEach(t->transactions.add(transactionRepository.findById(t).orElse(null)));
-        transactions.stream().forEach(t->t.categories.remove(transactionRepository.findById(categoryId)));
-        transactions.stream().forEach(t->transactionRepository.save(t));
-        transactions.clear();
-        transactionRepository.findTransactionIdsByPendingCategoryId(categoryId).stream().forEach(t->transactions.add(transactionRepository.findById(t).orElse(null)));
-        transactions.stream().forEach(t->t.pendingCategories.remove(transactionRepository.findById(categoryId)));
-        transactions.stream().forEach(t->transactionRepository.save(t));
-        transactions.clear();
-        transactionRepository.findTransactionIdsByRejectedCategoryId(categoryId).stream().forEach(t->transactions.add(transactionRepository.findById(t).orElse(null)));
-        transactions.stream().forEach(t->t.rejectedCategories.remove(transactionRepository.findById(categoryId)));
-        transactions.stream().forEach(t->transactionRepository.save(t));
-        transactions.clear();
+        transactionRepository.deleteAssignedCategoriesByCategoryId(categoryId);
+        transactionRepository.deleteAssignedPendingCategoriesByCategoryId(categoryId);
+        transactionRepository.deleteAssignedRejectedCategoriesByCategoryId(categoryId);
     }
 
 }

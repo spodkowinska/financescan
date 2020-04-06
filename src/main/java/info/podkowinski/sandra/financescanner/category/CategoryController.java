@@ -100,6 +100,7 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         transactionService.removeCategoryFromTransactions(categoryId);
         List<Category>categoriesList = categoryService.findByUserId(2l);
+        categoryService.delete(categoryService.findById(categoryId));
         model.addAttribute("cl", categoriesList);
         return "redirect:../../category/list";
     }
@@ -133,7 +134,7 @@ public class CategoryController {
         User user1 = userService.findById(2l);
         Long numberOTransactionsPerCategory = categoryService.findNumberOfTransactionsPerCategory(categoryId);
         Long numberOTransactionsPerPendingCategory = categoryService.findNumberOfTransactionsPerPendingCategory(categoryId);
-        return numberOTransactionsPerCategory + ", " + numberOTransactionsPerPendingCategory;
+        return numberOTransactionsPerCategory + "," + numberOTransactionsPerPendingCategory;
     }
 
 }
