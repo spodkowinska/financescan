@@ -189,9 +189,7 @@
 
         function addCategory(transactionId, categoryId, pending) {
             $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
-                if (gCategoryFilteringEnabled) {
-                    refreshRowForTransaction(transactionId, data);
-                }
+                afterCategoriesChangedForRow(transactionId, data);
             });
 
             let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
@@ -205,9 +203,7 @@
 
         function removeCategory(transactionId, categoryId, pending) {
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId, function (data) {
-                if (gCategoryFilteringEnabled) {
-                    refreshRowForTransaction(transactionId, data);
-                }
+                afterCategoriesChangedForRow(transactionId, data);
             });
 
             let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
@@ -216,6 +212,54 @@
                 catElem.css('display', 'inline-block');
             }
             catElem.appendTo('#cat_others_' + transactionId);
+        }
+
+        function afterCategoriesChangedForRow(transactionId, responseData) {
+            const catCnt = responseData.split(",").map(Number);
+            const catRowUncategorized = catCnt[0] === 0 && catCnt[1] === 0;
+            const catRowUnreviewed = catCnt[1] !== 0;
+
+            const catRow = $('#cat_row_' + transactionId);
+
+            console.log(catCnt, gUncategorizedCount, gUnreviewedCount);
+
+            // Uncategorized
+            {
+                const catRowWasUncategorized = catRow.data('uncategorized');
+                console.log(catRow.data('uncategorized'), catRowWasUncategorized);
+                if (catRowUncategorized) {
+                    if (!catRowWasUncategorized) {
+                        catRow.attr('data-uncategorized', true);
+                        gUncategorizedCount++;
+                        console.log('uc+', gUncategorizedCount);
+                    }
+                }
+                else if (catRowWasUncategorized) {
+                    catRow.attr('data-uncategorized', false);
+                    gUncategorizedCount--;
+                    console.log('uc-', gUncategorizedCount);
+                }
+            }
+
+            // Unreviewed
+            {
+                const catRowWasUnreviewed = catRow.data('unreviewed');
+                console.log(catRow.data('unreviewed'), catRowWasUnreviewed);
+                if (catRowUnreviewed) {
+                    if (!catRowWasUnreviewed) {
+                        catRow.attr('data-unreviewed', true);
+                        gUnreviewedCount++;
+                        console.log('ur+', gUnreviewedCount);
+                    }
+                }
+                else if (catRowWasUnreviewed) {
+                    catRow.attr('data-unreviewed', false);
+                    gUnreviewedCount--;
+                    console.log('ur-', gUnreviewedCount);
+                }
+            }
+
+            refreshCategoryFilterBadges();
         }
 
         function applyFilters() {
@@ -240,11 +284,13 @@
 
                 let show = true;
 
-                const rowUnreviewed = trs[i].getAttribute('data-unreviewed') === 'true';
+                const rowUnreviewedVal = trs[i].getAttribute('data-unreviewed');
+                const rowUnreviewed = rowUnreviewedVal === 'true' || rowUnreviewedVal === true;
                 if (rowUnreviewed)
                     gUnreviewedCount++;
 
-                const rowUncategorized = trs[i].getAttribute('data-uncategorized') === 'true';
+                const rowUncategorizedVal = trs[i].getAttribute('data-uncategorized');
+                const rowUncategorized = rowUncategorizedVal === 'true' || rowUncategorizedVal === true;
                 if (rowUncategorized)
                     gUncategorizedCount++;
 
@@ -270,6 +316,10 @@
                 trs[i].style.display = show ? "" : "none";
             }
 
+            refreshCategoryFilterBadges();
+        }
+
+        function refreshCategoryFilterBadges() {
             let unreviewedCount = $('#unreviewedCount');
             unreviewedCount.text(gUnreviewedCount);
             if (gUnreviewedCount === 0) {
@@ -393,7 +443,11 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-800">Transactions</h6>
+                        <h6 class="m-0 font-weight-bold text-gray-800" style="float: left">Transactions</h6>
+                        <button class="btn btn-secondary btn-sm" style="float: right; margin-bottom: -6px; margin-top: -6px;" data-toggle="modal" data-target="#editModal"
+                                data-toggle="modal" data-target="#categoryModal">
+                            <span class="fa fa-plus"></span> Add new transaction
+                        </button>
                     </div>
                     <div class="card-body">
 
@@ -438,12 +492,6 @@
                             <!-- Actual Dropdown -->
                             <div class="dropdown-menu dropdown-menu-right shadow"
                                  aria-labelledby="transOperationsDropdown">
-                                <!-- Dropdown Item: Add new transaction -->
-                                <a class="dropdown-item" data-toggle="modal" data-target="#editModal" tabindex="0">
-                                    <i class="fas fa-plus mr-2 text-gray-600"></i>
-                                    Add new transaction
-                                </a>
-                                <div class="dropdown-divider"></div>
                                 <!-- Dropdown Item: Import from CSV -->
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/fileimport">
                                     <i class="fas fa-file-upload mr-2 text-gray-600"></i>
@@ -602,11 +650,15 @@
             : '${pageContext.request.contextPath}/transaction/add';
 
         // Update modal's title depending on mode
-        $('#editModalLabel').text(transId ? 'Edit Transaction' : 'Add New Transaction');
+        $('#editModalLabel').html(transId ? 'Edit Transaction <span class="small text-gray-500">#' + transId + '</span>' : 'Add New Transaction');
 
         $.get(link, function(data) {
             $('#editModalBody').html(data);
             $('#editModalSubmit').click(function(event) {
+                $('#categories').val(gModalCategories.join(','));
+                $('#pendingCategories').val(gModalPendingCategories.join(','));
+                $('#rejectedCategories').val(gModalRejectedCategories.join(','));
+
                 $.post(link, $('#editModalForm').serialize(), function(newRowData) {
                     if (transId) {
                         // Edit mode: update the edited row

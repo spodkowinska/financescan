@@ -48,10 +48,13 @@
         }
     </style>
 
+    <form:input type="hidden" path="categories" id="categories" name="categories" />
+    <form:input type="hidden" path="pendingCategories" id="pendingCategories" name="pendingCategories" />
+    <form:input type="hidden" path="rejectedCategories" id="rejectedCategories" name="rejectedCategories" />
+
     <div class="form-group">
         <label>Categories</label>
-        <form:input path="rejectedCategories" name="rejectedCategories" id="rejectedCategories" type="hidden"></form:input>
-        <div style="text-align: center">
+        <div style="text-align: center" id="editModalCategories">
             <c:forEach items="${categories}" var="category">
                 <label class="tag-check-container">
                     <c:choose>
@@ -85,6 +88,53 @@
 </form:form>
 
 <script>
+    function arraysRemove(arrays, elem) {
+        for (let array of arrays) {
+            const index = array.indexOf(elem);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+    }
+
+    gModalCategories = $('#categories').val().split(',').map(Number);
+    gModalPendingCategories = $('#pendingCategories').val().split(',').map(Number);
+    gModalRejectedCategories = $('#rejectedCategories').val().split(',').map(Number);
+
+    arraysRemove([gModalCategories, gModalPendingCategories, gModalRejectedCategories], 0);
+
+    function onCategoryAdded(cat) {
+        if (typeof cat === 'string') cat = parseInt(cat);
+        arraysRemove([gModalPendingCategories, gModalRejectedCategories], cat);
+        gModalCategories.push(cat);
+
+        console.log('add', gModalCategories, gModalPendingCategories, gModalRejectedCategories);
+    }
+
+    function onCategoryRemoved(cat) {
+        if (typeof cat === 'string') cat = parseInt(cat);
+        arraysRemove([gModalCategories, gModalPendingCategories, gModalRejectedCategories], cat);
+
+        console.log('remove', gModalCategories, gModalPendingCategories, gModalRejectedCategories);
+    }
+
+    function onCategoryRejected(cat) {
+        if (typeof cat === 'string') cat = parseInt(cat);
+        arraysRemove([gModalCategories, gModalPendingCategories], cat);
+        gModalRejectedCategories.push(cat);
+
+        console.log('reject', gModalCategories, gModalPendingCategories, gModalRejectedCategories);
+    }
+
+    // Enable inputs change callback
+    $('#editModalCategories input').change(function () {
+        let catId = $(this).val();
+        if ($(this).is(':checked'))
+            onCategoryAdded(catId);
+        else
+            onCategoryRemoved(catId);
+    });
+
     // Enable popovers
     {
         let pops = $('.pending-cat');
@@ -105,6 +155,8 @@
                     let input = $('#category_' + catId);
                     input.prop('checked', true);
                     input.attr('name', 'category_' + catId);
+
+                    onCategoryAdded(catId);
                 });
             }
 
@@ -120,6 +172,8 @@
                     let input = $('#category_' + catId);
                     input.prop('checked', false);
                     input.attr('name', 'category_' + catId);
+
+                    onCategoryRejected(catId);
                 });
             }
         });

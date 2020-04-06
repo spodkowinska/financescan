@@ -211,7 +211,7 @@
                                         <td>
                                             <c:forEach items="${category.safeKeywords}" var="keyword">
                                                 <span class="badge badge-light keyword" data-toggle="tooltip" title="Safe keyword">
-                                                    <span class="fa fa-sm fa-check text-gray-600"></span> ${keyword}
+                                                    <span class="fa fa-sm fa-star text-gray-600"></span> ${keyword}
                                                 </span>
                                             </c:forEach>
                                             <c:forEach items="${category.keywords}" var="keyword">
@@ -296,7 +296,7 @@
             : '${pageContext.request.contextPath}/category/add';
 
         // Update modal's title depending on mode
-        $('#categoryModalLabel').text(categoryId ? 'Edit Category' : 'Add New Category');
+        $('#categoryModalLabel').html(categoryId ? 'Edit Category <span class="small text-gray-500">#' + categoryId + '</span>' : 'Add New Category');
 
         $.get(link, function(data) {
             $('#categoryModalBody').html(data);

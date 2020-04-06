@@ -109,18 +109,6 @@ public class TransactionController {
         transaction1.setTransactionDate(LocalDate.parse(date));
         System.out.println(transaction1.transactionDate);
 
-        // todo: this is a very brutal approach and should be rewritten; list of categories should be filled in JSP
-        transaction1.categories = new HashSet<>();
-        var paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String paramName = paramNames.nextElement();
-            if (paramName.startsWith("category_")) {
-                long catId = Integer.parseInt(request.getParameter(paramName));
-                Category cat = categoryService.findById(catId);
-                transaction1.categories.add(cat);
-            }
-        }
-
         transactionService.save(transaction1);
 
         return "redirect:/transaction/table/gettransaction/" + transaction1.id;
@@ -148,22 +136,6 @@ public class TransactionController {
         String date = request.getParameter("transactionDate");
         transaction1.setTransactionDate(LocalDate.parse(date));
 
-        // todo: this is a very brutal approach and should be rewritten; list of categories should be filled in JSP
-        transaction1.categories = new HashSet<>();
-        transaction1.pendingCategories = new HashSet<>();
-        var paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String paramName = paramNames.nextElement();
-            if (paramName.startsWith("category_")) {
-                long catId = Integer.parseInt(request.getParameter(paramName));
-                Category cat = categoryService.findById(catId);
-                if (paramName.startsWith("category_pending_"))
-                    transaction1.pendingCategories.add(cat);
-                else
-                    transaction1.categories.add(cat);
-            }
-        }
-
         System.out.println(transaction1.transactionDate);
         transactionService.save(transaction1);
         return "redirect:/transaction/table/gettransaction/" + transaction1.id;
@@ -185,6 +157,7 @@ public class TransactionController {
         return "";
     }
 
+    @ResponseBody
     @GetMapping("/addcategory/{transactionId}/{categoryId}")
     public String addCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
         User user1 = userService.findById(2l);
@@ -193,9 +166,10 @@ public class TransactionController {
             transaction.addCategory(categoryService.findById(categoryId));
             transactionService.save(transaction);
         }
-        return "redirect:/transaction/table/gettransaction/" + transaction.id;
+        return transaction.categories.size() + "," + transaction.pendingCategories.size();
     }
 
+    @ResponseBody
     @GetMapping("/removecategory/{transactionId}/{categoryId}")
     public String removeCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
         User user1 = userService.findById(2l);
@@ -209,7 +183,7 @@ public class TransactionController {
             }
             transactionService.save(transaction);
         }
-        return "redirect:/transaction/table/gettransaction/" + transaction.id;
+        return transaction.categories.size() + "," + transaction.pendingCategories.size();
     }
 
     @ResponseBody

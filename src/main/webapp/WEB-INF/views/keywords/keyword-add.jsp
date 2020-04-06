@@ -15,14 +15,30 @@
     </div>
 
     <div class="form-group">
-        <label>Keywords</label>
-        <input class="form-control" id="keywords" name="keywords"
-               <c:if test="${keywords!=null}">
-               value = "${keywords}"
-               </c:if>
-        >
-        <p class="help-block">Words that will be used to assign categories to your
-            transactions. They should be separated with coma.</p>
+        <label>Keyword
+            <a tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true"
+               data-content="Words that will be used to automatically suggest this category for your transactions.
+            Use the checkbox below to mark the keyword as <i>safe</i> - it will be used to <b>assign</b> categories instead of just <b>suggesting</b> them.">
+                <span class="fa fa-question-circle"></span>
+            </a>
+        </label>
 
+        <input name="safeKeywords" id="notSentKeywords" type="hidden" />
+        <input name="keywords" id="sentKeywords" class="form-control" value="${keywords != null ? keywords : ''}" />
+
+        <div class="form-check" style="margin-top: 5px">
+            <input class="form-check-input" type="checkbox" id="safeCheck" style="margin-top: 6px">
+            <label class="form-check-label small" for="safeCheck">Safe keyword</label>
+        </div>
     </div>
 </form>
+
+<script>
+    $('#safeCheck').change(function () {
+        const checked = $(this).is(':checked');
+        $('#sentKeywords').attr('name', checked ? 'safeKeywords' : 'keywords');
+        $('#notSentKeywords').attr('name', checked ? 'keywords' : 'safeKeywords');
+    });
+
+    $('[data-toggle="popover"]').popover();
+</script>
