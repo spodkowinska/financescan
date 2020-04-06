@@ -236,21 +236,21 @@
 
             const catRow = $('#cat_row_' + transactionId);
 
-            console.log(catCnt, gUncategorizedCount, gUnreviewedCount);
+            console.log(responseData, catCnt, gUncategorizedCount, gUnreviewedCount);
 
             // Uncategorized
             {
                 const catRowWasUncategorized = catRow.data('uncategorized');
-                console.log(catRow.data('uncategorized'), catRowWasUncategorized);
+                console.log(catRowUncategorized, catRowWasUncategorized);
                 if (catRowUncategorized) {
                     if (!catRowWasUncategorized) {
-                        catRow.attr('data-uncategorized', true);
+                        catRow.data('uncategorized', true);
                         gUncategorizedCount++;
                         console.log('uc+', gUncategorizedCount);
                     }
                 }
                 else if (catRowWasUncategorized) {
-                    catRow.attr('data-uncategorized', false);
+                    catRow.data('uncategorized', false);
                     gUncategorizedCount--;
                     console.log('uc-', gUncategorizedCount);
                 }
@@ -259,16 +259,16 @@
             // Unreviewed
             {
                 const catRowWasUnreviewed = catRow.data('unreviewed');
-                console.log(catRow.data('unreviewed'), catRowWasUnreviewed);
+                console.log(catRowUnreviewed, catRowWasUnreviewed);
                 if (catRowUnreviewed) {
                     if (!catRowWasUnreviewed) {
-                        catRow.attr('data-unreviewed', true);
+                        catRow.data('unreviewed', true);
                         gUnreviewedCount++;
                         console.log('ur+', gUnreviewedCount);
                     }
                 }
                 else if (catRowWasUnreviewed) {
-                    catRow.attr('data-unreviewed', false);
+                    catRow.data('unreviewed', false);
                     gUnreviewedCount--;
                     console.log('ur-', gUnreviewedCount);
                 }
