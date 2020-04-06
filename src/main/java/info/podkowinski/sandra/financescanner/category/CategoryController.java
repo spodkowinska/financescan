@@ -111,13 +111,14 @@ public class CategoryController {
         Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
         List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
         category.keywords.addAll(validatedKeywords);
-
+        List<String> validatedSafeKeywords = categoryService.areValidKeywords(request.getParameter("safeKeywords").split(","));
+        category.safeKeywords.addAll(validatedSafeKeywords);
         categoryService.save(category);
         return "";
     }
 
     @GetMapping("/keyword/add/{transactionId}")
-    public String addKeywordFromTransaction(Model model, @PathVariable Long transactionId) {
+    public String addKeywordFromSafeTransaction(Model model, @PathVariable Long transactionId) {
         User user1 = userService.findById(2l);
         List<Category> categories = categoryService.findByUserId(2l);
         Transaction transaction = transactionService.findById(transactionId);
