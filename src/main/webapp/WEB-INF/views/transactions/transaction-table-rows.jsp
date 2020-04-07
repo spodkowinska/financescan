@@ -68,16 +68,12 @@
                    aria-expanded="true">+</a>
 
                 <div id="cat_others_${trans.id}" class="dropdown-menu shadow animated--fade-in tag-add-popover"
-                     aria-labelledby="cat_drop_${trans.id}">
-
-                    <c:forEach items="${categoriesList}" var="category"><c:choose><c:when
+                     aria-labelledby="cat_drop_${trans.id}"><c:forEach items="${categoriesList}" var="category"><c:choose><c:when
                             test="${!fn:contains(trans.categories, category) && !fn:contains(trans.pendingCategories, category)}"><a
                             id="cat_tag_${trans.id}_${category.id}"
                             tabindex="0"
                             onclick="changeCategory(${trans.id},${category.id})"
-                            class="tag tag${category.id}">${category.name}</a></c:when></c:choose></c:forEach>
-
-                </div>
+                            class="tag tag${category.id}">${category.name}</a></c:when></c:choose></c:forEach></div>
             </div>
         </td>
 

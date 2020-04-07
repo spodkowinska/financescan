@@ -81,6 +81,12 @@ div.tag-add-popover {
     min-width: 300px;
 }
 
+div.tag-add-popover:empty:after {
+    content: "It's empty here...";
+    position: relative;
+    font-size: inherit;
+}
+
 .tag {
     display: inline-block;
     margin: 1px;
