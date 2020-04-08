@@ -126,6 +126,20 @@
         }
 
         function prepareRows() {
+            $('.finance_table tbody tr').contextmenu(function(e) {
+                if (!$(this).hasClass('selected'))
+                    return false;
+                const top = e.pageY;
+                const left = e.pageX;
+                $("#bulkMenu").css({
+                    display: "block",
+                    top: top,
+                    left: left
+                });
+                return false;
+            }).click(function () {
+                $("#bulkMenu").hide();
+            });
             $('.transaction-row-checkbox').change(function () {
                 const row = $(this).parent().parent();
                 const checked = $(this).is(':checked');
@@ -655,6 +669,11 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+
+                <%-- TRANSACTION TABLE --%>
+                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; width: 300px; position: absolute; padding: 10px;">
+                    <b>Bulk change context menu!</b><br>There will be some options, for sure!
                 </div>
 
             </div>
