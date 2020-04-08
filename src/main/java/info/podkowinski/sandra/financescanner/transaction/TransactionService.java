@@ -5,8 +5,8 @@ import info.podkowinski.sandra.financescanner.account.AccountRepository;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryRepository;
 import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
-import info.podkowinski.sandra.financescanner.user.User;
-import info.podkowinski.sandra.financescanner.user.UserRepository;
+import info.podkowinski.sandra.financescanner.project.Project;
+import info.podkowinski.sandra.financescanner.project.ProjectRepository;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,14 +23,14 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
     private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     public TransactionService(TransactionRepository transactionRepository, CategoryRepository categoryRepository,
-                              AccountRepository accountRepository, UserRepository userRepository) {
+                              AccountRepository accountRepository, ProjectRepository projectRepository) {
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
         this.accountRepository = accountRepository;
-        this.userRepository = userRepository;
+        this.projectRepository = projectRepository;
     }
 
     public Transaction findById(Long id) {
@@ -46,7 +46,7 @@ public class TransactionService {
         return categoriesList;
     }
 
-    public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, String importName, Long bankId, User user)
+    public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, String importName, Long bankId, Project project)
             throws IOException, CsvValidationException, ParseException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
         // todo fix this ugly hack (detecting mBank) to pass encoding
@@ -78,20 +78,20 @@ public class TransactionService {
             }
             newTransaction.importName = importName;
             newTransaction.account = accountRepository.getOne(bankId);
-            newTransaction.user = user;
+            newTransaction.project = project;
             transactionRepository.save(newTransaction);
         }
     }
 
-    public List<Transaction> findByUserId(long id) {
-        return transactionRepository.findAllByUserIdOrderByTransactionDateAsc(id);
+    public List<Transaction> findByProjectId(long id) {
+        return transactionRepository.findAllByProjectIdOrderByTransactionDateAsc(id);
     }
 
-    public void assignDefaultCategoriesInTransactions(User user) {
-        User user1 = userRepository.getOne(2l);
-        List<Transaction> transactionList = transactionRepository.findAllByUserId(2l);
+    public void assignDefaultCategoriesInTransactions(Project project) {
+        Project project1 = projectRepository.getOne(2l);
+        List<Transaction> transactionList = transactionRepository.findAllByProjectId(2l);
         for (Transaction transaction : transactionList) {
-            for (Category category : categoryRepository.findAllByUserId(user.getId())) {
+            for (Category category : categoryRepository.findAllByProjectId(project.getId())) {
 //                boolean keywordFound = false;
                 for (String keyword : category.getKeywords()) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
@@ -118,28 +118,28 @@ public class TransactionService {
     }
 
     //todo what to do if transaction doesn't exist, itp?
-    public void assignCategoryInTransaction(User user, Long transactionId, Long categoryId) {
+    public void assignCategoryInTransaction(Project project, Long transactionId, Long categoryId) {
         Transaction transaction = transactionRepository.getOne(transactionId);
-        if (transaction.getUser().equals(user)) {
+        if (transaction.getProject().equals(project)) {
             transaction.addCategory(categoryRepository.getOne(categoryId));
             transactionRepository.save(transaction);
         }
     }
 
-    public double balanceByDates(Long userId, Date start, Date end) {
-        List<Transaction> transactionList = transactionRepository.findByDates(start, end, userId);
+    public double balanceByDates(Long projectId, Date start, Date end) {
+        List<Transaction> transactionList = transactionRepository.findByDates(start, end, projectId);
         double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
         return balance;
     }
 
-    public double balanceByDatesAndCategory(User user, Date start, Date end, Long categoryId) {
-        List<Transaction> transactionList = transactionRepository.findByDateAndUserAndCategory
-                (start, end, user, categoryRepository.getOne(categoryId));
+    public double balanceByDatesAndCategory(Project project, Date start, Date end, Long categoryId) {
+        List<Transaction> transactionList = transactionRepository.findByDateAndProjectAndCategory
+                (start, end, project, categoryRepository.getOne(categoryId));
         double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
         return balance;
     }
 
-    public Map<String, Double> lastYearBalances(Long userId) {
+    public Map<String, Double> lastYearBalances(Long projectId) {
         SortedMap<String, Double> lastYearBalances = new TreeMap<>();
         Date dateNow = Date.valueOf(LocalDate.now());
         StringBuilder sb = new StringBuilder();
@@ -153,7 +153,7 @@ public class TransactionService {
         } else {
             yearMonth = sb1.append(dateNow.toLocalDate().getYear()).append(" ").append(month).toString();
         }
-        lastYearBalances.put(yearMonth, balanceByDates(userId, Date.valueOf(monthBegin), dateNow));
+        lastYearBalances.put(yearMonth, balanceByDates(projectId, Date.valueOf(monthBegin), dateNow));
         for (int i = 0; i < 11; i++) {
             Date monthBeginDate = Date.valueOf(monthBegin);
             sb.delete(0, sb.length());
@@ -167,17 +167,17 @@ public class TransactionService {
             } else {
                 previousYearMonth = sb1.append(previousMonthEnd.getYear()).append(" ").append(previousMonth).toString();
             }
-            lastYearBalances.put(previousYearMonth, balanceByDates(userId, Date.valueOf(previousMonthBegin), Date.valueOf(previousMonthEnd)));
+            lastYearBalances.put(previousYearMonth, balanceByDates(projectId, Date.valueOf(previousMonthBegin), Date.valueOf(previousMonthEnd)));
             monthBegin = previousMonthBegin;
         }
         System.out.println(lastYearBalances);
         return lastYearBalances;
     }
 
-//    public HashMap<String, Double> balancesByDatesForAllCategories(Long userId, Date start, Date end) {
-//        List<Transaction> transactionList = transactionRepository.findByDates(start, end, userId);
+//    public HashMap<String, Double> balancesByDatesForAllCategories(Long projectId, Date start, Date end) {
+//        List<Transaction> transactionList = transactionRepository.findByDates(start, end, projectId);
 //        HashMap<String, Double> balanceByCategory = new HashMap<>();
-//        for (Category category : categoryRepository.findAllByUserId(userId)) {
+//        for (Category category : categoryRepository.findAllByProjectId(projectId)) {
 //            Double categorySum = 0.0;
 //            for (Transaction transaction : transactionList) {
 //                if (transaction.getCategories().contains(category)) {
@@ -197,9 +197,9 @@ public class TransactionService {
 //        return balanceByCategory;
 //    }
 
-    public HashMap<Long, List<String>> transactionIdCategories(Long userId) {
+    public HashMap<Long, List<String>> transactionIdCategories(Long projectId) {
         HashMap<Long, List<String>> transactionIdCategories = new HashMap<>();
-        List<Transaction> transactionsList = findByUserId(userId);
+        List<Transaction> transactionsList = findByProjectId(projectId);
         for (Transaction t : transactionsList) {
             List<String> categoriesNames = new ArrayList<>();
             t.getCategories().forEach(c -> categoriesNames.add(c.getName()));
@@ -212,10 +212,10 @@ public class TransactionService {
         transactionRepository.save(transaction);
     }
 
-    public HashMap<String, Float> mapTransactionsToCategoriesWithAmounts(List<Transaction> transactionsToBeMapped, Long userId) {
+    public HashMap<String, Float> mapTransactionsToCategoriesWithAmounts(List<Transaction> transactionsToBeMapped, Long projectId) {
         HashMap<String, Float> categoriesWithAmounts = new HashMap<>();
-        List<Category> categoriesByUser = categoryRepository.findAllByUserId(userId);
-        for (Category category : categoriesByUser) {
+        List<Category> categoriesByProject = categoryRepository.findAllByProjectId(projectId);
+        for (Category category : categoriesByProject) {
             categoriesWithAmounts.put(category.getName(), 0f);
         }
         for (Transaction transaction : transactionsToBeMapped) {
@@ -239,24 +239,24 @@ public class TransactionService {
         transactionRepository.delete(transaction);
     }
 
-    public List<Transaction> findSpendings(Long userId) {
-        return transactionRepository.findSpendings(userId);
+    public List<Transaction> findSpendings(Long projectId) {
+        return transactionRepository.findSpendings(projectId);
     }
 
-    List <Transaction> transactionsByDate(String year, String month, User user){
+    List <Transaction> transactionsByDate(String year, String month, Project project){
         List <Transaction> transactionsList= new ArrayList<>();
         if (year.equals("all")){
-            transactionsList = transactionRepository.findAllByUserIdOrderByTransactionDateAsc(user.getId());
+            transactionsList = transactionRepository.findAllByProjectIdOrderByTransactionDateAsc(project.getId());
         } else if(month.equals("all")) {
-            transactionsList = transactionRepository.findByYear(year, user.getId());
+            transactionsList = transactionRepository.findByYear(year, project.getId());
         } else {
-            transactionsList = transactionRepository.findByMonth(year, month, user.getId());
+            transactionsList = transactionRepository.findByMonth(year, month, project.getId());
         }
         return transactionsList;
     }
-    List<Integer> findYearsByUserId(Long userId){
+    List<Integer> findYearsByProjectId(Long projectId){
         Integer currentYear = LocalDate.now().getYear();
-        Transaction lastTransaction = transactionRepository.findLastTransaction(userId);
+        Transaction lastTransaction = transactionRepository.findLastTransaction(projectId);
         Integer lastYear;
         if(lastTransaction!=null){
             lastYear = lastTransaction.transactionDate.getYear();

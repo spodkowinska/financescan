@@ -1,7 +1,7 @@
 package info.podkowinski.sandra.financescanner.csvScanner;
 
 import info.podkowinski.sandra.financescanner.account.Account;
-import info.podkowinski.sandra.financescanner.user.User;
+import info.podkowinski.sandra.financescanner.project.Project;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,9 +31,9 @@ public class CsvSettings {
 
     int skipLines;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "project_id")
     @ManyToOne
-    User user;
+    Project project;
 
     @JoinColumn(name = "account_id")
     @ManyToOne

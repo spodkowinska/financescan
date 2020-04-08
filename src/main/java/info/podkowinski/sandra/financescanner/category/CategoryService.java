@@ -1,8 +1,7 @@
 package info.podkowinski.sandra.financescanner.category;
 
 import info.podkowinski.sandra.financescanner.transaction.TransactionRepository;
-import info.podkowinski.sandra.financescanner.user.User;
-import info.podkowinski.sandra.financescanner.user.UserRepository;
+import info.podkowinski.sandra.financescanner.project.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,18 +11,18 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
-    private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     public CategoryService(CategoryRepository categoryRepository, TransactionRepository transactionRepository,
-                           UserRepository userRepository) {
+                           ProjectRepository projectRepository) {
         this.categoryRepository = categoryRepository;
         this.transactionRepository = transactionRepository;
-        this.userRepository = userRepository;
+        this.projectRepository = projectRepository;
     }
 
 
-    public List<Category>findByUserId(Long id){
-        return categoryRepository.findAllByUserId(id);
+    public List<Category>findByProjectId(Long id){
+        return categoryRepository.findAllByProjectId(id);
     }
 
 
@@ -67,8 +66,8 @@ public class CategoryService {
         return  categoryRepository.findNumberOfTransactionsPerPendingCategory(categoryId);
     }
 //    public Long doesKeywordExistInDifferentCategory(String keyword, Long categoryId){
-//        List<Category> usersCategories = categoryRepository.findAllByUserId(2l);
-//        for (Category category :usersCategories) {
+//        List<Category> projectsCategories = categoryRepository.findAllByProjectId(2l);
+//        for (Category category :projectsCategories) {
 //            if (!category.equals(categoryRepository.findById(categoryId))) {
 //                for (String key : category.keywords) {
 //                    if (key.toLowerCase().equals(keyword.toLowerCase())) {

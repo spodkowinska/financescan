@@ -7,8 +7,8 @@ import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryService;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
-import info.podkowinski.sandra.financescanner.user.User;
-import info.podkowinski.sandra.financescanner.user.UserService;
+import info.podkowinski.sandra.financescanner.project.Project;
+import info.podkowinski.sandra.financescanner.project.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,15 +28,15 @@ import java.util.*;
 public class TransactionController {
 
     private final TransactionService transactionService;
-    private final UserService userService;
+    private final ProjectService projectService;
     private final AccountService accountService;
     private final CategoryService categoryService;
     private final CsvSettingsService csvSettingsService;
 
-    public TransactionController(TransactionService transactionService, UserService userService, AccountService accountService,
+    public TransactionController(TransactionService transactionService, ProjectService projectService, AccountService accountService,
                                  CategoryService categoryService, CsvSettingsService csvSettingsService) {
         this.transactionService = transactionService;
-        this.userService = userService;
+        this.projectService = projectService;
         this.accountService = accountService;
         this.categoryService = categoryService;
         this.csvSettingsService = csvSettingsService;
@@ -44,11 +44,11 @@ public class TransactionController {
 
     @RequestMapping("/list")
     public String transaction(Model model) {
-        User user2 = userService.findById(2l);
-        List<Transaction> transactionsList = transactionService.findByUserId(2l);
-        List<Account> accountsList = accountService.findByUserId(2l);
-        List<Category> categoriesList = categoryService.findByUserId(2l);
-        List<Integer> years = transactionService.findYearsByUserId(2l);
+        Project project2 = projectService.findById(2l);
+        List<Transaction> transactionsList = transactionService.findByProjectId(2l);
+        List<Account> accountsList = accountService.findByProjectId(2l);
+        List<Category> categoriesList = categoryService.findByProjectId(2l);
+        List<Integer> years = transactionService.findYearsByProjectId(2l);
         HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(2l);
         model.addAttribute("tl", transactionsList);
         model.addAttribute("bl", accountsList);
@@ -60,9 +60,9 @@ public class TransactionController {
 
     @GetMapping("/fileimport")
     public String fileimport(Model model) {
-        User user1 = userService.findById(2l);
-        List<Account> accountsList = accountService.findByUserId(2l);
-        List<CsvSettings> csvSettingsList = csvSettingsService.findByUserId(user1.getId());
+        Project project1 = projectService.findById(2l);
+        List<Account> accountsList = accountService.findByProjectId(2l);
+        List<CsvSettings> csvSettingsList = csvSettingsService.findByProjectId(project1.getId());
         model.addAttribute("csvSettingsList", csvSettingsList);
         model.addAttribute("accountsList", accountsList);
         return "file-import";
@@ -71,7 +71,7 @@ public class TransactionController {
     @PostMapping("/fileimport")
     public String fileimportPost(HttpServletRequest request) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
-        User user1 = userService.findById(2l);
+        Project project1 = projectService.findById(2l);
         int datePosition = Integer.parseInt(request.getParameter("datePosition")) - 1;
         int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition")) - 1;
         int partyPosition = Integer.parseInt(request.getParameter("partyPosition")) - 1;
@@ -81,15 +81,15 @@ public class TransactionController {
         String importName = request.getParameter("importName");
         Long account = Long.parseLong(request.getParameter("selectAccount"));
         transactionService.scanDocument(filePart.getInputStream(), datePosition, descriptionPosition,
-                partyPosition, amountPosition, separator, skippedLines, importName, account, user1);
+                partyPosition, amountPosition, separator, skippedLines, importName, account, project1);
         return "redirect:/transaction/list";
     }
 
     @GetMapping("/add")
     public String add(Model model) {
-        User user1 = userService.findById(2l);
-        List<Category> categories = categoryService.findByUserId(2l);
-        List<Account> accounts = accountService.findByUserId(2l);
+        Project project1 = projectService.findById(2l);
+        List<Category> categories = categoryService.findByProjectId(2l);
+        List<Account> accounts = accountService.findByProjectId(2l);
         Transaction transaction = new Transaction();
         model.addAttribute("categories", categories);
         model.addAttribute("accounts", accounts);
@@ -100,8 +100,8 @@ public class TransactionController {
     //todo frontend validation
     @PostMapping("/add")
     public String addPost(HttpServletRequest request, @ModelAttribute Transaction transaction1) {
-        User user1 = userService.findById(2l);
-        transaction1.setUser(user1);
+        Project project1 = projectService.findById(2l);
+        transaction1.setProject(project1);
         transaction1.setImportName("Imported manually on " + LocalDate.now());
 
         String date = request.getParameter("transactionDate");
@@ -116,9 +116,9 @@ public class TransactionController {
 
     @GetMapping("/edit/{transactionId}")
     public String edit(Model model, @PathVariable Long transactionId) {
-        User user1 = userService.findById(2l);
-        List<Category> categories = categoryService.findByUserId(2l);
-        List<Account> accounts = accountService.findByUserId(2l);
+        Project project1 = projectService.findById(2l);
+        List<Category> categories = categoryService.findByProjectId(2l);
+        List<Account> accounts = accountService.findByProjectId(2l);
         Transaction transaction = transactionService.findById(transactionId);
         model.addAttribute("categories", categories);
         model.addAttribute("accounts", accounts);
@@ -129,8 +129,8 @@ public class TransactionController {
     //todo frontend validation
     @PostMapping("/edit/{transactionId}")
     public String editPost(HttpServletRequest request, @ModelAttribute Transaction transaction1) {
-        User user1 = userService.findById(2l);
-        transaction1.setUser(user1);
+        Project project1 = projectService.findById(2l);
+        transaction1.setProject(project1);
         transaction1.setImportName("Imported manually on " + LocalDate.now());
 
         String date = request.getParameter("transactionDate");
@@ -144,9 +144,9 @@ public class TransactionController {
     @ResponseBody
     @GetMapping("/setcategories/{transactionId}/{categories}")
     public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
-        User user1 = userService.findById(2l);
+        Project project1 = projectService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getUser() == user1) {
+        if (transaction.getProject() == project1) {
             if (categories.equals("0")) {
                 transaction.setCategories(null);
             } else {
@@ -160,9 +160,9 @@ public class TransactionController {
     @ResponseBody
     @GetMapping("/addcategory/{transactionId}/{categoryId}")
     public String addCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
-        User user1 = userService.findById(2l);
+        Project project1 = projectService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getUser() == user1) {
+        if (transaction.getProject() == project1) {
             transaction.addCategory(categoryService.findById(categoryId));
             transactionService.save(transaction);
         }
@@ -172,10 +172,10 @@ public class TransactionController {
     @ResponseBody
     @GetMapping("/removecategory/{transactionId}/{categoryId}")
     public String removeCategory(@PathVariable Long transactionId, @PathVariable Long categoryId) {
-        User user1 = userService.findById(2l);
+        Project project1 = projectService.findById(2l);
         Category categoryToRemove = categoryService.findById(categoryId);
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getUser() == user1) {
+        if (transaction.getProject() == project1) {
             if(transaction.pendingCategories.contains(categoryToRemove)){
                 transaction.rejectCategory(categoryToRemove);
             } else {
@@ -189,7 +189,7 @@ public class TransactionController {
     @ResponseBody
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
-        User user1 = userService.findById(2l);
+        Project project1 = projectService.findById(2l);
         Transaction transaction = transactionService.findById(id);
         transaction.categories.clear();
         transaction.pendingCategories.clear();
@@ -199,18 +199,18 @@ public class TransactionController {
     }
     @GetMapping("/assign")
     public String assign( Model model) {
-        User user2 = userService.findById(2l);
-        transactionService.assignDefaultCategoriesInTransactions(user2);
-        List<Transaction> transactionsList = transactionService.findByUserId(2l);
+        Project project2 = projectService.findById(2l);
+        transactionService.assignDefaultCategoriesInTransactions(project2);
+        List<Transaction> transactionsList = transactionService.findByProjectId(2l);
         model.addAttribute("tl", transactionsList);
         return "redirect:/transaction/list";
     }
 
     @GetMapping("/table/{year}/{month}")
     public String table( Model model, @PathVariable String year, @PathVariable String month) {
-        User user2 = userService.findById(2l);
-        List<Transaction> transactionsList = transactionService.transactionsByDate(year, month, user2);
-        List<Category> categories = categoryService.findByUserId(2l);
+        Project project2 = projectService.findById(2l);
+        List<Transaction> transactionsList = transactionService.transactionsByDate(year, month, project2);
+        List<Category> categories = categoryService.findByProjectId(2l);
         model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactionsList);
         return "transactions/transaction-table-rows";
@@ -218,9 +218,9 @@ public class TransactionController {
 
     @GetMapping("/table/gettransaction/{transactionId}")
     public String tableRow( Model model, @PathVariable Long transactionId) {
-        User user2 = userService.findById(2l);
+        Project project2 = projectService.findById(2l);
         List <Transaction> transactions = Arrays.asList(transactionService.findById(transactionId));
-        List<Category> categories = categoryService.findByUserId(2l);
+        List<Category> categories = categoryService.findByProjectId(2l);
         model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactions);
         return "transactions/transaction-table-rows";

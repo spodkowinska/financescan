@@ -27,7 +27,7 @@ public class CsvSettingsService {
         return csvSettingsRepository.findById(id).orElse(null);
     }
 
-    public List<CsvSettings>findByUserId(Long userId){
-        return csvSettingsRepository.findByUserId(userId);
+    public List<CsvSettings>findByProjectId(Long projectId){
+        return csvSettingsRepository.findByProjectId(projectId);
     }
 }
