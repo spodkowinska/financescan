@@ -41,9 +41,9 @@
         var gMonth = "all";
         var gYear = "all";
 
-        var gCategoryFilteringEnabled = false;
         var gUncategorizedCount = 0;
         var gUnreviewedCount = 0;
+        var gSelectedCount = 0;
         
         function init() {
             reloadTransactionTable('all','all');
@@ -128,18 +128,24 @@
         function prepareRows() {
             $('.transaction-row-checkbox').change(function () {
                 const row = $(this).parent().parent();
-                row.toggleClass('selected', $(this).is(':checked'));
+                const checked = $(this).is(':checked');
+                row.toggleClass('selected', checked);
+                gSelectedCount += checked ? 1 : -1;
+                refreshFilterBadges();
             });
         }
 
         function toggleSelectionForAllVisibleRows() {
             const checked = $('#master-check').is(':checked');
+            const selectedMod = checked ? 1 : -1;
             $('.transaction-row-checkbox').each(function () {
                 if (!$(this).is(':hidden') && $(this).is(':checked') !== checked) {
                     $(this).prop('checked', checked);
                     $(this).parent().parent().toggleClass('selected', checked);
+                    gSelectedCount += selectedMod;
                 }
             });
+            refreshFilterBadges();
         }
 
         function reloadTransactionTable(year, month) {
@@ -306,16 +312,17 @@
                 }
             }
 
-            refreshCategoryFilterBadges();
+            refreshFilterBadges();
         }
 
         function applyFilters() {
             const showOnlyUnreviewed = $('#unreviewedCheck').is(':checked');
             const showOnlyUncategorized = $('#uncategorizedCheck').is(':checked');
+            const showOnlySelected = $('#onlySelectedCheck').is(':checked');
 
-            gCategoryFilteringEnabled = showOnlyUnreviewed || showOnlyUncategorized;
             gUnreviewedCount = 0;
             gUncategorizedCount = 0;
+            gSelectedCount = 0;
 
             const input = document.getElementById("text_filter");
             const filter = input.value.toUpperCase();
@@ -341,7 +348,14 @@
                 if (rowUncategorized)
                     gUncategorizedCount++;
 
-                if (showOnlyUnreviewed || showOnlyUncategorized) {
+                const rowSelected = trs[i].classList.contains('selected');
+                if (rowSelected)
+                    gSelectedCount++;
+
+                if (showOnlySelected && !rowSelected) {
+                    show = false;
+                }
+                else if (showOnlyUnreviewed || showOnlyUncategorized) {
                     show = showOnlyUnreviewed && rowUnreviewed || showOnlyUncategorized && rowUncategorized;
                 }
 
@@ -363,10 +377,10 @@
                 trs[i].style.display = show ? "" : "none";
             }
 
-            refreshCategoryFilterBadges();
+            refreshFilterBadges();
         }
 
-        function refreshCategoryFilterBadges() {
+        function refreshFilterBadges() {
             let unreviewedCount = $('#unreviewedCount');
             unreviewedCount.text(gUnreviewedCount);
             if (gUnreviewedCount === 0) {
@@ -388,6 +402,9 @@
                 uncategorizedCount.removeClass('badge-secondary');
                 uncategorizedCount.addClass('badge-danger');
             }
+
+            let selectedCount = $('#onlySelectedCount');
+            selectedCount.text(gSelectedCount);
         }
 
         function applySorting() {
@@ -599,6 +616,19 @@
                                     <label class="form-check-label small" for="uncategorizedCheck">
                                         No categories
                                         <span class="badge badge-pill badge-danger" id="uncategorizedCount"></span>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="col-auto">
+
+                                <!-- Filter: only selected  -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="onlySelectedCheck"
+                                           style="margin-top: 6px" onclick="applyFilters()">
+                                    <label class="form-check-label small" for="onlySelectedCheck">
+                                        Only selected
+                                        <span class="badge badge-pill badge-secondary" id="onlySelectedCount"></span>
                                     </label>
                                 </div>
 
