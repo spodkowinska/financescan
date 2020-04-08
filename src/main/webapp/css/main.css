@@ -18,6 +18,10 @@ a {
     background: #F7F7F7;
 }
 
+.finance_table tr.selected {
+    background: #e8e8e8;
+}
+
 .finance_table th, td {
     border: 1px solid lightgray;
     padding: 2px;

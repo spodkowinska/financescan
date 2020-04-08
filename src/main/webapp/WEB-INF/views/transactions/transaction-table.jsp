@@ -125,6 +125,23 @@
             }
         }
 
+        function prepareRows() {
+            $('.transaction-row-checkbox').change(function () {
+                const row = $(this).parent().parent();
+                row.toggleClass('selected', $(this).is(':checked'));
+            });
+        }
+
+        function toggleSelectionForAllVisibleRows() {
+            const checked = $('#master-check').is(':checked');
+            $('.transaction-row-checkbox').each(function () {
+                if (!$(this).is(':hidden') && $(this).is(':checked') !== checked) {
+                    $(this).prop('checked', checked);
+                    $(this).parent().parent().toggleClass('selected', checked);
+                }
+            });
+        }
+
         function reloadTransactionTable(year, month) {
             console.log('reloading transaction table');
 
@@ -142,6 +159,9 @@
 
                 // Enable popovers
                 enablePopovers($('[data-toggle="popover"]'));
+
+                // Some rows maintenance
+                prepareRows();
 
                 // Update sorting
                 applySorting();
@@ -190,7 +210,19 @@
 
         function afterRowRefreshed(transactionId) {
             enablePopovers($('.popover-button-' + transactionId));
+            prepareRows();
             applyFilters();
+        }
+
+        function selectTransaction(transRowId, event) {
+            // Ignoring all clicks in delete, edit, categories, etc. Only <td> clicks should pass here.
+            if (event.target.tagName.toUpperCase() === 'TD') {
+                const row = $('#' + transRowId);
+
+                // Toggle the checkbox
+                const checkbox = row.find('input');
+                checkbox.trigger('click');
+            }
         }
 
         function changeCategory(transactionId, categoryId) {
@@ -579,6 +611,7 @@
                             <!-- TABLE HEADER -->
                             <thead>
                                 <tr>
+                                    <th style="width: 20px" class="sorttable_nosort"><input class="form-check" type="checkbox" id="master-check" onchange="toggleSelectionForAllVisibleRows()"></th>
                                     <th style="width: 85px" class="sorttable_nosort">Actions</th>
                                     <th style="width: 100px" data-searchable="true">Date</th>
                                     <th style="width: 100px" data-searchable="true" class="sorttable_numeric">Amount</th>
