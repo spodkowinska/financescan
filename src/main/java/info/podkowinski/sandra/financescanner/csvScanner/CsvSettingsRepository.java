@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CsvSettingsRepository extends JpaRepository<CsvSettings, Long> {
 
-    List<CsvSettings>findByUserId(Long userId);
+    List<CsvSettings>findByProjectId(Long projectId);
 }

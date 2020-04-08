@@ -2,7 +2,7 @@ package info.podkowinski.sandra.financescanner.transaction;
 
 
 import info.podkowinski.sandra.financescanner.account.Account;
-import info.podkowinski.sandra.financescanner.user.User;
+import info.podkowinski.sandra.financescanner.project.Project;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
@@ -12,7 +12,6 @@ import info.podkowinski.sandra.financescanner.category.Category;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -69,9 +68,9 @@ public class Transaction {
         this.rejectedCategories.add(category);
     }
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "project_id")
     @ManyToOne
-    User user;
+    Project project;
 
     String importName;
 

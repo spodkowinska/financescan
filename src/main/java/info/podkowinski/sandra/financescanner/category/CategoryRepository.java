@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 
-    ArrayList<Category> findAllByUserId(Long id);
+    ArrayList<Category> findAllByProjectId(Long id);
 
     @Query(value = "SELECT Count(*) FROM transactions_categories WHERE categories_id = ?", nativeQuery = true)
     Long findNumberOfTransactionsPerCategory(Long categoryId);

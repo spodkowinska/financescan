@@ -17,8 +17,8 @@ public class AccountService {
     public Account findById(Long id){
        return accountRepository.getOne(id);
     }
-    public List<Account>findByUserId(Long id){
-       return accountRepository.findByUserId(id);
+    public List<Account>findByProjectId(Long id){
+       return accountRepository.findByProjectId(id);
     }
     void delete(Account account){accountRepository.delete(account);}
 }

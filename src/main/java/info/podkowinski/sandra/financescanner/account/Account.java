@@ -1,6 +1,6 @@
 package info.podkowinski.sandra.financescanner.account;
 
-import info.podkowinski.sandra.financescanner.user.User;
+import info.podkowinski.sandra.financescanner.project.Project;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +17,8 @@ public class Account {
     String number;
     String institutionName;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "project_id")
     @ManyToOne
-    User user;
+    Project project;
 
 }

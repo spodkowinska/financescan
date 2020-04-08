@@ -1,7 +1,7 @@
 package info.podkowinski.sandra.financescanner.category;
 
 
-import info.podkowinski.sandra.financescanner.user.User;
+import info.podkowinski.sandra.financescanner.project.Project;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,21 +17,21 @@ import java.util.List;
 )
 public class Category {
 
-    public Category(String name, String description, List<String> keywords, String color, String fontColor, User user) {
+    public Category(String name, String description, List<String> keywords, String color, String fontColor, Project project) {
         this.name = name;
         this.description = description;
         this.keywords = keywords;
         this.color = color;
         this.fontColor = fontColor;
-        this.user = user;
+        this.project = project;
     }
 
-    public Category(String name, String description, String color, String fontColor, User user) {
+    public Category(String name, String description, String color, String fontColor, Project project) {
         this.name = name;
         this.description = description;
         this.color = color;
         this.fontColor = fontColor;
-        this.user = user;
+        this.project = project;
     }
 
     public Category() {
@@ -53,8 +53,8 @@ public class Category {
     List<String> safeKeywords;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    User user;
+    @JoinColumn(name = "project_id")
+    Project project;
 
     @Column(length = 7)
     String color;
