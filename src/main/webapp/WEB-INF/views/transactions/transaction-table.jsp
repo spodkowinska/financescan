@@ -149,14 +149,15 @@
                     return false;
                 const top = e.pageY;
                 const left = e.pageX;
-                $("#bulkMenu").css({
-                    display: "block",
+                $('#bulkMenu').css({
+                    display: 'block',
                     top: top,
                     left: left
                 });
+                $('#bulkMenuCount').text(gSelectedCount);
                 return false;
             }).click(function () {
-                $("#bulkMenu").hide();
+                $('#bulkMenu').hide();
             });
             $('.transaction-row-checkbox').change(function () {
                 const row = $(this).parent().parent();
@@ -712,8 +713,16 @@
                 </div>
 
                 <%-- TRANSACTION TABLE --%>
-                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; width: 300px; position: absolute; padding: 10px;">
-                    <b>Bulk change context menu!</b><br>There will be some options, for sure!
+                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; position: absolute; padding: 10px;">
+                    <h6 class="dropdown-header" style="padding: 0; margin-bottom: 5px;">Bulk changing <span id="bulkMenuCount"></span> transaction(s)</h6>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-square mr-2 text-gray-600"></i> Add category...</a>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove category...</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-circle mr-2 text-gray-600"></i> Accept suggested categories</a>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject suggested categories</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-trash mr-2 text-gray-600"></i> Delete</a>
                 </div>
 
             </div>
