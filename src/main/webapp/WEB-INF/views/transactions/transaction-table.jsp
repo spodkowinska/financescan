@@ -48,6 +48,10 @@
         function init() {
             reloadTransactionTable('all','all');
             gatherSearchableColumnsIds();
+
+            $(document).on('click', '.stop-propagation', function (e) {
+                e.stopPropagation();
+            })
         }
         
         function gatherSearchableColumnsIds() {
@@ -573,7 +577,7 @@
                                 <i class="fas fa-ellipsis-v mr-2 text-gray-600"></i>
                             </a>
                             <!-- Actual Dropdown -->
-                            <div class="dropdown-menu dropdown-menu-right shadow"
+                            <div class="dropdown-menu dropdown-menu-right shadow stop-propagation" id="transOperationsDropdownMenu"
                                  aria-labelledby="transOperationsDropdown">
                                 <!-- Dropdown Item: Import from CSV -->
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/fileimport">
@@ -591,6 +595,15 @@
                                     <i class="fas fa-magic mr-2 text-gray-600"></i>
                                     Assign default keywords
                                 </a>
+                                <div class="dropdown-divider"></div>
+                                <label class="dropdown-item" style="padding-left: 14px">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                        <label class="custom-control-label" for="customSwitch1">
+                                            <span style="display: inline-block; margin-top: 3px">Bulk edit</span>
+                                        </label>
+                                    </div>
+                                </label>
                             </div>
                         </div>
 
