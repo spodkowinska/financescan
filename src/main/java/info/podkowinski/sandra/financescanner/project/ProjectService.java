@@ -15,4 +15,10 @@ public class ProjectService {
     }
 
     public Project findById(Long id){ return projectRepository.findById(id).orElse(null);}
+
+    void createDefaultProject(){
+        Project project = new Project();
+        project.name = "First Project";
+        saveProject(project);
+    }
 }
