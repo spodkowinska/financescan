@@ -9,7 +9,7 @@
 
             <%-- COLUMN: CHECK --%>
 
-        <td>
+        <td class="bulk-controls">
             <input class="form-check transaction-row-checkbox" type="checkbox">
         </td>
 

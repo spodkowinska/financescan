@@ -134,3 +134,7 @@ table.sortable th:not(.sorttable_nosort) {
     border-color: #858796;
     background-color: #858796;
 }
+
+.bulk-controls {
+    display: none;
+}

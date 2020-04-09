@@ -44,6 +44,7 @@
         var gUncategorizedCount = 0;
         var gUnreviewedCount = 0;
         var gSelectedCount = 0;
+        var gBulkEditEnabled = false;
         
         function init() {
             reloadTransactionTable('all','all');
@@ -52,6 +53,19 @@
             $(document).on('click', '.stop-propagation', function (e) {
                 e.stopPropagation();
             })
+
+            $('#bulkEditSwitch').change(function () {
+                gBulkEditEnabled = $(this).is(':checked');
+                if (gBulkEditEnabled){
+                    $('.bulk-controls').show();
+                }
+                else {
+                    $('.bulk-controls').hide();
+                    clearSelection();
+                    $('#onlySelectedCheck').prop('checked', false);
+                    applyFilters();
+                }
+            });
         }
         
         function gatherSearchableColumnsIds() {
@@ -166,6 +180,16 @@
             refreshFilterBadges();
         }
 
+        function clearSelection() {
+            $('#master-check').prop('checked', false);
+            $('.transaction-row-checkbox').each(function () {
+                $(this).prop('checked', false);
+                $(this).parent().parent().removeClass('selected');
+            });
+            gSelectedCount = 0;
+            refreshFilterBadges();
+        }
+
         function reloadTransactionTable(year, month) {
             console.log('reloading transaction table');
 
@@ -239,6 +263,9 @@
         }
 
         function selectTransaction(transRowId, event) {
+            if (!gBulkEditEnabled)
+                return;
+
             // Ignoring all clicks in delete, edit, categories, etc. Only <td> clicks should pass here.
             if (event.target.tagName.toUpperCase() === 'TD') {
                 const row = $('#' + transRowId);
@@ -598,8 +625,8 @@
                                 <div class="dropdown-divider"></div>
                                 <label class="dropdown-item" style="padding-left: 14px">
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                        <label class="custom-control-label" for="customSwitch1">
+                                        <input type="checkbox" class="custom-control-input" id="bulkEditSwitch">
+                                        <label class="custom-control-label" for="bulkEditSwitch">
                                             <span style="display: inline-block; margin-top: 3px">Bulk edit</span>
                                         </label>
                                     </div>
@@ -647,7 +674,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto bulk-controls">
 
                                 <!-- Filter: only selected  -->
                                 <div class="form-check">
@@ -668,7 +695,7 @@
                             <!-- TABLE HEADER -->
                             <thead>
                                 <tr>
-                                    <th style="width: 20px" class="sorttable_nosort"><input class="form-check" type="checkbox" id="master-check" onchange="toggleSelectionForAllVisibleRows()"></th>
+                                    <th style="width: 20px" class="sorttable_nosort bulk-controls"><input class="form-check" type="checkbox" id="master-check" onchange="toggleSelectionForAllVisibleRows()"></th>
                                     <th style="width: 85px" class="sorttable_nosort">Actions</th>
                                     <th style="width: 100px" data-searchable="true">Date</th>
                                     <th style="width: 100px" data-searchable="true" class="sorttable_numeric">Amount</th>
