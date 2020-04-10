@@ -97,13 +97,26 @@
 
                 if (!catId) {
                     // Deletion confirmation popover
-                    let deleteButton = $('#delete-confirm-' + transId);
-                    if (deleteButton) {
-                        deleteButton.css('color', 'white');
-                        deleteButton.unbind();
-                        deleteButton.click(function() {
-                            deleteTransaction(transId);
-                        });
+                    if (transId) {
+                        // Single transaction deletion
+                        let deleteButton = $('#delete-confirm-' + transId);
+                        if (deleteButton) {
+                            deleteButton.unbind();
+                            deleteButton.click(function() {
+                                deleteTransaction(transId);
+                            });
+                        }
+                    }
+                    else {
+                        // Selected transactions deletion
+                        const deleteButton = $('#delete-confirm-selected');
+                        if (deleteButton) {
+                            deleteButton.unbind();
+                            deleteButton.click(function() {
+                                deleteSelectedTransactions();
+                                $('#bulkMenu').hide();
+                            });
+                        }
                     }
                 }
                 else {
@@ -155,6 +168,7 @@
                     left: left
                 });
                 $('#bulkMenuCount').text(gSelectedCount);
+                $('#bulkMenuCount2').text(gSelectedCount);
                 return false;
             }).click(function () {
                 $('#bulkMenu').hide();
@@ -189,6 +203,15 @@
             });
             gSelectedCount = 0;
             refreshFilterBadges();
+        }
+
+        function gatherSelectedRows() {
+            const selectedRows = [];
+            $('.transaction-row-checkbox').each(function () {
+                if ($(this).is(':checked'))
+                    selectedRows.push($(this).parent().parent());
+            });
+            return selectedRows;
         }
 
         function reloadTransactionTable(year, month) {
@@ -240,8 +263,22 @@
         function deleteTransaction(transId) {
             $.get('${pageContext.request.contextPath}/transaction/delete/' + transId);
             let row = $('#cat_row_' + transId);
-            if (row)
+            if (row) {
+                if (row.hasClass('selected'))
+                    gSelectedCount--;
+                if (row.data('uncategorized'))
+                    gUncategorizedCount--;
+                if (row.data('unreviewed'))
+                    gUnreviewedCount--;
                 row.remove();
+                refreshFilterBadges();
+            }
+        }
+
+        function deleteSelectedTransactions() {
+            gatherSelectedRows().forEach(function(row) {
+                deleteTransaction(row.data('transaction-id'));
+            });
         }
 
         function refreshRowForTransaction(transactionId, preloadedData){
@@ -426,6 +463,11 @@
             refreshFilterBadges();
         }
 
+        function refreshSelectionBadge() {
+            let selectedCount = $('#onlySelectedCount');
+            selectedCount.text(gSelectedCount);
+        }
+
         function refreshFilterBadges() {
             let unreviewedCount = $('#unreviewedCount');
             unreviewedCount.text(gUnreviewedCount);
@@ -449,8 +491,7 @@
                 uncategorizedCount.addClass('badge-danger');
             }
 
-            let selectedCount = $('#onlySelectedCount');
-            selectedCount.text(gSelectedCount);
+            refreshSelectionBadge();
         }
 
         function applySorting() {
@@ -722,7 +763,10 @@
                     <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-circle mr-2 text-gray-600"></i> Accept suggested categories</a>
                     <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject suggested categories</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-trash mr-2 text-gray-600"></i> Delete</a>
+                    <a class="dropdown-item" tabindex="0" style="padding: 0" data-toggle="popover" data-trigger="focus" data-html="true"
+                       data-content="<a class='btn btn-sm btn-danger delete-confirm' id='delete-confirm-selected'>Delete</a>">
+                        <i class="fas fa-trash-alt mr-2 text-gray-600"></i> Delete <span id="bulkMenuCount2"></span> transaction(s)
+                    </a>
                 </div>
 
             </div>
