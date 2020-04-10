@@ -514,6 +514,12 @@
                 }
             });
         }
+
+        function changeBulkMenuPage(pageId) {
+            const pageDiv = $(pageId);
+            pageDiv.siblings().hide();
+            pageDiv.show();
+        }
     </script>
 
     <style>
@@ -753,20 +759,62 @@
                     </div>
                 </div>
 
-                <%-- TRANSACTION TABLE --%>
-                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; position: absolute; padding: 10px;">
+                <%-- BULK EDIT CONTEXT MENU --%>
+                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; position: absolute; padding: 10px; width: 250px">
                     <h6 class="dropdown-header" style="padding: 0; margin-bottom: 5px;">Bulk changing <span id="bulkMenuCount"></span> transaction(s)</h6>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-square mr-2 text-gray-600"></i> Add category...</a>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove category...</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-circle mr-2 text-gray-600"></i> Accept suggested categories</a>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject suggested categories</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" tabindex="0" style="padding: 0" data-toggle="popover" data-trigger="focus" data-html="true"
-                       data-content="<a class='btn btn-sm btn-danger delete-confirm' id='delete-confirm-selected'>Delete</a>">
-                        <i class="fas fa-trash-alt mr-2 text-gray-600"></i> Delete <span id="bulkMenuCount2"></span> transaction(s)
-                    </a>
+                    <div>
+                        <%-- Bulk Menu: Main Page --%>
+                        <div id="bulkMenu-mainPage">
+                            <%-- Add Category --%>
+                            <a class="dropdown-item" tabindex="0" onclick="changeBulkMenuPage('#bulkMenu-addCategoriesPage')" style="padding: 0">
+                                <i class="fas fa-plus-square mr-2 text-gray-600"></i> Add category...
+                            </a>
+                            <%-- Remove Category --%>
+                            <a class="dropdown-item" tabindex="0" onclick="changeBulkMenuPage('#bulkMenu-removeCategoriesPage')" style="padding: 0">
+                                <i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove category...
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <%-- Accept All Category Suggestions --%>
+                            <a class="dropdown-item" href="#" style="padding: 0">
+                                <i class="fas fa-plus-circle mr-2 text-gray-600"></i> Accept all suggested categories
+                            </a>
+                            <%-- Reject All Category Suggestions --%>
+                            <a class="dropdown-item" href="#" style="padding: 0">
+                                <i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject all suggested categories
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <%-- Delete Transactions --%>
+                            <a class="dropdown-item" tabindex="0" style="padding: 0" data-toggle="popover" data-trigger="focus" data-html="true"
+                               data-content="<a class='btn btn-sm btn-danger delete-confirm' id='delete-confirm-selected'>Delete</a>">
+                                <i class="fas fa-trash-alt mr-2 text-gray-600"></i> Delete <span id="bulkMenuCount2"></span> transaction(s)
+                            </a>
+                        </div>
+                        <%-- Bulk Menu: Add Categories Page --%>
+                        <div id="bulkMenu-addCategoriesPage" style="display: none">
+                            <a class="dropdown-item" onclick="changeBulkMenuPage('#bulkMenu-mainPage')" style="padding: 0">
+                                <i class="fas fa-chevron-left mr-2 text-gray-600"></i> Add category
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <div style="text-align: center">
+                                <c:forEach items="${categoriesList}" var="category">
+                                    <a tabindex="0" class="tag tag${category.id}">${category.name}</a>
+                                </c:forEach>
+                            </div>
+                        </div>
+                        <%-- Bulk Menu: Remove Categories Page --%>
+                        <div id="bulkMenu-removeCategoriesPage" style="display: none">
+                            <a class="dropdown-item" onclick="changeBulkMenuPage('#bulkMenu-mainPage')" style="padding: 0">
+                                <i class="fas fa-chevron-left mr-2 text-gray-600"></i> Remove category
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <div style="text-align: center">
+                                <c:forEach items="${categoriesList}" var="category">
+                                    <a tabindex="0" class="tag tag${category.id}">${category.name}</a>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
