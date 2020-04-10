@@ -128,3 +128,13 @@ table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sor
 table.sortable th:not(.sorttable_nosort) {
     cursor: pointer;
 }
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: #858796;
+    background-color: #858796;
+}
+
+.bulk-controls {
+    display: none;
+}

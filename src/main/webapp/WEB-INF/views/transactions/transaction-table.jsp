@@ -44,10 +44,28 @@
         var gUncategorizedCount = 0;
         var gUnreviewedCount = 0;
         var gSelectedCount = 0;
+        var gBulkEditEnabled = false;
         
         function init() {
             reloadTransactionTable('all','all');
             gatherSearchableColumnsIds();
+
+            $(document).on('click', '.stop-propagation', function (e) {
+                e.stopPropagation();
+            })
+
+            $('#bulkEditSwitch').change(function () {
+                gBulkEditEnabled = $(this).is(':checked');
+                if (gBulkEditEnabled){
+                    $('.bulk-controls').show();
+                }
+                else {
+                    $('.bulk-controls').hide();
+                    clearSelection();
+                    $('#onlySelectedCheck').prop('checked', false);
+                    applyFilters();
+                }
+            });
         }
         
         function gatherSearchableColumnsIds() {
@@ -131,14 +149,15 @@
                     return false;
                 const top = e.pageY;
                 const left = e.pageX;
-                $("#bulkMenu").css({
-                    display: "block",
+                $('#bulkMenu').css({
+                    display: 'block',
                     top: top,
                     left: left
                 });
+                $('#bulkMenuCount').text(gSelectedCount);
                 return false;
             }).click(function () {
-                $("#bulkMenu").hide();
+                $('#bulkMenu').hide();
             });
             $('.transaction-row-checkbox').change(function () {
                 const row = $(this).parent().parent();
@@ -159,6 +178,16 @@
                     gSelectedCount += selectedMod;
                 }
             });
+            refreshFilterBadges();
+        }
+
+        function clearSelection() {
+            $('#master-check').prop('checked', false);
+            $('.transaction-row-checkbox').each(function () {
+                $(this).prop('checked', false);
+                $(this).parent().parent().removeClass('selected');
+            });
+            gSelectedCount = 0;
             refreshFilterBadges();
         }
 
@@ -235,6 +264,9 @@
         }
 
         function selectTransaction(transRowId, event) {
+            if (!gBulkEditEnabled)
+                return;
+
             // Ignoring all clicks in delete, edit, categories, etc. Only <td> clicks should pass here.
             if (event.target.tagName.toUpperCase() === 'TD') {
                 const row = $('#' + transRowId);
@@ -573,7 +605,7 @@
                                 <i class="fas fa-ellipsis-v mr-2 text-gray-600"></i>
                             </a>
                             <!-- Actual Dropdown -->
-                            <div class="dropdown-menu dropdown-menu-right shadow"
+                            <div class="dropdown-menu dropdown-menu-right shadow stop-propagation" id="transOperationsDropdownMenu"
                                  aria-labelledby="transOperationsDropdown">
                                 <!-- Dropdown Item: Import from CSV -->
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/transaction/fileimport">
@@ -591,6 +623,15 @@
                                     <i class="fas fa-magic mr-2 text-gray-600"></i>
                                     Assign default keywords
                                 </a>
+                                <div class="dropdown-divider"></div>
+                                <label class="dropdown-item" style="padding-left: 14px">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="bulkEditSwitch">
+                                        <label class="custom-control-label" for="bulkEditSwitch">
+                                            <span style="display: inline-block; margin-top: 3px">Bulk edit</span>
+                                        </label>
+                                    </div>
+                                </label>
                             </div>
                         </div>
 
@@ -634,7 +675,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-auto">
+                            <div class="col-auto bulk-controls">
 
                                 <!-- Filter: only selected  -->
                                 <div class="form-check">
@@ -655,7 +696,7 @@
                             <!-- TABLE HEADER -->
                             <thead>
                                 <tr>
-                                    <th style="width: 20px" class="sorttable_nosort"><input class="form-check" type="checkbox" id="master-check" onchange="toggleSelectionForAllVisibleRows()"></th>
+                                    <th style="width: 20px" class="sorttable_nosort bulk-controls"><input class="form-check" type="checkbox" id="master-check" onchange="toggleSelectionForAllVisibleRows()"></th>
                                     <th style="width: 85px" class="sorttable_nosort">Actions</th>
                                     <th style="width: 100px" data-searchable="true">Date</th>
                                     <th style="width: 100px" data-searchable="true" class="sorttable_numeric">Amount</th>
@@ -672,8 +713,16 @@
                 </div>
 
                 <%-- TRANSACTION TABLE --%>
-                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; width: 300px; position: absolute; padding: 10px;">
-                    <b>Bulk change context menu!</b><br>There will be some options, for sure!
+                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; position: absolute; padding: 10px;">
+                    <h6 class="dropdown-header" style="padding: 0; margin-bottom: 5px;">Bulk changing <span id="bulkMenuCount"></span> transaction(s)</h6>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-square mr-2 text-gray-600"></i> Add category...</a>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove category...</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-circle mr-2 text-gray-600"></i> Accept suggested categories</a>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject suggested categories</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-trash mr-2 text-gray-600"></i> Delete</a>
                 </div>
 
             </div>
