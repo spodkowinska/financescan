@@ -341,6 +341,16 @@
                 catElem.appendTo('#cat_current_' + transactionId);
         }
 
+        function removeAllCategories(transactionId) {
+            $.get("${pageContext.request.contextPath}/transaction/setcategories/" + transactionId + "/0", function (data) {
+                afterCategoriesChangedForRow(transactionId, '0,0');
+            });
+
+            const children = $('#cat_current_' + transactionId).children();
+            children.filter(':visible').show().appendTo('#cat_others_' + transactionId);
+            children.remove();
+        }
+
         function removeCategory(transactionId, categoryId) {
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId, function (data) {
                 afterCategoriesChangedForRow(transactionId, data);
@@ -808,6 +818,9 @@
                                     </a>
                                 </c:forEach>
                             </div>
+                            <a class="dropdown-item tag-remove-from-selected" tabindex="0" style="padding: 0">
+                                <i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove all
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -915,9 +928,16 @@
 
     $('.tag-remove-from-selected').click(function () {
         const categoryId = $(this).data('category-id');
-        gatherSelectedRows().forEach(function(row) {
-            removeCategory(row.data('transaction-id'), categoryId);
-        })
+        if (categoryId) {
+            gatherSelectedRows().forEach(function(row) {
+                removeCategory(row.data('transaction-id'), categoryId);
+            });
+        }
+        else {
+            gatherSelectedRows().forEach(function(row) {
+                removeAllCategories(row.data('transaction-id'));
+            });
+        }
     });
 
 </script>
