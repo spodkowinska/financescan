@@ -86,6 +86,7 @@ public class CategoryService {
         category.fontColor = "#ffffff";
         category.color = "#ff2f92";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Zdrowie (Long projectId) {
@@ -95,6 +96,7 @@ public class CategoryService {
         category.fontColor = "#ffffff";
         category.color = "#008f00";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Transport (Long projectId) {
@@ -104,6 +106,7 @@ public class CategoryService {
         category.fontColor = "#000000";
         category.color = "#919191";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
     void createDefaultCategory_Zyciecodzienne (Long projectId) {
         Category category = new Category();
@@ -112,6 +115,7 @@ public class CategoryService {
         category.fontColor = "#000000";
         category.color = "#f0c0bc";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
     void createDefaultCategory_Inwetycje (Long projectId) {
         Category category = new Category();
@@ -120,6 +124,7 @@ public class CategoryService {
         category.fontColor = "#ffffff";
         category.color = "#011993";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
     void createDefaultCategory_Rozwoj (Long projectId) {
         Category category = new Category();
@@ -128,6 +133,7 @@ public class CategoryService {
         category.fontColor = "#ffffff";
         category.color = "#9437ff";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_RozrywkaiHobby (Long projectId) {
@@ -137,6 +143,7 @@ public class CategoryService {
         category.fontColor = "#000000";
         category.color = "#f7f91e";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Mieszkanie (Long projectId) {
@@ -146,6 +153,7 @@ public class CategoryService {
         category.fontColor = "#000000";
         category.color = "#00fa92";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Abonamenty (Long projectId) {
@@ -155,6 +163,7 @@ public class CategoryService {
         category.fontColor = "#ffffff";
         category.color = "#9437ff";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Rekreacja (Long projectId) {
@@ -164,6 +173,7 @@ public class CategoryService {
         category.fontColor = "#ffffff";
         category.color = "#ec1b00";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Odzież (Long projectId) {
@@ -173,6 +183,7 @@ public class CategoryService {
         category.fontColor = "#000000";
         category.color = "#ef9f32";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Prezenty (Long projectId) {
@@ -182,6 +193,7 @@ public class CategoryService {
         category.fontColor = "#000000";
         category.color = "#33dfeb";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Inne (Long projectId) {
@@ -191,6 +203,7 @@ public class CategoryService {
         category.fontColor = "#ffffff";
         category.color = "#2e150c";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
     }
 
     void createDefaultCategory_Wpływy (Long projectId) {
@@ -200,5 +213,23 @@ public class CategoryService {
         category.fontColor = "#000000";
         category.color = "#04fb28";
         category.project = projectRepository.findById(projectId).orElse(null);
+        categoryRepository.save(category);
+    }
+
+    public void createDefaultCategories(Long projectId){
+        createDefaultCategory_Abonamenty(projectId);
+        createDefaultCategory_Dzieci(projectId);
+        createDefaultCategory_Inne(projectId);
+        createDefaultCategory_Inwetycje(projectId);
+        createDefaultCategory_Mieszkanie(projectId);
+        createDefaultCategory_Odzież(projectId);
+        createDefaultCategory_Prezenty(projectId);
+        createDefaultCategory_Rekreacja(projectId);
+        createDefaultCategory_RozrywkaiHobby(projectId);
+        createDefaultCategory_Rozwoj(projectId);
+        createDefaultCategory_Transport(projectId);
+        createDefaultCategory_Zyciecodzienne(projectId);
+        createDefaultCategory_Zdrowie(projectId);
+        createDefaultCategory_Wpływy(projectId);
     }
 }
