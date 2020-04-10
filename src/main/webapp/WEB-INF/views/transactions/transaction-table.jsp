@@ -181,6 +181,8 @@
                 gSelectedCount += checked ? 1 : -1;
                 refreshFilterBadges();
             });
+            if (gBulkEditEnabled)
+                $('.bulk-controls').show();
         }
 
         function toggleSelectionForAllVisibleRows() {
