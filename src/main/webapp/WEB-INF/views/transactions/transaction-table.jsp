@@ -126,7 +126,7 @@
                         catConfirmButton.css('color', 'white');
                         catConfirmButton.unbind();
                         catConfirmButton.click(function () {
-                            addCategory(transId, catId, true);
+                            addCategory(transId, catId);
                         });
                     }
                     // Category rejection button
@@ -135,7 +135,7 @@
                         catRejectButton.css('color', 'white');
                         catRejectButton.unbind();
                         catRejectButton.click(function () {
-                            removeCategory(transId, catId, true);
+                            removeCategory(transId, catId);
                         });
                     }
                 }
@@ -263,7 +263,7 @@
         function deleteTransaction(transId) {
             $.get('${pageContext.request.contextPath}/transaction/delete/' + transId);
             let row = $('#cat_row_' + transId);
-            if (row) {
+            if (row.length) {
                 if (row.hasClass('selected'))
                     gSelectedCount--;
                 if (row.data('uncategorized'))
@@ -323,28 +323,30 @@
                 addCategory(transactionId, categoryId);
         }
 
-        function addCategory(transactionId, categoryId, pending) {
+        function addCategory(transactionId, categoryId) {
             $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
                 afterCategoriesChangedForRow(transactionId, data);
             });
 
-            let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
-            if (pending) {
-                $('#cat_tag_pending_' + transactionId + '_' + categoryId).remove();
+            const catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
+            const pendingElem = $('#cat_tag_pending_' + transactionId + '_' + categoryId);
+            if (pendingElem.length) {
+                pendingElem.remove();
                 catElem.css('display', 'inline-block');
             }
             else
                 catElem.appendTo('#cat_current_' + transactionId);
         }
 
-        function removeCategory(transactionId, categoryId, pending) {
+        function removeCategory(transactionId, categoryId) {
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId, function (data) {
                 afterCategoriesChangedForRow(transactionId, data);
             });
 
             let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
-            if (pending) {
-                $('#cat_tag_pending_' + transactionId + '_' + categoryId).remove();
+            const pendingElem = $('#cat_tag_pending_' + transactionId + '_' + categoryId);
+            if (pendingElem.length) {
+                pendingElem.remove();
                 catElem.css('display', 'inline-block');
             }
             catElem.appendTo('#cat_others_' + transactionId);
@@ -357,41 +359,33 @@
 
             const catRow = $('#cat_row_' + transactionId);
 
-            console.log(responseData, catCnt, gUncategorizedCount, gUnreviewedCount);
-
             // Uncategorized
             {
                 const catRowWasUncategorized = catRow.data('uncategorized');
-                console.log(catRowUncategorized, catRowWasUncategorized);
                 if (catRowUncategorized) {
                     if (!catRowWasUncategorized) {
                         catRow.data('uncategorized', true);
                         gUncategorizedCount++;
-                        console.log('uc+', gUncategorizedCount);
                     }
                 }
                 else if (catRowWasUncategorized) {
                     catRow.data('uncategorized', false);
                     gUncategorizedCount--;
-                    console.log('uc-', gUncategorizedCount);
                 }
             }
 
             // Unreviewed
             {
                 const catRowWasUnreviewed = catRow.data('unreviewed');
-                console.log(catRowUnreviewed, catRowWasUnreviewed);
                 if (catRowUnreviewed) {
                     if (!catRowWasUnreviewed) {
                         catRow.data('unreviewed', true);
                         gUnreviewedCount++;
-                        console.log('ur+', gUnreviewedCount);
                     }
                 }
                 else if (catRowWasUnreviewed) {
                     catRow.data('unreviewed', false);
                     gUnreviewedCount--;
-                    console.log('ur-', gUnreviewedCount);
                 }
             }
 
@@ -798,7 +792,9 @@
                             <div class="dropdown-divider"></div>
                             <div style="text-align: center">
                                 <c:forEach items="${categoriesList}" var="category">
-                                    <a tabindex="0" class="tag tag${category.id}">${category.name}</a>
+                                    <a tabindex="0" class="tag tag${category.id} tag-add-to-selected" data-category-id="${category.id}">
+                                        ${category.name}
+                                    </a>
                                 </c:forEach>
                             </div>
                         </div>
@@ -810,7 +806,9 @@
                             <div class="dropdown-divider"></div>
                             <div style="text-align: center">
                                 <c:forEach items="${categoriesList}" var="category">
-                                    <a tabindex="0" class="tag tag${category.id}">${category.name}</a>
+                                    <a tabindex="0" class="tag tag${category.id} tag-remove-from-selected" data-category-id="${category.id}">
+                                        ${category.name}
+                                    </a>
                                 </c:forEach>
                             </div>
                         </div>
@@ -910,6 +908,21 @@
             });
         });
     });
+
+    $('.tag-add-to-selected').click(function () {
+        const categoryId = $(this).data('category-id');
+        gatherSelectedRows().forEach(function(row) {
+            addCategory(row.data('transaction-id'), categoryId);
+        })
+    });
+
+    $('.tag-remove-from-selected').click(function () {
+        const categoryId = $(this).data('category-id');
+        gatherSelectedRows().forEach(function(row) {
+            removeCategory(row.data('transaction-id'), categoryId);
+        })
+    });
+
 </script>
 
 </body>
