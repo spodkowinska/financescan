@@ -818,6 +818,7 @@
                                     </a>
                                 </c:forEach>
                             </div>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item tag-remove-from-selected" tabindex="0" style="padding: 0">
                                 <i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove all
                             </a>
