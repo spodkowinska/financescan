@@ -162,6 +162,7 @@
                     return false;
                 const top = e.pageY;
                 const left = e.pageX;
+                changeBulkMenuPage('#bulkMenu-mainPage')
                 $('#bulkMenu').css({
                     display: 'block',
                     top: top,
