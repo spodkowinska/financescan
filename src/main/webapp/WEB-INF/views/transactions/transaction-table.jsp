@@ -404,33 +404,27 @@
             gUncategorizedCount = 0;
             gSelectedCount = 0;
 
-            const input = document.getElementById("text_filter");
-            const filter = input.value.toUpperCase();
-            const tbody = document.getElementById("list");
-            const trs = tbody.getElementsByTagName("tr");
+            const filter = $('#text_filter').val().toUpperCase();
+            const rows = $('#list tr');
 
             // Loop through all table rows, and hide those which don't match the search query
-            for (let i = 0; i < trs.length; i++) {
-                const tds = trs[i].getElementsByTagName("td");
+            rows.each(function() {
+                const row = $(this);
+                const cells = row.children('td');
 
-                if (tds.length === 0)
-                    continue;
+                if (cells.length === 0)
+                    return;
 
                 let show = true;
 
-                const rowUnreviewedVal = trs[i].getAttribute('data-unreviewed');
-                const rowUnreviewed = rowUnreviewedVal === 'true' || rowUnreviewedVal === true;
-                if (rowUnreviewed)
-                    gUnreviewedCount++;
+                const rowUnreviewed = row.data('unreviewed');
+                if (rowUnreviewed) gUnreviewedCount++;
 
-                const rowUncategorizedVal = trs[i].getAttribute('data-uncategorized');
-                const rowUncategorized = rowUncategorizedVal === 'true' || rowUncategorizedVal === true;
-                if (rowUncategorized)
-                    gUncategorizedCount++;
+                const rowUncategorized = row.data('uncategorized');
+                if (rowUncategorized) gUncategorizedCount++;
 
-                const rowSelected = trs[i].classList.contains('selected');
-                if (rowSelected)
-                    gSelectedCount++;
+                const rowSelected = row.hasClass('selected');
+                if (rowSelected) gSelectedCount++;
 
                 if (showOnlySelected && !rowSelected) {
                     show = false;
@@ -442,10 +436,10 @@
                 if (show) {
                     show = false;
 
-                    for (let j of gSearchableColumnsIds) {
-                        const td = tds[j];
-                        if (td) {
-                            const txtValue = td.getAttribute('sorttable_customkey') || td.textContent || td.innerText;
+                    for (const j of gSearchableColumnsIds) {
+                        const cell = cells.eq(j);
+                        if (cell) {
+                            const txtValue = cell.attr('sorttable_customkey') || cell.val() || cell.text();
                             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                                 show = true;
                                 break;
@@ -454,8 +448,8 @@
                     }
                 }
 
-                trs[i].style.display = show ? "" : "none";
-            }
+                row.toggle(show);
+            });
 
             refreshFilterBadges();
         }
