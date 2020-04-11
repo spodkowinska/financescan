@@ -171,7 +171,13 @@
                 $('#bulkMenuCount').text(gSelectedCount);
                 $('#bulkMenuCount2').text(gSelectedCount);
                 return false;
-            }).click(function () {
+            });
+            $('#bulkMenu').click(function(e) {
+                e.stopPropagation();
+            });
+            $(document).click(function () {
+                $('#bulkMenu').hide();
+            }).contextmenu(function(e) {
                 $('#bulkMenu').hide();
             });
             $('.transaction-row-checkbox').change(function () {
@@ -306,6 +312,12 @@
         function selectTransaction(transRowId, event) {
             if (!gBulkEditEnabled)
                 return;
+
+            const bulkMenu = $('#bulkMenu');
+            if (bulkMenu.is(':visible')) {
+                bulkMenu.hide();
+                return;
+            }
 
             // Ignoring all clicks in delete, edit, categories, etc. Only <td> clicks should pass here.
             if (event.target.tagName.toUpperCase() === 'TD') {
