@@ -141,18 +141,43 @@ public class TransactionController {
         return "redirect:/transaction/table/gettransaction/" + transaction1.id;
     }
 
+
     @ResponseBody
-    @GetMapping("/setcategories/{transactionId}/{categories}")
-    public String setCategories(@PathVariable Long transactionId, @PathVariable String categories) {
+    @GetMapping("/removeallcategories/{transactionId}")
+    public String removeAllCategories(@PathVariable Long transactionId) {
         Project project1 = projectService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
         if (transaction.getProject() == project1) {
-            if (categories.equals("0")) {
                 transaction.setCategories(null);
-            } else {
-                transaction.setCategories(transactionService.categoriesFromUrlString(categories));
+                transaction.rejectedCategories = transaction.getPendingCategories();
+                transaction.setPendingCategories(null);
                 transactionService.save(transaction);
             }
+        return "";
+    }
+
+    @ResponseBody
+    @GetMapping("/acceptallsuggestions/{transactionId}")
+    public String acceptAllSuggestions(@PathVariable Long transactionId) {
+        Project project1 = projectService.findById(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        if (transaction.getProject() == project1) {
+            transaction.categories.addAll(transaction.getPendingCategories());
+            transaction.setPendingCategories(null);
+            transactionService.save(transaction);
+        }
+        return "";
+    }
+
+    @ResponseBody
+    @GetMapping("/rejecttallsuggestions/{transactionId}")
+    public String rejectAllSuggestions(@PathVariable Long transactionId) {
+        Project project1 = projectService.findById(2l);
+        Transaction transaction = transactionService.findById(transactionId);
+        if (transaction.getProject() == project1) {
+            transaction.rejectedCategories.addAll(transaction.getPendingCategories());
+            transaction.setPendingCategories(null);
+            transactionService.save(transaction);
         }
         return "";
     }
@@ -177,7 +202,7 @@ public class TransactionController {
         Transaction transaction = transactionService.findById(transactionId);
         if (transaction.getProject() == project1) {
             if(transaction.pendingCategories.contains(categoryToRemove)){
-                transaction.rejectCategory(categoryToRemove);
+                transaction.removeCategory(categoryToRemove);
             } else {
                 transaction.removeCategory(categoryService.findById(categoryId));
             }

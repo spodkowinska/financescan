@@ -60,11 +60,6 @@ public class Transaction {
     void removeCategory(Category category) {
         this.categories.remove(category);
         this.pendingCategories.remove(category);
-    }
-
-    void rejectCategory(Category category) {
-        this.categories.remove(category);
-        this.pendingCategories.remove(category);
         this.rejectedCategories.add(category);
     }
 
