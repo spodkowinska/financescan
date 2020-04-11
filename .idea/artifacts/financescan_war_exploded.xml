@@ -73,6 +73,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: net.sargue:java-time-jsptags:1.1.4" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.19" />
           <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.2.4.RELEASE" />

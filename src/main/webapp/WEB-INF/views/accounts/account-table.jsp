@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,6 +31,8 @@
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" />
+
 </head>
 
 <body id="page-top">
@@ -54,46 +57,68 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Table With Accounts</h1>
-
-
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Accounts</h6>
+                        <h6 class="m-0 font-weight-bold text-gray-800" style="float: left">Accounts</h6>
+                        <button class="btn btn-secondary btn-sm" style="float: right; margin-bottom: -6px; margin-top: -6px;"
+                                data-toggle="modal" data-target="#accountModal">
+                            <span class="fa fa-plus"></span> Add new account
+                        </button>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
+
+                        <table id="category_table" class="finance_table">
+                            <!-- TABLE HEADER -->
+                            <thead>
+                            <tr>
+                                <th style="width: 60px">Actions</th>
+                                <th style="width: 200px">Name</th>
+                                <th style="width: 150px">Created</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <!-- TABLE DATA -->
+                            <tbody id="list">
+                            <c:forEach items="${accountsList}" var="account">
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Number</th>
-                                    <th>Institution</th>
-                                    <td>Action</td>
+                                        <%-- COLUMN: ACTIONS --%>
+
+                                    <td class="actions">
+                                        <a data-toggle="modal" data-target="#accountModal" data-account-id="${account.id}"
+                                           data-toggle="tooltip" title="Edit account" tabindex="0">
+                                            <span class="fa fa-edit"></span>
+                                        </a>
+
+                                        <a data-toggle="modal" data-target="#accountDeleteModal" data-account-id="${account.id}"
+                                           data-toggle="tooltip" title="Delete account" tabindex="0">
+                                            <span class="fa fa-trash-alt"></span>
+                                        </a>
+                                    </td>
+
+                                        <%-- COLUMN: NAME --%>
+
+                                    <td style="text-align: center">
+                                        ${account.name}
+                                    </td>
+
+                                        <%-- COLUMN: CREATED --%>
+
+                                    <td>
+                                        <javatime:format value="${account.created}" style="MS" />
+                                    </td>
+
+                                        <%-- COLUMN: DESCRIPTION --%>
+
+                                    <td>
+                                        ${account.description}
+                                    </td>
+
                                 </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Number</th>
-                                    <th>Institution</th>
-                                    <td>Action</td>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                <c:forEach items="${accountsList}" var="account">
-                                <tr>
-                                    <td>${account.name}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a href="${pageContext.request.contextPath}/account/edit/${account.id}">Edit</a>
-                                    <a href="${pageContext.request.contextPath}/account/delete/${account.id}">Delete</a></td>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+
                     </div>
 
                 </div>

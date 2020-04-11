@@ -21,7 +21,7 @@ public class Account {
 
     String description;
 
-    LocalDateTime transactionDate = LocalDateTime.now();
+    LocalDateTime created = LocalDateTime.now();
 
     @JoinColumn(name = "project_id")
     @ManyToOne
