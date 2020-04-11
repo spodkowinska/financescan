@@ -18,7 +18,6 @@ public class AccountController {
     private final TransactionService transactionService;
     private final CsvSettingsService csvSettingsService;
 
-
     public AccountController(AccountService accountService, ProjectService projectService, TransactionService transactionService, CsvSettingsService csvSettingsService) {
         this.accountService = accountService;
         this.projectService = projectService;
@@ -30,7 +29,7 @@ public class AccountController {
     public String add(Model model) {
         Account account = new Account();
         model.addAttribute("account", account);
-        return "add-account";
+        return "accounts/account-edit";
     }
 
     @PostMapping("/add")
@@ -45,14 +44,14 @@ public class AccountController {
     public String list (Model model) {
         List<Account> accountsList = accountService.findByProjectId(2l);
         model.addAttribute("accountsList", accountsList);
-        return "list-accounts";
+        return "accounts/account-table";
     }
 
     @GetMapping("/edit/{accountId}")
     public String edit(Model model, @PathVariable Long accountId) {
         Account account = accountService.findById(accountId);
         model.addAttribute("account", account);
-        return "edit-account";
+        return "accounts/account-edit";
     }
 
     @PostMapping("/edit/{accountId}")
@@ -72,6 +71,4 @@ public class AccountController {
         model.addAttribute("accountsList", accountsList);
         return "redirect:../list";
     }
-
-
 }

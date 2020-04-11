@@ -38,7 +38,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <jsp:include page="sidebar.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/views/sidebar.jsp"></jsp:include>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -48,7 +48,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <jsp:include page="topbar.jsp"></jsp:include>
+            <jsp:include page="/WEB-INF/views/topbar.jsp"></jsp:include>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -86,8 +86,8 @@
                                 <c:forEach items="${accountsList}" var="account">
                                 <tr>
                                     <td>${account.name}</td>
-                                    <td>${account.number}</td>
-                                    <td>${account.institutionName}</td>
+                                    <td></td>
+                                    <td></td>
                                     <td><a href="${pageContext.request.contextPath}/account/edit/${account.id}">Edit</a>
                                     <a href="${pageContext.request.contextPath}/account/delete/${account.id}">Delete</a></td>
                                     </c:forEach>
@@ -105,7 +105,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
         <!-- End of Footer -->
 
     </div>
@@ -118,27 +118,6 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!-- Bootstrap core JavaScript-->
 <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>

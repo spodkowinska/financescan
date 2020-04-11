@@ -41,7 +41,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <jsp:include page="sidebar.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/views/sidebar.jsp"></jsp:include>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -51,7 +51,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <jsp:include page="topbar.jsp"></jsp:include>
+            <jsp:include page="/WEB-INF/views/topbar.jsp"></jsp:include>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -84,7 +84,6 @@
                                 <form:form action="../../account/edit/${account.id}"  method="post"
                                            modelAttribute="account">
 
-
                                         <form:input path="id" type="hidden" id="id"></form:input>
 
                                     <div class="form-group">
@@ -93,19 +92,10 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Number</label>
-                                        <form:input path="number" class="form-control" id="number"
-                                                    name="number"></form:input>
-                                        <p class="help-block"></p>
+                                        <label>Description</label>
+                                        <form:input path="description" class="form-control" id="description"
+                                                    name="description"></form:input>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label>Institution Name</label>
-                                        <form:input path="institutionName" class="form-control" id="institutionName"
-                                                    name="institutionName"></form:input>
-                                        <p class="help-block">lorem ipsum</p>
-                                    </div>
-
 
                                     <button type="submit" class="btn btn-default">Save</button>
                                     <button type="reset" class="btn btn-default">Reset</button>
