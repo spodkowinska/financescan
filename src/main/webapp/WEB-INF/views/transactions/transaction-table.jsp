@@ -791,6 +791,7 @@
                     <h6 class="dropdown-header" style="padding: 0; margin-bottom: 5px;">
                         Selected transactions: <span id="bulkMenuCount"></span>
                         <button id="bulkMenu-deselectAll" style="font-size: 0.8em; margin-top: -2px; float: right;" class="btn btn-sm btn-secondary py-0">Unselect</button>
+                    </h6>
                     <div class="dropdown-divider"></div>
                     <div>
                         <%-- Bulk Menu: Main Page --%>
