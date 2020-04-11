@@ -436,6 +436,8 @@
             const showOnlyUncategorized = $('#uncategorizedCheck').is(':checked');
             const showOnlySelected = $('#onlySelectedCheck').is(':checked');
 
+            $('#filterRefresh').toggle(showOnlySelected || showOnlyUncategorized || showOnlyUnreviewed);
+
             gUnreviewedCount = 0;
             gUncategorizedCount = 0;
             gSelectedCount = 0;
@@ -762,6 +764,14 @@
                                 </div>
 
                             </div>
+                            <div class="col-auto" id="filterRefresh" style="display: none">
+
+                                <!-- Button: refresh filters  -->
+                                <button class="btn btn-sm btn-outline-secondary py-0" style="font-size: 0.8em;" id="filterRefreshButton">
+                                    <span class="fa fa-sync-alt fa-sm"></span> Refresh filters
+                                </button>
+
+                            </div>
                         </div>
 
                         <div style="height: 15px"></div>
@@ -989,6 +999,10 @@
 
     $('#bulkMenu').click(function(e) {
         e.stopPropagation();
+    });
+
+    $('#filterRefreshButton').click(function() {
+        applyFilters();
     });
 
     $(document).click(function () {
