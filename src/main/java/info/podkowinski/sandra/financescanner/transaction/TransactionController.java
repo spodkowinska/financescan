@@ -167,11 +167,11 @@ public class TransactionController {
             transaction.setPendingCategories(null);
             transactionService.save(transaction);
         }
-        return "";
+        return "" + transaction.categories.size();
     }
 
     @ResponseBody
-    @GetMapping("/rejecttallsuggestions/{transactionId}")
+    @GetMapping("/rejectallsuggestions/{transactionId}")
     public String rejectAllSuggestions(@PathVariable Long transactionId) {
         Project project1 = projectService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
@@ -180,7 +180,7 @@ public class TransactionController {
             transaction.setPendingCategories(null);
             transactionService.save(transaction);
         }
-        return "";
+        return "" + transaction.categories.size();
     }
 
     @ResponseBody

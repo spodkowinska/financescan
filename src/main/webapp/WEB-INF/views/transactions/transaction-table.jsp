@@ -341,14 +341,34 @@
                 catElem.appendTo('#cat_current_' + transactionId);
         }
 
+        function acceptAllCategories(transactionId) {
+            $.get("${pageContext.request.contextPath}/transaction/acceptallsuggestions/" + transactionId, function (data) {
+                afterCategoriesChangedForRow(transactionId, data + ',0');
+            });
+
+            const currentCatsContainer = $('#cat_current_' + transactionId);
+            currentCatsContainer.children().filter('.tag-pending').remove();
+            currentCatsContainer.children().show();
+        }
+
+        function rejectAllCategories(transactionId) {
+            $.get("${pageContext.request.contextPath}/transaction/rejectallsuggestions/" + transactionId, function (data) {
+                afterCategoriesChangedForRow(transactionId, data + ',0');
+            });
+
+            const currentCatsContainer = $('#cat_current_' + transactionId);
+            currentCatsContainer.children().filter('.tag-pending').remove();
+            currentCatsContainer.children().filter(':hidden').show().appendTo('#cat_others_' + transactionId);
+        }
+
         function removeAllCategories(transactionId) {
             $.get("${pageContext.request.contextPath}/transaction/removeallcategories/" + transactionId, function (data) {
                 afterCategoriesChangedForRow(transactionId, '0,0');
             });
 
-            const children = $('#cat_current_' + transactionId).children();
-            children.filter(':visible').show().appendTo('#cat_others_' + transactionId);
-            children.remove();
+            const currentCatsContainer = $('#cat_current_' + transactionId);
+            currentCatsContainer.children().filter('.tag-pending').remove();
+            currentCatsContainer.children().show().appendTo('#cat_others_' + transactionId);
         }
 
         function removeCategory(transactionId, categoryId) {
@@ -777,11 +797,11 @@
                             </a>
                             <div class="dropdown-divider"></div>
                             <%-- Accept All Category Suggestions --%>
-                            <a class="dropdown-item" href="#" style="padding: 0">
+                            <a id="bulkMenu-acceptAllCats" class="dropdown-item" tabindex="0" style="padding: 0">
                                 <i class="fas fa-plus-circle mr-2 text-gray-600"></i> Accept all suggested categories
                             </a>
                             <%-- Reject All Category Suggestions --%>
-                            <a class="dropdown-item" href="#" style="padding: 0">
+                            <a id="bulkMenu-rejectAllCats" class="dropdown-item" tabindex="0" style="padding: 0">
                                 <i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject all suggested categories
                             </a>
                             <div class="dropdown-divider"></div>
@@ -939,6 +959,18 @@
                 removeAllCategories(row.data('transaction-id'));
             });
         }
+    });
+
+    $('#bulkMenu-acceptAllCats').click(function () {
+        gatherSelectedRows().forEach(function(row) {
+            acceptAllCategories(row.data('transaction-id'));
+        })
+    });
+
+    $('#bulkMenu-rejectAllCats').click(function () {
+        gatherSelectedRows().forEach(function(row) {
+            rejectAllCategories(row.data('transaction-id'));
+        })
     });
 
 </script>

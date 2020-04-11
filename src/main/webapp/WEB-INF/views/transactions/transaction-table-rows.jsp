@@ -65,7 +65,7 @@
                     data-transaction-id="${trans.id}" data-category-id="${category.id}"
                     data-content="<a class='category-confirm btn btn-sm btn-success' id=category-confirm-${trans.id}-${category.id}>Confirm</a>
                     <a class='category-reject btn btn-sm btn-danger' id=category-reject-${trans.id}-${category.id}>Reject</a>"
-                    class="tag tag${category.id} popover-button-${trans.id}">${category.name} <span class="fa fa-question"></span></a></c:when></c:choose></c:forEach>
+                    class="tag tag${category.id} popover-button-${trans.id} tag-pending">${category.name} <span class="fa fa-question"></span></a></c:when></c:choose></c:forEach>
 
         </td>
         <td class="categories-add">
