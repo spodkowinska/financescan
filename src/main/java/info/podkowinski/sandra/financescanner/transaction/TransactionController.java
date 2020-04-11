@@ -148,8 +148,9 @@ public class TransactionController {
         Project project1 = projectService.findById(2l);
         Transaction transaction = transactionService.findById(transactionId);
         if (transaction.getProject() == project1) {
+                transaction.rejectedCategories.addAll(transaction.getPendingCategories());
+                transaction.rejectedCategories.addAll(transaction.getCategories());
                 transaction.setCategories(null);
-                transaction.rejectedCategories = transaction.getPendingCategories();
                 transaction.setPendingCategories(null);
                 transactionService.save(transaction);
             }
