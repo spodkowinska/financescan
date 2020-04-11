@@ -9,6 +9,8 @@ import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
+import info.podkowinski.sandra.financescanner.user.CurrentUser;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +45,9 @@ public class TransactionController {
     }
 
     @RequestMapping("/list")
-    public String transaction(Model model) {
+    public String transaction(Model model
+//                              @AuthenticationPrincipal CurrentUser customUser
+    ) {
         Project project2 = projectService.findById(2l);
         List<Transaction> transactionsList = transactionService.findByProjectId(2l);
         List<Account> accountsList = accountService.findByProjectId(2l);
