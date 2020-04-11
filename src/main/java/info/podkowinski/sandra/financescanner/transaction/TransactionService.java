@@ -50,14 +50,14 @@ public class TransactionService {
             throws IOException, CsvValidationException, ParseException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
         // todo fix this ugly hack (detecting mBank) to pass encoding
-        String inputCharset = bankId == 5 ? "Cp1250" : "UTF-8";
+        String inputCharset = bankId == 1l ? "Cp1250" : "UTF-8";
         List<List<String>> transactions = parser.csvTransactions(inputStream, separator, skipLines, inputCharset);
         System.out.println(bankId);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             // todo fix this ugly hack (detecting santander) to parse Date
-            if (bankId == 1l) {
+            if (bankId == 2l) {
                 newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition), formatter);
             } else {
                 newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition));
