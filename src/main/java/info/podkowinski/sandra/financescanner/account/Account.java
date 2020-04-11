@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -13,12 +16,14 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     String name;
-    String number;
-    String institutionName;
+
+    String description;
+
+    LocalDateTime transactionDate = LocalDateTime.now();
 
     @JoinColumn(name = "project_id")
     @ManyToOne
     Project project;
-
 }
