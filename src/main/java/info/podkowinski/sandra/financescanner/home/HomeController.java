@@ -2,9 +2,12 @@ package info.podkowinski.sandra.financescanner.home;
 
 import info.podkowinski.sandra.financescanner.account.AccountService;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
+import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
+import info.podkowinski.sandra.financescanner.user.User;
+import info.podkowinski.sandra.financescanner.user.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,19 +21,29 @@ public class HomeController {
     private final ProjectService projectService;
     private final CsvSettingsService csvSettingsService;
     private final AccountService accountService;
+    private final UserServiceImpl userService;
 
-    public HomeController(TransactionService transactionService, ProjectService projectService, AccountService accountService, CsvSettingsService csvSettingsService) {
+    public HomeController(TransactionService transactionService, ProjectService projectService, AccountService accountService, CsvSettingsService csvSettingsService, UserServiceImpl userService) {
         this.transactionService = transactionService;
         this.projectService = projectService;
         this.csvSettingsService = csvSettingsService;
         this.accountService = accountService;
+        this.userService = userService;
     }
 
     @GetMapping("/home")
     public String home() {
         return "index";
     }
-//
+
+
+    @GetMapping("/setDatabase")
+    public String setProject() {
+
+        csvSettingsService.createDefaultBanksSettings();
+        userService.saveRole("ROLE_USER");
+        return "redirect:../category/list";
+    }
 
     @GetMapping("/report")
     public String present(Model model) {

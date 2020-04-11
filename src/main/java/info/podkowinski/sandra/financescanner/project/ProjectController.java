@@ -29,6 +29,7 @@ public class ProjectController {
     private final CsvSettingsService csvSettingsService;
     private final UserServiceImpl userService;
 
+
     public ProjectController(TransactionService transactionService, ProjectService projectService, AccountService accountService,
                              CategoryService categoryService, CsvSettingsService csvSettingsService, UserServiceImpl userService) {
         this.transactionService = transactionService;
@@ -39,7 +40,8 @@ public class ProjectController {
         this.userService = userService;
     }
 
-    @GetMapping("/set")
+
+    @GetMapping("/setProject")
     public String setProject() {
         Long projectId = projectService.createDefaultProject();
         categoryService.createDefaultCategories(projectId);

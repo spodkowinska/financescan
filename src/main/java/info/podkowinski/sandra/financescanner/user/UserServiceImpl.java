@@ -31,4 +31,10 @@ public class UserServiceImpl implements UserService {
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
+
+    public void saveRole(String roleName) {
+        Role userRole = new Role();
+        userRole.setName(roleName);
+        roleRepository.save(userRole);
+    }
 }
