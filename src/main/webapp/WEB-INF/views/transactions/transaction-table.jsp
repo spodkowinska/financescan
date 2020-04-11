@@ -342,7 +342,7 @@
         }
 
         function removeAllCategories(transactionId) {
-            $.get("${pageContext.request.contextPath}/transaction/setcategories/" + transactionId + "/0", function (data) {
+            $.get("${pageContext.request.contextPath}/transaction/removeallcategories/" + transactionId, function (data) {
                 afterCategoriesChangedForRow(transactionId, '0,0');
             });
 
