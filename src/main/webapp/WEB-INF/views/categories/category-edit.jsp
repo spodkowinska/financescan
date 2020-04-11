@@ -100,11 +100,12 @@
             '  <div class="input-group-prepend">' +
             '    <div class="input-group-text keyword"><input type="checkbox" aria-label="Safe keyword" id="safe-keyword-check-' + keywordCounter + '"' + (safe ? ' checked' : '') + '></div>' +
             '  </div>' +
-            '  <input type="text" class="form-control keyword keyword-text" data-keyword-number="' + keywordCounter + '" placeholder="Put a keyword here..." aria-label="Keyword" aria-describedby="button-addon-' + keywordCounter + '" value="' + keyword +'">' +
+            '  <input type="text" class="form-control keyword keyword-text" data-keyword-number="' + keywordCounter + '" placeholder="Put a keyword here..." aria-label="Keyword" aria-describedby="button-addon-' + keywordCounter + '">' +
             '  <div class="input-group-append">' +
             '    <button onclick="deleteKeyword(' + keywordCounter + ')" class="btn btm-sm keyword" type="button" id="button-addon-' + keywordCounter + '" style="cursor: pointer;"><span class="fa fa-trash"></span></button>' +
             '  </div>' +
             '</div>');
+        $('#keywordList').children().last().find('input').val(keyword);
         keywordCounter++;
     }
 

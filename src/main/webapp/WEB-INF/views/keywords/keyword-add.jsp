@@ -24,7 +24,7 @@
         </label>
 
         <input name="safeKeywords" id="notSentKeywords" type="hidden" />
-        <input name="keywords" id="sentKeywords" class="form-control" value="${keywords != null ? keywords : ''}" />
+        <input name="keywords" id="sentKeywords" class="form-control" />
 
         <div class="form-check" style="margin-top: 5px">
             <input class="form-check-input" type="checkbox" id="safeCheck" style="margin-top: 6px">
@@ -34,6 +34,8 @@
 </form>
 
 <script>
+    $('#sentKeywords').val('${keywords != null ? keywords : ''}');
+
     $('#safeCheck').change(function () {
         const checked = $(this).is(':checked');
         $('#sentKeywords').attr('name', checked ? 'safeKeywords' : 'keywords');
