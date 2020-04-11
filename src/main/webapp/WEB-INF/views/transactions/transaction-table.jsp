@@ -655,7 +655,7 @@
                         </div>
 
                         <%-- MONTHS --%>
-                        <div id="months" class="btn-group">
+                        <div id="months" class="btn-group" style="display: none">
                             <button id="btn_month_all" class="btn btn-outline-secondary btn-sm active" onclick="reloadTransactionTable(null, 'all')">
                                 ALL
                             </button>
