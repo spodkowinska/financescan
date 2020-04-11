@@ -245,10 +245,12 @@
         $('#accountDeleteModal-id').text(accountId);
 
         $.get('${pageContext.request.contextPath}/account/numberoftransactions/' + accountId, function(data) {
+            $('#accountDeleteModalBody').children().hide();
+
             let deletePossible = true;
 
-            const transCnt = Number(data);
-            if (transCnt > 0) {
+            const transCnt = parseInt(data);
+            if (data && transCnt === 1) {
                 $('#accountDeleteModal-assignedTransactions').show();
                 $('#accountDeleteModal-assignedCount').text(transCnt);
                 deletePossible = false;
@@ -259,11 +261,10 @@
                 deletePossible = false;
             }
 
-            $('#accountDeleteModal-possible').toggle(deletePossible);
-
             if (deletePossible) {
+                $('#accountDeleteModal-possible').show();
                 submitButton.show();
-                $('#accountDeleteModalSubmit').click(function(event) {
+                submitButton.click(function(event) {
                     $.get('${pageContext.request.contextPath}/account/delete/' + accountId, function () {
                         window.location.reload();
                     });
