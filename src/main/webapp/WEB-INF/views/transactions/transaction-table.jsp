@@ -97,13 +97,26 @@
 
                 if (!catId) {
                     // Deletion confirmation popover
-                    let deleteButton = $('#delete-confirm-' + transId);
-                    if (deleteButton) {
-                        deleteButton.css('color', 'white');
-                        deleteButton.unbind();
-                        deleteButton.click(function() {
-                            deleteTransaction(transId);
-                        });
+                    if (transId) {
+                        // Single transaction deletion
+                        let deleteButton = $('#delete-confirm-' + transId);
+                        if (deleteButton) {
+                            deleteButton.unbind();
+                            deleteButton.click(function() {
+                                deleteTransaction(transId);
+                            });
+                        }
+                    }
+                    else {
+                        // Selected transactions deletion
+                        const deleteButton = $('#delete-confirm-selected');
+                        if (deleteButton) {
+                            deleteButton.unbind();
+                            deleteButton.click(function() {
+                                deleteSelectedTransactions();
+                                $('#bulkMenu').hide();
+                            });
+                        }
                     }
                 }
                 else {
@@ -113,7 +126,7 @@
                         catConfirmButton.css('color', 'white');
                         catConfirmButton.unbind();
                         catConfirmButton.click(function () {
-                            addCategory(transId, catId, true);
+                            addCategory(transId, catId);
                         });
                     }
                     // Category rejection button
@@ -122,7 +135,7 @@
                         catRejectButton.css('color', 'white');
                         catRejectButton.unbind();
                         catRejectButton.click(function () {
-                            removeCategory(transId, catId, true);
+                            removeCategory(transId, catId);
                         });
                     }
                 }
@@ -149,12 +162,14 @@
                     return false;
                 const top = e.pageY;
                 const left = e.pageX;
+                changeBulkMenuPage('#bulkMenu-mainPage')
                 $('#bulkMenu').css({
                     display: 'block',
                     top: top,
                     left: left
                 });
                 $('#bulkMenuCount').text(gSelectedCount);
+                $('#bulkMenuCount2').text(gSelectedCount);
                 return false;
             }).click(function () {
                 $('#bulkMenu').hide();
@@ -166,6 +181,8 @@
                 gSelectedCount += checked ? 1 : -1;
                 refreshFilterBadges();
             });
+            if (gBulkEditEnabled)
+                $('.bulk-controls').show();
         }
 
         function toggleSelectionForAllVisibleRows() {
@@ -189,6 +206,15 @@
             });
             gSelectedCount = 0;
             refreshFilterBadges();
+        }
+
+        function gatherSelectedRows() {
+            const selectedRows = [];
+            $('.transaction-row-checkbox').each(function () {
+                if ($(this).is(':checked'))
+                    selectedRows.push($(this).parent().parent());
+            });
+            return selectedRows;
         }
 
         function reloadTransactionTable(year, month) {
@@ -240,8 +266,22 @@
         function deleteTransaction(transId) {
             $.get('${pageContext.request.contextPath}/transaction/delete/' + transId);
             let row = $('#cat_row_' + transId);
-            if (row)
+            if (row.length) {
+                if (row.hasClass('selected'))
+                    gSelectedCount--;
+                if (row.data('uncategorized'))
+                    gUncategorizedCount--;
+                if (row.data('unreviewed'))
+                    gUnreviewedCount--;
                 row.remove();
+                refreshFilterBadges();
+            }
+        }
+
+        function deleteSelectedTransactions() {
+            gatherSelectedRows().forEach(function(row) {
+                deleteTransaction(row.data('transaction-id'));
+            });
         }
 
         function refreshRowForTransaction(transactionId, preloadedData){
@@ -286,28 +326,40 @@
                 addCategory(transactionId, categoryId);
         }
 
-        function addCategory(transactionId, categoryId, pending) {
+        function addCategory(transactionId, categoryId) {
             $.get("${pageContext.request.contextPath}/transaction/addcategory/" + transactionId + "/" + categoryId, function (data) {
                 afterCategoriesChangedForRow(transactionId, data);
             });
 
-            let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
-            if (pending) {
-                $('#cat_tag_pending_' + transactionId + '_' + categoryId).remove();
+            const catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
+            const pendingElem = $('#cat_tag_pending_' + transactionId + '_' + categoryId);
+            if (pendingElem.length) {
+                pendingElem.remove();
                 catElem.css('display', 'inline-block');
             }
             else
                 catElem.appendTo('#cat_current_' + transactionId);
         }
 
-        function removeCategory(transactionId, categoryId, pending) {
+        function removeAllCategories(transactionId) {
+            $.get("${pageContext.request.contextPath}/transaction/setcategories/" + transactionId + "/0", function (data) {
+                afterCategoriesChangedForRow(transactionId, '0,0');
+            });
+
+            const children = $('#cat_current_' + transactionId).children();
+            children.filter(':visible').show().appendTo('#cat_others_' + transactionId);
+            children.remove();
+        }
+
+        function removeCategory(transactionId, categoryId) {
             $.get("${pageContext.request.contextPath}/transaction/removecategory/" + transactionId + "/" + categoryId, function (data) {
                 afterCategoriesChangedForRow(transactionId, data);
             });
 
             let catElem = $('#cat_tag_' + transactionId + '_' + categoryId);
-            if (pending) {
-                $('#cat_tag_pending_' + transactionId + '_' + categoryId).remove();
+            const pendingElem = $('#cat_tag_pending_' + transactionId + '_' + categoryId);
+            if (pendingElem.length) {
+                pendingElem.remove();
                 catElem.css('display', 'inline-block');
             }
             catElem.appendTo('#cat_others_' + transactionId);
@@ -320,41 +372,33 @@
 
             const catRow = $('#cat_row_' + transactionId);
 
-            console.log(responseData, catCnt, gUncategorizedCount, gUnreviewedCount);
-
             // Uncategorized
             {
                 const catRowWasUncategorized = catRow.data('uncategorized');
-                console.log(catRowUncategorized, catRowWasUncategorized);
                 if (catRowUncategorized) {
                     if (!catRowWasUncategorized) {
                         catRow.data('uncategorized', true);
                         gUncategorizedCount++;
-                        console.log('uc+', gUncategorizedCount);
                     }
                 }
                 else if (catRowWasUncategorized) {
                     catRow.data('uncategorized', false);
                     gUncategorizedCount--;
-                    console.log('uc-', gUncategorizedCount);
                 }
             }
 
             // Unreviewed
             {
                 const catRowWasUnreviewed = catRow.data('unreviewed');
-                console.log(catRowUnreviewed, catRowWasUnreviewed);
                 if (catRowUnreviewed) {
                     if (!catRowWasUnreviewed) {
                         catRow.data('unreviewed', true);
                         gUnreviewedCount++;
-                        console.log('ur+', gUnreviewedCount);
                     }
                 }
                 else if (catRowWasUnreviewed) {
                     catRow.data('unreviewed', false);
                     gUnreviewedCount--;
-                    console.log('ur-', gUnreviewedCount);
                 }
             }
 
@@ -370,33 +414,27 @@
             gUncategorizedCount = 0;
             gSelectedCount = 0;
 
-            const input = document.getElementById("text_filter");
-            const filter = input.value.toUpperCase();
-            const tbody = document.getElementById("list");
-            const trs = tbody.getElementsByTagName("tr");
+            const filter = $('#text_filter').val().toUpperCase();
+            const rows = $('#list tr');
 
             // Loop through all table rows, and hide those which don't match the search query
-            for (let i = 0; i < trs.length; i++) {
-                const tds = trs[i].getElementsByTagName("td");
+            rows.each(function() {
+                const row = $(this);
+                const cells = row.children('td');
 
-                if (tds.length === 0)
-                    continue;
+                if (cells.length === 0)
+                    return;
 
                 let show = true;
 
-                const rowUnreviewedVal = trs[i].getAttribute('data-unreviewed');
-                const rowUnreviewed = rowUnreviewedVal === 'true' || rowUnreviewedVal === true;
-                if (rowUnreviewed)
-                    gUnreviewedCount++;
+                const rowUnreviewed = row.data('unreviewed');
+                if (rowUnreviewed) gUnreviewedCount++;
 
-                const rowUncategorizedVal = trs[i].getAttribute('data-uncategorized');
-                const rowUncategorized = rowUncategorizedVal === 'true' || rowUncategorizedVal === true;
-                if (rowUncategorized)
-                    gUncategorizedCount++;
+                const rowUncategorized = row.data('uncategorized');
+                if (rowUncategorized) gUncategorizedCount++;
 
-                const rowSelected = trs[i].classList.contains('selected');
-                if (rowSelected)
-                    gSelectedCount++;
+                const rowSelected = row.hasClass('selected');
+                if (rowSelected) gSelectedCount++;
 
                 if (showOnlySelected && !rowSelected) {
                     show = false;
@@ -408,10 +446,10 @@
                 if (show) {
                     show = false;
 
-                    for (let j of gSearchableColumnsIds) {
-                        const td = tds[j];
-                        if (td) {
-                            const txtValue = td.getAttribute('sorttable_customkey') || td.textContent || td.innerText;
+                    for (const j of gSearchableColumnsIds) {
+                        const cell = cells.eq(j);
+                        if (cell) {
+                            const txtValue = cell.attr('sorttable_customkey') || cell.val() || cell.text();
                             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                                 show = true;
                                 break;
@@ -420,10 +458,15 @@
                     }
                 }
 
-                trs[i].style.display = show ? "" : "none";
-            }
+                row.toggle(show);
+            });
 
             refreshFilterBadges();
+        }
+
+        function refreshSelectionBadge() {
+            let selectedCount = $('#onlySelectedCount');
+            selectedCount.text(gSelectedCount);
         }
 
         function refreshFilterBadges() {
@@ -449,8 +492,7 @@
                 uncategorizedCount.addClass('badge-danger');
             }
 
-            let selectedCount = $('#onlySelectedCount');
-            selectedCount.text(gSelectedCount);
+            refreshSelectionBadge();
         }
 
         function applySorting() {
@@ -472,6 +514,12 @@
                     sorttable.innerSortFunction.apply($(this)[0], []);
                 }
             });
+        }
+
+        function changeBulkMenuPage(pageId) {
+            const pageDiv = $(pageId);
+            pageDiv.siblings().hide();
+            pageDiv.show();
         }
     </script>
 
@@ -712,17 +760,70 @@
                     </div>
                 </div>
 
-                <%-- TRANSACTION TABLE --%>
-                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; position: absolute; padding: 10px;">
+                <%-- BULK EDIT CONTEXT MENU --%>
+                <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; position: absolute; padding: 10px; width: 250px">
                     <h6 class="dropdown-header" style="padding: 0; margin-bottom: 5px;">Bulk changing <span id="bulkMenuCount"></span> transaction(s)</h6>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-square mr-2 text-gray-600"></i> Add category...</a>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove category...</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-plus-circle mr-2 text-gray-600"></i> Accept suggested categories</a>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject suggested categories</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" style="padding: 0"><i class="fas fa-trash mr-2 text-gray-600"></i> Delete</a>
+                    <div>
+                        <%-- Bulk Menu: Main Page --%>
+                        <div id="bulkMenu-mainPage">
+                            <%-- Add Category --%>
+                            <a class="dropdown-item" tabindex="0" onclick="changeBulkMenuPage('#bulkMenu-addCategoriesPage')" style="padding: 0">
+                                <i class="fas fa-plus-square mr-2 text-gray-600"></i> Add category...
+                            </a>
+                            <%-- Remove Category --%>
+                            <a class="dropdown-item" tabindex="0" onclick="changeBulkMenuPage('#bulkMenu-removeCategoriesPage')" style="padding: 0">
+                                <i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove category...
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <%-- Accept All Category Suggestions --%>
+                            <a class="dropdown-item" href="#" style="padding: 0">
+                                <i class="fas fa-plus-circle mr-2 text-gray-600"></i> Accept all suggested categories
+                            </a>
+                            <%-- Reject All Category Suggestions --%>
+                            <a class="dropdown-item" href="#" style="padding: 0">
+                                <i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject all suggested categories
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <%-- Delete Transactions --%>
+                            <a class="dropdown-item" tabindex="0" style="padding: 0" data-toggle="popover" data-trigger="focus" data-html="true"
+                               data-content="<a class='btn btn-sm btn-danger delete-confirm' id='delete-confirm-selected'>Delete</a>">
+                                <i class="fas fa-trash-alt mr-2 text-gray-600"></i> Delete <span id="bulkMenuCount2"></span> transaction(s)
+                            </a>
+                        </div>
+                        <%-- Bulk Menu: Add Categories Page --%>
+                        <div id="bulkMenu-addCategoriesPage" style="display: none">
+                            <a class="dropdown-item" onclick="changeBulkMenuPage('#bulkMenu-mainPage')" style="padding: 0">
+                                <i class="fas fa-chevron-left mr-2 text-gray-600"></i> Add category
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <div style="text-align: center">
+                                <c:forEach items="${categoriesList}" var="category">
+                                    <a tabindex="0" class="tag tag${category.id} tag-add-to-selected" data-category-id="${category.id}">
+                                        ${category.name}
+                                    </a>
+                                </c:forEach>
+                            </div>
+                        </div>
+                        <%-- Bulk Menu: Remove Categories Page --%>
+                        <div id="bulkMenu-removeCategoriesPage" style="display: none">
+                            <a class="dropdown-item" onclick="changeBulkMenuPage('#bulkMenu-mainPage')" style="padding: 0">
+                                <i class="fas fa-chevron-left mr-2 text-gray-600"></i> Remove category
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <div style="text-align: center">
+                                <c:forEach items="${categoriesList}" var="category">
+                                    <a tabindex="0" class="tag tag${category.id} tag-remove-from-selected" data-category-id="${category.id}">
+                                        ${category.name}
+                                    </a>
+                                </c:forEach>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item tag-remove-from-selected" tabindex="0" style="padding: 0">
+                                <i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove all
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -745,28 +846,6 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
-
-<%--<!-- Logout Modal-->--%>
-<%--<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"--%>
-<%--     aria-hidden="true">--%>
-<%--    <div class="modal-dialog" role="document">--%>
-<%--        <div class="modal-content">--%>
-<%--            <div class="modal-header">--%>
-<%--                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>--%>
-<%--                <button class="close" type="button" data-dismiss="modal" aria-label="Close">--%>
-<%--                    <span aria-hidden="true">×</span>--%>
-<%--                </button>--%>
-<%--            </div>--%>
-<%--            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>--%>
-<%--            <div class="modal-footer">--%>
-<%--                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>--%>
-<%--                <a class="btn btn-primary" href="login.html">Logout</a>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-
 
 <!-- Bootstrap core JavaScript-->
 <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
@@ -840,6 +919,28 @@
             });
         });
     });
+
+    $('.tag-add-to-selected').click(function () {
+        const categoryId = $(this).data('category-id');
+        gatherSelectedRows().forEach(function(row) {
+            addCategory(row.data('transaction-id'), categoryId);
+        })
+    });
+
+    $('.tag-remove-from-selected').click(function () {
+        const categoryId = $(this).data('category-id');
+        if (categoryId) {
+            gatherSelectedRows().forEach(function(row) {
+                removeCategory(row.data('transaction-id'), categoryId);
+            });
+        }
+        else {
+            gatherSelectedRows().forEach(function(row) {
+                removeAllCategories(row.data('transaction-id'));
+            });
+        }
+    });
+
 </script>
 
 </body>
