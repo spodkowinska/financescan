@@ -156,8 +156,8 @@
             }
         }
 
-        function prepareRows() {
-            $('.finance_table tbody tr').contextmenu(function(e) {
+        function prepareRows(transactionId) {
+            $(transactionId ? ('#cat_row_' + transactionId) : '.finance_table tbody tr').contextmenu(function(e) {
                 if (!$(this).hasClass('selected'))
                     return false;
                 const top = e.pageY;
@@ -172,15 +172,9 @@
                 $('#bulkMenuCount2').text(gSelectedCount);
                 return false;
             });
-            $('#bulkMenu').click(function(e) {
-                e.stopPropagation();
-            });
-            $(document).click(function () {
-                $('#bulkMenu').hide();
-            }).contextmenu(function(e) {
-                $('#bulkMenu').hide();
-            });
-            $('.transaction-row-checkbox').change(function () {
+
+            const prefix = transactionId ? '#cat_row_' + transactionId + ' ' : '';
+            $(prefix + '.transaction-row-checkbox').change(function () {
                 const row = $(this).parent().parent();
                 const checked = $(this).is(':checked');
                 row.toggleClass('selected', checked);
@@ -188,7 +182,7 @@
                 refreshFilterBadges();
             });
             if (gBulkEditEnabled)
-                $('.bulk-controls').show();
+                $(prefix + '.bulk-controls').show();
         }
 
         function toggleSelectionForAllVisibleRows() {
@@ -305,7 +299,7 @@
 
         function afterRowRefreshed(transactionId) {
             enablePopovers($('.popover-button-' + transactionId));
-            prepareRows();
+            prepareRows(transactionId);
             applyFilters();
         }
 
@@ -794,7 +788,9 @@
 
                 <%-- BULK EDIT CONTEXT MENU --%>
                 <div id="bulkMenu" class="dropdown-menu shadow shadow-sm" style="display: none; position: absolute; padding: 10px; width: 250px">
-                    <h6 class="dropdown-header" style="padding: 0; margin-bottom: 5px;">Bulk changing <span id="bulkMenuCount"></span> transaction(s)</h6>
+                    <h6 class="dropdown-header" style="padding: 0; margin-bottom: 5px;">
+                        Selected transactions: <span id="bulkMenuCount"></span>
+                        <button id="bulkMenu-deselectAll" style="font-size: 0.8em; margin-top: -2px; float: right;" class="btn btn-sm btn-secondary py-0">Unselect</button>
                     <div class="dropdown-divider"></div>
                     <div>
                         <%-- Bulk Menu: Main Page --%>
@@ -983,6 +979,21 @@
         gatherSelectedRows().forEach(function(row) {
             rejectAllCategories(row.data('transaction-id'));
         })
+    });
+
+    $('#bulkMenu-deselectAll').click(function () {
+       clearSelection();
+        $('#bulkMenu').hide();
+    });
+
+    $('#bulkMenu').click(function(e) {
+        e.stopPropagation();
+    });
+
+    $(document).click(function () {
+        $('#bulkMenu').hide();
+    }).contextmenu(function(e) {
+        $('#bulkMenu').hide();
     });
 
 </script>
