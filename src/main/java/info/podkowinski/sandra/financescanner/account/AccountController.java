@@ -32,12 +32,13 @@ public class AccountController {
         return "accounts/account-edit";
     }
 
+    @ResponseBody
     @PostMapping("/add")
     public String addPost(@ModelAttribute Account account) {
         Project project1 = projectService.findById(2l);
         account.project = project1;
         accountService.save(account);
-        return "redirect:list";
+        return "";
     }
 
     @GetMapping("/list")
@@ -54,14 +55,16 @@ public class AccountController {
         return "accounts/account-edit";
     }
 
+    @ResponseBody
     @PostMapping("/edit/{accountId}")
     public String editPost(@ModelAttribute Account account) {
         Project project1 = projectService.findById(2l);
         account.project = project1;
         accountService.save(account);
-        return "redirect:/../list";
+        return "";
     }
 
+    @ResponseBody
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
         Project project1 = projectService.findById(2l);
@@ -69,6 +72,6 @@ public class AccountController {
         accountService.delete(account);
         List<Account>accountsList = accountService.findByProjectId(2l);
         model.addAttribute("accountsList", accountsList);
-        return "redirect:../list";
+        return "";
     }
 }
