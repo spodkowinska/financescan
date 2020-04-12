@@ -5,6 +5,8 @@ import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
+import info.podkowinski.sandra.financescanner.user.CurrentUser;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +32,6 @@ public class CategoryController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        Project project1 = projectService.findById(2l);
         Category category = new Category();
         model.addAttribute("category", category);
         return "categories/category-edit";
@@ -39,31 +40,34 @@ public class CategoryController {
     //todo frontend validation, name cannot be the same, keywords info about usage
     @ResponseBody
     @PostMapping("/add")
-    public String addPost(HttpServletRequest request) {
-        Project project1 = projectService.findById(2l);
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-        String color = request.getParameter("color");
-        String fontColor = request.getParameter("fontColor");
-        List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
-        Category category = new Category(name, description, validatedKeywords, color, fontColor, project1);
+    public String addPost(HttpServletRequest request, @AuthenticationPrincipal CurrentUser currentUser, @ModelAttribute Category category) {
+        Project project = currentUser.getUser().getCurrentProject();
+        category.project = project;
         categoryService.save(category);
+//        Project project = currentUser.getUser().getCurrentProject();
+//        String name = request.getParameter("name");
+//        String description = request.getParameter("description");
+//        String color = request.getParameter("color");
+//        String fontColor = request.getParameter("fontColor");
+//        List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
+//        Category category = new Category(name, description, validatedKeywords, color, fontColor, project);
+//        categoryService.save(category);
         return "";
     }
 
     @RequestMapping("/list")
-    public String categoryList(Model model) {
-        Project project1 = projectService.findById(2l);
-        List<Category>categoriesList = categoryService.findByProjectId(2l);
+    public String categoryList(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+        List<Category> categoriesList = categoryService.findByProjectId(project.getId());
         model.addAttribute("cl", categoriesList);
         return "categories/category-table";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
-        Project project1 = projectService.findById(2l);
-        List<Category> categories = categoryService.findByProjectId(2l);
-        List<String>keywordList = categoryService.findById(id).keywords;
+    public String edit(@PathVariable Long id, Model model, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+        List<Category> categories = categoryService.findByProjectId(project.getId());
+        List<String> keywordList = categoryService.findById(id).keywords;
         Category category = categoryService.findById(id);
         model.addAttribute("category", category);
         model.addAttribute("keywords", keywordList);
@@ -72,19 +76,20 @@ public class CategoryController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editPost(@PathVariable Long id, @ModelAttribute Category category, HttpServletRequest request) {
-        Project project1 = projectService.findById(2l);
-        category.project = project1;
+    public String editPost(@PathVariable Long id, @ModelAttribute Category category, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+        category.project = project;
         categoryService.save(category);
         return "redirect:../../category/list";
     }
 
     @ResponseBody
     @PostMapping("/setcolor/{id}")
-    public String setColorPost(@PathVariable Long id, HttpServletRequest request) {
-        Project project1 = projectService.findById(2l);
+    public String setColorPost(@PathVariable Long id, HttpServletRequest request, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
         Category category = categoryService.findById(id);
-        if (category != null) {
+
+        if (category != null && project.getId() == category.project.getId()) {
             category.color = request.getParameter("color");
             String fontColor = request.getParameter("fontColor");
             if (fontColor != null)
@@ -95,10 +100,10 @@ public class CategoryController {
     }
 
     @GetMapping("/delete/{categoryId}")
-    public String delete(@PathVariable Long categoryId, Model model) {
-        Project project1 = projectService.findById(2l);
+    public String delete(@PathVariable Long categoryId, Model model, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
         transactionService.removeCategoryFromTransactions(categoryId);
-        List<Category>categoriesList = categoryService.findByProjectId(2l);
+        List<Category> categoriesList = categoryService.findByProjectId(project.getId());
         categoryService.delete(categoryService.findById(categoryId));
         model.addAttribute("cl", categoriesList);
         return "redirect:../../category/list";
@@ -106,34 +111,41 @@ public class CategoryController {
 
     @ResponseBody
     @PostMapping("/keyword/add")
-    public String addKeywordPost(HttpServletRequest request) {
-        Project project1 = projectService.findById(2l);
+    public String addKeywordPost(HttpServletRequest request, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+
         Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
-        List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
-        category.keywords.addAll(validatedKeywords);
-        List<String> validatedSafeKeywords = categoryService.areValidKeywords(request.getParameter("safeKeywords").split(","));
-        category.safeKeywords.addAll(validatedSafeKeywords);
-        categoryService.save(category);
+        if (project.getId() == category.project.getId()) {
+            List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
+            category.keywords.addAll(validatedKeywords);
+            List<String> validatedSafeKeywords = categoryService.areValidKeywords(request.getParameter("safeKeywords").split(","));
+            category.safeKeywords.addAll(validatedSafeKeywords);
+            categoryService.save(category);
+        }
         return "";
     }
 
     @GetMapping("/keyword/add/{transactionId}")
-    public String addKeywordFromSafeTransaction(Model model, @PathVariable Long transactionId) {
-        Project project1 = projectService.findById(2l);
-        List<Category> categories = categoryService.findByProjectId(2l);
+    public String addKeywordFromSafeTransaction(Model model, @PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+        List<Category> categories = categoryService.findByProjectId(project.getId());
         Transaction transaction = transactionService.findById(transactionId);
         String keyword = transaction.getDescription();
         model.addAttribute("keywords", keyword);
         model.addAttribute("categories", categories);
         return "keywords/keyword-add";
     }
+
     @ResponseBody
     @GetMapping("/numberoftransactions/{categoryId}")
-    public String addKeywordFromTransaction(@PathVariable Long categoryId) {
-        Project project1 = projectService.findById(2l);
-        Long numberOTransactionsPerCategory = categoryService.findNumberOfTransactionsPerCategory(categoryId);
-        Long numberOTransactionsPerPendingCategory = categoryService.findNumberOfTransactionsPerPendingCategory(categoryId);
-        return numberOTransactionsPerCategory + "," + numberOTransactionsPerPendingCategory;
+    public String addKeywordFromTransaction(@PathVariable Long categoryId, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+        if (project.getId() == categoryService.findById(categoryId).project.getId()) {
+            Long numberOTransactionsPerCategory = categoryService.findNumberOfTransactionsPerCategory(categoryId);
+            Long numberOTransactionsPerPendingCategory = categoryService.findNumberOfTransactionsPerPendingCategory(categoryId);
+            return numberOTransactionsPerCategory + "," + numberOTransactionsPerPendingCategory;
+        }
+        return "";
     }
 
 }
