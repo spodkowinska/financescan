@@ -138,7 +138,7 @@ public class CategoryController {
 
     @ResponseBody
     @GetMapping("/numberoftransactions/{categoryId}")
-    public String addKeywordFromTransaction(@PathVariable Long categoryId, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String numberOfTransactions(@PathVariable Long categoryId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         if (project.getId() == categoryService.findById(categoryId).project.getId()) {
             Long numberOTransactionsPerCategory = categoryService.findNumberOfTransactionsPerCategory(categoryId);

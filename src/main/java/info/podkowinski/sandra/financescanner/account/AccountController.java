@@ -77,4 +77,15 @@ public class AccountController {
         model.addAttribute("accountsList", accountsList);
         return "";
     }
+
+    @ResponseBody
+    @GetMapping("/numberoftransactions/{accountId}")
+    public String numberOfTransactions(@PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+        if (project.getId() == accountService.findById(accountId).project.getId()) {
+            Long numberOTransactionsPerAccount = accountService.findNumberOfTransactionsPerAccount(accountId);
+            return numberOTransactionsPerAccount + "";
+        }
+        return "";
+    }
 }
