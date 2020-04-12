@@ -44,7 +44,7 @@ public class AccountController {
     }
 
     @GetMapping("/list")
-    public String list (Model model, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String list(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         List<Account> accountsList = accountService.findByProjectId(project.getId());
         model.addAttribute("accountsList", accountsList);
@@ -72,9 +72,12 @@ public class AccountController {
     public String delete(@PathVariable Long id, Model model, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Account account = accountService.findById(id);
-        accountService.delete(account);
-        List<Account>accountsList = accountService.findByProjectId(project.getId());
-        model.addAttribute("accountsList", accountsList);
+        if (project.getId() == account.project.getId() && accountService.isNotOnlyAccount(project) &&
+                accountService.hasNoTransactions(account)) {
+                accountService.delete(account);
+                List<Account> accountsList = accountService.findByProjectId(project.getId());
+                model.addAttribute("accountsList", accountsList);
+            }
         return "";
     }
 

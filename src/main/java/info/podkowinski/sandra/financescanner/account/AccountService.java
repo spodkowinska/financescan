@@ -1,5 +1,6 @@
 package info.podkowinski.sandra.financescanner.account;
 
+import info.podkowinski.sandra.financescanner.project.Project;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,5 +28,17 @@ public class AccountService {
 
     Long findNumberOfTransactionsPerAccount(Long accountId) {
         return accountRepository.findNumberOfTransactionsPerAccount(accountId);
+    }
+
+    boolean isNotOnlyAccount(Project project){
+        if (accountRepository.numberOfAccountsPerProject(project.getId()) > 1l){
+            return true;
+        } else return false;
+    }
+
+    boolean hasNoTransactions(Account account){
+        if (accountRepository.numberOfTransactions(account.getId()) > 0){
+            return false;
+        } else return true;
     }
 }

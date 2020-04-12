@@ -13,4 +13,10 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query(value = "SELECT Count(*) FROM transactions t WHERE t.account_id = ?", nativeQuery = true)
     Long findNumberOfTransactionsPerAccount(Long id);
 
+    @Query(value = "SELECT Count(*) FROM accounts a WHERE a.project_id = ?", nativeQuery = true)
+    Long numberOfAccountsPerProject(Long id);
+
+    @Query(value = "SELECT Count(*) FROM transactions t WHERE t.account_id = ?", nativeQuery = true)
+    Long numberOfTransactions(Long accountId);
+
 }
