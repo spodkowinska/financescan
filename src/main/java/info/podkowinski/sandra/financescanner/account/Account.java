@@ -21,6 +21,9 @@ public class Account {
 
     String description;
 
+    String logoImage = "zzz_custom_1";
+    String logoFilter;
+
     LocalDateTime created = LocalDateTime.now();
 
     @JoinColumn(name = "project_id")
