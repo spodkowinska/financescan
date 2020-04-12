@@ -95,7 +95,7 @@ public class TransactionService {
 //                boolean keywordFound = false;
                 for (String keyword : category.getKeywords()) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
-                        if(!transaction.categories.contains(category) & !transaction.rejectedCategories.contains(category)){
+                        if(!transaction.categories.contains(category) && !transaction.rejectedCategories.contains(category)){
                         Set<Category> pendingCategories = transaction.pendingCategories;
                         pendingCategories.add(category);
                         transaction.setPendingCategories(pendingCategories);

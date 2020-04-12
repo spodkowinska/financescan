@@ -25,8 +25,6 @@ public class CategoryService {
         return categoryRepository.findAllByProjectId(id);
     }
 
-
-
     public void save(Category category){ categoryRepository.save(category); }
 
     public Category findById(Long id){
