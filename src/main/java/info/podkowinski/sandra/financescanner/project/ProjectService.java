@@ -1,5 +1,6 @@
 package info.podkowinski.sandra.financescanner.project;
 
+import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,9 +12,6 @@ public class ProjectService {
 
         this.projectRepository = projectRepository;
     }
-
-
-
     public void saveProject(Project project){
         projectRepository.save(project);
     }
@@ -29,5 +27,9 @@ public class ProjectService {
         project = projectRepository.saveAndFlush(project);
         long test = project.getId();
         return project.getId();
+    }
+
+    public Project findCurrentByUser(User user){
+        return projectRepository.findById(projectRepository.findCurrentByUserId(user.getId())).orElse(null);
     }
 }

@@ -33,4 +33,8 @@ public class User {
     @JoinColumn(name = "project_id")
     List <Project> projects;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    Project currentProject;
+
 }
