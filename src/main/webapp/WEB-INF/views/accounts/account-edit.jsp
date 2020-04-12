@@ -5,6 +5,8 @@
 
     <form:input path="id" type="hidden" id="id" />
     <form:input path="created" type="hidden" id="created" />
+    <form:input path="logoImage" type="hidden" id="logoImage" />
+    <form:input path="logoFilter" type="hidden" id="logoFilter" />
 
     <div class="form-group">
         <label>Name</label>
