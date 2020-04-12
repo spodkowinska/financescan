@@ -41,4 +41,8 @@ public class AccountService {
             return false;
         } else return true;
     }
+
+    Long findNumberOfImportsPerAccount(Long accountId){
+        return accountRepository.findNumberOfImportsPerAccount(accountId);
+    }
 }

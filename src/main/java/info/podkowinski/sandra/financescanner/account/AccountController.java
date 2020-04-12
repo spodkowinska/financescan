@@ -91,4 +91,16 @@ public class AccountController {
         }
         return "";
     }
+
+    @ResponseBody
+    @GetMapping("/numberofimports/{accountId}")
+    public String numberOfImports(@PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+        if (project.getId() == accountService.findById(accountId).project.getId()) {
+            Long numberOfImportsPerAccount = accountService.findNumberOfImportsPerAccount(accountId);
+            return numberOfImportsPerAccount + "";
+        }
+        return "";
+    }
+
 }

@@ -34,7 +34,7 @@ public class User {
     List <Project> projects;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "current_project")
     Project currentProject;
 
 }
