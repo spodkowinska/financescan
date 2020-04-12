@@ -47,8 +47,8 @@ public class ProjectController {
         categoryService.createDefaultCategories(projectId);
         csvSettingsService.createDefaultBanksSettings();
         User user = new User();
-        user.setPassword("user");
-        user.setUsername("user");
+        user.setPassword("qwe");
+        user.setUsername("qwe");
         List<Project> project1= new ArrayList<>();
         project1.add(projectService.findById(projectId));
         user.setProjects(project1);

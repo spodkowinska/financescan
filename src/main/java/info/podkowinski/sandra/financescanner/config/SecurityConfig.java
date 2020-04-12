@@ -43,15 +43,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling()
                 .accessDeniedPage("/403");
     }
-//
-//        http.authorizeRequests()
-//                .antMatchers("/transaction").hasRole("USER")
-//                .anyRequest().permitAll()
-//                .and().formLogin()
-//                .loginPage("/login")
-//                .and().logout().logoutSuccessUrl("/logout")
-//                .permitAll()
-//                .and().exceptionHandling().accessDeniedPage("/403");
-//    }
 
 }

@@ -41,7 +41,7 @@ public class HomeController {
     public String setProject() {
 
         csvSettingsService.createDefaultBanksSettings();
-        userService.saveRole("ROLE_USER");
+        userService.saveRole("ROLE_ADMIN");
         return "redirect:../category/list";
     }
 
