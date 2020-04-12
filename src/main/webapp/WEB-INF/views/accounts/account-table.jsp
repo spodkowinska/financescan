@@ -37,6 +37,20 @@
 
 <body id="page-top">
 
+<style>
+    .footer-entry {
+        margin-right: 20px;
+    }
+    .footer-entry:after {
+        color: #dbdded;
+        margin-left: 20px;
+        content: '|';
+    }
+    .footer-entry:last-of-type:after {
+        content: '';
+    }
+</style>
+
 <%-- ACCOUNT MODAL --%>
 <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -113,58 +127,49 @@
                         </button>
                     </div>
                     <div class="card-body">
+                        <c:forEach items="${accountsList}" var="account" step="1" varStatus="counter" begin="0">
 
-                        <table id="account_table" class="finance_table">
-                            <!-- TABLE HEADER -->
-                            <thead>
-                            <tr>
-                                <th style="width: 60px">Actions</th>
-                                <th style="width: 200px">Name</th>
-                                <th style="width: 150px">Created</th>
-                                <th>Description</th>
-                            </tr>
-                            </thead>
-                            <!-- TABLE DATA -->
-                            <tbody id="list">
-                            <c:forEach items="${accountsList}" var="account">
-                                <tr>
-                                        <%-- COLUMN: ACTIONS --%>
+                            <c:if test="${counter.index % 2 == 0}">
+                                <div class="card-deck">
+                            </c:if>
 
-                                    <td class="actions">
-                                        <a data-toggle="modal" data-target="#accountModal" data-account-id="${account.id}"
-                                           data-toggle="tooltip" title="Edit account" tabindex="0">
-                                            <span class="fa fa-edit"></span>
-                                        </a>
+                                <div class="card" style="margin-bottom: 10px">
+                                    <div class="row no-gutters">
+                                        <div class="col-auto">
+                                            <img src="${pageContext.request.contextPath}/img/banks/${account.logoImage}.png"
+                                                 style="filter: ${account.logoFilter}" class="img-fluid" alt="">
+                                        </div>
+                                        <div class="col">
+                                            <div class="card-block px-2" style="padding: 5px">
+                                                <h4 class="card-title">${account.name} <span class="small text-gray-300" style="float: right">#${account.id}</span></h4>
+                                                <p class="card-text">${account.description}</p>
+                                                <a data-toggle="modal" data-target="#accountModal" data-account-id="${account.id}"
+                                                   data-toggle="tooltip" title="Edit account" tabindex="0" class="btn btn-secondary btn-sm">
+                                                    <span class="fa fa-edit"></span> Edit
+                                                </a>
+                                                <a data-toggle="modal" data-target="#accountDeleteModal" data-account-id="${account.id}"
+                                                   data-toggle="tooltip" title="Delete account" tabindex="0" class="btn btn-danger btn-sm">
+                                                    <span class="fa fa-trash-alt"></span> Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer w-100 text-muted">
+                                        <span class="footer-entry">Created: <javatime:format value="${account.created}" style="MS" /></span>
+                                        <span class="footer-entry">Imports: 34</span>
+                                        <span class="footer-entry">Transactions: 123</span>
+                                    </div>
+                                </div>
 
-                                        <a data-toggle="modal" data-target="#accountDeleteModal" data-account-id="${account.id}"
-                                           data-toggle="tooltip" title="Delete account" tabindex="0">
-                                            <span class="fa fa-trash-alt"></span>
-                                        </a>
-                                    </td>
+                            <c:if test="${counter.index % 2 != 0}">
+                                </div>
+                            </c:if>
 
-                                        <%-- COLUMN: NAME --%>
+                            <c:if test="${counter.index % 2 == 0 && counter.index == accountsList.size() - 1}">
+                                <div class="card" style="margin-bottom: 10px; visibility: hidden"></div></div>
+                            </c:if>
 
-                                    <td style="text-align: center">
-                                        ${account.name}
-                                    </td>
-
-                                        <%-- COLUMN: CREATED --%>
-
-                                    <td style="text-align: center">
-                                        <javatime:format value="${account.created}" style="MS" />
-                                    </td>
-
-                                        <%-- COLUMN: DESCRIPTION --%>
-
-                                    <td>
-                                        ${account.description}
-                                    </td>
-
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-
+                        </c:forEach>
                     </div>
 
                 </div>
