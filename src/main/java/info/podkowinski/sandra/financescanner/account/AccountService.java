@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,9 +55,11 @@ public class AccountService {
     }
 
     List <String> findImages(){
-        List <String> images;
+        String [] images;
         File f = new File ( servletContext.getRealPath("/img/banks"));
-        images = Arrays.asList(f.list());
-        return images;
+        images = f.list();
+        Arrays.sort(images);
+        System.out.println(images);
+        return Arrays.asList(images);
     }
 }
