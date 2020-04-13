@@ -136,7 +136,7 @@
                                 <div class="card" style="margin-bottom: 10px">
                                     <div class="row no-gutters">
                                         <div class="col-auto">
-                                            <img src="${pageContext.request.contextPath}/img/banks/${account.logoImage}.png"
+                                            <img src="${pageContext.request.contextPath}/img/banks/${account.logoImage}"
                                                  style="filter: ${account.logoFilter}" class="img-fluid" alt="">
                                         </div>
                                         <div class="col">

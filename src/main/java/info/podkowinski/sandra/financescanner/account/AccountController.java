@@ -29,8 +29,8 @@ public class AccountController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        Account account = new Account();
-        model.addAttribute("account", account);
+        model.addAttribute("account", new Account());
+        model.addAttribute("images", accountService.findImages());
         return "accounts/account-edit";
     }
 
@@ -52,15 +52,20 @@ public class AccountController {
     }
 
     @GetMapping("/edit/{accountId}")
-    public String edit(Model model, @PathVariable Long accountId) {
+    public String edit(Model model, @PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
         Account account = accountService.findById(accountId);
-        model.addAttribute("account", account);
+        List <String> images = accountService.findImages();
+        if (project.getId().equals(account.project.getId()) {
+            model.addAttribute("account", account);
+            model.addAttribute("images", images);
+        }
         return "accounts/account-edit";
     }
 
     @ResponseBody
     @PostMapping("/edit/{accountId}")
-    public String editPost(@ModelAttribute Account account, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String editPost (@ModelAttribute Account account, @AuthenticationPrincipal CurrentUser currentUser){
         Project project = currentUser.getUser().getCurrentProject();
         account.project = project;
         accountService.save(account);
@@ -69,21 +74,22 @@ public class AccountController {
 
     @ResponseBody
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, Model model, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String delete (@PathVariable Long id, Model model, @AuthenticationPrincipal CurrentUser currentUser){
         Project project = currentUser.getUser().getCurrentProject();
         Account account = accountService.findById(id);
         if (project.getId() == account.project.getId() && accountService.isNotOnlyAccount(project) &&
                 accountService.hasNoTransactions(account)) {
-                accountService.delete(account);
-                List<Account> accountsList = accountService.findByProjectId(project.getId());
-                model.addAttribute("accountsList", accountsList);
-            }
+            accountService.delete(account);
+            List<Account> accountsList = accountService.findByProjectId(project.getId());
+            model.addAttribute("accountsList", accountsList);
+        }
         return "";
     }
 
     @ResponseBody
     @GetMapping("/numberoftransactions/{accountId}")
-    public String numberOfTransactions(@PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String numberOfTransactions (@PathVariable Long accountId, @AuthenticationPrincipal CurrentUser
+    currentUser){
         Project project = currentUser.getUser().getCurrentProject();
         if (project.getId() == accountService.findById(accountId).project.getId()) {
             Long numberOTransactionsPerAccount = accountService.findNumberOfTransactionsPerAccount(accountId);
@@ -94,7 +100,7 @@ public class AccountController {
 
     @ResponseBody
     @GetMapping("/numberofimports/{accountId}")
-    public String numberOfImports(@PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String numberOfImports (@PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser){
         Project project = currentUser.getUser().getCurrentProject();
         if (project.getId() == accountService.findById(accountId).project.getId()) {
             Long numberOfImportsPerAccount = accountService.findNumberOfImportsPerAccount(accountId);
