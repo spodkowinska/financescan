@@ -21,7 +21,7 @@ public class Account {
 
     String description;
 
-    String logoImage = "zzz_custom_1";
+    String logoImage = DEFAULT_ACCOUNT_IMAGE;
     String logoFilter;
 
     LocalDateTime created = LocalDateTime.now();
@@ -29,4 +29,7 @@ public class Account {
     @JoinColumn(name = "project_id")
     @ManyToOne
     Project project;
+
+    // This is the default image used by all new accounts
+    private static final String DEFAULT_ACCOUNT_IMAGE = "zzz_custom_1.png";
 }
