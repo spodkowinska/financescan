@@ -56,7 +56,7 @@ public class AccountController {
         Project project = currentUser.getUser().getCurrentProject();
         Account account = accountService.findById(accountId);
         List <String> images = accountService.findImages();
-        if (project.getId().equals(account.project.getId()) {
+        if (project.getId().equals(account.project.getId())) {
             model.addAttribute("account", account);
             model.addAttribute("images", images);
         }
