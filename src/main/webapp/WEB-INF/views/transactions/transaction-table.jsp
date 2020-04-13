@@ -786,6 +786,9 @@
                                     <th style="width: 100px" data-searchable="true" class="sorttable_numeric">Amount</th>
                                     <th colspan="2" style="width: 250px" class="sorttable_nosort">Categories</th>
                                     <th data-searchable="true" class="sorttable_nosort">Description</th>
+                                    <th style="width: 18px" class="sorttable_nosort" data-toggle="tooltip" title="Account">
+                                        <i class="fa fa-sm fa-piggy-bank "></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <!-- TABLE DATA -->

@@ -87,6 +87,13 @@
             <%-- COLUMN: DESCRIPTION --%>
 
         <td>${trans.description}</td>
-    </tr>
+
+            <%-- COLUMN: ACCOUNT --%>
+
+        <td>
+            <img src="${pageContext.request.contextPath}/img/banks/${trans.account.logoImage}"
+                 style="filter: ${trans.account.logoFilter}; width: 20px; height: 20px" alt="${trans.account.name}">
+        </td>
+</tr>
 
 </c:forEach>
