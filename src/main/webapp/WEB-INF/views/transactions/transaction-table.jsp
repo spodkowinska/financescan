@@ -432,17 +432,22 @@
         }
 
         function applyFilters() {
+            const accountFilter = Number($('#account_filter').val());
+
+            const showOnlyOneAccount = accountFilter !== 0;
             const showOnlyUnreviewed = $('#unreviewedCheck').is(':checked');
             const showOnlyUncategorized = $('#uncategorizedCheck').is(':checked');
             const showOnlySelected = $('#onlySelectedCheck').is(':checked');
 
-            $('#filterRefresh').toggle(showOnlySelected || showOnlyUncategorized || showOnlyUnreviewed);
+            $('#filterRefresh').toggle(showOnlySelected || showOnlyUncategorized || showOnlyUnreviewed || showOnlyOneAccount);
+
+            console.log('accFil',accountFilter,showOnlyOneAccount);
 
             gUnreviewedCount = 0;
             gUncategorizedCount = 0;
             gSelectedCount = 0;
 
-            const filter = $('#text_filter').val().toUpperCase();
+            const textFilter = $('#text_filter').val().toUpperCase();
             const rows = $('#list tr');
 
             // Loop through all table rows, and hide those which don't match the search query
@@ -464,21 +469,21 @@
                 const rowSelected = row.hasClass('selected');
                 if (rowSelected) gSelectedCount++;
 
-                if (showOnlySelected && !rowSelected) {
+                if (showOnlySelected && !rowSelected || showOnlyOneAccount && accountFilter !== row.data('account-id')) {
                     show = false;
                 }
                 else if (showOnlyUnreviewed || showOnlyUncategorized) {
                     show = showOnlyUnreviewed && rowUnreviewed || showOnlyUncategorized && rowUncategorized;
                 }
 
-                if (show) {
+                if (show && textFilter.length > 2) {
                     show = false;
 
                     for (const j of gSearchableColumnsIds) {
                         const cell = cells.eq(j);
                         if (cell) {
                             const txtValue = cell.attr('sorttable_customkey') || cell.val() || cell.text();
-                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            if (txtValue.toUpperCase().indexOf(textFilter) > -1) {
                                 show = true;
                                 break;
                             }
@@ -719,9 +724,20 @@
                                     <input type="text" class="form-control" placeholder="Filter by description..."
                                            aria-label="Filter by description..." aria-describedby="basic-addon2"
                                            id="text_filter" onkeyup="applyFilters()">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button">Filter</button>
-                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-auto">
+
+                                <!-- Filter: account -->
+                                <div class="input-group input-group-sm">
+                                    <select id="account_filter" class="custom-select" onchange="applyFilters()">
+                                        <option value="0">All accounts</option>
+                                        <option disabled>&#9472;</option>
+                                        <c:forEach items="${bl}" var="account">
+                                            <option value="${account.id}">${account.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
 
                             </div>
