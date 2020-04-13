@@ -49,6 +49,9 @@
     .footer-entry:last-of-type:after {
         content: '';
     }
+    .card-footer {
+        padding: 5px 10px;
+    }
 </style>
 
 <%-- ACCOUNT MODAL --%>
@@ -141,23 +144,25 @@
                                         </div>
                                         <div class="col">
                                             <div class="card-block px-2" style="padding: 5px">
-                                                <h4 class="card-title">${account.name} <span class="small text-gray-300" style="float: right">#${account.id}</span></h4>
-                                                <p class="card-text">${account.description}</p>
-                                                <a data-toggle="modal" data-target="#accountModal" data-account-id="${account.id}"
-                                                   data-toggle="tooltip" title="Edit account" tabindex="0" class="btn btn-secondary btn-sm">
-                                                    <span class="fa fa-edit"></span> Edit
-                                                </a>
-                                                <a data-toggle="modal" data-target="#accountDeleteModal" data-account-id="${account.id}"
-                                                   data-toggle="tooltip" title="Delete account" tabindex="0" class="btn btn-danger btn-sm">
-                                                    <span class="fa fa-trash-alt"></span> Delete
-                                                </a>
+                                                <h4 class="card-title">${account.name} <span class="small text-gray-300">#${account.id}</span>
+                                                    <a data-toggle="modal" data-target="#accountDeleteModal" data-account-id="${account.id}"
+                                                       data-toggle="tooltip" title="Delete account" tabindex="0" class="btn btn-outline-danger btn-sm"
+                                                       style="float: right; margin-left: 5px; margin-right: -2px; margin-top: 2px; border: 0">
+                                                        <span class="fa fa-trash-alt"></span> Delete
+                                                    </a>
+                                                    <a data-toggle="modal" data-target="#accountModal" data-account-id="${account.id}"
+                                                       data-toggle="tooltip" title="Edit account" tabindex="0" class="btn btn-outline-secondary btn-sm"
+                                                       style="float: right; margin-left: 5px; margin-right: -2px; margin-top: 2px;  border: 0">
+                                                        <span class="fa fa-edit"></span> Edit
+                                                    </a>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-footer w-100 text-muted">
-                                        <span class="footer-entry">Created: <javatime:format value="${account.created}" style="MS" /></span>
-                                        <span class="footer-entry">Imports: 34</span>
-                                        <span class="footer-entry">Transactions: 123</span>
+                                    <div class="card-footer w-100 h-50 text-muted">
+                                        <span class="footer-entry">Transactions: <span class="transaction-count" data-account-id="${account.id}">...</span></span>
+                                        <span class="footer-entry">Created: <javatime:format value="${account.created}" style="S-" /></span>
+<%--                                        <span class="footer-entry">Imports: <span class="import-count" data-account-id="${account.id}">...</span></span>--%>
                                     </div>
                                 </div>
 
@@ -279,6 +284,21 @@
                 submitButton.hide();
         });
     });
+
+    $('.transaction-count').each(function () {
+        const target = $(this);
+        const accountId = $(this).data('account-id');
+        $.get('${pageContext.request.contextPath}/account/numberoftransactions/' + accountId, function (data) {
+            target.text(data);
+        });
+    });
+    <%--$('.import-count').each(function () {--%>
+    <%--    const target = $(this);--%>
+    <%--    const accountId = $(this).data('account-id');--%>
+    <%--    $.get('${pageContext.request.contextPath}/account/numberofimports/' + accountId, function (data) {--%>
+    <%--        target.text(data);--%>
+    <%--    });--%>
+    <%--});--%>
 </script>
 
 </body>
