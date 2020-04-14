@@ -6,34 +6,34 @@
 
 <form:form modelAttribute="transaction" id="editModalForm">
 
-    <form:input path="id" type="hidden" id="id"></form:input>
+    <form:input path="id" type="hidden" id="id" />
 
     <div class="form-group">
         <label>Date</label>
-        <form:input path="transactionDate" type="date"  class="form-control" name="transactionDate" id="transactionDate"></form:input>
+        <form:input path="transactionDate" type="date"  class="form-control" name="transactionDate" id="transactionDate" />
     </div>
 
     <div class="form-group">
         <label>Description</label>
-        <form:input path="description" class="form-control" id="description"></form:input>
+        <form:input path="description" class="form-control" id="description" />
         <p class="help-block"></p>
     </div>
 
     <div class="form-group">
         <label>Amount</label>
-        <form:input path="amount" class="form-control" id="amount"></form:input>
+        <form:input path="amount" class="form-control" id="amount" />
     </div>
 
     <div class="form-group">
         <label>Transaction Partner</label>
-        <form:input path="party" class="form-control" id="party"></form:input>
+        <form:input path="party" class="form-control" id="party" />
     </div>
 
     <div class="form-group">
         <label>Bank</label>
         <form:select path="account" class="form-control" id="accountId">
             <c:forEach items="${accounts}" var="account">
-                <option value="${account.id}">${account.name}</option>
+                <form:option value="${account}">${account.name}</form:option>
             </c:forEach>
         </form:select>
     </div>

@@ -139,8 +139,8 @@
                                 <div class="card" style="margin-bottom: 10px">
                                     <div class="row no-gutters">
                                         <div class="col-auto">
-                                            <img src="${pageContext.request.contextPath}/img/banks/${account.logoImage}"
-                                                 style="filter: ${account.logoFilter}" class="img-fluid" alt="">
+                                            <img src="${pageContext.request.contextPath}/img/banks/${account.logoImage}" class="img-fluid"
+                                                 style="filter: ${account.logoFilter}; border-top-left-radius: 0.35rem;" alt="">
                                         </div>
                                         <div class="col">
                                             <div class="card-block px-2" style="padding: 5px">
