@@ -106,18 +106,19 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label>Name of this import</label>
+                                        <input class="form-control" id="importName" name="importName">
+                                        <p class="help-block">Name helps you sort your transactions</p>
+                                    </div>
+
+
+                                    <div class="form-group">
                                         <label>Select your custom csv settings</label>
-                                        <select class="form-control" onchange="fillAForm()" id="selectSettings">
+                                        <select class="form-control" onchange="fillAForm()" id="selectSettings" name="selectSettings">
                                             <c:forEach items="${csvSettingsList}" var="setting">
                                                 <option value="${setting.id}">${setting.name}</option>
                                             </c:forEach>
                                         </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Name of this import</label>
-                                        <input class="form-control" id="importName" name="importName">
-                                        <p class="help-block">Name helps you sort your transactions</p>
                                     </div>
 
 
@@ -174,9 +175,13 @@
 
                                     <button type="submit" class="btn btn-default">Submit CSV</button>
                                     <button type="reset" class="btn btn-default">Reset</button>
-                                    <button type="submit" class="btn btn-default" formaction="${pageContext.request.contextPath}/file/csvsettings">Save settings</button>
-<%--                                    <a href="${pageContext.request.contextPath}/file/csvsettings" class="btn btn-default">Save settings</a>--%>
-
+                                    <button type="submit" class="btn btn-default"
+                                            formaction="${pageContext.request.contextPath}/file/csvsettings">Save
+                                        settings
+                                    </button>
+<%--                                    <a href="${pageContext.request.contextPath}/file/csvsettings"--%>
+<%--                                       class="btn btn-default">Save settings</a>--%>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                 </form>
                             </div>
                         </div>

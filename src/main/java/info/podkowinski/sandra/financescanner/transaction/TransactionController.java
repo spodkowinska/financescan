@@ -7,6 +7,8 @@ import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryService;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
+import info.podkowinski.sandra.financescanner.imports.Import;
+import info.podkowinski.sandra.financescanner.imports.ImportService;
 import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
 import info.podkowinski.sandra.financescanner.user.CurrentUser;
@@ -16,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
@@ -33,14 +36,16 @@ public class TransactionController {
     private final AccountService accountService;
     private final CategoryService categoryService;
     private final CsvSettingsService csvSettingsService;
+    private final ImportService importService;
 
     public TransactionController(TransactionService transactionService, ProjectService projectService, AccountService accountService,
-                                 CategoryService categoryService, CsvSettingsService csvSettingsService) {
+                                 CategoryService categoryService, CsvSettingsService csvSettingsService, ImportService importService) {
         this.transactionService = transactionService;
         this.projectService = projectService;
         this.accountService = accountService;
         this.categoryService = categoryService;
         this.csvSettingsService = csvSettingsService;
+        this.importService = importService;
     }
 
     @RequestMapping("/list")
@@ -61,29 +66,34 @@ public class TransactionController {
     }
 
     @GetMapping("/fileimport")
-    public String fileimport(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String fileImport(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         List<Account> accountsList = accountService.findByProjectId(project.getId());
-        List<CsvSettings> csvSettingsList = csvSettingsService.findByProjectId(project.getId());
+        List<CsvSettings> csvSettingsList = csvSettingsService.findAllDefault();
+        Import import1 = new Import();
         model.addAttribute("csvSettingsList", csvSettingsList);
         model.addAttribute("accountsList", accountsList);
+        model.addAttribute("import", import1);
         return "file-import";
     }
 
     @PostMapping("/fileimport")
-    public String fileimportPost(HttpServletRequest request, @AuthenticationPrincipal CurrentUser currentUser) throws IOException, ServletException, ParseException, CsvValidationException {
+    public String fileImportPost(HttpServletRequest request, @AuthenticationPrincipal CurrentUser currentUser) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
-        Project project = currentUser.getUser().getCurrentProject();
-        int datePosition = Integer.parseInt(request.getParameter("datePosition")) - 1;
-        int descriptionPosition = Integer.parseInt(request.getParameter("descriptionPosition")) - 1;
-        int partyPosition = Integer.parseInt(request.getParameter("partyPosition")) - 1;
-        int amountPosition = Integer.parseInt(request.getParameter("amountPosition")) - 1;
-        int skippedLines = Integer.parseInt(request.getParameter("skipLines"));
-        char separator = request.getParameter("separator").charAt(0);
+        String fileName = filePart.getName();
         String importName = request.getParameter("importName");
-        Long account = Long.parseLong(request.getParameter("selectAccount"));
-        transactionService.scanDocument(filePart.getInputStream(), datePosition, descriptionPosition,
-                partyPosition, amountPosition, separator, skippedLines, importName, account, project);
+        System.out.println(importName);
+        CsvSettings csvSettings = csvSettingsService.findById(Long.parseLong(request.getParameter("selectSettings")));
+        Account account = accountService.findById(Long.parseLong(request.getParameter("selectSettings")));
+        Project project = currentUser.getUser().getCurrentProject();
+        Import import1 = new Import();
+        import1.setName(importName);
+        import1.setProject(project);
+        import1.setFileName(fileName);
+        import1.setUsedSettings(csvSettings);
+        import1.setAccount(account);
+        importService.save(import1);
+        transactionService.scanDocument(filePart.getInputStream(), csvSettings, import1, project);
         return "redirect:/transaction/list";
     }
 
@@ -104,7 +114,7 @@ public class TransactionController {
     public String addPost(HttpServletRequest request, @ModelAttribute Transaction transaction1, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         transaction1.setProject(project);
-        transaction1.setImportName("Imported manually on " + LocalDate.now());
+//        transaction1.setImportName("Imported manually on " + LocalDate.now());
         String date = request.getParameter("transactionDate");
         System.out.println(date);
         transaction1.setTransactionDate(LocalDate.parse(date));
@@ -131,7 +141,7 @@ public class TransactionController {
     public String editPost(HttpServletRequest request, @ModelAttribute Transaction transaction1, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         transaction1.setProject(project);
-        transaction1.setImportName("Imported manually on " + LocalDate.now());
+//        transaction1.setImportName("Imported manually on " + LocalDate.now());
         String date = request.getParameter("transactionDate");
         transaction1.setTransactionDate(LocalDate.parse(date));
         System.out.println(transaction1.transactionDate);

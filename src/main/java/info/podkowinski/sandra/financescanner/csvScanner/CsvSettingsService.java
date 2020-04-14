@@ -27,8 +27,8 @@ public class CsvSettingsService {
         return csvSettingsRepository.findById(id).orElse(null);
     }
 
-    public List<CsvSettings>findByProjectId(Long projectId){
-        return csvSettingsRepository.findByProjectId(projectId);
+    public List<CsvSettings>findAllDefault(){
+        return csvSettingsRepository.findAll();
     }
 
     public void createDefaultBanksSettings(){

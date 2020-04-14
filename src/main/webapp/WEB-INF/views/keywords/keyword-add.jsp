@@ -23,8 +23,8 @@
             </a>
         </label>
 
-        <input name="safeKeywords" id="notSentKeywords" type="hidden" />
-        <input name="keywords" id="sentKeywords" class="form-control" />
+        <input name="safeKeywords" id="notSentKeywords" type="hidden"/>
+        <input name="keywords" id="sentKeywords" class="form-control"/>
 
         <div class="form-check" style="margin-top: 5px">
             <input class="form-check-input" type="checkbox" id="safeCheck" style="margin-top: 6px">

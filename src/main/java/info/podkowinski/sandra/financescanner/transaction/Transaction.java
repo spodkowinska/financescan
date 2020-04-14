@@ -2,6 +2,7 @@ package info.podkowinski.sandra.financescanner.transaction;
 
 
 import info.podkowinski.sandra.financescanner.account.Account;
+import info.podkowinski.sandra.financescanner.imports.Import;
 import info.podkowinski.sandra.financescanner.project.Project;
 import lombok.Getter;
 import lombok.Setter;
@@ -64,10 +65,12 @@ public class Transaction {
     }
 
     @JoinColumn(name = "project_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     Project project;
 
-    String importName;
+    @JoinColumn(name = "import_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    Import importName;
 
 
 }

@@ -30,14 +30,4 @@ public class CsvSettings {
     char csvSeparator;
 
     int skipLines;
-
-    @JoinColumn(name = "project_id")
-    @ManyToOne
-    Project project;
-
-    @JoinColumn(name = "account_id")
-    @ManyToOne
-    Account account;
-
-
 }

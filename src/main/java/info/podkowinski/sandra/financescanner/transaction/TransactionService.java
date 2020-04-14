@@ -4,7 +4,9 @@ import com.opencsv.exceptions.CsvValidationException;
 import info.podkowinski.sandra.financescanner.account.AccountRepository;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryRepository;
+import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
+import info.podkowinski.sandra.financescanner.imports.Import;
 import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectRepository;
 import org.springframework.stereotype.Service;
@@ -46,25 +48,28 @@ public class TransactionService {
         return categoriesList;
     }
 
-    public void scanDocument(InputStream inputStream, int transactionDatePosition, int descriptionPosition, int partyPosition, int amountPosition, char separator, int skipLines, String importName, Long bankId, Project project)
+    public void scanDocument(InputStream inputStream, CsvSettings csvSettings, Import import1, Project project)
             throws IOException, CsvValidationException, ParseException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
+        Long accountId = import1.getAccount().getId();
         // todo fix this ugly hack (detecting mBank) to pass encoding
-        String inputCharset = bankId == 1l ? "Cp1250" : "UTF-8";
-        List<List<String>> transactions = parser.csvTransactions(inputStream, separator, skipLines, inputCharset);
-        System.out.println(bankId);
+        String inputCharset = accountId == 1l ? "Cp1250" : "UTF-8";
+        List<List<String>> transactions = parser.csvTransactions(inputStream, csvSettings.getCsvSeparator(),
+                csvSettings.getSkipLines(), inputCharset);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             // todo fix this ugly hack (detecting santander) to parse Date
-            if (bankId == 2l) {
-                newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition), formatter);
+            if (accountId == 3l) {
+                newTransaction.transactionDate = LocalDate.parse(trans.get(csvSettings.getDatePosition()), formatter);
             } else {
-                newTransaction.transactionDate = LocalDate.parse(trans.get(transactionDatePosition));
+                newTransaction.transactionDate = LocalDate.parse(trans.get(csvSettings.getDatePosition()));
             }
-            newTransaction.party = trans.get(partyPosition);
-            newTransaction.description = trans.get(descriptionPosition);
+            newTransaction.party = trans.get(csvSettings.getPartyPosition());
+            newTransaction.description = trans.get(csvSettings.getDescriptionPosition());
+            newTransaction.account = import1.getAccount();
             //todo fix getting amount in Millennium two column version
+            int amountPosition = csvSettings.getAmountPosition();
             if (trans.get(amountPosition).isEmpty()) {
                 newTransaction.amount = Float.parseFloat(trans.get(amountPosition + 1)
                         .replace(',', '.')
@@ -76,8 +81,9 @@ public class TransactionService {
                         .replace("\"", "")
                         .replace(" ", ""));
             }
-            newTransaction.importName = importName;
-            newTransaction.account = accountRepository.getOne(bankId);
+//            newTransaction.importName = importName;
+//            newTransaction.account = accountRepository.getOne(accountId);
+            newTransaction.importName = import1;
             newTransaction.project = project;
             transactionRepository.save(newTransaction);
         }
