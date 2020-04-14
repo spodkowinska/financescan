@@ -1,10 +1,8 @@
 package info.podkowinski.sandra.financescanner.user;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserController {
@@ -17,9 +15,16 @@ public class UserController {
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public String login() {
-        return "login";
+        return "user/user-login";
     }
 
+    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
+    public String register() {
+        return "user/user-register";
+    }
 
-
+    @RequestMapping(value = {"/forgotpassword"}, method = RequestMethod.GET)
+    public String forgotPassword() {
+        return "user/user-forgot-password";
+    }
 }
