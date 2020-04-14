@@ -35,7 +35,7 @@
                 <form class="user" method="post" action="${pageContext.request.contextPath}/forgotpassword">
                   <div class="form-group">
                     <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                           aria-describedby="emailHelp" placeholder="Enter Email Address..." />
+                           aria-describedby="emailHelp" placeholder="Enter Email Address..." autocomplete="off" />
                   </div>
                   <input type="submit" class="btn btn-primary btn-user btn-block" value="Reset Password" />
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

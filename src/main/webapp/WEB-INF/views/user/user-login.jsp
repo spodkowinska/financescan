@@ -33,10 +33,12 @@
                 </div>
                 <form class="user" method="post">
                   <div class="form-group">
-                    <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter User Name...">
+                    <input type="text" name="username" class="form-control form-control-user"
+                           aria-describedby="emailHelp" placeholder="Enter User Name..." autocomplete="username">
                   </div>
                   <div class="form-group">
-                    <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                    <input type="password" name="password" class="form-control form-control-user"
+                           placeholder="Password" autocomplete="current-password">
                   </div>
 <%--                  <div class="form-group">--%>
 <%--                    <div class="custom-control custom-checkbox small">--%>
