@@ -161,8 +161,8 @@
                                     </div>
                                     <div class="card-footer w-100 h-50 text-muted">
                                         <span class="footer-entry">Transactions: <span class="transaction-count" data-account-id="${account.id}">...</span></span>
+                                        <span class="footer-entry">Imports: <span class="import-count" data-account-id="${account.id}">...</span></span>
                                         <span class="footer-entry">Created: <javatime:format value="${account.created}" style="S-" /></span>
-<%--                                        <span class="footer-entry">Imports: <span class="import-count" data-account-id="${account.id}">...</span></span>--%>
                                     </div>
                                 </div>
 
@@ -292,13 +292,13 @@
             target.text(data);
         });
     });
-    <%--$('.import-count').each(function () {--%>
-    <%--    const target = $(this);--%>
-    <%--    const accountId = $(this).data('account-id');--%>
-    <%--    $.get('${pageContext.request.contextPath}/account/numberofimports/' + accountId, function (data) {--%>
-    <%--        target.text(data);--%>
-    <%--    });--%>
-    <%--});--%>
+    $('.import-count').each(function () {
+        const target = $(this);
+        const accountId = $(this).data('account-id');
+        $.get('${pageContext.request.contextPath}/account/numberofimports/' + accountId, function (data) {
+            target.text(data);
+        });
+    });
 </script>
 
 </body>
