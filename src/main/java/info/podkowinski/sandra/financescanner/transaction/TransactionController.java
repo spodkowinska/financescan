@@ -114,7 +114,6 @@ public class TransactionController {
     public String addPost(HttpServletRequest request, @ModelAttribute Transaction transaction1, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         transaction1.setProject(project);
-//        transaction1.setImportName("Imported manually on " + LocalDate.now());
         String date = request.getParameter("transactionDate");
         System.out.println(date);
         transaction1.setTransactionDate(LocalDate.parse(date));
@@ -155,7 +154,7 @@ public class TransactionController {
     public String removeAllCategories(@PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject() == project) {
+        if (transaction.getProject().getId() == project.getId()) {
             transaction.rejectedCategories.addAll(transaction.getPendingCategories());
             transaction.rejectedCategories.addAll(transaction.getCategories());
             transaction.setCategories(null);
@@ -170,7 +169,7 @@ public class TransactionController {
     public String acceptAllSuggestions(@PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject() == project) {
+        if (transaction.getProject().getId() == project.getId()) {
             transaction.categories.addAll(transaction.getPendingCategories());
             transaction.setPendingCategories(null);
             transactionService.save(transaction);
@@ -183,7 +182,7 @@ public class TransactionController {
     public String rejectAllSuggestions(@PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject() == project) {
+        if (transaction.getProject().getId() == project.getId()) {
             transaction.rejectedCategories.addAll(transaction.getPendingCategories());
             transaction.setPendingCategories(null);
             transactionService.save(transaction);
@@ -196,7 +195,7 @@ public class TransactionController {
     public String addCategory(@PathVariable Long transactionId, @PathVariable Long categoryId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject() == project) {
+        if (transaction.getProject().getId() == project.getId()) {
             transaction.addCategory(categoryService.findById(categoryId));
             transactionService.save(transaction);
         }
@@ -206,10 +205,10 @@ public class TransactionController {
     @ResponseBody
     @GetMapping("/removecategory/{transactionId}/{categoryId}")
     public String removeCategory(@PathVariable Long transactionId, @PathVariable Long categoryId, @AuthenticationPrincipal CurrentUser currentUser) {
-        Project project = projectService.findCurrentByUser(currentUser.getUser());
+        Project project = currentUser.getUser().getCurrentProject();
         Category categoryToRemove = categoryService.findById(categoryId);
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject() == project) {
+        if (transaction.getProject().getId() == project.getId()) {
             if (transaction.pendingCategories.contains(categoryToRemove)) {
                 transaction.removeCategory(categoryToRemove);
             }
@@ -221,7 +220,7 @@ public class TransactionController {
     @ResponseBody
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, @AuthenticationPrincipal CurrentUser currentUser) {
-        Project project = projectService.findCurrentByUser(currentUser.getUser());
+        Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(id);
         if (transaction.project.equals(project)) {
             transaction.categories.clear();

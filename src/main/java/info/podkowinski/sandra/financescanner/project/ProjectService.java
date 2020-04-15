@@ -29,7 +29,4 @@ public class ProjectService {
         return project.getId();
     }
 
-    public Project findCurrentByUser(User user){
-        return projectRepository.findById(projectRepository.findCurrentByUserId(user.getId())).orElse(null);
-    }
 }
