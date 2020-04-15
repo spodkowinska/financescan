@@ -149,6 +149,19 @@ public class TransactionController {
         return "redirect:/transaction/table/gettransaction/" + transaction1.id;
     }
 
+    @GetMapping("/changeaccount/{transactionId}/{accountId}")
+    public String changeAccount(@PathVariable Long transactionId, @PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = currentUser.getUser().getCurrentProject();
+        Transaction transaction = transactionService.findById(transactionId);
+        if (transaction != null && project != null && transaction.project.getId().equals(project.getId())) {
+            Account account = accountService.findById(accountId);
+            if (account != null && account.getProject().getId().equals(project.getId())) {
+                transaction.account = account;
+                transactionService.save(transaction);
+            }
+        }
+        return "redirect:/transaction/table/gettransaction/" + transactionId;
+    }
 
     @ResponseBody
     @GetMapping("/removeallcategories/{transactionId}")

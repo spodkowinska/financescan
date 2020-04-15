@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <c:forEach items="${tl}" var="trans">
-    <tr id="cat_row_${trans.id}" onclick="selectTransaction(this.id, arguments[0])"
+    <tr id="cat_row_${trans.id}" onclick="selectTransaction(${trans.id}, arguments[0])"
         data-uncategorized="${empty trans.categories && empty trans.pendingCategories ? 'true' : 'false'}"
         data-unreviewed="${empty trans.pendingCategories ? 'false' : 'true'}"
         data-transaction-id="${trans.id}"
