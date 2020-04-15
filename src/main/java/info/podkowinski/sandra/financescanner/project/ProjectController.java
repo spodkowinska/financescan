@@ -15,10 +15,7 @@ import info.podkowinski.sandra.financescanner.user.UserServiceImpl;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -74,6 +71,30 @@ public class ProjectController {
         projectService.save(project);
 
         return "redirect:/list";
+    }
+
+    @GetMapping("/edit/{projectId}")
+    public String edit(Model model, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
+        currentUser.getUser().getProjects().contains(projectService.findById(projectId));
+        Project project = projectService.findById(projectId);
+        model.addAttribute("project", project);
+        return "project-edit";
+    }
+
+    //todo frontend validation
+    @PostMapping("/edit/{projectId}")
+    public String editPost(@ModelAttribute Project project, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
+        currentUser.getUser().getProjects().contains(projectService.findById(projectId));
+        projectService.save(project);
+        return "redirect:/list";
+    }
+
+    @ResponseBody
+    @GetMapping("/delete/{projectId}")
+    public String delete(@PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
+        currentUser.getUser().getProjects().contains(projectService.findById(projectId));
+        projectService.deleteProjectsCategories(projectService.findById(projectId));
+        return "";
     }
 
 
