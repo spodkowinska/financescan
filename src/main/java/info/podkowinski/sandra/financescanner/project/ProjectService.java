@@ -3,6 +3,8 @@ package info.podkowinski.sandra.financescanner.project;
 import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProjectService {
 
@@ -12,7 +14,7 @@ public class ProjectService {
 
         this.projectRepository = projectRepository;
     }
-    public void saveProject(Project project){
+    public void save(Project project){
         projectRepository.save(project);
     }
 
@@ -28,5 +30,7 @@ public class ProjectService {
         long test = project.getId();
         return project.getId();
     }
-
+    List<Project> findAllByUserId(Long userId){
+        return projectRepository.findAllByUserId(userId);
+    }
 }

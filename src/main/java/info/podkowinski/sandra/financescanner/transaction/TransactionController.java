@@ -115,9 +115,7 @@ public class TransactionController {
         Project project = currentUser.getUser().getCurrentProject();
         transaction1.setProject(project);
         String date = request.getParameter("transactionDate");
-        System.out.println(date);
         transaction1.setTransactionDate(LocalDate.parse(date));
-        System.out.println(transaction1.transactionDate);
         transactionService.save(transaction1);
 
         return "redirect:/transaction/table/gettransaction/" + transaction1.id;
