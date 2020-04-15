@@ -208,6 +208,10 @@
             refreshFilterBadges();
         }
 
+        function isTransactionSelected(transactionId) {
+            return $('#cat_row_' + transactionId + ' .transaction-row-checkbox').is(':checked');
+        }
+
         function gatherSelectedRows() {
             const selectedRows = [];
             $('.transaction-row-checkbox').each(function () {
@@ -285,14 +289,19 @@
         }
 
         function refreshRowForTransaction(transactionId, preloadedData){
+            const wasSelected = gBulkEditEnabled && isTransactionSelected(transactionId);
             if (preloadedData) {
                 $('#cat_row_' + transactionId).replaceWith(preloadedData);
                 afterRowRefreshed(transactionId);
+                if (wasSelected)
+                    selectTransaction(transactionId, null, true);
             }
             else {
                 $.get("${pageContext.request.contextPath}/transaction/gettransaction/" + transactionId, function (data) {
                     $('#cat_row_' + transactionId).replaceWith(data);
                     afterRowRefreshed(transactionId);
+                    if (wasSelected)
+                        selectTransaction(transactionId, null, true);
                 })
             }
         }
@@ -303,24 +312,32 @@
             applyFilters();
         }
 
-        function selectTransaction(transRowId, event) {
+        function selectTransaction(transactionId, event, preserveBulkMenu) {
             if (!gBulkEditEnabled)
                 return;
 
-            const bulkMenu = $('#bulkMenu');
-            if (bulkMenu.is(':visible')) {
-                bulkMenu.hide();
-                return;
+            if (!preserveBulkMenu) {
+                const bulkMenu = $('#bulkMenu');
+                if (bulkMenu.is(':visible')) {
+                    bulkMenu.hide();
+                    return;
+                }
             }
 
             // Ignoring all clicks in delete, edit, categories, etc. Only <td> clicks should pass here.
-            if (event.target.tagName.toUpperCase() === 'TD') {
-                const row = $('#' + transRowId);
+            if (event == null || event.target.tagName.toUpperCase() === 'TD') {
+                const row = $('#cat_row_' + transactionId);
 
                 // Toggle the checkbox
                 const checkbox = row.find('input');
                 checkbox.trigger('click');
             }
+        }
+
+        function changeAccount(transactionId, accountId) {
+            $.get("${pageContext.request.contextPath}/transaction/changeaccount/" + transactionId + "/" + accountId, function (data) {
+                refreshRowForTransaction(transactionId, data);
+            });
         }
 
         function changeCategory(transactionId, categoryId) {
@@ -572,7 +589,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <jsp:include page="/WEB-INF/views/sidebar.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/views/utils/sidebar.jsp" />
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -582,7 +599,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <jsp:include page="/WEB-INF/views/topbar.jsp"></jsp:include>
+            <jsp:include page="/WEB-INF/views/utils/topbar.jsp" />
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -843,6 +860,11 @@
                                 <i class="fas fa-minus-circle mr-2 text-gray-600"></i> Reject all suggested categories
                             </a>
                             <div class="dropdown-divider"></div>
+                            <%-- Change Account --%>
+                            <a class="dropdown-item" tabindex="0" onclick="changeBulkMenuPage('#bulkMenu-changeAccountPage')" style="padding: 0">
+                                <i class="fas fa-piggy-bank mr-2 text-gray-600"></i> Change account...
+                            </a>
+                            <div class="dropdown-divider"></div>
                             <%-- Delete Transactions --%>
                             <a class="dropdown-item" tabindex="0" style="padding: 0" data-toggle="popover" data-trigger="focus" data-html="true"
                                data-content="<a class='btn btn-sm btn-danger delete-confirm' id='delete-confirm-selected'>Delete</a>">
@@ -881,6 +903,23 @@
                                 <i class="fas fa-minus-square mr-2 text-gray-600"></i> Remove all
                             </a>
                         </div>
+                        <%-- Bulk Menu: Change Account Page --%>
+                        <div id="bulkMenu-changeAccountPage" style="display: none">
+                            <a class="dropdown-item" onclick="changeBulkMenuPage('#bulkMenu-mainPage')" style="padding: 0">
+                                <i class="fas fa-chevron-left mr-2 text-gray-600"></i> Change account
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <div style="text-align: center">
+                                <select class="custom-select">
+                                    <c:forEach items="${bl}" var="account">
+                                        <option value="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </select>
+                                <a tabindex="0" style="font-size: 0.8em; margin-top: 2px;" class="btn btn-sm btn-outline-secondary py-0">
+                                    Change
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -891,7 +930,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
+        <jsp:include page="/WEB-INF/views/utils/footer.jsp" />
         <!-- End of Footer -->
 
     </div>
@@ -1012,8 +1051,15 @@
     });
 
     $('#bulkMenu-deselectAll').click(function () {
-       clearSelection();
+        clearSelection();
         $('#bulkMenu').hide();
+    });
+
+    $('#bulkMenu-changeAccountPage a').click(function () {
+        const accountId = $('#bulkMenu-changeAccountPage select').val();
+        gatherSelectedRows().forEach(function(row) {
+            changeAccount(row.data('transaction-id'), accountId);
+        });
     });
 
     $('#bulkMenu').click(function(e) {

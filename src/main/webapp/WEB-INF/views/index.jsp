@@ -35,7 +35,7 @@
 <div id="wrapper">
 
   <!-- Sidebar -->
-  <jsp:include page="sidebar.jsp"></jsp:include>
+  <jsp:include page="/WEB-INF/views/utils/sidebar.jsp" />
   <!-- End of Sidebar -->
 
   <!-- Content Wrapper -->
@@ -45,7 +45,7 @@
     <div id="content">
 
       <!-- Topbar -->
-      <jsp:include page="topbar.jsp"></jsp:include>
+      <jsp:include page="/WEB-INF/views/utils/topbar.jsp" />
       <!-- End of Topbar -->
 
 <!-- Bootstrap core JavaScript-->
