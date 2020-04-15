@@ -1,7 +1,6 @@
 package info.podkowinski.sandra.financescanner.home;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +31,7 @@ public class MyErrorController implements ErrorController {
         Object servletName = request.getAttribute(RequestDispatcher.ERROR_SERVLET_NAME);
         model.addAttribute("servletName", servletName != null ? servletName.toString() : servletName);
 
-        return "error";
+        return "utils/error";
     }
 
     @Override

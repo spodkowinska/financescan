@@ -158,7 +158,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-   <jsp:include page="/WEB-INF/views/sidebar.jsp"></jsp:include>
+   <jsp:include page="/WEB-INF/views/utils/sidebar.jsp" />
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -168,7 +168,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <jsp:include page="/WEB-INF/views/topbar.jsp"></jsp:include>
+            <jsp:include page="/WEB-INF/views/utils/topbar.jsp" />
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -259,7 +259,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
+        <jsp:include page="/WEB-INF/views/utils/footer.jsp" />
         <!-- End of Footer -->
 
     </div>
