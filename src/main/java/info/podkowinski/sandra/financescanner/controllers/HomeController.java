@@ -1,12 +1,10 @@
-package info.podkowinski.sandra.financescanner.home;
+package info.podkowinski.sandra.financescanner.controllers;
 
 import info.podkowinski.sandra.financescanner.account.AccountService;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
-import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
-import info.podkowinski.sandra.financescanner.user.User;
 import info.podkowinski.sandra.financescanner.user.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

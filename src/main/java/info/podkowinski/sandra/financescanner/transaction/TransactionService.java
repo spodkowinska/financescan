@@ -1,6 +1,7 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
 import com.opencsv.exceptions.CsvValidationException;
+import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.account.AccountRepository;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryRepository;
@@ -17,6 +18,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Stream;
 
 
 @Service
@@ -123,14 +125,14 @@ public class TransactionService {
         }
     }
 
-    //todo what to do if transaction doesn't exist, itp?
-    public void assignCategoryInTransaction(Project project, Long transactionId, Long categoryId) {
-        Transaction transaction = transactionRepository.getOne(transactionId);
-        if (transaction.getProject().equals(project)) {
-            transaction.addCategory(categoryRepository.getOne(categoryId));
-            transactionRepository.save(transaction);
-        }
-    }
+//    //todo what to do if transaction doesn't exist, itp?
+//    public void assignCategoryInTransaction(Project project, Long transactionId, Long categoryId) {
+//        Transaction transaction = transactionRepository.getOne(transactionId);
+//        if (transaction.getProject().equals(project)) {
+//            transaction.addCategory(categoryRepository.getOne(categoryId));
+//            transactionRepository.save(transaction);
+//        }
+//    }
 
     public double balanceByDates(Long projectId, Date start, Date end) {
         List<Transaction> transactionList = transactionRepository.findByDates(start, end, projectId);
@@ -218,11 +220,11 @@ public class TransactionService {
         transactionRepository.save(transaction);
     }
 
-    public HashMap<String, Float> mapTransactionsToCategoriesWithAmounts(List<Transaction> transactionsToBeMapped, Long projectId) {
-        HashMap<String, Float> categoriesWithAmounts = new HashMap<>();
+    public HashMap<String, Double> mapTransactionsToCategoriesWithAmounts(List<Transaction> transactionsToBeMapped, Long projectId) {
+        HashMap<String, Double> categoriesWithAmounts = new HashMap<>();
         List<Category> categoriesByProject = categoryRepository.findAllByProjectId(projectId);
         for (Category category : categoriesByProject) {
-            categoriesWithAmounts.put(category.getName(), 0f);
+            categoriesWithAmounts.put(category.getName(), 0d);
         }
         for (Transaction transaction : transactionsToBeMapped) {
             if (transaction.amount < 0) {
@@ -232,8 +234,8 @@ public class TransactionService {
                     categoriesPerTransaction.add(category.name);
                 }
                 for (String categoryName : categoriesPerTransaction) {
-                    Float previousAmount = categoriesWithAmounts.get(categoryName);
-                    Float newAmount = previousAmount + Math.abs(transaction.amount) / numberOfCategoriesPerTransaction;
+                    Double previousAmount = categoriesWithAmounts.get(categoryName);
+                    Double newAmount = previousAmount + Math.abs(transaction.amount) / numberOfCategoriesPerTransaction;
                     categoriesWithAmounts.replace(categoryName, newAmount);
                 }
             }
@@ -260,7 +262,7 @@ public class TransactionService {
         }
         return transactionsList;
     }
-    List<Integer> findYearsByProjectId(Long projectId){
+    public List<Integer> findYearsByProjectId(Long projectId){
         Integer currentYear = LocalDate.now().getYear();
         Transaction lastTransaction = transactionRepository.findLastTransaction(projectId);
         Integer lastYear;
@@ -281,6 +283,18 @@ public class TransactionService {
         transactionRepository.deleteAssignedCategoriesByCategoryId(categoryId);
         transactionRepository.deleteAssignedPendingCategoriesByCategoryId(categoryId);
         transactionRepository.deleteAssignedRejectedCategoriesByCategoryId(categoryId);
+    }
+
+    public Integer numberOfTransactionsPerYear(Integer year, Long projectId){
+        return transactionRepository.numberOfTransactionsPerYear(projectId, "/'"+ year + "-01-01/'", "/'" + year + "-12-31/'");
+    }
+
+    public Double sumOfExpenses(Long projectId, Date start, Date end){
+        return transactionRepository.sumOfExpenses(projectId, start, end);
+    }
+
+    public Double sumOfIncomes(Long projectId, Date startingDate, Date endingDate){
+        return transactionRepository.sumOfIncomes(projectId, startingDate, endingDate);
     }
 
 }

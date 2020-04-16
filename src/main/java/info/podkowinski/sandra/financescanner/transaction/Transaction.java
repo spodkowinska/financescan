@@ -32,7 +32,7 @@ public class Transaction {
 
     String party;
 
-    float amount;
+    double amount;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
