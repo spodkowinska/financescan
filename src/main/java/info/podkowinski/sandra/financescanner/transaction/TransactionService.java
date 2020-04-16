@@ -285,16 +285,27 @@ public class TransactionService {
         transactionRepository.deleteAssignedRejectedCategoriesByCategoryId(categoryId);
     }
 
-    public Integer numberOfTransactionsPerYear(Integer year, Long projectId){
-        return transactionRepository.numberOfTransactionsPerYear(projectId, "/'"+ year + "-01-01/'", "/'" + year + "-12-31/'");
+    public Integer numberOfTransactions(String year, Long projectId){
+        return transactionRepository.numberOfTransactionsPerYear(projectId, year);
     }
 
-    public Double sumOfExpenses(Long projectId, Date start, Date end){
-        return transactionRepository.sumOfExpenses(projectId, start, end);
+    public Double sumOfExpenses(Long projectId, String year){
+        return transactionRepository.sumOfExpensesPerYear(projectId, year);
     }
 
-    public Double sumOfIncomes(Long projectId, Date startingDate, Date endingDate){
-        return transactionRepository.sumOfIncomes(projectId, startingDate, endingDate);
+    public Double sumOfIncomes(Long projectId, String year){
+        return transactionRepository.sumOfIncomesPerYear(projectId, year);
     }
 
+    public Integer numberOfTransactionsPerMonth(String year, String month, Long projectId){
+        return transactionRepository.numberOfTransactionsPerMonth(projectId, year, month);
+    }
+
+    public Double sumOfExpensesPerMonth(Long projectId, String year, String month){
+        return transactionRepository.sumOfExpensesPerMonth(projectId, year, month);
+    }
+
+    public Double sumOfIncomesPerMonth(Long projectId, String year, String month) {
+        return transactionRepository.sumOfIncomesPerMonth(projectId, year, month);
+    }
 }

@@ -52,8 +52,8 @@ public class HomeController {
 //        Date date2 = Date.valueOf(str2);
         List<Transaction> allTransactions = transactionService.findByProjectId(2l);
         Map<String, Double> lastYearBalances = transactionService.lastYearBalances(2l);
-        Map<String, Float> categoriesAndAmounts = transactionService.mapTransactionsToCategoriesWithAmounts(allTransactions, 2l);
-        Map<String, Float> categoriesAndSpendings = transactionService.mapTransactionsToCategoriesWithAmounts(transactionService.findSpendings(2l), 2l);
+        Map<String, Double> categoriesAndAmounts = transactionService.mapTransactionsToCategoriesWithAmounts(allTransactions, 2l);
+        Map<String, Double> categoriesAndSpendings = transactionService.mapTransactionsToCategoriesWithAmounts(transactionService.findSpendings(2l), 2l);
         model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);
         model.addAttribute("lastYearBalances", lastYearBalances);
         model.addAttribute("categoriesWithSpendings", categoriesAndSpendings);

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.sql.Date;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,12 +58,21 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "DELETE FROM transactions_rejected_categories trc WHERE trc.rejected_categories_id =?", nativeQuery = true)
     void deleteAssignedRejectedCategoriesByCategoryId(Long categoryId);
 
-    @Query(value = "SELECT SUM(CASE WHEN (t.project_id = ? AND t.transaction_date >= ? AND transaction_date <= ? ) THEN 1 ELSE 0 END) AS num_trans FROM transactions t", nativeQuery = true)
-    Integer numberOfTransactionsPerYear(Long projectId, String startingDate, String endingDate);
+    @Query(value = "SELECT SUM(CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? ) THEN 1 ELSE 0 END) AS num_trans FROM transactions t", nativeQuery = true)
+    Integer numberOfTransactionsPerYear(Long projectId, String year);
 
-    @Query(value = "SELECT SUM(CASE WHEN (t.project_id = ? AND t.transaction_date >= ? AND transaction_date <= ? AND t.amount>0) THEN t.amount ELSE 0 END) AS sum_incomes FROM transactions t", nativeQuery = true)
-    Double sumOfIncomes(Long projectId, Date startingDate, Date endingDate);
+    @Query(value = "SELECT SUM(CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? AND t.amount>0) THEN t.amount ELSE 0 END) AS sum_incomes FROM transactions t", nativeQuery = true)
+    Double sumOfIncomesPerYear(Long projectId, String year);
 
-    @Query(value = "SELECT SUM( CASE WHEN (t.project_id = ? AND t.transaction_date >= ? AND transaction_date <= ? AND t.amount<0) THEN t.amount ELSE 0 END) AS sum_incomes FROM transactions t", nativeQuery = true)
-    Double sumOfExpenses(Long projectId, Date startingDate, Date  endingDate);
+    @Query(value = "SELECT SUM( CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? AND t.amount<0) THEN t.amount ELSE 0 END) AS sum_incomes FROM transactions t", nativeQuery = true)
+    Double sumOfExpensesPerYear(Long projectId, String year);
+
+    @Query(value = "SELECT SUM(CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? AND MONTH(t.transaction_date)=?) THEN 1 ELSE 0 END) AS num_trans FROM transactions t", nativeQuery = true)
+    Integer numberOfTransactionsPerMonth(Long projectId, String year, String month);
+
+    @Query(value = "SELECT SUM(CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? AND MONTH(t.transaction_date)=? AND t.amount>0) THEN t.amount ELSE 0 END) AS sum_incomes FROM transactions t", nativeQuery = true)
+    Double sumOfIncomesPerMonth(Long projectId, String year, String month);
+
+    @Query(value = "SELECT SUM( CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? AND MONTH(t.transaction_date)=? AND t.amount<0) THEN t.amount ELSE 0 END) AS sum_incomes FROM transactions t", nativeQuery = true)
+    Double sumOfExpensesPerMonth(Long projectId, String year, String month);
 }
