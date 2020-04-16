@@ -45,73 +45,69 @@ public class ProjectController {
 
     @GetMapping("/list")
     public String list(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
-
-        Project project = currentUser.getUser().getCurrentProject();
         List<Project> projectsList = projectService.findAllByUserId(currentUser.getUser().getId());
         model.addAttribute("projectsList", projectsList);
-        return "project-table";
+        return "projects/project-table";
     }
 
     @GetMapping("/add")
     public String add(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
-
-        Project project = currentUser.getUser().getCurrentProject();
-        Long projectId = projectService.createDefaultProject();
-        categoryService.createDefaultCategories(projectId);
-        Project newProject  = projectService.findById(projectId);
-        model.addAttribute("currentProject", project);
-        model.addAttribute("newProject", newProject);
-        return "project-add";
+        model.addAttribute("project", new Project());
+        return "projects/project-edit";
     }
 
     @PostMapping("/add")
     public String addPost(@ModelAttribute Project project, @AuthenticationPrincipal CurrentUser currentUser) {
-
-        Project currentProject = currentUser.getUser().getCurrentProject();
         projectService.save(project);
+        categoryService.createDefaultCategories(project.getId());
 
-        return "redirect:/list";
+        currentUser.getUser().getProjects().add(project);
+        userService.saveUser(currentUser.getUser());
+
+        return "redirect:/project/list";
     }
 
     @GetMapping("/edit/{projectId}")
     public String edit(Model model, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
-        currentUser.getUser().getProjects().contains(projectService.findById(projectId));
-        Project project = projectService.findById(projectId);
-        model.addAttribute("project", project);
-        return "project-edit";
+        if (currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x == projectId)) {
+            Project project = projectService.findById(projectId);
+            model.addAttribute("project", project);
+            return "projects/project-edit";
+        }
+        return null;
     }
 
     //todo frontend validation
+    @ResponseBody
     @PostMapping("/edit/{projectId}")
     public String editPost(@ModelAttribute Project project, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
-        currentUser.getUser().getProjects().contains(projectService.findById(projectId));
-        projectService.save(project);
-        return "redirect:/list";
+        if (currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x == projectId))
+            projectService.save(project);
+        return "";
     }
 
     @ResponseBody
     @GetMapping("/delete/{projectId}")
     public String delete(@PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
-        currentUser.getUser().getProjects().contains(projectService.findById(projectId));
-        projectService.deleteProjectsCategories(projectService.findById(projectId));
+        Project project = projectService.findById(projectId);
+        if (currentUser.getUser().getProjects().contains(project))
+            projectService.delete(project);
         return "";
     }
 
-
-
+    // TODO remove this hack mapping
     @GetMapping("/setProject")
-    public String setProject() {
-
+    public String setProjectHack() {
         Long projectId = projectService.createDefaultProject();
         categoryService.createDefaultCategories(projectId);
         csvSettingsService.createDefaultBanksSettings();
-        User user = new User();
-        user.setPassword("qwe");
-        user.setUsername("qwe");
-        List<Project> project1= new ArrayList<>();
+
+        User user = userService.createDefaultUserHack();
+        List<Project> project1 = new ArrayList<>();
         project1.add(projectService.findById(projectId));
         user.setProjects(project1);
         userService.saveUser(user);
-        return "redirect:../category/list";
+
+        return "redirect:/project/list";
     }
 }
