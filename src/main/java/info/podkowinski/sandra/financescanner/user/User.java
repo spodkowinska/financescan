@@ -20,6 +20,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    // TODO password must have its setter which makes it always encoded
     private String password;
 
     private int enabled;
