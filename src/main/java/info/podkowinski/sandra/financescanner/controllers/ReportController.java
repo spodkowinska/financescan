@@ -44,7 +44,7 @@ public class ReportController {
         this.importService = importService;
     }
 
-    @GetMapping()
+    @GetMapping("/")
     public String yearsReport(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
 
         Project project = currentUser.getUser().getCurrentProject();
