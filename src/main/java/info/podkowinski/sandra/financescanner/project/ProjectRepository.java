@@ -10,7 +10,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     Project saveAndFlush(Project project);
 
-    @Query(value = "SELECT p.id, p.name, p.description FROM projects p, user_projects  up  WHERE up.user_id = ?", nativeQuery = true)
+    @Query(value = "SELECT p.id, p.name, p.description FROM projects p, user_projects up WHERE p.id = up.projects_id AND up.user_id = ?", nativeQuery = true)
     List<Project> findAllByUserId(Long userId);
 
     @Modifying
