@@ -308,4 +308,16 @@ public class TransactionService {
     public Double sumOfIncomesPerMonth(Long projectId, String year, String month) {
         return transactionRepository.sumOfIncomesPerMonth(projectId, year, month);
     }
+
+    public double balanceByMonth(Long projectId, String year, String month) {
+        List<Transaction> transactionList = transactionRepository.findByMonth(year, month, projectId);
+        double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
+        return balance;
+    }
+
+    public double balanceByYear(Long projectId, String year) {
+        List<Transaction> transactionList = transactionRepository.findByYear(year, projectId);
+        double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
+        return balance;
+    }
 }

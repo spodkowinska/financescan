@@ -75,4 +75,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query(value = "SELECT SUM( CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? AND MONTH(t.transaction_date)=? AND t.amount<0) THEN t.amount ELSE 0 END) AS sum_incomes FROM transactions t", nativeQuery = true)
     Double sumOfExpensesPerMonth(Long projectId, String year, String month);
+
+
 }

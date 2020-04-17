@@ -60,7 +60,7 @@ public class ReportController {
         Integer numberOfTransactions = transactionService.numberOfTransactions(year, project.getId());
         Double sumOfExpenses = transactionService.sumOfExpenses(project.getId(), String.valueOf(year));
         Double sumOfIncomes = transactionService.sumOfIncomes(project.getId(), String.valueOf(year));
-        Double balance = transactionService.balanceByDates(project.getId(), Date.valueOf(year + "-01-01"), Date.valueOf(year + "-12-31"));
+        Double balance = transactionService.balanceByYear(project.getId(), year);
 
         model.addAttribute("year", year);
         model.addAttribute("numberOfTransactions", numberOfTransactions);
@@ -78,9 +78,10 @@ public class ReportController {
         Integer numberOfTransactions = transactionService.numberOfTransactionsPerMonth(year, month, project.getId());
         Double sumOfExpenses = transactionService.sumOfExpensesPerMonth(project.getId(), year, month);
         Double sumOfIncomes = transactionService.sumOfIncomesPerMonth(project.getId(),year, month);
-        Double balance = transactionService.balanceByDates(project.getId(), Date.valueOf(year + "=" + month + "-01"), Date.valueOf(year + "=" + month + "-31"));
+        Double balance = transactionService.balanceByMonth(project.getId(), year, month);
 
         model.addAttribute("year", year);
+        model.addAttribute("month", month);
         model.addAttribute("numberOfTransactions", numberOfTransactions);
         model.addAttribute("sumOfExpenses", sumOfExpenses);
         model.addAttribute("sumOfIncomes", sumOfIncomes);
