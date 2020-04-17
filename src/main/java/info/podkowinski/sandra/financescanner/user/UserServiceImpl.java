@@ -23,12 +23,25 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    // TODO get rid of this method, it's a big hack
+    @Override
+    public User createDefaultUserHack() {
+        User user = new User();
+        user.setUsername("qwe");
+        user.setPassword(passwordEncoder.encode("qwe"));
+        user.setEnabled(1);
+
+        Role userRole = roleRepository.findByName("USER");
+        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+
+        userRepository.save(user);
+
+        return user;
+    }
+
     @Override
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(1);
-        Role userRole = roleRepository.findByName("ROLE_USER");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
 

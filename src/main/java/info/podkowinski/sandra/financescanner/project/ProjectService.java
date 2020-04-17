@@ -18,6 +18,11 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
+    public void delete(Project project) {
+        deleteProjectsCategories(project);
+        projectRepository.delete(project);
+    }
+
     public void deleteProjectsCategories(Project project){ projectRepository.deleteProjectsCategories(project); }
 
     public Project findById(Long id){ return projectRepository.findById(id).orElse(null);}
