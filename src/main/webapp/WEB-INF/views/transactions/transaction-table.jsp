@@ -36,8 +36,6 @@
 
     <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" />
 
-    <script src="${pageContext.request.contextPath}/js/transactions.js"></script>
-
     <style>
         <c:forEach items="${categoriesList}" var="category">
             .tag${category.id} {
@@ -427,6 +425,8 @@
 <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
 <!--datatables-->
 <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<script src="${pageContext.request.contextPath}/js/transactions.js"></script>
 
 <script>
     $('#editModal').on('show.bs.modal', function(event) {
