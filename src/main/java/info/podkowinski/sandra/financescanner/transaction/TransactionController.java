@@ -49,11 +49,6 @@ public class TransactionController {
         this.importService = importService;
     }
 
-    @ModelAttribute("pageTitle")
-    public String pageTitle() {
-        return "Transactions";
-    }
-
     @RequestMapping("/list")
     public String transaction(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
 
