@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Transactions representation</title>
+    <title>Reports</title>
 
     <!-- Custom fonts for this template-->
     <link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
@@ -113,8 +113,13 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <jsp:include page="/WEB-INF/views/utils/footer.jsp" />
-        <!-- End of Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>FinanceScan by Sandra Podkowińska</span>
+                </div>
+            </div>
+        </footer>        <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
