@@ -533,3 +533,115 @@ function changeBulkMenuPage(pageId) {
     pageDiv.siblings().hide();
     pageDiv.show();
 }
+
+$('#editModal').on('show.bs.modal', function(event) {
+    // Unbind handlers to avoid situations in which this button has more than one onclick handler
+    $('#editModalSubmit').unbind();
+
+    let transId = $(event.relatedTarget).data('transaction-id');
+
+    let link = transId
+        // If transId is valid, then we are in edit mode
+        ? CONTEXT_PATH + '/transaction/edit/' + transId
+        // Otherwise we are in creation mode
+        : CONTEXT_PATH + '/transaction/add';
+
+    // Update modal's title depending on mode
+    $('#editModalLabel').html(transId ? 'Edit Transaction <span class="small text-gray-500">#' + transId + '</span>' : 'Add New Transaction');
+
+    $.get(link, function(data) {
+        $('#editModalBody').html(data);
+        $('#editModalSubmit').click(function(event) {
+            $('#categories').val(gModalCategories.join(','));
+            $('#pendingCategories').val(gModalPendingCategories.join(','));
+            $('#rejectedCategories').val(gModalRejectedCategories.join(','));
+
+            $.post(link, $('#editModalForm').serialize(), function(newRowData) {
+                if (transId) {
+                    // Edit mode: update the edited row
+                    $('#cat_row_' + transId).replaceWith(newRowData);
+                    afterRowRefreshed(transId);
+                }
+                else {
+                    // Add mode: update whole table
+                    reloadTransactionTable(null, null);
+                }
+            });
+        });
+    });
+});
+
+$('#keywordModal').on('show.bs.modal', function(event) {
+    // Unbind handlers to avoid situations in which this button has more than one onclick handler
+    $('#keywordModalSubmit').unbind();
+
+    let transId = $(event.relatedTarget).data('transaction-id');
+    let getLink = CONTEXT_PATH + '/category/keyword/add/' + transId;
+    let postLink = CONTEXT_PATH + '/category/keyword/add';
+
+    $.get(getLink, function(data) {
+        $('#keywordModalBody').html(data);
+        $('#keywordModalSubmit').click(function(event) {
+            $.post(postLink, $('#keywordModalForm').serialize());
+        });
+    });
+});
+
+$('.tag-add-to-selected').click(function () {
+    const categoryId = $(this).data('category-id');
+    gatherSelectedRows().forEach(function(row) {
+        addCategory(row.data('transaction-id'), categoryId);
+    })
+});
+
+$('.tag-remove-from-selected').click(function () {
+    const categoryId = $(this).data('category-id');
+    if (categoryId) {
+        gatherSelectedRows().forEach(function(row) {
+            removeCategory(row.data('transaction-id'), categoryId);
+        });
+    }
+    else {
+        gatherSelectedRows().forEach(function(row) {
+            removeAllCategories(row.data('transaction-id'));
+        });
+    }
+});
+
+$('#bulkMenu-acceptAllCats').click(function () {
+    gatherSelectedRows().forEach(function(row) {
+        acceptAllCategories(row.data('transaction-id'));
+    })
+});
+
+$('#bulkMenu-rejectAllCats').click(function () {
+    gatherSelectedRows().forEach(function(row) {
+        rejectAllCategories(row.data('transaction-id'));
+    })
+});
+
+$('#bulkMenu-deselectAll').click(function () {
+    clearSelection();
+    $('#bulkMenu').hide();
+});
+
+$('#bulkMenu-changeAccountPage a').click(function () {
+    const accountId = $('#bulkMenu-changeAccountPage select').val();
+    gatherSelectedRows().forEach(function(row) {
+        changeAccount(row.data('transaction-id'), accountId);
+    });
+});
+
+$('#bulkMenu').click(function(e) {
+    e.stopPropagation();
+});
+
+$('#filterRefreshButton').click(function() {
+    applyFilters();
+});
+
+$(document).click(function () {
+    $('#bulkMenu').hide();
+}).contextmenu(function(e) {
+    $('#bulkMenu').hide();
+});
