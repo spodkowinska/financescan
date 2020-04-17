@@ -12,6 +12,7 @@ import info.podkowinski.sandra.financescanner.imports.ImportService;
 import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
 import info.podkowinski.sandra.financescanner.user.CurrentUser;
+import info.podkowinski.sandra.financescanner.user.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +47,11 @@ public class TransactionController {
         this.categoryService = categoryService;
         this.csvSettingsService = csvSettingsService;
         this.importService = importService;
+    }
+
+    @ModelAttribute("pageTitle")
+    public String pageTitle() {
+        return "Transactions";
     }
 
     @RequestMapping("/list")
