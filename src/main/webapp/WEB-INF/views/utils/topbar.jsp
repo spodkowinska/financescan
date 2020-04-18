@@ -7,19 +7,27 @@
         <i class="fa fa-bars"></i>
     </button>
 
-    <!-- Topbar Search -->
+    <%-- CURRENT PROJECT --%>
     <div class="navbar-nav">
         <div class="dropdown" style="padding-right: 50px">
-            <span class="small">Project:</span><br>
+            <span class="small">Current Project:</span><br>
             <a id="projectDropdownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="0">
-                ${user.currentProject.name}
+                ${user.currentProject.name} <i class="fa fa-caret-down"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="projectDropdownLink">
+                <c:set var="counter" value="0" />
                 <c:forEach items="${user.projects}" var="project">
-                    <a class="current-proj-selector dropdown-item ${user.currentProject.id == project.id ? 'current-proj-selector-chosen' : ''}"
-                       tabindex="0" data-project-id="${project.id}">${project.name}</a>
+                    <c:if test="${!project.archived && project.id != user.currentProject.id}">
+                        <c:if test="${counter == 0}">
+                            <h6 class="dropdown-header">Switch to...</h6>
+                        </c:if>
+                        <a class="current-proj-selector dropdown-item" tabindex="0" data-project-id="${project.id}">${project.name}</a>
+                        <c:set var="counter" value="${counter + 1}" />
+                    </c:if>
                 </c:forEach>
-                <div class="dropdown-divider"></div>
+                <c:if test="${counter > 0}">
+                    <div class="dropdown-divider"></div>
+                </c:if>
                 <a class="current-proj-selector dropdown-item" tabindex="0">Edit projects...</a>
             </div>
         </div>
