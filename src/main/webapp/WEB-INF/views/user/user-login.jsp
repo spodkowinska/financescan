@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +30,28 @@
       <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
           <div class="row">
-              <div class="p-5" style="width: 350px; padding-top: 30px; padding-bottom: 20px">
+              <div class="p-5" style="width: 450px; padding-top: 30px; padding-bottom: 20px">
+
+                  <%-- ALERT: LOGOUT --%>
+                  <c:if test="${param.out == 'true'}">
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                          <strong>You were logged out</strong><br>See you next time!
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                  </c:if>
+
+                  <%-- ALERT: ERROR --%>
+                  <c:if test="${param.error == 'true'}">
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong>Log in failed</strong><br>Please check your credentials and try again.
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                  </c:if>
+
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">FINANCE SCAN</h1>
                 </div>
