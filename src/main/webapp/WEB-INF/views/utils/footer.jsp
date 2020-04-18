@@ -47,6 +47,8 @@
 <!--datatables-->
 <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 
+<script src="${pageContext.request.contextPath}/js/main.js"></script>
+
 <c:if test="${param.additionalScriptFile != null && param.additionalScriptFile != ''}">
     <script src="${pageContext.request.contextPath}/js/${param.additionalScriptFile}"></script>
 </c:if>
