@@ -4,6 +4,9 @@
 <form:form modelAttribute="project" id="projectModalForm">
 
     <form:input path="id" type="hidden" id="id" />
+    <form:input path="createdDate" type="hidden" id="createdDate" />
+    <form:input path="archivedDate" type="hidden" id="archivedDate" />
+    <form:input path="archived" type="hidden" id="archived" />
 
     <div class="form-group">
         <label>Name</label>

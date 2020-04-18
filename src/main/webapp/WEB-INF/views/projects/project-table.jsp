@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 
 <jsp:include page="/WEB-INF/views/utils/header.jsp">
     <jsp:param name="pageTitle" value="Projects"/>
@@ -99,15 +100,15 @@
                                         <span class="fa fa-edit"></span> Edit
                                     </a>
                                 </h4>
-                                ${project.description}
+                                ${project.description == null || project.description == '' ? '<span class="text-gray-400">No description.</span>' : project.description}
                             </div>
                         </div>
                     </div>
-<%--                                    <div class="card-footer w-100 h-50 text-muted">--%>
-<%--                                        <span class="footer-entry">Transactions: <span class="transaction-count" data-project-id="${project.id}">...</span></span>--%>
-<%--                                        <span class="footer-entry">Imports: <span class="import-count" data-project-id="${project.id}">...</span></span>--%>
-<%--                                        <span class="footer-entry">Created: <javatime:format value="${project.created}" style="S-" /></span>--%>
-<%--                                    </div>--%>
+                    <div class="card-footer w-100 h-50 text-muted">
+<%--                        <span class="footer-entry">Transactions: <span class="transaction-count" data-project-id="${project.id}">...</span></span>--%>
+<%--                        <span class="footer-entry">Imports: <span class="import-count" data-project-id="${project.id}">...</span></span>--%>
+                        <span class="footer-entry">Created: <javatime:format value="${project.createdDate}" style="S-" /></span>
+                    </div>
                 </div>
 
             <c:if test="${counter.index % 2 != 0}">
