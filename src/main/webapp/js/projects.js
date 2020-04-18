@@ -80,3 +80,35 @@ $('.import-count').each(function () {
         target.text(data);
     });
 });
+
+$('#archived-projects-toggle').click(function () {
+    $('#archived-projects').slideToggle();
+});
+
+$('.archive-project').click(function () {
+    const projectId = $(this).data('project-id');
+    if (projectId) {
+        $.get(CONTEXT_PATH + '/project/archive/' + projectId, function (data) {
+            console.log(data);
+            location.reload();
+        });
+    }
+});
+
+$('.restore-project').click(function () {
+    const projectId = $(this).data('project-id');
+    if (projectId) {
+        $.get(CONTEXT_PATH + '/project/restore/' + projectId, function () {
+            location.reload();
+        });
+    }
+});
+
+$('.activate-project').click(function () {
+    const projectId = $(this).data('project-id');
+    if (projectId) {
+        $.get(CONTEXT_PATH + '/user/setcurrentproject/' + projectId, function () {
+            location.reload();
+        });
+    }
+});
