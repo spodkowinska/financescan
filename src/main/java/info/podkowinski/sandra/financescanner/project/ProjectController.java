@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -92,6 +93,38 @@ public class ProjectController {
         Project project = projectService.findById(projectId);
         if (currentUser.getUser().getProjects().contains(project))
             projectService.delete(project);
+        return "";
+    }
+
+    @ResponseBody
+    @GetMapping("/archive/{projectId}")
+    public String archive(@PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
+        if (currentUser.getUser().getCurrentProject().getId() == projectId) {
+            // Current project can't be archived. This also ensures we always have at least 1 un-archived project.
+            return "error:current";
+        }
+
+        Project project = projectService.findById(projectId);
+        if (!currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x == projectId)) {
+            // This project doesn't belong to the user
+            return "error:owner";
+        }
+
+        project.archived = true;
+        project.archivedDate = LocalDateTime.now();
+        projectService.save(project);
+
+        return "";
+    }
+
+    @ResponseBody
+    @GetMapping("/restore/{projectId}")
+    public String restore(@PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
+        Project project = projectService.findById(projectId);
+        if (currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x == projectId)) {
+            project.archived = false;
+            projectService.save(project);
+        }
         return "";
     }
 

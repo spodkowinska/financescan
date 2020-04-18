@@ -24,5 +24,7 @@ public class Project {
 
     LocalDateTime createdDate = LocalDateTime.now();
 
+    LocalDateTime archivedDate;
 
+    Boolean archived = false;
 }
