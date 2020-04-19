@@ -55,10 +55,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public void saveDefaultRoles(){
-        saveRole("ADMIN");
-        saveRole("OWNER");
-        saveRole("EDITOR");
-        saveRole("VIEWER");
+        saveRole("USER");
+        saveRole("PROJ_OWNER");
+        saveRole("PROJ_EDITOR");
+        saveRole("PROJ_VIEWER");
     }
 
     public Role findRole(String roleName){

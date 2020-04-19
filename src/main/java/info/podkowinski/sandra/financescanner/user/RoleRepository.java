@@ -12,6 +12,6 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
 
     public Role save(Role role);
 
-    @Query(value = "SELECT * FROM role r WHERE r.name IN ('OWNER', 'EDITOR', 'VIEWER')", nativeQuery = true)
+    @Query(value = "SELECT * FROM role r WHERE r.name IN ('PROJ_OWNER', 'PROJ_EDITOR', 'PROJ_VIEWER')", nativeQuery = true)
     List<Role>findProjectRoles();
 }
