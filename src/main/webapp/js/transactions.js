@@ -411,16 +411,23 @@ function afterCategoriesChangedForRow(transactionId, responseData) {
 }
 
 function applyFilters() {
+    // Account
     const accountFilter = Number($('#account_filter').val());
 
     const showOnlyOneAccount = accountFilter !== 0;
-    const showOnlyUnreviewed = $('#unreviewedCheck').is(':checked');
-    const showOnlyUncategorized = $('#uncategorizedCheck').is(':checked');
+
+    // Category
+    const categoryFilterStr = $('#selectedCategoryFilter').val();
+    const categoryFilter = Number(categoryFilterStr);
+
+    const showOnlyOneCategory = !isNaN(categoryFilter);
+    const showOnlyUnreviewed = categoryFilterStr === 'unreviewed';
+    const showOnlyUncategorized = categoryFilterStr === 'uncategorized';
+
+    // Selected
     const showOnlySelected = $('#onlySelectedCheck').is(':checked');
 
-    $('#filterRefresh').toggle(showOnlySelected || showOnlyUncategorized || showOnlyUnreviewed || showOnlyOneAccount);
-
-    console.log('accFil',accountFilter,showOnlyOneAccount);
+    $('#filterRefresh').toggle(showOnlySelected || showOnlyUncategorized || showOnlyUnreviewed || showOnlyOneAccount || showOnlyOneCategory);
 
     gUnreviewedCount = 0;
     gUncategorizedCount = 0;
@@ -448,7 +455,9 @@ function applyFilters() {
         const rowSelected = row.hasClass('selected');
         if (rowSelected) gSelectedCount++;
 
-        if (showOnlySelected && !rowSelected || showOnlyOneAccount && accountFilter !== row.data('account-id')) {
+        if (showOnlySelected && !rowSelected
+            || showOnlyOneAccount && accountFilter !== row.data('account-id')
+            || showOnlyOneCategory && row.children('td.categories-list').children('a.tag' + categoryFilter).length === 0) {
             show = false;
         }
         else if (showOnlyUnreviewed || showOnlyUncategorized) {
@@ -644,4 +653,12 @@ $(document).click(function () {
     $('#bulkMenu').hide();
 }).contextmenu(function(e) {
     $('#bulkMenu').hide();
+});
+
+$('#uncategorizedLink').click(function () {
+    $('#selectedCategoryFilter').val('uncategorized').change();
+});
+
+$('#unreviewedLink').click(function () {
+    $('#selectedCategoryFilter').val('unreviewed').change();
 });

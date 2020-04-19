@@ -4,10 +4,7 @@ import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +34,7 @@ public class UserController {
         return "user/user-forgot-password";
     }
 
+    @ResponseBody
     @GetMapping("/user/setcurrentproject/{projectId}")
     public String setCurrentProject(@PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser){
         User user = currentUser.getUser();

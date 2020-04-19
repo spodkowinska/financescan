@@ -169,33 +169,44 @@
             </div>
             <div class="col-auto">
 
-                <!-- Filter: unreviewed category suggestions -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="unreviewedCheck"
-                           style="margin-top: 6px" onclick="applyFilters()">
-                    <label class="form-check-label small" for="unreviewedCheck">
-                        Unreviewed categories
-                        <span class="badge badge-pill badge-danger" id="unreviewedCount"></span>
-                    </label>
+                <!-- Category filter: selected category -->
+                <div class="input-group input-group-sm">
+                    <select id="selectedCategoryFilter" class="custom-select" onchange="applyFilters()">
+                        <option value="all">All categories</option>
+                        <option disabled>&#9472;</option>
+                        <option value="uncategorized">Uncategorized</option>
+                        <option value="unreviewed">Unreviewed</option>
+                        <option disabled>&#9472;</option>
+                        <c:forEach items="${categoriesList}" var="cat">
+                            <option value="${cat.id}">${cat.name}</option>
+                        </c:forEach>
+                    </select>
                 </div>
 
             </div>
             <div class="col-auto">
 
-                <!-- Filter: uncategoried  -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="uncategorizedCheck"
-                           style="margin-top: 6px" onclick="applyFilters()">
-                    <label class="form-check-label small" for="uncategorizedCheck">
-                        No categories
-                        <span class="badge badge-pill badge-danger" id="uncategorizedCount"></span>
-                    </label>
-                </div>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="padding:0; font-size: 12px; border:0">
+                            <span class="badge badge-pill badge-danger badge-categories" style="padding:2px; padding-top: 3px" id="unreviewedCount">12</span>
+                            <a id="unreviewedLink">Unreviewed</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0; font-size: 12px; border:0 ">
+                            <span class="badge badge-pill badge-danger badge-categories" style="padding:2px; padding-top: 3px" id="uncategorizedCount">91</span>
+                            <a id="uncategorizedLink">Uncategorized</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
             </div>
             <div class="col-auto bulk-controls">
 
-                <!-- Filter: only selected  -->
+                <!-- Category filter: only selected  -->
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="onlySelectedCheck"
                            style="margin-top: 6px" onclick="applyFilters()">

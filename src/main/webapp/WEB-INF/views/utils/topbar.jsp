@@ -7,20 +7,27 @@
         <i class="fa fa-bars"></i>
     </button>
 
-    <!-- Topbar Search -->
-    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Current project: <b>${user.currentProject.name}</b>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                <c:forEach items="${user.projects}" var="project">
-                    <a class="current-proj-selector dropdown-item ${user.currentProject.id == project.id ? 'active' : ''}"
-                       tabindex="0" data-project-id="${project.id}">${project.name}</a>
-                </c:forEach>
-            </div>
+    <%-- CURRENT PROJECT --%>
+    <div class="dropdown" style="padding-right: 50px">
+        <span class="small">Current Project:</span><br>
+        <a id="projectDropdownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="0">
+            ${user.currentProject.name} <i class="fa fa-caret-down"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="projectDropdownLink" style="right: auto">
+            <c:set var="counter" value="0" />
+            <c:forEach items="${user.projects}" var="project">
+                <c:if test="${!project.archived && project.id != user.currentProject.id}">
+                    <c:if test="${counter == 0}">
+                        <h6 class="dropdown-header">Switch to...</h6>
+                    </c:if>
+                    <a class="current-proj-selector dropdown-item" tabindex="0" data-project-id="${project.id}">${project.name}</a>
+                    <c:set var="counter" value="${counter + 1}" />
+                </c:if>
+            </c:forEach>
+            <c:if test="${counter > 0}">
+                <div class="dropdown-divider"></div>
+            </c:if>
+            <a class="current-proj-selector dropdown-item" tabindex="0">Edit projects...</a>
         </div>
     </div>
 

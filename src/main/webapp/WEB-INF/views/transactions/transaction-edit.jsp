@@ -30,7 +30,7 @@
     </div>
 
     <div class="form-group">
-        <label>Bank</label>
+        <label>Account</label>
         <form:select path="account" class="form-control" id="accountId">
             <c:forEach items="${accounts}" var="account">
                 <form:option value="${account}">${account.name}</form:option>
