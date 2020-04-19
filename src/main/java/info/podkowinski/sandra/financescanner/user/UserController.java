@@ -11,10 +11,10 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final ProjectService projectService;
 
-    public UserController(UserService userService, ProjectService projectService) {
+    public UserController(UserServiceImpl userService, ProjectService projectService) {
         this.userService = userService;
         this.projectService = projectService;
     }
@@ -47,4 +47,13 @@ public class UserController {
         }
         return "";
     }
+    @ResponseBody
+    @GetMapping("/user/addfriend/{friendId}")
+    public String addFriend(@PathVariable Long friendId, @AuthenticationPrincipal CurrentUser currentUser){
+        User user = currentUser.getUser();
+        List<User> friends = user.friends;
+        friends.add(userService.findById(friendId));
+        return "";
+    }
+
 }

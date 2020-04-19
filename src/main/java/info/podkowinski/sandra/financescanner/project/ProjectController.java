@@ -8,10 +8,7 @@ import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
-import info.podkowinski.sandra.financescanner.user.CurrentUser;
-import info.podkowinski.sandra.financescanner.user.User;
-import info.podkowinski.sandra.financescanner.user.UserService;
-import info.podkowinski.sandra.financescanner.user.UserServiceImpl;
+import info.podkowinski.sandra.financescanner.user.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +56,11 @@ public class ProjectController {
 
     @PostMapping("/add")
     public String addPost(@ModelAttribute Project project, @AuthenticationPrincipal CurrentUser currentUser) {
+        Role role =userService.findRole("OWNER");
+        User user = currentUser.getUser();
+        HashMap< User, Role> userRole = new HashMap<>();
+        userRole.put(user, role);
+        project.setUserRole(userRole);
         projectService.save(project);
         categoryService.createDefaultCategories(project.getId());
 
@@ -72,6 +74,10 @@ public class ProjectController {
     public String edit(Model model, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
         if (currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x == projectId)) {
             Project project = projectService.findById(projectId);
+            List <User> friends = currentUser.getUser().getFriends();
+            List<Role>roles = userService.findProjectRoles();
+            model.addAttribute("friends", friends);
+            model.addAttribute("projectRoles", roles);
             model.addAttribute("project", project);
             return "projects/project-edit";
         }

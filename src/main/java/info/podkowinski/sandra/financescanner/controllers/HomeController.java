@@ -36,10 +36,10 @@ public class HomeController {
 
 
     @GetMapping("/setDatabase")
-    public String setProject() {
+    public String setDatabase() {
 
         csvSettingsService.createDefaultBanksSettings();
-        userService.saveRole("ADMIN");
+        userService.saveDefaultRoles();
         return "redirect:../category/list";
     }
 

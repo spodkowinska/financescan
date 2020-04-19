@@ -42,4 +42,9 @@ public class User {
     @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Project currentProject;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "friends_id")
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
+    List<User> friends;
+
 }

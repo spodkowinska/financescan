@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    User findById(Long userId){ return userRepository.findById(userId).orElse(null);}
 
     // TODO get rid of this method, it's a big hack
     @Override
@@ -49,5 +52,19 @@ public class UserServiceImpl implements UserService {
         Role userRole = new Role();
         userRole.setName(roleName);
         roleRepository.save(userRole);
+    }
+
+    public void saveDefaultRoles(){
+        saveRole("ADMIN");
+        saveRole("OWNER");
+        saveRole("EDITOR");
+        saveRole("VIEWER");
+    }
+
+    public Role findRole(String roleName){
+        return roleRepository.findByName(roleName);
+    }
+    public List<Role> findProjectRoles(){
+        return roleRepository.findProjectRoles();
     }
 }

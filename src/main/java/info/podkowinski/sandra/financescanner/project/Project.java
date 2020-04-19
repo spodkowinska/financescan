@@ -1,5 +1,6 @@
 package info.podkowinski.sandra.financescanner.project;
 
+import info.podkowinski.sandra.financescanner.user.Role;
 import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -27,4 +29,6 @@ public class Project {
     LocalDateTime archivedDate;
 
     Boolean archived = false;
+
+    Map<User, Role> userRole;
 }
