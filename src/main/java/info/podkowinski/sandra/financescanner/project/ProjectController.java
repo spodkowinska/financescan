@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -60,7 +61,7 @@ public class ProjectController {
         User user = currentUser.getUser();
         HashMap< User, Role> userRole = new HashMap<>();
         userRole.put(user, role);
-        project.setUserRole(userRole);
+        project.setUsersWithRolesMap(userRole);
         projectService.save(project);
         categoryService.createDefaultCategories(project.getId());
 
@@ -121,7 +122,7 @@ public class ProjectController {
         }
 
         project.archived = true;
-        project.archivedDate = LocalDateTime.now();
+        project.archivedDate = Timestamp.valueOf(LocalDateTime.now());
         projectService.save(project);
 
         return "";

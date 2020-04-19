@@ -1,16 +1,20 @@
 package info.podkowinski.sandra.financescanner.report;
 
 import info.podkowinski.sandra.financescanner.transaction.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
-public interface ReportRepository {
-
+    @Repository
+    public interface ReportRepository extends JpaRepository<ReportEntity, Integer> {
 
     @Query(value = "SELECT SUM(CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? ) THEN 1 ELSE 0 END) AS num_trans FROM transactions t", nativeQuery = true)
     Integer numberOfTransactionsPerYear(Long projectId, String year);
