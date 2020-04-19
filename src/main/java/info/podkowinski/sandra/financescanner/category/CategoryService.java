@@ -42,7 +42,12 @@ public class CategoryService {
 //        return category;
 //    }
     void delete(Category category) {
-
+        transactionRepository.deleteAssignedCategoriesByCategoryId(category.getId());
+        transactionRepository.deleteAssignedPendingCategoriesByCategoryId(category.getId());
+        transactionRepository.deleteAssignedRejectedCategoriesByCategoryId(category.getId());
+        category.project=null;
+        category.keywords=null;
+        category.safeKeywords=null;
         categoryRepository.delete(category);
     }
 

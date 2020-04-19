@@ -5,6 +5,7 @@ import info.podkowinski.sandra.financescanner.project.Project;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -47,13 +48,16 @@ public class Category {
     String description;
 
     @ElementCollection
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     List<String> keywords;
 
     @ElementCollection
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     List<String> safeKeywords;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Project project;
 
     @Column(length = 7)

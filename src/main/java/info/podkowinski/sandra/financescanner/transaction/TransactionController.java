@@ -231,12 +231,16 @@ public class TransactionController {
     @ResponseBody
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, @AuthenticationPrincipal CurrentUser currentUser) {
-        Project project = currentUser.getUser().getCurrentProject();
+        Project currentProject = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(id);
-        if (transaction.project.equals(project)) {
+        if (currentProject.getId() == transaction.project.getId()){
             transaction.categories.clear();
             transaction.pendingCategories.clear();
             transaction.rejectedCategories.clear();
+            transaction.importName=null;
+            transaction.project=null;
+            transaction.account=null;
+            transactionService.save(transaction);
             transactionService.delete(transaction);
         }
         return "";

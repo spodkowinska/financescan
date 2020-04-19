@@ -1,4 +1,4 @@
-package info.podkowinski.sandra.financescanner.controllers;
+package info.podkowinski.sandra.financescanner.report;
 
 import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.account.AccountService;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/report")
@@ -33,15 +34,17 @@ public class ReportController {
     private final CategoryService categoryService;
     private final CsvSettingsService csvSettingsService;
     private final ImportService importService;
+    private final ReportService reportService;
 
     public ReportController(TransactionService transactionService, ProjectService projectService, AccountService accountService,
-                                 CategoryService categoryService, CsvSettingsService csvSettingsService, ImportService importService) {
+                                 CategoryService categoryService, CsvSettingsService csvSettingsService, ImportService importService, ReportService reportService) {
         this.transactionService = transactionService;
         this.projectService = projectService;
         this.accountService = accountService;
         this.categoryService = categoryService;
         this.csvSettingsService = csvSettingsService;
         this.importService = importService;
+        this.reportService = reportService;
     }
 
     @GetMapping("/")
@@ -57,16 +60,18 @@ public class ReportController {
     public String year(Model model, @PathVariable String year, @AuthenticationPrincipal CurrentUser currentUser) {
 
         Project project = currentUser.getUser().getCurrentProject();
-        Integer numberOfTransactions = transactionService.numberOfTransactions(year, project.getId());
-        Double sumOfExpenses = transactionService.sumOfExpenses(project.getId(), String.valueOf(year));
-        Double sumOfIncomes = transactionService.sumOfIncomes(project.getId(), String.valueOf(year));
-        Double balance = transactionService.balanceByYear(project.getId(), year);
+        Integer numberOfTransactions = reportService.numberOfTransactions(year, project.getId());
+        Double sumOfExpenses = reportService.sumOfExpenses(project.getId(), String.valueOf(year));
+        Double sumOfIncomes = reportService.sumOfIncomes(project.getId(), String.valueOf(year));
+        Double balance = reportService.balanceByYear(project.getId(), year);
+        Map<Long, ReportRepository.CategoryStats> categoriesWithStatisticsByYear = reportService.categoriesWithStatisticsByYear(project.getId(), year);
 
         model.addAttribute("year", year);
         model.addAttribute("numberOfTransactions", numberOfTransactions);
         model.addAttribute("sumOfExpenses", sumOfExpenses);
         model.addAttribute("sumOfIncomes", sumOfIncomes);
         model.addAttribute("balance", balance);
+        model.addAttribute("categoriesWithStatistics", categoriesWithStatisticsByYear);
 
         return "report-table";
     }
@@ -75,10 +80,11 @@ public class ReportController {
     public String month(Model model, @PathVariable String year, @PathVariable String month, @AuthenticationPrincipal CurrentUser currentUser) {
 
         Project project = currentUser.getUser().getCurrentProject();
-        Integer numberOfTransactions = transactionService.numberOfTransactionsPerMonth(year, month, project.getId());
-        Double sumOfExpenses = transactionService.sumOfExpensesPerMonth(project.getId(), year, month);
-        Double sumOfIncomes = transactionService.sumOfIncomesPerMonth(project.getId(),year, month);
-        Double balance = transactionService.balanceByMonth(project.getId(), year, month);
+        Integer numberOfTransactions = reportService.numberOfTransactionsPerMonth(year, month, project.getId());
+        Double sumOfExpenses = reportService.sumOfExpensesPerMonth(project.getId(), year, month);
+        Double sumOfIncomes = reportService.sumOfIncomesPerMonth(project.getId(),year, month);
+        Double balance = reportService.balanceByMonth(project.getId(), year, month);
+        Map<Long, ReportRepository.CategoryStats> categoriesWithStatisticsByMonth = reportService.categoriesWithStatisticsByMonth(project.getId(), year, month);
 
         model.addAttribute("year", year);
         model.addAttribute("month", month);
@@ -86,6 +92,8 @@ public class ReportController {
         model.addAttribute("sumOfExpenses", sumOfExpenses);
         model.addAttribute("sumOfIncomes", sumOfIncomes);
         model.addAttribute("balance", balance);
+
+        model.addAttribute("categoriesWithStatistics", categoriesWithStatisticsByMonth);
 
         return "report-table";
     }

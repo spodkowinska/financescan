@@ -3,6 +3,7 @@ package info.podkowinski.sandra.financescanner.user;
 import info.podkowinski.sandra.financescanner.project.Project;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,14 +29,17 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     private Set<Role> roles;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     List <Project> projects;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "current_project")
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Project currentProject;
 
 }

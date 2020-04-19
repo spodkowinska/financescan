@@ -40,10 +40,11 @@ public class UserController {
     @GetMapping("/user/setcurrentproject/{projectId}")
     public String setCurrentProject(@PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser){
         User user = currentUser.getUser();
-        List<Project> usersProjects = user.projects;
+        List<Project> usersProjects = user.getProjects();
         for (Project project: usersProjects) {
             if(project.getId() == projectId){
                 user.setCurrentProject(project);
+                break;
             }
         }
         return "";

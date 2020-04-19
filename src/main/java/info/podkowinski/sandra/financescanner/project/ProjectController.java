@@ -89,9 +89,13 @@ public class ProjectController {
     @ResponseBody
     @GetMapping("/delete/{projectId}")
     public String delete(@PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
-        Project project = projectService.findById(projectId);
-        if (currentUser.getUser().getProjects().contains(project))
-            projectService.delete(project);
+        User user = currentUser.getUser();
+        List<Project> usersProjects = user.getProjects();
+        for (Project project : usersProjects) {
+            if (project.getId() == projectId) {
+                projectService.delete(project);
+            }
+        }
         return "";
     }
 

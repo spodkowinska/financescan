@@ -102,9 +102,11 @@ public class CategoryController {
     @GetMapping("/delete/{categoryId}")
     public String delete(@PathVariable Long categoryId, Model model, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
-        transactionService.removeCategoryFromTransactions(categoryId);
+        Category category = categoryService.findById(categoryId);
+        if (category != null && project.getId() == category.project.getId()) {
+            categoryService.delete(category);
+        }
         List<Category> categoriesList = categoryService.findByProjectId(project.getId());
-        categoryService.delete(categoryService.findById(categoryId));
         model.addAttribute("cl", categoriesList);
         return "redirect:../../category/list";
     }
@@ -113,7 +115,6 @@ public class CategoryController {
     @PostMapping("/keyword/add")
     public String addKeywordPost(HttpServletRequest request, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
-
         Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
         if (project.getId() == category.project.getId()) {
             List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));

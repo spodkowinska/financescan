@@ -6,6 +6,7 @@ import info.podkowinski.sandra.financescanner.imports.Import;
 import info.podkowinski.sandra.financescanner.project.Project;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -36,21 +37,25 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Account account;
 
     @JoinColumn(name = "categories_id")
     @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Set <Category> categories;
 
 
     @JoinColumn(name = "categories_id")
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Set<Category> pendingCategories;
 
     @JoinColumn(name = "categories_id")
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Set<Category> rejectedCategories;
 
     void addCategory(Category category){
@@ -66,11 +71,14 @@ public class Transaction {
 
     @JoinColumn(name = "project_id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Project project;
 
     @JoinColumn(name = "import_id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Import importName;
+
 
 
 }

@@ -3,6 +3,7 @@ package info.podkowinski.sandra.financescanner.account;
 import info.podkowinski.sandra.financescanner.project.Project;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class Account {
 
     @JoinColumn(name = "project_id")
     @ManyToOne
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Project project;
 
     // This is the default image used by all new accounts

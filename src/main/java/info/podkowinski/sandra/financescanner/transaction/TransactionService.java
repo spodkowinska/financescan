@@ -285,39 +285,4 @@ public class TransactionService {
         transactionRepository.deleteAssignedRejectedCategoriesByCategoryId(categoryId);
     }
 
-    public Integer numberOfTransactions(String year, Long projectId){
-        return transactionRepository.numberOfTransactionsPerYear(projectId, year);
-    }
-
-    public Double sumOfExpenses(Long projectId, String year){
-        return transactionRepository.sumOfExpensesPerYear(projectId, year);
-    }
-
-    public Double sumOfIncomes(Long projectId, String year){
-        return transactionRepository.sumOfIncomesPerYear(projectId, year);
-    }
-
-    public Integer numberOfTransactionsPerMonth(String year, String month, Long projectId){
-        return transactionRepository.numberOfTransactionsPerMonth(projectId, year, month);
-    }
-
-    public Double sumOfExpensesPerMonth(Long projectId, String year, String month){
-        return transactionRepository.sumOfExpensesPerMonth(projectId, year, month);
-    }
-
-    public Double sumOfIncomesPerMonth(Long projectId, String year, String month) {
-        return transactionRepository.sumOfIncomesPerMonth(projectId, year, month);
-    }
-
-    public double balanceByMonth(Long projectId, String year, String month) {
-        List<Transaction> transactionList = transactionRepository.findByMonth(year, month, projectId);
-        double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
-        return balance;
-    }
-
-    public double balanceByYear(Long projectId, String year) {
-        List<Transaction> transactionList = transactionRepository.findByYear(year, projectId);
-        double balance = transactionList.stream().mapToDouble(Transaction::getAmount).sum();
-        return balance;
-    }
 }

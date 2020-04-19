@@ -32,7 +32,9 @@ public class AccountService {
        return accountRepository.findByProjectId(id);
     }
 
-    void delete(Account account){accountRepository.delete(account);}
+    void delete(Account account){
+        account.project=null;
+        accountRepository.delete(account);}
 
     Long findNumberOfTransactionsPerAccount(Long accountId) {
         return accountRepository.findNumberOfTransactionsPerAccount(accountId);

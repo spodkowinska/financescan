@@ -19,7 +19,7 @@ public class ProjectService {
     }
 
     public void delete(Project project) {
-        deleteProjectsCategories(project);
+        projectRepository.deleteProjectsCategories(project);
         projectRepository.delete(project);
     }
 
