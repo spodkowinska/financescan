@@ -25,9 +25,9 @@ public class Project {
 
     String description;
 
-    Timestamp createdDate = Timestamp.valueOf(LocalDateTime.now());
+    LocalDateTime createdDate = LocalDateTime.now();
 
-    Timestamp archivedDate;
+    LocalDateTime archivedDate;
 
     Boolean archived = false;
 

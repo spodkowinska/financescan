@@ -122,7 +122,8 @@ public class ProjectController {
         }
 
         project.archived = true;
-        project.archivedDate = Timestamp.valueOf(LocalDateTime.now());
+        project.archivedDate = LocalDateTime.now();
+        System.out.println(project.archivedDate);
         projectService.save(project);
 
         return "";
