@@ -19,6 +19,8 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/project")
@@ -57,9 +59,9 @@ public class ProjectController {
 
     @PostMapping("/add")
     public String addPost(@ModelAttribute Project project, @AuthenticationPrincipal CurrentUser currentUser) {
-        Role role =userService.findRole("OWNER");
+        Role role = userService.findRole("OWNER");
         User user = currentUser.getUser();
-        HashMap< User, Role> userRole = new HashMap<>();
+        HashMap<User, Role> userRole = new HashMap<>();
         userRole.put(user, role);
         project.setUsersWithRolesMap(userRole);
         projectService.save(project);
@@ -73,16 +75,13 @@ public class ProjectController {
 
     @GetMapping("/edit/{projectId}")
     public String edit(Model model, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
-        if (currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x == projectId)) {
-            Project project = projectService.findById(projectId);
-            List <User> friends = currentUser.getUser().getFriends();
-            List<Role>roles = userService.findProjectRoles();
-            model.addAttribute("friends", friends);
-            model.addAttribute("projectRoles", roles);
-            model.addAttribute("project", project);
-            return "projects/project-edit";
-        }
-        return null;
+        List<Project> projects = currentUser.getUser().getProjects().stream().filter(x -> x.getId() == projectId).collect(Collectors.toList());
+        List<User> friends = currentUser.getUser().getFriends();
+        List<Role> roles = userService.findProjectRoles();
+        model.addAttribute("friends", friends);
+        model.addAttribute("projectRoles", roles);
+        model.addAttribute("project", projects.get(0));
+        return "projects/project-edit";
     }
 
     //todo frontend validation
@@ -91,6 +90,11 @@ public class ProjectController {
     public String editPost(@ModelAttribute Project project, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
         if (currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x == projectId))
             projectService.save(project);
+        currentUser.getUser().getProjects().clear();
+        currentUser.getUser().getProjects().addAll(projectService.findAllByUserId(currentUser.getUser().getId()));
+        if(currentUser.getUser().getCurrentProject().getId()==projectId) {
+            currentUser.getUser().setCurrentProject(project);
+        }
         return "";
     }
 

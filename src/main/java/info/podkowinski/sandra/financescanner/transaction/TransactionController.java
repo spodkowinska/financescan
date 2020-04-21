@@ -150,7 +150,7 @@ public class TransactionController {
     public String changeAccount(@PathVariable Long transactionId, @PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction != null && project != null && transaction.project.getId().equals(project.getId())) {
+        if (transaction != null && project != null && transaction.project.getId() == (project.getId())) {
             Account account = accountService.findById(accountId);
             if (account != null && account.getProject().getId().equals(project.getId())) {
                 transaction.account = account;

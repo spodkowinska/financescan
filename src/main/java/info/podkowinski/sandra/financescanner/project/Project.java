@@ -4,6 +4,7 @@ import info.podkowinski.sandra.financescanner.user.Role;
 import info.podkowinski.sandra.financescanner.user.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -36,6 +37,7 @@ public class Project {
             joinColumns = {@JoinColumn(name = "project_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     @MapKeyJoinColumn(name = "user_id")
+    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     Map<User, Role> usersWithRolesMap;
 
 
