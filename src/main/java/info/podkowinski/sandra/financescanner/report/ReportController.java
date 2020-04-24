@@ -48,13 +48,15 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String yearsReport(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
 
         Project project = currentUser.getUser().getCurrentProject();
-        List <Integer> years =transactionService.findYearsByProjectId(project.getId());
+        List<Category> categories = categoryService.findByProjectId(project.getId());
+        List<Integer> years = transactionService.findYearsByProjectId(project.getId());
+        model.addAttribute("categories", categories);
         model.addAttribute("years", years);
-        return "report-table";
+        return "reports/report-table";
     }
 
     @GetMapping("/{year}")
@@ -74,7 +76,7 @@ public class ReportController {
         model.addAttribute("balance", balance);
         model.addAttribute("categoriesWithStatistics", categoriesWithStatisticsByYear);
 
-        return "report-table";
+        return "reports/report-month";
     }
 
     @GetMapping("{year}/{month}")
@@ -96,6 +98,6 @@ public class ReportController {
 
         model.addAttribute("categoriesWithStatistics", categoriesWithStatisticsByMonth);
 
-        return "report-table";
+        return "reports/report-month";
     }
 }

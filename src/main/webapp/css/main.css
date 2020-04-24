@@ -26,21 +26,27 @@ a:hover {
     background: #e8e8e8;
 }
 
-.finance_table th, td {
-    border: 1px solid lightgray;
+.finance_table th, .finance_table td {
+    border-top: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
     padding: 2px;
     padding-left: 5px;
     padding-right: 5px;
 }
 
-.finance_table th {
-    border-color: #858796;
+.finance_table th, .finance_table tfoot td {
+    border: 1px solid #858796 !important;
     text-align: center;
     color: #858796;
     background: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     font-weight: normal;
+}
+
+.finance_table tr:nth-last-child(1) {
+    border-bottom: 1px solid lightgray;
 }
 
 .finance_table td.actions a {
