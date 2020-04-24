@@ -34,34 +34,11 @@ $('#projectDeleteModal').on('show.bs.modal', function(event) {
 
     $('#projectDeleteModal-id').text(projectId);
 
-    $.get(CONTEXT_PATH + '/project/numberoftransactions/' + projectId, function(data) {
-        $('#projectDeleteModalBody').children().hide();
-
-        let deletePossible = true;
-
-        const transCnt = parseInt(data);
-        if (data && transCnt === 1) {
-            $('#projectDeleteModal-assignedTransactions').show();
-            $('#projectDeleteModal-assignedCount').text(transCnt);
-            deletePossible = false;
-        }
-
-        if ($('#list').children('tr').length === 1) {
-            $('#projectDeleteModal-lastProject').show();
-            deletePossible = false;
-        }
-
-        if (deletePossible) {
-            $('#projectDeleteModal-possible').show();
-            submitButton.show();
-            submitButton.click(function(event) {
-                $.get(CONTEXT_PATH + '/project/delete/' + projectId, function () {
-                    window.location.reload();
-                });
-            });
-        }
-        else
-            submitButton.hide();
+    submitButton.show();
+    submitButton.click(function(event) {
+        $.get(CONTEXT_PATH + '/project/delete/' + projectId, function () {
+            window.location.reload();
+        });
     });
 });
 
