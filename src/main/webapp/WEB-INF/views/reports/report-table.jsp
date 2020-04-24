@@ -20,6 +20,7 @@
                 <th rowspan="2" style="width: 150px">Category</th>
                 <th colspan="12">Months</th>
                 <th rowspan="2" style="width: 85px">AVG</th>
+                <th rowspan="2" style="width: 85px">SUM</th>
             </tr>
             <tr>
                 <c:forEach items="${months}" var="month">
@@ -40,6 +41,7 @@
                     </c:forEach>
 
                     <td class="center avg"></td>
+                    <td class="center sum"></td>
                 </tr>
             </c:forEach>
 
@@ -51,6 +53,7 @@
                     </c:forEach>
 
                     <td class="center avg"></td>
+                    <td class="center sum"></td>
                 </tr>
 
             </tbody>
@@ -65,6 +68,7 @@
                     </c:forEach>
 
                     <td class="center" id="avg_sum"></td>
+                    <td class="center" id="sum_sum"></td>
                 </tr>
             </tfoot>
         </table>
