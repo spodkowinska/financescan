@@ -39,10 +39,14 @@ function init() {
 
             // Fill column with avg amount
             const id = $(this).data('category-id');
-            const balance = year.cats[id].balance;
             const cell = $(this).children().last();
-            cell.text(balance);
-            cell.addClass(balance > 0 ? 'positive' : 'negative');
+            if (year.cats[id]) {
+                const balance = year.cats[id].balance;
+                cell.text(balance);
+                cell.addClass(balance > 0 ? 'positive' : 'negative');
+            }
+            else
+                cell.text(0);
         });
     });
 }
