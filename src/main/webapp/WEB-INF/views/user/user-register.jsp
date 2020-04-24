@@ -1,3 +1,5 @@
+<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,23 +32,27 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Create an Account</h1>
               </div>
-              <form class="user" method="post" action="${pageContext.request.contextPath}/register">
+              <form:form modelAttribute="user" method="post" action="${pageContext.request.contextPath}/register">
                 <div class="form-group">
-                  <input type="text" name="username" class="form-control form-control-user" placeholder="Username" autocomplete="off" required/>
+                  <form:input path="username" type="text" class="form-control form-control-user" placeholder="Username" autocomplete="off"/>
+                  <form:errors path="username" cssClass="error"></form:errors>
                 </div>
                 <div class="form-group">
-                  <input type="email" name="email" class="form-control form-control-user" placeholder="Email Address" autocomplete="off" required/>
+                  <form:input path="mail" type="email" class="form-control form-control-user" placeholder="Email Address" autocomplete="off"/>
+                  <form:errors path="mail" cssClass="error"></form:errors>
                 </div>
                 <div class="form-group">
-                   <input type="password" name="password" id="pass1" class="form-control form-control-user" placeholder="Password" autocomplete="new-password" required/>
+                   <form:input  path="password" type="password" id="pass1" class="form-control form-control-user" placeholder="Password" autocomplete="new-password"/>
+                  <form:errors path="password" cssClass="error"></form:errors>
                 </div>
                 <div class="form-group">
-                  <input type="password" id="pass2" class="form-control form-control-user" placeholder="Repeat Password" autocomplete="new-password" required/>
+                  <form:input  path="matchingPassword" type="password" id="pass2"  class="form-control form-control-user" placeholder="Repeat Password" autocomplete="new-password"/>
+                  <form:errors path="matchingPassword" cssClass="error"></form:errors>
                   <div id="message" style="text-align: center; color: red"></div>
                 </div>
                 <input type="submit" class="btn btn-primary btn-user btn-block" value="Register Account" id="submit" />
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-              </form>
+              </form:form>
               <hr>
               <div class="text-center">
                 <a class="small" href="${pageContext.request.contextPath}/forgotpassword">Forgot Password?</a>

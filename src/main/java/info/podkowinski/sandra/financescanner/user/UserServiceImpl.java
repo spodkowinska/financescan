@@ -1,7 +1,11 @@
 package info.podkowinski.sandra.financescanner.user;
 
+import info.podkowinski.sandra.financescanner.category.CategoryService;
+import info.podkowinski.sandra.financescanner.project.Project;
+import info.podkowinski.sandra.financescanner.project.ProjectService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,12 +17,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ProjectService projectService;
+    private final CategoryService categoryService;
 
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
+                           BCryptPasswordEncoder passwordEncoder, ProjectService projectService, CategoryService categoryService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.projectService = projectService;
+        this.categoryService = categoryService;
     }
     @Override
     public User findByUsername(String username) {
@@ -36,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(1);
 
         Role userRole = roleRepository.findByName("USER");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        user.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
         userRepository.save(user);
 
@@ -66,5 +74,31 @@ public class UserServiceImpl implements UserService {
     }
     public List<Role> findProjectRoles(){
         return roleRepository.findProjectRoles();
+    }
+
+    @Transactional
+    @Override
+    public User registerNewUserAccount(UserDto userDto)
+//            throws UserAlreadyExistException
+    {
+
+        if (emailExists(userDto.getMail())) {
+//            throw new UserAlreadyExistException("There is an account with that email address: " + userDto.getMail());
+        }
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setMail(userDto.getMail());
+        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("USER"))));
+        Long projectId = projectService.createDefaultProject();
+        Project project =projectService.findById(projectId);
+        categoryService.createDefaultCategories(projectId);
+        user.setCurrentProject(project);
+        user.setProjects(Arrays.asList(project));
+        return userRepository.save(user);
+    }
+
+    private boolean emailExists(String mail) {
+        return userRepository.findByMail(mail) != null;
     }
 }

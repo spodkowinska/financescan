@@ -27,14 +27,13 @@ public class ProjectService {
 
     public Project findById(Long id){ return projectRepository.findById(id).orElse(null);}
 
-    Long createDefaultProject(){
+   public Long createDefaultProject(){
         Project project = new Project();
         project.name = "First Project";
 //        projectRepository.save(project);
 //        projectRepository.flush();
 //        long test = project.getId();
         project = projectRepository.saveAndFlush(project);
-        long test = project.getId();
         return project.getId();
     }
     List<Project> findAllByUserId(Long userId){

@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +22,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false, unique = true)
+    private String mail;
+
     // TODO password must have its setter which makes it always encoded
     private String password;
 
@@ -31,6 +35,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     private Set<Role> roles;
+
+    public void addRole(Role role){
+        this.roles.add(role);
+    }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
@@ -46,5 +54,7 @@ public class User {
     @JoinColumn(name = "friends_id")
     @Cascade(value = org.hibernate.annotations.CascadeType.DELETE)
     List<User> friends;
+
+    LocalDateTime createdDate = LocalDateTime.now();
 
 }
