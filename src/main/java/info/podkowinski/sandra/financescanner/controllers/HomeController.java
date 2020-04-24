@@ -5,6 +5,7 @@ import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
+import info.podkowinski.sandra.financescanner.user.RoleRepository;
 import info.podkowinski.sandra.financescanner.user.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,17 +21,21 @@ public class HomeController {
     private final CsvSettingsService csvSettingsService;
     private final AccountService accountService;
     private final UserServiceImpl userService;
+    private final RoleRepository roleRepository;
 
-    public HomeController(TransactionService transactionService, ProjectService projectService, AccountService accountService, CsvSettingsService csvSettingsService, UserServiceImpl userService) {
+    public HomeController(RoleRepository roleRepository, TransactionService transactionService, ProjectService projectService, AccountService accountService, CsvSettingsService csvSettingsService, UserServiceImpl userService) {
         this.transactionService = transactionService;
         this.projectService = projectService;
         this.csvSettingsService = csvSettingsService;
         this.accountService = accountService;
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/home")
     public String home() {
+
+        System.out.println(roleRepository.findByName("USER").getName());
         return "index";
     }
 

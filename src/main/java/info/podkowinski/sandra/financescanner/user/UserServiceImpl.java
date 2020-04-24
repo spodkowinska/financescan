@@ -2,6 +2,7 @@ package info.podkowinski.sandra.financescanner.user;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(1);
 
         Role userRole = roleRepository.findByName("USER");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        user.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
         userRepository.save(user);
 
@@ -66,5 +67,26 @@ public class UserServiceImpl implements UserService {
     }
     public List<Role> findProjectRoles(){
         return roleRepository.findProjectRoles();
+    }
+
+    @Transactional
+    @Override
+    public User registerNewUserAccount(UserDto userDto)
+//            throws UserAlreadyExistException
+    {
+
+        if (emailExists(userDto.getMail())) {
+//            throw new UserAlreadyExistException("There is an account with that email address: " + userDto.getMail());
+        }
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setMail(userDto.getMail());
+        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("USER"))));
+        return userRepository.save(user);
+    }
+
+    private boolean emailExists(String mail) {
+        return userRepository.findByMail(mail) != null;
     }
 }

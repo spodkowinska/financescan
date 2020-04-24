@@ -7,4 +7,8 @@ public interface UserService {
     void saveUser(User user);
 
     User createDefaultUserHack();
+
+    User registerNewUserAccount(UserDto userDto) ;
+//            throws UserAlreadyExistException;
+
 }

@@ -4,8 +4,14 @@ import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -22,11 +28,6 @@ public class UserController {
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public String login() {
         return "user/user-login";
-    }
-
-    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
-    public String register() {
-        return "user/user-register";
     }
 
     @RequestMapping(value = {"/forgotpassword"}, method = RequestMethod.GET)
@@ -56,4 +57,25 @@ public class UserController {
         return "";
     }
 
+    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
+    public String register(Model model) {
+        UserDto userDto = new UserDto();
+        model.addAttribute("user", userDto);
+        return "user/user-register";
+    }
+
+    @PostMapping("/register")
+    public String registerUserAccount(@ModelAttribute @Valid UserDto user,
+            HttpServletRequest request, Errors errors) {
+
+//        try {
+            User registered = userService.registerNewUserAccount(user);
+//        } catch (UserAlreadyExistException uaeEx) {
+//            ModelAndView mav = new ModelAndView();
+//            mav.addObject("message", "An account for that username/email already exists.");
+//            return mav;
+//        }
+
+        return "redirect:/transaction/list";
+    }
 }

@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
     @Repository
-    public interface ReportRepository extends JpaRepository<ReportEntity, Integer> {
+    public interface ReportRepository extends JpaRepository<Transaction, Integer> {
 
     @Query(value = "SELECT SUM(CASE WHEN (t.project_id = ? AND YEAR(t.transaction_date)= ? ) THEN 1 ELSE 0 END) AS num_trans FROM transactions t", nativeQuery = true)
     Integer numberOfTransactionsPerYear(Long projectId, String year);
@@ -37,7 +37,7 @@ import java.util.List;
     @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and MONTH(t.transaction_date)=? and project_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByMonth(String year, String month, Long projectId);
 
-    @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and project_id=? ORDER BY transaction_date ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and t.project_id=? ORDER BY t.transaction_date ASC", nativeQuery = true)
     List<Transaction> findByYear(String year, Long projectId);
 
     public class CategoryStats {
@@ -51,7 +51,7 @@ import java.util.List;
         public Double income, outcome, balance;
     }
 
-    @Query(value = "select new info.podkowinski.sandra.financescanner.transaction.TransactionRepository.CategoryStats(\n" +
+    @Query(value = "select new info.podkowinski.sandra.financescanner.report.ReportRepository.CategoryStats(\n" +
             "    categories_id,\n" +
             "    round(sum(if (divided_amount > 0, divided_amount, 0)), 2),\n" +
             "    round(sum(if (divided_amount < 0, divided_amount, 0)), 2),\n" +
@@ -67,7 +67,7 @@ import java.util.List;
             "order by categories_id asc;\n", nativeQuery = true)
     public List<CategoryStats> categoriesWithIncomesExpensesBalance(Long projectId);
 
-    @Query(value = "select new info.podkowinski.sandra.financescanner.transaction.TransactionRepository.CategoryStats(\n" +
+    @Query(value = "select new info.podkowinski.sandra.financescanner.report.ReportRepository.CategoryStats(\n" +
             "    categories_id,\n" +
             "    round(sum(if (divided_amount > 0, divided_amount, 0)), 2),\n" +
             "    round(sum(if (divided_amount < 0, divided_amount, 0)), 2),\n" +
@@ -83,7 +83,7 @@ import java.util.List;
             "order by categories_id asc;\n", nativeQuery = true)
     List<CategoryStats> categoriesWithIncomesExpensesBalanceYear(Long projectId, String year);
 
-    @Query(value = "select new info.podkowinski.sandra.financescanner.transaction.TransactionRepository.CategoryStats(\n" +
+    @Query(value = "select new info.podkowinski.sandra.financescanner.report.ReportRepository.CategoryStats(\n" +
             "    categories_id,\n" +
             "    round(sum(if (divided_amount > 0, divided_amount, 0)), 2),\n" +
             "    round(sum(if (divided_amount < 0, divided_amount, 0)), 2),\n" +

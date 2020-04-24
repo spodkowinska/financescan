@@ -58,4 +58,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "DELETE FROM transactions_rejected_categories trc WHERE trc.rejected_categories_id =?", nativeQuery = true)
     void deleteAssignedRejectedCategoriesByCategoryId(Long categoryId);
 
+
 }
