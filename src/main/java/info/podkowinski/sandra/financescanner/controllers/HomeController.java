@@ -42,24 +42,5 @@ public class HomeController {
         userService.saveDefaultRoles();
         return "redirect:../category/list";
     }
-
-    @GetMapping("/report")
-    public String present(Model model) {
-//        Project user2 = userService.findById(2l);
-//        String str = "2019-10-31";
-//        Date date1 = Date.valueOf(str);
-//        String str2 = "2019-11-31";
-//        Date date2 = Date.valueOf(str2);
-        List<Transaction> allTransactions = transactionService.findByProjectId(2l);
-        Map<String, Double> lastYearBalances = transactionService.lastYearBalances(2l);
-        Map<String, Double> categoriesAndAmounts = transactionService.mapTransactionsToCategoriesWithAmounts(allTransactions, 2l);
-        Map<String, Double> categoriesAndSpendings = transactionService.mapTransactionsToCategoriesWithAmounts(transactionService.findSpendings(2l), 2l);
-        model.addAttribute("categoriesWithAmounts", categoriesAndAmounts);
-        model.addAttribute("lastYearBalances", lastYearBalances);
-        model.addAttribute("categoriesWithSpendings", categoriesAndSpendings);
-        return "report";
-    }
-
-
 }
 
