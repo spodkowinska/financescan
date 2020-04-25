@@ -12,14 +12,14 @@ function setYear(year, sender) {
 
     gCurrentYear = year;
 
-    $(sender ? sender : 'th a:last')
+    $(sender ? sender : '#years a:last')
         .css('font-weight', 'bold', 'text-decoration', 'underline')
         .siblings().css('font-weight', 'initial', 'text-decoration', 'initial');
 
     let monthsCompleted = 0;
     let monthsValid = 0.0;
 
-    $('.finance_table td, .finance_table th').removeClass('negative positive unused');
+    $('.finance_table td, .finance_table th').removeClass('negative positive unused').filter('td').text('');
 
     for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
         $.get('/report/' + year + '/' + (monthIndex + 1), function (data) {

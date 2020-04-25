@@ -18,7 +18,7 @@
             <thead>
             <tr>
                 <th rowspan="2" style="width: 150px">Category</th>
-                <th colspan="12">
+                <th colspan="12" id="years">
                     <c:forEach items="${years}" var="year" varStatus="i">
                         <c:if test="${i.last}">
                             <script>gLastYear = ${year};</script>
@@ -42,26 +42,26 @@
 
             <c:forEach items="${categories}" var="category">
                 <tr data-category-id="${category.id}">
-                    <td><a class="tag" style="background-color: ${category.color}; color: ${category.fontColor} !important; width: 100%; text-align: center; font-size: 12px;">${category.name}</a></td>
+                    <th><a class="tag" style="background-color: ${category.color}; color: ${category.fontColor} !important; width: 100%; text-align: center; font-size: 12px;">${category.name}</a></th>
 
                     <c:forEach items="${months}" var="month" begin="0" step="1" varStatus="i">
                         <td class="month_${i.index} center" id="month_${i.index}_cat_${category.id}"></td>
                     </c:forEach>
 
-                    <td class="center avg"></td>
-                    <td class="center sum"></td>
+                    <td class="center avg separate-col"></td>
+                    <td class="center sum separate-col"></td>
                 </tr>
             </c:forEach>
 
                 <tr data-category-id="0">
-                    <td><a class="tag" style="width: 100%; text-align: center; font-size: 12px; font-style: italic;">Uncategorized</a></td>
+                    <th><a class="tag" style="width: 100%; text-align: center; font-size: 12px; font-style: italic;">Uncategorized</a></th>
 
                     <c:forEach items="${months}" var="month" begin="0" step="1" varStatus="i">
                         <td class="month_${i.index} center" id="month_${i.index}_cat_0"></td>
                     </c:forEach>
 
-                    <td class="center avg"></td>
-                    <td class="center sum"></td>
+                    <td class="center avg separate-col"></td>
+                    <td class="center sum separate-col"></td>
                 </tr>
 
             </tbody>
