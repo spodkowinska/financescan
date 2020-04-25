@@ -69,14 +69,14 @@
             <!-- TABLE FOOTER -->
             <tfoot>
                 <tr>
-                    <td>SUM</td>
+                    <th>SUM</th>
 
                     <c:forEach items="${months}" var="month" begin="0" step="1" varStatus="i">
                         <td class="month_${i.index} center" id="month_${i.index}_sum"></td>
                     </c:forEach>
 
-                    <td class="center" id="avg_sum"></td>
-                    <td class="center" id="sum_sum"></td>
+                    <td class="center separate-col" id="avg_sum"></td>
+                    <td class="center separate-col" id="sum_sum"></td>
                 </tr>
             </tfoot>
         </table>
