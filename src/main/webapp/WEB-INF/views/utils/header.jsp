@@ -29,7 +29,6 @@
 
     <!-- Custom styles for this page -->
     <link href="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vanillaSelectBox.css">
 
     <script src="${pageContext.request.contextPath}/js/sorttable.js"></script>
 
