@@ -1,9 +1,14 @@
 function init() {
+    let monthsCompleted = 0;
+    let monthsValid = 0.0;
+
     for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
         $.get('/report/2020/' + (monthIndex + 1), function (data) {
             const month = JSON.parse(data);
 
             if (month.valid) {
+                monthsValid += 1.0;
+
                 // Fill column with zeros
                 $('td.month_' + monthIndex).text('0');
 
@@ -29,50 +34,55 @@ function init() {
             else {
                 $('.month_' + monthIndex).addClass('unused');
             }
+
+            monthsCompleted++;
+
+            if (monthsCompleted === 12) {
+                $.get('/report/2020', function (data) {
+                    if (monthsValid === 0)
+                        monthsValid = 1;
+
+                    const year = JSON.parse(data);
+
+                    // Fill sum
+                    {
+                        const cell = $('#sum_sum');
+                        cell.text(year.balance.toFixed(2));
+                        cell.addClass(year.balance > 0 ? 'positive' : 'negative');
+                    }
+                    {
+                        const cell = $('#avg_sum');
+                        cell.text((year.balance/monthsValid).toFixed(2));
+                        cell.addClass(year.balance > 0 ? 'positive' : 'negative');
+                    }
+
+                    $('.finance_table tbody tr').each(function() {
+
+                        // Fill column with avg amount
+                        const id = $(this).data('category-id');
+                        {
+                            const cell = $(this).children().filter('.sum');
+                            if (year.cats[id]) {
+                                const balance = year.cats[id].balance;
+                                cell.text(balance.toFixed(2));
+                                cell.addClass(balance > 0 ? 'positive' : 'negative');
+                            }
+                            else
+                                cell.text(0);
+                        }
+                        {
+                            const cell = $(this).children().filter('.avg');
+                            if (year.cats[id]) {
+                                const balance = year.cats[id].balance;
+                                cell.text((balance/monthsValid).toFixed(2));
+                                cell.addClass(balance > 0 ? 'positive' : 'negative');
+                            }
+                            else
+                                cell.text(0);
+                        }
+                    });
+                });
+            }
         });
     }
-
-    $.get('/report/2020', function (data) {
-
-        const year = JSON.parse(data);
-
-        // Fill sum
-        {
-            const cell = $('#sum_sum');
-            cell.text(year.balance.toFixed(2));
-            cell.addClass(year.balance > 0 ? 'positive' : 'negative');
-        }
-        {
-            const cell = $('#avg_sum');
-            cell.text((year.balance/12.0).toFixed(2));
-            cell.addClass(year.balance > 0 ? 'positive' : 'negative');
-        }
-
-        $('.finance_table tbody tr').each(function() {
-
-            // Fill column with avg amount
-            const id = $(this).data('category-id');
-            {
-                const cell = $(this).children().filter('.sum');
-                if (year.cats[id]) {
-                    const balance = year.cats[id].balance;
-                    cell.text(balance.toFixed(2));
-                    cell.addClass(balance > 0 ? 'positive' : 'negative');
-                }
-                else
-                    cell.text(0);
-            }
-            {
-                const cell = $(this).children().filter('.avg');
-                if (year.cats[id]) {
-                    const balance = year.cats[id].balance;
-                    cell.text((balance/12.0).toFixed(2));
-                    cell.addClass(balance > 0 ? 'positive' : 'negative');
-                }
-                else
-                    cell.text(0);
-            }
-
-        });
-    });
 }
