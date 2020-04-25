@@ -68,4 +68,15 @@ public class ReportService {
         categoryStats.forEach(c->categoriesWithStatistics.put(c[0] == null ? null : ((BigInteger)c[0]).longValue(), new CategoryStats(c)));
         return categoriesWithStatistics;
     }
+
+    boolean isValid(Long projectId, String year, String month){
+        Transaction lastTransaction = transactionRepository.findLastTransaction(projectId);
+        Transaction firstTransaction = transactionRepository.findFirstTransaction(projectId);
+        if(lastTransaction.getTransactionDate().getYear()<=Integer.parseInt(year) &&
+                lastTransaction.getTransactionDate().getMonthValue()<=Integer.parseInt(month) &&
+        firstTransaction.getTransactionDate().getYear()>=Integer.parseInt(year) &&
+                firstTransaction.getTransactionDate().getMonthValue()>=Integer.parseInt(month)){
+            return true;
+        } else return false;
+    }
 }
