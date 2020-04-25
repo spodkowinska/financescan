@@ -88,7 +88,10 @@ public class ReportController {
         Double sumOfIncomes = reportService.sumOfIncomesPerMonth(project.getId(),year, month);
         Double balance = reportService.balanceByMonth(project.getId(), year, month);
         Map<Long, ReportRepository.CategoryStats> categoriesWithStatisticsByMonth = reportService.categoriesWithStatisticsByMonth(project.getId(), year, month);
+        boolean isValid = reportService.isValid(project.getId(), year, month);
+        System.out.println(isValid);
 
+        model.addAttribute("valid", isValid);
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("numberOfTransactions", numberOfTransactions);
