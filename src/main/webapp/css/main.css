@@ -89,6 +89,11 @@ a:hover {
     color: rgb(0, 150, 0);
 }
 
+.finance_table .unused {
+    background: #f5f5f5;
+    color: #CCC;
+}
+
 div.tag-add-popover {
     text-align: center;
     padding: 5px;

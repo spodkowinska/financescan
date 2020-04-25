@@ -3,27 +3,31 @@ function init() {
         $.get('/report/2020/' + (monthIndex + 1), function (data) {
             const month = JSON.parse(data);
 
-            // Fill column with zeros
-            $('td.month_' + monthIndex).text('0');
+            if (month.valid) {
+                // Fill column with zeros
+                $('td.month_' + monthIndex).text('0');
 
-            // Fill given cells with amounts
-            for (const cat in month.cats) {
-                const id = month.cats[cat].id;
-                const balance = month.cats[cat].balance;
-                const cell = $('#month_' + monthIndex + '_cat_' + id);
-                cell.text(balance.toFixed(2));
-                cell.addClass(balance > 0 ? 'positive' : 'negative');
-            }
-
-            // Fill sum
-            {
-                const cell = $('#month_'  + monthIndex + '_sum');
-                if (month.balance === 0)
-                    cell.text(0)
-                else {
-                    cell.text(month.balance.toFixed(2));
-                    cell.addClass(month.balance > 0 ? 'positive' : 'negative');
+                // Fill given cells with amounts
+                for (const cat in month.cats) {
+                    const id = month.cats[cat].id;
+                    const balance = month.cats[cat].balance;
+                    const cell = $('#month_' + monthIndex + '_cat_' + id);
+                    cell.text(balance.toFixed(2));
+                    cell.addClass(balance > 0 ? 'positive' : 'negative');
                 }
+                // Fill sum
+                {
+                    const cell = $('#month_'  + monthIndex + '_sum');
+                    if (month.balance === 0)
+                        cell.text(0);
+                    else {
+                        cell.text(month.balance.toFixed(2));
+                        cell.addClass(month.balance > 0 ? 'positive' : 'negative');
+                    }
+                }
+            }
+            else {
+                $('.month_' + monthIndex).addClass('unused');
             }
         });
     }

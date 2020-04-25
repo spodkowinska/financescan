@@ -23,8 +23,8 @@
                 <th rowspan="2" style="width: 85px">SUM</th>
             </tr>
             <tr>
-                <c:forEach items="${months}" var="month">
-                    <th style="width: 85px">${month}</th>
+                <c:forEach items="${months}" var="month" begin="0" step="1" varStatus="i">
+                    <th style="width: 85px" class="month_${i.index}">${month}</th>
                 </c:forEach>
             </tr>
             </thead>
