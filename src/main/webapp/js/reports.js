@@ -1,9 +1,28 @@
+let gCurrentYear;
+
 function init() {
+    if (gLastYear)
+        setYear(gLastYear);
+}
+
+function setYear(year, sender) {
+
+    if (gCurrentYear === year)
+        return;
+
+    gCurrentYear = year;
+
+    $(sender ? sender : 'th a:last')
+        .css('font-weight', 'bold', 'text-decoration', 'underline')
+        .siblings().css('font-weight', 'initial', 'text-decoration', 'initial');
+
     let monthsCompleted = 0;
     let monthsValid = 0.0;
 
+    $('.finance_table td, .finance_table th').removeClass('negative positive unused');
+
     for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
-        $.get('/report/2020/' + (monthIndex + 1), function (data) {
+        $.get('/report/' + year + '/' + (monthIndex + 1), function (data) {
             const month = JSON.parse(data);
 
             if (month.valid) {
@@ -38,7 +57,7 @@ function init() {
             monthsCompleted++;
 
             if (monthsCompleted === 12) {
-                $.get('/report/2020', function (data) {
+                $.get('/report/' + year, function (data) {
                     if (monthsValid === 0)
                         monthsValid = 1;
 

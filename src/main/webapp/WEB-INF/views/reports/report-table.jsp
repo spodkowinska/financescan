@@ -18,7 +18,15 @@
             <thead>
             <tr>
                 <th rowspan="2" style="width: 150px">Category</th>
-                <th colspan="12">Months</th>
+                <th colspan="12">
+                    <c:forEach items="${years}" var="year" varStatus="i">
+                        <c:if test="${i.last}">
+                            <script>gLastYear = ${year};</script>
+                        </c:if>
+                        <a onclick="setYear(${year}, this)">${year}</a>
+                        <c:if test="${!i.last}"> | </c:if>
+                    </c:forEach>
+                </th>
                 <th rowspan="2" style="width: 85px">AVG</th>
                 <th rowspan="2" style="width: 85px">SUM</th>
             </tr>
