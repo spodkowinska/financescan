@@ -1,6 +1,5 @@
 package info.podkowinski.sandra.financescanner.report;
 
-import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.account.AccountService;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryService;
@@ -8,19 +7,15 @@ import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.imports.ImportService;
 import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
-import info.podkowinski.sandra.financescanner.transaction.Transaction;
 import info.podkowinski.sandra.financescanner.transaction.TransactionService;
 import info.podkowinski.sandra.financescanner.user.CurrentUser;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +71,7 @@ public class ReportController {
         model.addAttribute("balance", balance);
         model.addAttribute("categoriesWithStatistics", categoriesWithStatisticsByYear);
 
-        return "reports/report-month";
+        return "reports/report-stats-json";
     }
 
     @GetMapping("{year}/{month}")
@@ -101,6 +96,6 @@ public class ReportController {
 
         model.addAttribute("categoriesWithStatistics", categoriesWithStatisticsByMonth);
 
-        return "reports/report-month";
+        return "reports/report-stats-json";
     }
 }
