@@ -6,6 +6,7 @@ import info.podkowinski.sandra.financescanner.transaction.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -86,6 +87,12 @@ public class ReportService {
         return oldestTransactionYear < yearToCompare && yearToCompare < latestTransactionYear
                 || oldestTransactionYear == yearToCompare && oldestTransactionMonth <= monthToCompare
                 || latestTransactionYear == yearToCompare && latestTransactionMonth >= monthToCompare;
+    }
+
+    boolean isCurrent(String monthToCheck){
+        int month = Integer.parseInt(monthToCheck);
+        int currentMonth = LocalDateTime.now().getMonthValue();
+        return month == currentMonth;
     }
 
 }

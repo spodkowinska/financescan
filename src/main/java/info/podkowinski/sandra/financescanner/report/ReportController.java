@@ -84,8 +84,9 @@ public class ReportController {
         Double balance = reportService.balanceByMonth(project.getId(), year, month);
         Map<Long, ReportRepository.CategoryStats> categoriesWithStatisticsByMonth = reportService.categoriesWithStatisticsByMonth(project.getId(), year, month);
         boolean isValid = reportService.isValid(project.getId(), year, month);
-        System.out.println(isValid);
+        boolean current = reportService.isCurrent(month);
 
+        model.addAttribute("current", current);
         model.addAttribute("valid", isValid);
         model.addAttribute("year", year);
         model.addAttribute("month", month);
