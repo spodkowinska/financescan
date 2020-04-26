@@ -26,9 +26,11 @@
             </c:when>
             <c:otherwise>
 
+                <canvas id="year-chart" style="width: 100%; height: 300px"></canvas>
+
                 <c:set var="months" value="${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']}" />
 
-                <table id="one_year_report_table" class="finance_table">
+                <table id="one_year_report_table" class="finance_table mt-2">
                     <!-- TABLE HEADER -->
                     <thead>
                     <tr>
@@ -55,7 +57,14 @@
                     <!-- TABLE DATA -->
                     <tbody id="list">
 
+                    <script>let gCategories = [];</script>
                     <c:forEach items="${categories}" var="category">
+                        <script>gCategories.push({
+                            id: ${category.id},
+                            name: '${category.name}',
+                            color: '${category.color}'
+                        });</script>
+
                         <tr data-category-id="${category.id}">
                             <th><a class="tag" style="background-color: ${category.color}; color: ${category.fontColor} !important; width: 100%; text-align: center; font-size: 12px;">${category.name}</a></th>
 
@@ -67,6 +76,7 @@
                             <td class="center sum separate-col"></td>
                         </tr>
                     </c:forEach>
+                    <script>gCategories.push({ id: 0, name: 'Uncategorized', color: 'red' });</script>
 
                         <tr data-category-id="0">
                             <th><a class="tag" style="width: 100%; text-align: center; font-size: 12px; font-style: italic;">Uncategorized</a></th>

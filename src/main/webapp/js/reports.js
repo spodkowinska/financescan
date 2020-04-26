@@ -1,8 +1,76 @@
 let gCurrentYear;
+let gYearChartConfig;
+let gYearChart;
+let gOperationsFrozen;
 
 function init() {
-    if (gLastYear)
+    gOperationsFrozen = false;
+    if (gLastYear) {
+        initYearChart();
         setYear(gLastYear);
+    }
+}
+
+function ycMonth(monthIndex) {
+    gYearChartConfig.data.datasets.forEach(function (elem) {
+        elem.data[monthIndex] = 0;
+    });
+}
+
+function getCatIndex(catId) {
+    return gCategories.findIndex(function (elem) {
+        return elem.id === catId;
+    });
+}
+
+function ycMonthCat(monthIndex, catId, catBalance) {
+    const catIndex = getCatIndex(catId);
+    gYearChartConfig.data.datasets[catIndex].data[monthIndex] = catBalance;
+}
+
+function initYearChart() {
+    gYearChartConfig = {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: Array(gCategories.length).fill(null)
+        },
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    };
+    resetYearChart();
+
+    const ctx = document.getElementById('year-chart').getContext('2d');
+    gYearChart = new Chart(ctx, gYearChartConfig);
+}
+
+function resetYearChart() {
+    gYearChartConfig.data.datasets.forEach(function (elem, index, array) {
+        if (array[index] == null) {
+            array[index] = {
+                label: gCategories[index].name,
+                borderColor: gCategories[index].color,
+                borderWidth: 2,
+                fill: false,
+                data: Array(12)
+            }
+            if (gCategories[index].id === 0)
+                array[index].borderDash = [5, 5];
+        }
+        array[index].data.fill(null);
+    });
+}
+
+function updateYearChart() {
+    gYearChart.update();
 }
 
 function setAmountForCell(amount, cell) {
@@ -13,8 +81,11 @@ function setAmountForCell(amount, cell) {
 
 function setYear(year, sender) {
 
-    if (gCurrentYear === year)
+    if (gCurrentYear === year || gOperationsFrozen === true)
         return;
+
+    freezeOperations(true);
+    resetYearChart();
 
     gCurrentYear = year;
 
@@ -38,20 +109,24 @@ function fillMonth(monthIndex, monthsValid) {
             $('th.month_' + monthIndex).css({ 'font-weight' : 'bold', 'text-decoration' : 'underline' });
 
         if (month.valid) {
-            monthsValid++;
+            ycMonth(monthIndex);
 
             // Fill column with zeros
             $('td.month_' + monthIndex).text('0');
 
             // Fill given cells with amounts
-            for (const cat in month.cats) {
-                const id = month.cats[cat].id;
-                const balance = month.cats[cat].balance;
-                setAmountForCell(balance, $('#month_' + monthIndex + '_cat_' + id));
+            for (const catId in month.cats) {
+                const cat = month.cats[catId];
+                const balance = cat.balance;
+                setAmountForCell(balance, $('#month_' + monthIndex + '_cat_' + catId));
+
+                ycMonthCat(monthIndex, Number(catId), balance);
             }
 
             // Fill sum
             setAmountForCell(month.balance, $('#month_'  + monthIndex + '_sum'));
+
+            monthsValid++;
         }
         else {
             $('.month_' + monthIndex).addClass('unused');
@@ -85,7 +160,16 @@ function fillMonth(monthIndex, monthsValid) {
                         year.cats[id] ? year.cats[id].balance/monthsValid : 0,
                         $(this).children().filter('.avg'));
                 });
+
+                updateYearChart();
+
+                freezeOperations(false);
             });
         }
     });
+}
+
+function freezeOperations(freeze) {
+    gOperationsFrozen = freeze;
+    $('#year-chart').css('filter', 'opacity(' + (freeze ? '0.5' : '1') + ')');
 }
