@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
@@ -263,19 +264,20 @@ public class TransactionService {
         return transactionsList;
     }
     public List<Integer> findYearsByProjectId(Long projectId){
-        Integer currentYear = LocalDate.now().getYear();
-        Transaction lastTransaction = transactionRepository.findOldestTransaction(projectId);
-        Integer lastYear;
-        if(lastTransaction!=null){
-            lastYear = lastTransaction.transactionDate.getYear();
+        Transaction latestTransaction = transactionRepository.findLatestTransaction(projectId);
+        Transaction oldestTransaction = transactionRepository.findOldestTransaction(projectId);
+        List<Integer> years = new ArrayList<>();
+        if(oldestTransaction!=null && latestTransaction!=null){
+            int oldestYear = oldestTransaction.transactionDate.getYear();
+            int latestYear = latestTransaction.transactionDate.getYear();
+            for (int i = oldestYear; i<=latestYear; i++){
+                years.add(i);
+            }
         } else {
-            lastYear = currentYear;
+            years.add(LocalDateTime.now().getYear());
         }
 
-        List<Integer> years = new ArrayList<>();
-        for (int i = lastYear; i<=currentYear; i++){
-            years.add(i);
-        }
+
         return years;
     }
 
