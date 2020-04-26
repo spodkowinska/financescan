@@ -32,11 +32,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "SELECT * FROM transactions t WHERE t.transaction_date>=? and t.transaction_date<=? and project_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByDates(Date after, Date before, Long projectId);
 
-    @Query(value = "SELECT * FROM transactions t ORDER BY transaction_date ASC LIMIT 1", nativeQuery = true)
-    Transaction findLastTransaction(Long projectId);
+    @Query(value = "SELECT * FROM transactions t WHERE project_id=? ORDER BY transaction_date ASC LIMIT 1", nativeQuery = true)
+    Transaction findOldestTransaction(Long projectId);
 
-    @Query(value = "SELECT * FROM transactions t ORDER BY transaction_date DESC LIMIT 1", nativeQuery = true)
-    Transaction findFirstTransaction(Long projectId);
+    @Query(value = "SELECT * FROM transactions t WHERE project_id=?  ORDER BY transaction_date DESC LIMIT 1", nativeQuery = true)
+    Transaction findLatestTransaction(Long projectId);
 
     @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and MONTH(t.transaction_date)=? and project_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByMonth(String year, String month, Long projectId);

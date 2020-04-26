@@ -70,12 +70,12 @@ public class ReportService {
     }
 
     boolean isValid(Long projectId, String year, String month){
-        Transaction lastTransaction = transactionRepository.findLastTransaction(projectId);
-        Transaction firstTransaction = transactionRepository.findFirstTransaction(projectId);
-        if(lastTransaction.getTransactionDate().getYear()<=Integer.parseInt(year) &&
-                lastTransaction.getTransactionDate().getMonthValue()<=Integer.parseInt(month) &&
-        firstTransaction.getTransactionDate().getYear()>=Integer.parseInt(year) &&
-                firstTransaction.getTransactionDate().getMonthValue()>=Integer.parseInt(month)){
+        Transaction oldestTransaction = transactionRepository.findOldestTransaction(projectId);
+        Transaction latestTransaction = transactionRepository.findLatestTransaction(projectId);
+        if(oldestTransaction.getTransactionDate().getYear()<=Integer.parseInt(year) &&
+                oldestTransaction.getTransactionDate().getMonthValue()<=Integer.parseInt(month) &&
+        latestTransaction.getTransactionDate().getYear()>=Integer.parseInt(year) &&
+                latestTransaction.getTransactionDate().getMonthValue()>=Integer.parseInt(month)){
             return true;
         } else return false;
     }

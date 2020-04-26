@@ -264,7 +264,7 @@ public class TransactionService {
     }
     public List<Integer> findYearsByProjectId(Long projectId){
         Integer currentYear = LocalDate.now().getYear();
-        Transaction lastTransaction = transactionRepository.findLastTransaction(projectId);
+        Transaction lastTransaction = transactionRepository.findOldestTransaction(projectId);
         Integer lastYear;
         if(lastTransaction!=null){
             lastYear = lastTransaction.transactionDate.getYear();
