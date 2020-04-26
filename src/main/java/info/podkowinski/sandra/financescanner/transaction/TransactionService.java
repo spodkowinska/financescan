@@ -273,11 +273,7 @@ public class TransactionService {
             for (int i = oldestYear; i<=latestYear; i++){
                 years.add(i);
             }
-        } else {
-            years.add(LocalDateTime.now().getYear());
-        }
-
-
+        } 
         return years;
     }
 
