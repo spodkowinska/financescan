@@ -89,10 +89,12 @@ public class ReportService {
                 || latestTransactionYear == yearToCompare && latestTransactionMonth >= monthToCompare;
     }
 
-    boolean isCurrent(String monthToCheck){
+    boolean isCurrent(String yearToCheck, String monthToCheck){
         int month = Integer.parseInt(monthToCheck);
         int currentMonth = LocalDateTime.now().getMonthValue();
-        return month == currentMonth;
+        int year = Integer.parseInt(yearToCheck);
+        int currentYear = LocalDateTime.now().getYear();
+        return year == currentYear && month == currentMonth;
     }
 
 }
