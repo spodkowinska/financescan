@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
             </div>
             <!-- /.container-fluid -->
@@ -41,7 +42,9 @@
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
 
 <c:if test="${param.additionalScriptFile != null && param.additionalScriptFile != ''}">
-    <script src="${pageContext.request.contextPath}/js/${param.additionalScriptFile}"></script>
+    <c:forEach items="${fn:split(param.additionalScriptFile,';')}" var="scriptFile">
+        <script src="${pageContext.request.contextPath}/js/${scriptFile}"></script>
+    </c:forEach>
 </c:if>
 
 </body>
