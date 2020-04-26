@@ -102,5 +102,5 @@
 </div>
 
 <jsp:include page="/WEB-INF/views/utils/footer.jsp">
-    <jsp:param name="additionalScriptFile" value="reports.js"/>
+    <jsp:param name="additionalScriptFile" value="reports.js;external/Chart.min.js"/>
 </jsp:include>
