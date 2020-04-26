@@ -13,8 +13,10 @@ function setYear(year, sender) {
     gCurrentYear = year;
 
     $(sender ? sender : '#years a:last')
-        .css('font-weight', 'bold', 'text-decoration', 'underline')
-        .siblings().css('font-weight', 'initial', 'text-decoration', 'initial');
+        .css({ 'font-weight' : 'bold', 'text-decoration' : 'underline' })
+        .siblings().css({ 'font-weight' : 'initial', 'text-decoration' : 'initial' });
+
+    $('.finance_table .month').css({ 'font-weight' : 'initial', 'text-decoration' : 'initial' });
 
     let monthsCompleted = 0;
     let monthsValid = 0.0;
@@ -24,6 +26,10 @@ function setYear(year, sender) {
     for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
         $.get('/report/' + year + '/' + (monthIndex + 1), function (data) {
             const month = JSON.parse(data);
+
+            // Set current month if needed
+            if (month.current)
+                $('th.month_' + monthIndex).css({ 'font-weight' : 'bold', 'text-decoration' : 'underline' });
 
             if (month.valid) {
                 monthsValid += 1.0;

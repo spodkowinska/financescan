@@ -5,6 +5,9 @@
 <c:if test="${valid != null}">
     "valid" : ${valid},
 </c:if>
+<c:if test="${current != null}">
+    "current" : ${current},
+</c:if>
 <c:if test="${month != null}">
     "month" : ${month},
 </c:if>

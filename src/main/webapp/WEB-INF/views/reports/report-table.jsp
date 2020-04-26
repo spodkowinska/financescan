@@ -32,7 +32,7 @@
             </tr>
             <tr>
                 <c:forEach items="${months}" var="month" begin="0" step="1" varStatus="i">
-                    <th style="width: 85px" class="month_${i.index}">${month}</th>
+                    <th style="width: 85px" class="month month_${i.index}">${month}</th>
                 </c:forEach>
             </tr>
             </thead>
