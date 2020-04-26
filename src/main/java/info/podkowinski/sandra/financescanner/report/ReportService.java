@@ -74,18 +74,18 @@ public class ReportService {
         Transaction oldestTransaction = transactionRepository.findOldestTransaction(projectId);
         Transaction latestTransaction = transactionRepository.findLatestTransaction(projectId);
 
-        Integer oldestTransactionYear = oldestTransaction.getTransactionDate().getYear();
-        Integer latestTransactionYear = latestTransaction.getTransactionDate().getYear();
+        final int oldestTransactionYear = oldestTransaction.getTransactionDate().getYear();
+        final int latestTransactionYear = latestTransaction.getTransactionDate().getYear();
 
-        Integer oldestTransactionMonth = oldestTransaction.getTransactionDate().getMonthValue();
-        Integer latestTransactionMonth = latestTransaction.getTransactionDate().getMonthValue();
+        final int oldestTransactionMonth = oldestTransaction.getTransactionDate().getMonthValue();
+        final int latestTransactionMonth = latestTransaction.getTransactionDate().getMonthValue();
 
-        Integer yearToCompare = Integer.parseInt(year);
-        Integer monthToCompare = Integer.parseInt(month);
+        final int yearToCompare = Integer.parseInt(year);
+        final int monthToCompare = Integer.parseInt(month);
 
         return oldestTransactionYear < yearToCompare && yearToCompare < latestTransactionYear
-                || oldestTransactionYear == yearToCompare && oldestTransactionMonth < monthToCompare
-                || latestTransactionYear == yearToCompare && latestTransactionMonth > monthToCompare;
+                || oldestTransactionYear == yearToCompare && oldestTransactionMonth <= monthToCompare
+                || latestTransactionYear == yearToCompare && latestTransactionMonth >= monthToCompare;
     }
 
 }
