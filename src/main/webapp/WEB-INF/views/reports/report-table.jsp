@@ -12,12 +12,12 @@
     <div class="card-body">
         <c:choose>
             <c:when test="${empty years}">
-                <div class="alert alert-info mb-0" role="alert">
+                <div class="alert alert-warning mb-0" role="alert">
                     <h4 class="alert-heading"><span class="fa fa-exclamation-triangle"></span> Reports disabled</h4>
                     <p>You have no transactions in the project. Add transactions to enable reports!</p>
                     <hr>
                     <p class="mb-0">
-                        <a href="${pageContext.request.contextPath}/transaction/list">
+                        <a href="${pageContext.request.contextPath}/transaction/list" class="alert-link">
                             <span class="fa fa-arrow-alt-circle-right"></span>
                             Go to Transactions
                         </a>
