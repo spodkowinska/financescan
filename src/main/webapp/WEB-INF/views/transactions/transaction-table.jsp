@@ -91,17 +91,13 @@
                 ALL
             </button>
 
-            <script>
-                let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            <c:set var="months" value="${['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December']}" />
 
-                for (var i = 0; i < 12; i++) {
-                    let monthId = i + 1;
-                    document.write("<button id=\"btn_month_" + monthId + "\" class=\"btn btn-outline-secondary btn-sm\" " +
-                        "onclick='reloadTransactionTable(null," + monthId + ")'>");
-                    document.write(months[i]);
-                    document.write("</button>");
-                }
-            </script>
+            <c:forEach items="${months}" var="month" varStatus="i" begin="0" step="1">
+                <button id="btn_month_${i.index + 1}" class="btn btn-outline-secondary btn-sm"
+                        onclick='reloadTransactionTable(null, ${i.index + 1})'>${month}</button>
+            </c:forEach>
         </div>
 
         <!-- Three Dots Dropdown -->

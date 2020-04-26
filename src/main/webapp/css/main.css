@@ -13,11 +13,6 @@ a:hover {
     color: black;
 }
 
-.finance_table table {
-    border-spacing: 0;
-    border: 1px solid black;
-}
-
 .finance_table tr:hover {
     background: #F7F7F7;
 }
@@ -27,26 +22,53 @@ a:hover {
 }
 
 .finance_table th, .finance_table td {
-    border-top: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-    border-right: 1px solid lightgray;
     padding: 2px;
     padding-left: 5px;
     padding-right: 5px;
 }
 
-.finance_table th, .finance_table tfoot td {
-    border: 1px solid #858796 !important;
+.finance_table th:first-child,
+.finance_table td:first-child,
+.finance_table th+th,
+.finance_table th+td,
+.finance_table td.separate-col:first-child,
+.finance_table td+td.separate-col,
+.finance_table td.separate-col+td {
+    border-left: 1px solid #858796;
+}
+
+.finance_table td+td {
+    border-left: 1px solid lightgray;
+}
+
+.finance_table td:last-child, .finance_table th:last-child {
+    border-right: 1px solid #858796;
+}
+
+.finance_table tbody tr:not(:last-child) {
+    border-bottom: 1px solid lightgray;
+}
+
+.finance_table thead tr {
+    border-top: 1px solid #858796;
+}
+
+.finance_table thead tr,
+.finance_table tr:last-child {
+    border-bottom: 1px solid #858796;
+}
+
+.finance_table th {
     text-align: center;
     color: #858796;
     background: white;
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     font-weight: normal;
 }
 
-.finance_table tr:nth-last-child(1) {
-    border-bottom: 1px solid lightgray;
+.finance_table tbody th {
+    font-weight: inherit;
+    color: inherit;
 }
 
 .finance_table td.actions a {
@@ -87,6 +109,11 @@ a:hover {
 
 .finance_table td.positive {
     color: rgb(0, 150, 0);
+}
+
+.finance_table .unused {
+    background: #f5f5f5;
+    color: #CCC;
 }
 
 div.tag-add-popover {

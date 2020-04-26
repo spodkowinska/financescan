@@ -11,7 +11,7 @@
 
             <%-- COLUMN: CHECK --%>
 
-        <td class="bulk-controls">
+        <td class="bulk-controls separate-col">
             <input class="form-check transaction-row-checkbox" type="checkbox">
         </td>
 
