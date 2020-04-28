@@ -8,6 +8,7 @@ function init() {
     gCharts = new ChartManager();
     gCharts.addChart(BalanceMonthlyChart, 'chart-monthly-balance');
     gCharts.addChart(CategoriesMonthlyChart, 'chart-monthly-categories');
+    gCharts.addChart(NumberOfTransactionsMonthlyChart, 'chart-monthly-numtrans');
 
     if (gLastYear)
         setYear(gLastYear);

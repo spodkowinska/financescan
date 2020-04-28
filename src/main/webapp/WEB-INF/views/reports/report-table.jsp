@@ -28,6 +28,7 @@
 
                 <canvas id="chart-monthly-balance" style="width: 100%; height: 300px"></canvas>
                 <canvas id="chart-monthly-categories" style="width: 100%; height: 300px"></canvas>
+                <canvas id="chart-monthly-numtrans" style="width: 100%; height: 200px"></canvas>
 
                 <c:set var="months" value="${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']}" />
 
@@ -119,6 +120,8 @@
             reports/chart-base.js;
             reports/chart-monthly-balance.js;
             reports/chart-monthly-categories.js;
-            reports/chart-manager.js;reports/main.js
+            reports/chart-monthly-numtrans.js;
+            reports/chart-manager.js;
+            reports/main.js
         "/>
 </jsp:include>
