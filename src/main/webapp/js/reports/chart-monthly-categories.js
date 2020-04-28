@@ -8,6 +8,9 @@ class CategoriesMonthlyChart extends FinanceScanChart {
         };
         config.options = {
             responsive: true,
+            animation: {
+                duration: 0
+            },
             scales: {
                 yAxes: [{
                     ticks: {
