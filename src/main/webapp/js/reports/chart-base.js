@@ -17,7 +17,17 @@ class FinanceScanChart {
     /* INTERNALS */
 
     constructor(canvas_id) {
-        this.config = {};
+        this.config = {
+            options: {
+                responsive: true,
+                animation: { duration: 0 },
+                layout: { padding: { left: 0, right: 50, top: 0, bottom: 0 } },
+                scales: { yAxes: [
+                    { ticks: { beginAtZero: true }, afterFit: function (scaleInstance) { scaleInstance.width = 50;} }
+                ] }
+            }
+        };
+
         this.chart = {};
 
         const canvas = document.getElementById(canvas_id);
@@ -29,6 +39,7 @@ class FinanceScanChart {
 
     init() {
         this.initConfig(this.config);
+
         this.resetConfig(this.config);
         this.chart = new Chart(this.context, this.config);
     }

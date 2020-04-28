@@ -1,23 +1,10 @@
 class NumberOfTransactionsMonthlyChart extends FinanceScanChart {
 
     initConfig(config) {
-        config.type = 'bar';
+        config.type = 'line';
         config.data = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             datasets: [null]
-        };
-        config.options = {
-            responsive: true,
-            animation: {
-                duration: 0
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
         };
     }
 
@@ -27,8 +14,8 @@ class NumberOfTransactionsMonthlyChart extends FinanceScanChart {
         config.data.datasets[0] = {
             label: 'Number of transactions',
             borderColor: BLUE,
-            backgroundColor: BLUE,
-            barPercentage: 0.5,
+            fill: false,
+            lineTension: 0,
             data: Array(12)
         };
         config.data.datasets[0].data.fill(null);

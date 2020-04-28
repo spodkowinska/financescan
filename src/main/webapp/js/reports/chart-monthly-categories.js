@@ -6,19 +6,6 @@ class CategoriesMonthlyChart extends FinanceScanChart {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             datasets: Array(gCategories.length).fill(null)
         };
-        config.options = {
-            responsive: true,
-            animation: {
-                duration: 0
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        };
     }
 
     resetConfig(config) {
