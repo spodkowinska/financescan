@@ -26,8 +26,8 @@
             </c:when>
             <c:otherwise>
 
-                <canvas id="balance-chart" style="width: 100%; height: 300px"></canvas>
-                <canvas id="year-chart" style="width: 100%; height: 300px"></canvas>
+                <canvas id="chart-monthly-balance" style="width: 100%; height: 300px"></canvas>
+                <canvas id="chart-monthly-categories" style="width: 100%; height: 300px"></canvas>
 
                 <c:set var="months" value="${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']}" />
 
@@ -113,5 +113,12 @@
 </div>
 
 <jsp:include page="/WEB-INF/views/utils/footer.jsp">
-    <jsp:param name="additionalScriptFile" value="reports.js;external/Chart.min.js"/>
+    <jsp:param name="additionalScriptFile"
+       value="
+            external/Chart.min.js;
+            reports/chart-base.js;
+            reports/chart-monthly-balance.js;
+            reports/chart-monthly-categories.js;
+            reports/chart-manager.js;reports/main.js
+        "/>
 </jsp:include>

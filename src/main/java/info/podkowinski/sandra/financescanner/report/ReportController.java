@@ -64,7 +64,7 @@ public class ReportController {
         Double balance = reportService.balanceByYear(project.getId(), year);
         Map<Long, ReportRepository.CategoryStats> categoriesWithStatisticsByYear = reportService.categoriesWithStatisticsByYear(project.getId(), year);
 
-        model.addAttribute("year", year);
+        model.addAttribute("year", Integer.parseInt(year));
         model.addAttribute("numberOfTransactions", numberOfTransactions);
         model.addAttribute("sumOfExpenses", sumOfExpenses);
         model.addAttribute("sumOfIncomes", sumOfIncomes);
@@ -88,8 +88,8 @@ public class ReportController {
 
         model.addAttribute("current", current);
         model.addAttribute("valid", isValid);
-        model.addAttribute("year", year);
-        model.addAttribute("month", month);
+        model.addAttribute("year", Integer.parseInt(year));
+        model.addAttribute("month", Integer.parseInt(month));
         model.addAttribute("numberOfTransactions", numberOfTransactions);
         model.addAttribute("sumOfExpenses", sumOfExpenses);
         model.addAttribute("sumOfIncomes", sumOfIncomes);

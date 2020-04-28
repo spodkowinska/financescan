@@ -43,7 +43,7 @@
 
 <c:if test="${param.additionalScriptFile != null && param.additionalScriptFile != ''}">
     <c:forEach items="${fn:split(param.additionalScriptFile,';')}" var="scriptFile">
-        <script src="${pageContext.request.contextPath}/js/${scriptFile}"></script>
+        <script src="${pageContext.request.contextPath}/js/${fn:trim(scriptFile)}"></script>
     </c:forEach>
 </c:if>
 
