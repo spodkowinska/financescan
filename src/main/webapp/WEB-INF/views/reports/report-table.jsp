@@ -26,6 +26,7 @@
             </c:when>
             <c:otherwise>
 
+                <canvas id="balance-chart" style="width: 100%; height: 300px"></canvas>
                 <canvas id="year-chart" style="width: 100%; height: 300px"></canvas>
 
                 <c:set var="months" value="${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']}" />

@@ -1,20 +1,19 @@
 let gCurrentYear;
+
 let gYearChartConfig;
 let gYearChart;
+
+let gBalanceChartConfig;
+let gBalanceChart;
+
 let gOperationsFrozen;
 
 function init() {
     gOperationsFrozen = false;
     if (gLastYear) {
-        initYearChart();
+        initCharts();
         setYear(gLastYear);
     }
-}
-
-function ycMonth(monthIndex) {
-    gYearChartConfig.data.datasets.forEach(function (elem) {
-        elem.data[monthIndex] = 0;
-    });
 }
 
 function getCatIndex(catId) {
@@ -23,9 +22,28 @@ function getCatIndex(catId) {
     });
 }
 
+function ycMonth(monthIndex) {
+    gYearChartConfig.data.datasets.forEach(function (elem) {
+        elem.data[monthIndex] = 0;
+    });
+    gBalanceChartConfig.data.datasets.forEach(function (elem) {
+        elem.data[monthIndex] = 0;
+    })
+}
+
 function ycMonthCat(monthIndex, catId, catBalance) {
     const catIndex = getCatIndex(catId);
     gYearChartConfig.data.datasets[catIndex].data[monthIndex] = catBalance;
+}
+
+function ycMonthAmounts(monthIndex, income, outcome, balance) {
+    gBalanceChartConfig.data.datasets[0].data[monthIndex] = income;
+    gBalanceChartConfig.data.datasets[1].data[monthIndex] = outcome;
+}
+
+function initCharts() {
+    initYearChart();
+    initBalanceChart();
 }
 
 function initYearChart() {
@@ -52,6 +70,36 @@ function initYearChart() {
     gYearChart = new Chart(ctx, gYearChartConfig);
 }
 
+function initBalanceChart() {
+    gBalanceChartConfig = {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: Array(2).fill(null)
+        },
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    // stacked: true,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    };
+    resetBalanceChart();
+
+    const ctx = document.getElementById('balance-chart').getContext('2d');
+    gBalanceChart = new Chart(ctx, gBalanceChartConfig);
+}
+
+function resetCharts() {
+    resetYearChart();
+    resetBalanceChart();
+}
+
 function resetYearChart() {
     gYearChartConfig.data.datasets.forEach(function (elem, index, array) {
         if (array[index] == null) {
@@ -61,7 +109,7 @@ function resetYearChart() {
                 borderWidth: 2,
                 fill: false,
                 data: Array(12)
-            }
+            };
             if (gCategories[index].id === 0)
                 array[index].borderDash = [5, 5];
         }
@@ -69,8 +117,37 @@ function resetYearChart() {
     });
 }
 
+function resetBalanceChart() {
+    const RED = 'rgb(255, 99, 132)';
+    const GREEN = 'rgb(75, 192, 192)';
+    const COLORS = [GREEN, RED];
+    gBalanceChartConfig.data.datasets.forEach(function (elem, index, array) {
+        if (array[index] == null) {
+            array[index] = {
+                label: index === 0 ? 'Income' : 'Outcome',
+                borderColor: COLORS[index],
+                backgroundColor: COLORS[index],
+                borderWidth: 2,
+                cubicInterpolationMode: 'monotone',
+                fill: true,
+                data: Array(12)
+            }
+        }
+        array[index].data.fill(null);
+    });
+}
+
+function updateCharts() {
+    updateYearChart();
+    updateBalanceChart();
+}
+
 function updateYearChart() {
     gYearChart.update();
+}
+
+function updateBalanceChart() {
+    gBalanceChart.update();
 }
 
 function setAmountForCell(amount, cell) {
@@ -85,7 +162,7 @@ function setYear(year, sender) {
         return;
 
     freezeOperations(true);
-    resetYearChart();
+    resetCharts();
 
     gCurrentYear = year;
 
@@ -110,6 +187,7 @@ function fillMonth(monthIndex, monthsValid) {
 
         if (month.valid) {
             ycMonth(monthIndex);
+            ycMonthAmounts(monthIndex, month.sumOfIncomes, -month.sumOfExpenses, month.balance);
 
             // Fill column with zeros
             $('td.month_' + monthIndex).text('0');
@@ -161,7 +239,7 @@ function fillMonth(monthIndex, monthsValid) {
                         $(this).children().filter('.avg'));
                 });
 
-                updateYearChart();
+                updateCharts();
 
                 freezeOperations(false);
             });
