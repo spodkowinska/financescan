@@ -81,7 +81,6 @@ function initBalanceChart() {
             responsive: true,
             scales: {
                 yAxes: [{
-                    // stacked: true,
                     ticks: {
                         beginAtZero: true
                     }
