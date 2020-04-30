@@ -15,6 +15,7 @@ class CategoriesMonthlyChart extends FinanceScanChart {
                     label: gCategories[index].name,
                     borderColor: gCategories[index].color,
                     borderWidth: 2,
+                    cubicInterpolationMode: 'monotone',
                     fill: false,
                     data: Array(12)
                 };
