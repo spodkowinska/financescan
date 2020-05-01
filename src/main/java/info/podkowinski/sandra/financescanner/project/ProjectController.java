@@ -66,6 +66,8 @@ public class ProjectController {
         project.setUsersWithRolesMap(userRole);
         projectService.save(project);
         categoryService.createDefaultCategories(project.getId());
+        Account account = new Account("Default Account", project);
+        accountService.save(account);
 
         currentUser.getUser().getProjects().add(project);
         userService.saveUser(currentUser.getUser());
@@ -92,7 +94,7 @@ public class ProjectController {
             projectService.save(project);
         currentUser.getUser().getProjects().clear();
         currentUser.getUser().getProjects().addAll(projectService.findAllByUserId(currentUser.getUser().getId()));
-        if(currentUser.getUser().getCurrentProject().getId()==projectId) {
+        if (currentUser.getUser().getCurrentProject().getId() == projectId) {
             currentUser.getUser().setCurrentProject(project);
         }
         return "";
@@ -148,13 +150,16 @@ public class ProjectController {
     @GetMapping("/setProject")
     public String setProjectHack() {
         Long projectId = projectService.createDefaultProject();
+        Project project = projectService.findById(projectId);
         categoryService.createDefaultCategories(projectId);
-        csvSettingsService.createDefaultBanksSettings();
+//        csvSettingsService.createDefaultBanksSettings();
 
         User user = userService.createDefaultUserHack();
         List<Project> project1 = new ArrayList<>();
-        project1.add(projectService.findById(projectId));
+        project1.add(project);
         user.setProjects(project1);
+        Account account = new Account("Default Account", project);
+        accountService.save(account);
         userService.saveUser(user);
 
         return "redirect:/project/list";

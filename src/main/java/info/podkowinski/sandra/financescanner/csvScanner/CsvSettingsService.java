@@ -34,10 +34,10 @@ public class CsvSettingsService {
     public void createDefaultBanksSettings(){
         CsvSettings csvSettingsMBank = new CsvSettings();
         csvSettingsMBank.setCsvSeparator(';');
-        csvSettingsMBank.setSkipLines(38);
-        csvSettingsMBank.setAmountPosition(6);
-        csvSettingsMBank.setDescriptionPosition(3);
-        csvSettingsMBank.setPartyPosition(4);
+        csvSettingsMBank.setSkipLines(26);
+        csvSettingsMBank.setAmountPosition(4);
+        csvSettingsMBank.setDescriptionPosition(1);
+        csvSettingsMBank.setPartyPosition(2);
         csvSettingsMBank.setDatePosition(0);
         csvSettingsMBank.setName("mBank");
 
@@ -59,8 +59,18 @@ public class CsvSettingsService {
         csvSettingsSantander.setDatePosition(0);
         csvSettingsSantander.setName("Santander");
 
+        CsvSettings csvSettingsExcel = new CsvSettings();
+        csvSettingsExcel.setCsvSeparator(',');
+        csvSettingsExcel.setSkipLines(1);
+        csvSettingsExcel.setAmountPosition(2);
+        csvSettingsExcel.setDescriptionPosition(1);
+        csvSettingsExcel.setPartyPosition(3);
+        csvSettingsExcel.setDatePosition(0);
+        csvSettingsExcel.setName("Excel");
+
         csvSettingsRepository.save(csvSettingsMBank);
         csvSettingsRepository.save(csvSettingsMillennium);
         csvSettingsRepository.save(csvSettingsSantander);
+        csvSettingsRepository.save(csvSettingsExcel);
     }
 }

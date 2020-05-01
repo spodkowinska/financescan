@@ -29,10 +29,12 @@ public class Transaction {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate transactionDate;
 
+    @Column(length = 500)
     String description;
 
     String party;
 
+    @Column(columnDefinition = "DECIMAL(10,2)")
     double amount;
 
     @ManyToOne(fetch = FetchType.EAGER)

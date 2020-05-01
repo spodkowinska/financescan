@@ -56,14 +56,14 @@ public class TransactionService {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
         Long accountId = import1.getAccount().getId();
         // todo fix this ugly hack (detecting mBank) to pass encoding
-        String inputCharset = accountId == 1l ? "Cp1250" : "UTF-8";
+        String inputCharset = csvSettings.getId() == 1l ? "Cp1250" : "UTF-8";
         List<List<String>> transactions = parser.csvTransactions(inputStream, csvSettings.getCsvSeparator(),
                 csvSettings.getSkipLines(), inputCharset);
         for (List<String> trans : transactions) {
             Transaction newTransaction = new Transaction();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             // todo fix this ugly hack (detecting santander) to parse Date
-            if (accountId == 3l) {
+            if (csvSettings.getId() == 3l) {
                 newTransaction.transactionDate = LocalDate.parse(trans.get(csvSettings.getDatePosition()), formatter);
             } else {
                 newTransaction.transactionDate = LocalDate.parse(trans.get(csvSettings.getDatePosition()));
@@ -75,17 +75,13 @@ public class TransactionService {
             int amountPosition = csvSettings.getAmountPosition();
             if (trans.get(amountPosition).isEmpty()) {
                 newTransaction.amount = Float.parseFloat(trans.get(amountPosition + 1)
-                        .replace(',', '.')
-                        .replace("\"", "")
-                        .replace(" ", ""));
+                    .replace(',', '.')
+                    .replaceAll("[^\\d.-]+", ""));
             } else {
                 newTransaction.amount = Float.parseFloat(trans.get(amountPosition)
-                        .replace(',', '.')
-                        .replace("\"", "")
-                        .replace(" ", ""));
+                    .replace(',', '.')
+                    .replaceAll("[^\\d.-]+", ""));
             }
-//            newTransaction.importName = importName;
-//            newTransaction.account = accountRepository.getOne(accountId);
             newTransaction.importName = import1;
             newTransaction.project = project;
             transactionRepository.save(newTransaction);
@@ -97,11 +93,9 @@ public class TransactionService {
     }
 
     public void assignDefaultCategoriesInTransactions(Project project) {
-        Project project1 = projectRepository.getOne(2l);
         List<Transaction> transactionList = transactionRepository.findAllByProjectId(2l);
         for (Transaction transaction : transactionList) {
             for (Category category : categoryRepository.findAllByProjectId(project.getId())) {
-//                boolean keywordFound = false;
                 for (String keyword : category.getKeywords()) {
                     if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase().trim())) {
                         if(!transaction.categories.contains(category) && !transaction.rejectedCategories.contains(category)){
@@ -126,14 +120,6 @@ public class TransactionService {
         }
     }
 
-//    //todo what to do if transaction doesn't exist, itp?
-//    public void assignCategoryInTransaction(Project project, Long transactionId, Long categoryId) {
-//        Transaction transaction = transactionRepository.getOne(transactionId);
-//        if (transaction.getProject().equals(project)) {
-//            transaction.addCategory(categoryRepository.getOne(categoryId));
-//            transactionRepository.save(transaction);
-//        }
-//    }
 
     public double balanceByDates(Long projectId, Date start, Date end) {
         List<Transaction> transactionList = transactionRepository.findByDates(start, end, projectId);

@@ -14,6 +14,13 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "accounts")
 public class Account {
+
+    public Account(String name, Project project){
+        this.name=name;
+        this.project = project;
+    }
+    public Account(){}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

@@ -1,5 +1,7 @@
 package info.podkowinski.sandra.financescanner.user;
 
+import info.podkowinski.sandra.financescanner.account.Account;
+import info.podkowinski.sandra.financescanner.account.AccountService;
 import info.podkowinski.sandra.financescanner.category.CategoryService;
 import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
@@ -19,14 +21,16 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final ProjectService projectService;
     private final CategoryService categoryService;
+    private final AccountService accountService;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, AccountService accountService,
                            BCryptPasswordEncoder passwordEncoder, ProjectService projectService, CategoryService categoryService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.projectService = projectService;
         this.categoryService = categoryService;
+        this.accountService = accountService;
     }
     @Override
     public User findByUsername(String username) {
@@ -93,6 +97,8 @@ public class UserServiceImpl implements UserService {
         Long projectId = projectService.createDefaultProject();
         Project project =projectService.findById(projectId);
         categoryService.createDefaultCategories(projectId);
+        Account account = new Account("Default Account", project);
+        accountService.save(account);
         user.setCurrentProject(project);
         user.setProjects(Arrays.asList(project));
         return userRepository.save(user);

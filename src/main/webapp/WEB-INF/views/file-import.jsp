@@ -127,47 +127,47 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Set date position</label>
-                                        <input class="form-control" id="datePosition" name="datePosition">
-                                        <p class="help-block">This block can be imported from your custom CSV
-                                            settings</p>
-                                    </div>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label>Set date position</label>--%>
+<%--                                        <input class="form-control" id="datePosition" name="datePosition">--%>
+<%--                                        <p class="help-block">This block can be imported from your custom CSV--%>
+<%--                                            settings</p>--%>
+<%--                                    </div>--%>
 
-                                    <div class="form-group">
-                                        <label>Set description position</label>
-                                        <input class="form-control" id="descriptionPosition" name="descriptionPosition">
-                                        <p class="help-block">This block can be imported from your custom CSV
-                                            settings</p>
-                                    </div>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label>Set description position</label>--%>
+<%--                                        <input class="form-control" id="descriptionPosition" name="descriptionPosition">--%>
+<%--                                        <p class="help-block">This block can be imported from your custom CSV--%>
+<%--                                            settings</p>--%>
+<%--                                    </div>--%>
 
-                                    <div class="form-group">
-                                        <label>Set transaction partner position</label>
-                                        <input class="form-control" id="partyPosition" name="partyPosition">
-                                        <p class="help-block">This block can be imported from your custom CSV
-                                            settings</p>
-                                    </div>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label>Set transaction partner position</label>--%>
+<%--                                        <input class="form-control" id="partyPosition" name="partyPosition">--%>
+<%--                                        <p class="help-block">This block can be imported from your custom CSV--%>
+<%--                                            settings</p>--%>
+<%--                                    </div>--%>
 
-                                    <div class="form-group">
-                                        <label>Set amount position</label>
-                                        <input class="form-control" id="amountPosition" name="amountPosition">
-                                        <p class="help-block">This block can be imported from your custom CSV
-                                            settings</p>
-                                    </div>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label>Set amount position</label>--%>
+<%--                                        <input class="form-control" id="amountPosition" name="amountPosition">--%>
+<%--                                        <p class="help-block">This block can be imported from your custom CSV--%>
+<%--                                            settings</p>--%>
+<%--                                    </div>--%>
 
-                                    <div class="form-group">
-                                        <label>Set separator</label>
-                                        <input class="form-control" id="separator" name="separator">
-                                        <p class="help-block">This block can be imported from your custom CSV
-                                            settings</p>
-                                    </div>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label>Set separator</label>--%>
+<%--                                        <input class="form-control" id="separator" name="separator">--%>
+<%--                                        <p class="help-block">This block can be imported from your custom CSV--%>
+<%--                                            settings</p>--%>
+<%--                                    </div>--%>
 
-                                    <div class="form-group">
-                                        <label>How many lines at the beginning should be skipped?</label>
-                                        <input class="form-control" id="skipLines" name="skipLines">
-                                        <p class="help-block">This block can be imported from your custom CSV
-                                            settings</p>
-                                    </div>
+<%--                                    <div class="form-group">--%>
+<%--                                        <label>How many lines at the beginning should be skipped?</label>--%>
+<%--                                        <input class="form-control" id="skipLines" name="skipLines">--%>
+<%--                                        <p class="help-block">This block can be imported from your custom CSV--%>
+<%--                                            settings</p>--%>
+<%--                                    </div>--%>
 
                                     <button type="submit" class="btn btn-default">Submit CSV</button>
                                     <button type="reset" class="btn btn-default">Reset</button>

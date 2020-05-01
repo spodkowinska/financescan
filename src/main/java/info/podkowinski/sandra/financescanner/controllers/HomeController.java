@@ -34,9 +34,7 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home() {
-
-        System.out.println(roleRepository.findByName("USER").getName());
-        return "index";
+        return "home";
     }
 
 
@@ -45,7 +43,7 @@ public class HomeController {
 
         csvSettingsService.createDefaultBanksSettings();
         userService.saveDefaultRoles();
-        return "redirect:../category/list";
+        return "redirect:home";
     }
 }
 

@@ -80,11 +80,10 @@ public class TransactionController {
     @PostMapping("/fileimport")
     public String fileImportPost(HttpServletRequest request, @AuthenticationPrincipal CurrentUser currentUser) throws IOException, ServletException, ParseException, CsvValidationException {
         Part filePart = request.getPart("fileToUpload");
-        String fileName = filePart.getName();
+        String fileName = filePart.getSubmittedFileName();
         String importName = request.getParameter("importName");
-        System.out.println(importName);
         CsvSettings csvSettings = csvSettingsService.findById(Long.parseLong(request.getParameter("selectSettings")));
-        Account account = accountService.findById(Long.parseLong(request.getParameter("selectSettings")));
+        Account account = accountService.findById(Long.parseLong(request.getParameter("selectAccount")));
         Project project = currentUser.getUser().getCurrentProject();
         Import import1 = new Import();
         import1.setName(importName);

@@ -43,6 +43,7 @@ public class UserController {
         for (Project project: usersProjects) {
             if(project.getId() == projectId){
                 user.setCurrentProject(project);
+                userService.saveUser(user);
                 break;
             }
         }
