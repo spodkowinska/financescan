@@ -2,6 +2,8 @@ package info.podkowinski.sandra.financescanner.transaction;
 
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.project.Project;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +20,7 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     ArrayList<Transaction> findAllByProjectIdOrderByTransactionDateAsc(Long projectId);
+    Page<Transaction> findAllByProjectIdOrderByTransactionDateAsc(Long projectId, Pageable pageable);
 
     @Query(value = "SELECT t.id FROM transactions t LEFT OUTER JOIN transactions_categories tc ON t.id = tc.transaction_id WHERE tc.categories_id IS NULL AND t.project_id=?", nativeQuery = true)
     ArrayList<Long> findAllNoncategorizedByProjectId(Long projectId);
@@ -39,8 +42,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Transaction findLatestTransaction(Long projectId);
 
     @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and MONTH(t.transaction_date)=? and project_id=? ORDER BY transaction_date ASC", nativeQuery = true)
+    Page<Transaction> findByMonthPage(String year, String month, Long projectId, Pageable pageable);
+    @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and MONTH(t.transaction_date)=? and project_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByMonth(String year, String month, Long projectId);
 
+    @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and project_id=? ORDER BY transaction_date ASC", nativeQuery = true)
+    Page<Transaction> findByYearPage(String year, Long projectId, Pageable pageable);
     @Query(value = "SELECT * FROM transactions t WHERE YEAR(t.transaction_date)=? and project_id=? ORDER BY transaction_date ASC", nativeQuery = true)
     List<Transaction> findByYear(String year, Long projectId);
 

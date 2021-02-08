@@ -1,16 +1,17 @@
 package info.podkowinski.sandra.financescanner.transaction;
 
 import com.opencsv.exceptions.CsvValidationException;
-import info.podkowinski.sandra.financescanner.account.Account;
-import info.podkowinski.sandra.financescanner.account.AccountRepository;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryRepository;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.OpenCSVReadAndParse;
 import info.podkowinski.sandra.financescanner.imports.Import;
 import info.podkowinski.sandra.financescanner.project.Project;
-import info.podkowinski.sandra.financescanner.project.ProjectRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -27,15 +28,10 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
-    private final AccountRepository accountRepository;
-    private final ProjectRepository projectRepository;
 
-    public TransactionService(TransactionRepository transactionRepository, CategoryRepository categoryRepository,
-                              AccountRepository accountRepository, ProjectRepository projectRepository) {
+    public TransactionService(TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
-        this.accountRepository = accountRepository;
-        this.projectRepository = projectRepository;
     }
 
     public Transaction findById(Long id) {
@@ -55,8 +51,8 @@ public class TransactionService {
             throws IOException, CsvValidationException, ParseException {
         OpenCSVReadAndParse parser = new OpenCSVReadAndParse();
         Long accountId = import1.getAccount().getId();
-        // todo fix this ugly hack (detecting mBank) to pass encoding
-        String inputCharset = csvSettings.getId() == 1l ? "Cp1250" : "UTF-8";
+        // todo fix this ugly hack (detecting mBank,PKO) to pass encoding
+        String inputCharset = (csvSettings.getId() == 1l)||(csvSettings.getId()==5l) ? "Cp1250" : "UTF-8";
         List<List<String>> transactions = parser.csvTransactions(inputStream, csvSettings.getCsvSeparator(),
                 csvSettings.getSkipLines(), inputCharset);
         for (List<String> trans : transactions) {
@@ -93,7 +89,7 @@ public class TransactionService {
     }
 
     public void assignDefaultCategoriesInTransactions(Project project) {
-        List<Transaction> transactionList = transactionRepository.findAllByProjectId(2l);
+        List<Transaction> transactionList = transactionRepository.findAllByProjectId(project.getId());
         for (Transaction transaction : transactionList) {
             for (Category category : categoryRepository.findAllByProjectId(project.getId())) {
                 for (String keyword : category.getKeywords()) {
@@ -238,14 +234,14 @@ public class TransactionService {
         return transactionRepository.findSpendings(projectId);
     }
 
-    List <Transaction> transactionsByDate(String year, String month, Project project){
-        List <Transaction> transactionsList= new ArrayList<>();
+    Page <Transaction> transactionsByDate(String year, String month, Project project, Pageable pageable){
+        Page<Transaction> transactionsList;
         if (year.equals("all")){
-            transactionsList = transactionRepository.findAllByProjectIdOrderByTransactionDateAsc(project.getId());
+            transactionsList = transactionRepository.findAllByProjectIdOrderByTransactionDateAsc(project.getId(), pageable);
         } else if(month.equals("all")) {
-            transactionsList = transactionRepository.findByYear(year, project.getId());
+            transactionsList = transactionRepository.findByYearPage(year, project.getId(), pageable);
         } else {
-            transactionsList = transactionRepository.findByMonth(year, month, project.getId());
+            transactionsList = transactionRepository.findByMonthPage(year, month, project.getId(), pageable);
         }
         return transactionsList;
     }

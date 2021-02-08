@@ -12,15 +12,18 @@ import info.podkowinski.sandra.financescanner.imports.ImportService;
 import info.podkowinski.sandra.financescanner.project.Project;
 import info.podkowinski.sandra.financescanner.project.ProjectService;
 import info.podkowinski.sandra.financescanner.user.CurrentUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -52,12 +55,10 @@ public class TransactionController {
     public String transaction(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
 
         Project project = currentUser.getUser().getCurrentProject();
-        List<Transaction> transactionsList = transactionService.findByProjectId(project.getId());
         List<Account> accountsList = accountService.findByProjectId(project.getId());
         List<Category> categoriesList = categoryService.findByProjectId(project.getId());
         List<Integer> years = transactionService.findYearsByProjectId(project.getId());
         HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(project.getId());
-        model.addAttribute("tl", transactionsList);
         model.addAttribute("bl", accountsList);
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
@@ -149,7 +150,7 @@ public class TransactionController {
     public String changeAccount(@PathVariable Long transactionId, @PathVariable Long accountId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction != null && project != null && transaction.project.getId() == (project.getId())) {
+        if (transaction != null && project != null && transaction.project.getId().equals(project.getId())) {
             Account account = accountService.findById(accountId);
             if (account != null && account.getProject().getId().equals(project.getId())) {
                 transaction.account = account;
@@ -164,7 +165,7 @@ public class TransactionController {
     public String removeAllCategories(@PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject().getId() == project.getId()) {
+        if (transaction.getProject().getId().equals(project.getId())) {
             transaction.rejectedCategories.addAll(transaction.getPendingCategories());
             transaction.rejectedCategories.addAll(transaction.getCategories());
             transaction.setCategories(null);
@@ -179,7 +180,7 @@ public class TransactionController {
     public String acceptAllSuggestions(@PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject().getId() == project.getId()) {
+        if (transaction.getProject().getId().equals(project.getId())) {
             transaction.categories.addAll(transaction.getPendingCategories());
             transaction.setPendingCategories(null);
             transactionService.save(transaction);
@@ -192,7 +193,7 @@ public class TransactionController {
     public String rejectAllSuggestions(@PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject().getId() == project.getId()) {
+        if (transaction.getProject().getId().equals(project.getId())) {
             transaction.rejectedCategories.addAll(transaction.getPendingCategories());
             transaction.setPendingCategories(null);
             transactionService.save(transaction);
@@ -205,7 +206,7 @@ public class TransactionController {
     public String addCategory(@PathVariable Long transactionId, @PathVariable Long categoryId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject().getId() == project.getId()) {
+        if (transaction.getProject().getId().equals(project.getId())) {
             transaction.addCategory(categoryService.findById(categoryId));
             transactionService.save(transaction);
         }
@@ -218,7 +219,7 @@ public class TransactionController {
         Project project = currentUser.getUser().getCurrentProject();
         Category categoryToRemove = categoryService.findById(categoryId);
         Transaction transaction = transactionService.findById(transactionId);
-        if (transaction.getProject().getId() == project.getId()) {
+        if (transaction.getProject().getId().equals(project.getId())) {
             if (transaction.pendingCategories.contains(categoryToRemove)) {
                 transaction.removeCategory(categoryToRemove);
             }
@@ -232,7 +233,7 @@ public class TransactionController {
     public String delete(@PathVariable Long id, @AuthenticationPrincipal CurrentUser currentUser) {
         Project currentProject = currentUser.getUser().getCurrentProject();
         Transaction transaction = transactionService.findById(id);
-        if (currentProject.getId() == transaction.project.getId()){
+        if (currentProject.getId().equals(transaction.project.getId())){
             transaction.categories.clear();
             transaction.pendingCategories.clear();
             transaction.rejectedCategories.clear();
@@ -255,9 +256,17 @@ public class TransactionController {
     }
 
     @GetMapping("/table/{year}/{month}")
-    public String table(Model model, @PathVariable String year, @PathVariable String month, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String table(Model model, @PathVariable String year, @PathVariable String month,
+                        @AuthenticationPrincipal CurrentUser currentUser, @PathParam("page") Integer page, @PathParam("size") Integer elementsPerSite) {
         Project project = currentUser.getUser().getCurrentProject();
-        List<Transaction> transactionsList = transactionService.transactionsByDate(year, month, project);
+        if(page == null){
+            page = 1;
+        }
+        if (elementsPerSite == null){
+            elementsPerSite = 100;
+        }
+        Pageable pageable = PageRequest.of(page, elementsPerSite);
+        Page<Transaction> transactionsList = transactionService.transactionsByDate(year, month, project, pageable);
         List<Category> categories = categoryService.findByProjectId(project.getId());
         model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactionsList);
@@ -267,7 +276,7 @@ public class TransactionController {
     @GetMapping("/table/gettransaction/{transactionId}")
     public String tableRow(Model model, @PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
-        List<Transaction> transactions = Arrays.asList(transactionService.findById(transactionId));
+        List<Transaction> transactions = Collections.singletonList(transactionService.findById(transactionId));
         List<Category> categories = categoryService.findByProjectId(project.getId());
         model.addAttribute("categoriesList", categories);
         model.addAttribute("tl", transactions);

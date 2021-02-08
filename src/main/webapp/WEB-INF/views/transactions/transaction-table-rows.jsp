@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<c:forEach items="${tl}" var="trans">
+<c:forEach items="${tl.getContent()}" var="trans">
     <tr id="cat_row_${trans.id}" onclick="selectTransaction(${trans.id}, arguments[0])"
         data-uncategorized="${empty trans.categories && empty trans.pendingCategories ? 'true' : 'false'}"
         data-unreviewed="${empty trans.pendingCategories ? 'false' : 'true'}"
