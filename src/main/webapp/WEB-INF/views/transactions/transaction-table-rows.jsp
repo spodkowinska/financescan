@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<c:forEach items="${tl.getContent()}" var="trans">
+<c:forEach items="${transactionsPage != null ? transactionsPage.getContent() : transactionsList}" var="trans">
     <tr id="cat_row_${trans.id}" onclick="selectTransaction(${trans.id}, arguments[0])"
         data-uncategorized="${empty trans.categories && empty trans.pendingCategories ? 'true' : 'false'}"
         data-unreviewed="${empty trans.pendingCategories ? 'false' : 'true'}"
@@ -13,8 +13,8 @@
 
         <td class="bulk-controls separate-col">
 
-            <c:if test="${tl.isFirst()}">
-                <script>reportTotalPagesCount(${tl.getTotalPages()})</script>
+            <c:if test="${transactionsPage.isFirst()}">
+                <script>reportTotalPagesCount(${transactionsPage.getTotalPages()})</script>
             </c:if>
 
             <input class="form-check transaction-row-checkbox" type="checkbox">

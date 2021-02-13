@@ -269,20 +269,22 @@ public class TransactionController {
             size = 100;
         }
         Pageable pageable = PageRequest.of(page, size);
-        Page<Transaction> transactionsList = transactionService.transactionsByDate(year, month, project, pageable);
+        Page<Transaction> transactionsPage = transactionService.transactionsByDate(year, month, project, pageable);
         List<Category> categories = categoryService.findByProjectId(project.getId());
         model.addAttribute("categoriesList", categories);
-        model.addAttribute("tl", transactionsList);
+        model.addAttribute("transactionsPage", transactionsPage);
+        model.addAttribute("transactionsList", null);
         return "transactions/transaction-table-rows";
     }
 
     @GetMapping("/table/gettransaction/{transactionId}")
     public String tableRow(Model model, @PathVariable Long transactionId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
-        List<Transaction> transactions = Collections.singletonList(transactionService.findById(transactionId));
+        List<Transaction> transactionsList = Collections.singletonList(transactionService.findById(transactionId));
         List<Category> categories = categoryService.findByProjectId(project.getId());
         model.addAttribute("categoriesList", categories);
-        model.addAttribute("tl", transactions);
+        model.addAttribute("transactionsPage", null);
+        model.addAttribute("transactionsList", transactionsList);
         return "transactions/transaction-table-rows";
     }
 }
