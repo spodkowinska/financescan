@@ -10,18 +10,13 @@ import info.podkowinski.sandra.financescanner.project.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Stream;
-
 
 @Service
 public class TransactionService {
@@ -245,7 +240,12 @@ public class TransactionService {
         }
         return transactionsList;
     }
-    public List<Integer> findYearsByProjectId(Long projectId){
+
+    public class YearsAndLastMonthResult {
+        public List<Integer> years;
+        public int lastMonth;
+    }
+    public YearsAndLastMonthResult findYearsAndLastMonthByProjectId(Long projectId){
         Transaction latestTransaction = transactionRepository.findLatestTransaction(projectId);
         Transaction oldestTransaction = transactionRepository.findOldestTransaction(projectId);
         List<Integer> years = new ArrayList<>();
@@ -255,8 +255,13 @@ public class TransactionService {
             for (int i = oldestYear; i<=latestYear; i++){
                 years.add(i);
             }
-        } 
-        return years;
+        }
+
+        YearsAndLastMonthResult ret = new YearsAndLastMonthResult();
+        ret.years = years;
+        ret.lastMonth = latestTransaction == null ? 0 : latestTransaction.transactionDate.getMonthValue();
+
+        return ret;
     }
 
     public void removeCategoryFromTransactions(Long categoryId){

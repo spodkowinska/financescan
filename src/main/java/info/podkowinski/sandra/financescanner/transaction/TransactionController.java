@@ -53,16 +53,19 @@ public class TransactionController {
 
     @RequestMapping("/list")
     public String transaction(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
-
-        Project project = currentUser.getUser().getCurrentProject();
-        List<Account> accountsList = accountService.findByProjectId(project.getId());
-        List<Category> categoriesList = categoryService.findByProjectId(project.getId());
-        List<Integer> years = transactionService.findYearsByProjectId(project.getId());
-        HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(project.getId());
+        final Project project = currentUser.getUser().getCurrentProject();
+        final List<Account> accountsList = accountService.findByProjectId(project.getId());
+        final List<Category> categoriesList = categoryService.findByProjectId(project.getId());
+        final var yearsAndLastMonth = transactionService.findYearsAndLastMonthByProjectId(project.getId());
+        final HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(project.getId());
         model.addAttribute("bl", accountsList);
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
-        model.addAttribute("years", years);
+        model.addAttribute("years", yearsAndLastMonth.years);
+        model.addAttribute("lastMonth", yearsAndLastMonth.lastMonth);
+        final int lastYear = yearsAndLastMonth.years.size() == 0 ?
+                0 : yearsAndLastMonth.years.get(yearsAndLastMonth.years.size()-1);
+        model.addAttribute("lastYear", lastYear);
         return "transactions/transaction-table";
     }
 

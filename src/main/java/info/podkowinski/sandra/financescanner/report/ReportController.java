@@ -48,9 +48,9 @@ public class ReportController {
 
         Project project = currentUser.getUser().getCurrentProject();
         List<Category> categories = categoryService.findByProjectId(project.getId());
-        List<Integer> years = transactionService.findYearsByProjectId(project.getId());
+        var yearsAndLastMonth = transactionService.findYearsAndLastMonthByProjectId(project.getId());
         model.addAttribute("categories", categories);
-        model.addAttribute("years", years);
+        model.addAttribute("years", yearsAndLastMonth.years);
         return "reports/report-table";
     }
 

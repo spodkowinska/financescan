@@ -76,7 +76,7 @@
 
         <%-- YEARS --%>
         <div class="btn-group">
-            <button id="btn_year_all" class="btn btn-outline-secondary btn-sm active" onclick="reloadTransactionTable('all', null)">
+            <button id="btn_year_all" class="btn btn-outline-secondary btn-sm" onclick="reloadTransactionTable('all', null)">
                 ALL
             </button>
             <c:forEach items="${years}" var="year">
@@ -339,6 +339,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    var gLastYear = ${lastYear};
+    var gLastMonth = ${lastMonth};
+</script>
 
 <jsp:include page="/WEB-INF/views/utils/footer.jsp">
     <jsp:param name="additionalScriptFile" value="transactions.js"/>

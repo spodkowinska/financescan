@@ -13,7 +13,18 @@ var gPagesCount = 0;
 var gTableLoadingID = 0;
 
 function init() {
-    reloadTransactionTable('all','all');
+    if (gLastYear === 0 || gLastMonth === 0)
+    {
+        $('#btn_year_all').addClass('active');
+        reloadTransactionTable('all','all');
+    }
+    else
+    {
+        $('#btn_year_' + gLastYear).addClass('active');
+        $('#btn_month' + gLastMonth).addClass('active');
+        reloadTransactionTable(gLastYear, gLastMonth);
+    }
+
     gatherSearchableColumnsIds();
 
     $(document).on('click', '.stop-propagation', function (e) {
