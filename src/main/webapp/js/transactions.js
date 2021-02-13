@@ -8,6 +8,10 @@ var gUnreviewedCount = 0;
 var gSelectedCount = 0;
 var gBulkEditEnabled = false;
 
+var gPagesCount = 0;
+
+var gTableLoadingID = 0;
+
 function init() {
     reloadTransactionTable('all','all');
     gatherSearchableColumnsIds();
@@ -107,13 +111,23 @@ function enablePopovers(pops) {
     $('.tag-add-popover').on("click.bs.dropdown", function (e) { e.stopPropagation(); e.preventDefault(); });
 }
 
+function reportTotalPagesCount(count) {
+    gPagesCount = count;
+}
+
+function reportLoadedPagesCount(count) {
+    const progress = gPagesCount === 0 ? 0 : Math.ceil(count / gPagesCount * 100);
+    $('#loading-progress').css('width', progress+'%').attr('aria-valuenow', progress);
+}
+
 function enableLoadingEffect(enable) {
     if (enable) {
-        $('#loading-indicator').show();
+        $('#loading-indicator').stop(true, true).fadeIn('fast');
         $('#list').css('filter', 'grayscale(1) opacity(0.5)');
     }
     else {
-        $('#loading-indicator').hide();
+        $('#loading-indicator').stop(true, true).fadeOut('fast');
+//        setTimeout(function() { $('#loading-indicator').stop(true, true).fadeOut('fast'); }, 50);
         $('#list').css('filter', '');
     }
 }
@@ -183,9 +197,47 @@ function gatherSelectedRows() {
     return selectedRows;
 }
 
+function appendTransactionsToTable(tableLoadingID, pageSize, page) {
+    if (pageSize == null) pageSize = 100;
+    if (page == null) page = 0;
+
+    $.get(CONTEXT_PATH + "/transaction/table/" + gYear + "/" + gMonth + "?page=" + page + "&size=" + pageSize, function (data) {
+
+        if (tableLoadingID !== gTableLoadingID)
+            return;
+
+        if (data.trim() === "") {
+            // Enable popovers
+            enablePopovers($('[data-toggle="popover"]'));
+
+            // Some rows maintenance
+            prepareRows();
+
+            // Update sorting
+            applySorting();
+
+            // Update text and category filtering
+            applyFilters();
+
+            enableLoadingEffect(false);
+        }
+        else {
+            if (page === 0)
+                $('#list').html(data);
+            else
+                $('#list').append(data);
+
+            reportLoadedPagesCount(page + 1);
+            appendTransactionsToTable(tableLoadingID, pageSize, page + 1);
+        }
+    });
+}
+
 function reloadTransactionTable(year, month) {
     console.log('reloading transaction table');
 
+    reportTotalPagesCount(0);
+    reportLoadedPagesCount(0);
     enableLoadingEffect(true);
 
     if (year !== null) {
@@ -195,23 +247,8 @@ function reloadTransactionTable(year, month) {
         gMonth = month;
     }
 
-    $.get(CONTEXT_PATH + "/transaction/table/" + gYear + "/" + gMonth, function (data) {
-        $('#list').html(data);
-
-        // Enable popovers
-        enablePopovers($('[data-toggle="popover"]'));
-
-        // Some rows maintenance
-        prepareRows();
-
-        // Update sorting
-        applySorting();
-
-        // Update text and category filtering
-        applyFilters();
-
-        enableLoadingEffect(false);
-    });
+    gTableLoadingID++;
+    appendTransactionsToTable(gTableLoadingID);
 
     // Update year & month buttons state
     $('#btn_year_' + gYear).addClass('active').siblings().removeClass('active');

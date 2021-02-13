@@ -257,15 +257,15 @@ public class TransactionController {
 
     @GetMapping("/table/{year}/{month}")
     public String table(Model model, @PathVariable String year, @PathVariable String month,
-                        @AuthenticationPrincipal CurrentUser currentUser, @PathParam("page") Integer page, @PathParam("size") Integer elementsPerSite) {
+                        @AuthenticationPrincipal CurrentUser currentUser, @PathParam("page") Integer page, @PathParam("size") Integer size) {
         Project project = currentUser.getUser().getCurrentProject();
         if(page == null){
             page = 1;
         }
-        if (elementsPerSite == null){
-            elementsPerSite = 100;
+        if (size == null){
+            size = 100;
         }
-        Pageable pageable = PageRequest.of(page, elementsPerSite);
+        Pageable pageable = PageRequest.of(page, size);
         Page<Transaction> transactionsList = transactionService.transactionsByDate(year, month, project, pageable);
         List<Category> categories = categoryService.findByProjectId(project.getId());
         model.addAttribute("categoriesList", categories);

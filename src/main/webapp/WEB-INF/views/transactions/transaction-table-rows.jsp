@@ -12,6 +12,11 @@
             <%-- COLUMN: CHECK --%>
 
         <td class="bulk-controls separate-col">
+
+            <c:if test="${tl.isFirst()}">
+                <script>reportTotalPagesCount(${tl.getTotalPages()})</script>
+            </c:if>
+
             <input class="form-check transaction-row-checkbox" type="checkbox">
         </td>
 
@@ -23,7 +28,7 @@
                 <span class="fa fa-edit"></span>
             </a>
             <a data-toggle="modal" data-target="#keywordModal" data-transaction-id="${trans.id}"
-               data-toggle="tooltip" title="Create keyword from this transaction"
+               data-toggle="tooltip" title="Create keyword from this transaction">
                 <span class="fa fa-key"></span>
             </a>
             <a tabindex="0" data-toggle="popover" class="popover-button-${trans.id}" data-trigger="focus" data-html="true" data-transaction-id="${trans.id}"

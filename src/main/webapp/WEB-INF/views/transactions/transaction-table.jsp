@@ -62,8 +62,9 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-gray-800" style="float: left">Transactions</h6>
         <div id="loading-indicator" style="position: absolute; margin-top: -5px; margin-left: 105px;">
-            <div class="spinner-border spinner-border-sm text-gray-500" role="status" style="height: 20px; width: 20px">
-                <span class="sr-only">Loading...</span>
+            <div class="progress" style="width: 200px; margin-top: 7px">
+                <div id="loading-progress" class="progress-bar progress-bar-striped progress-bar-animated"
+                     role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
             </div>
         </div>
         <button class="btn btn-secondary btn-sm" style="float: right; margin-bottom: -6px; margin-top: -6px;" data-toggle="modal" data-target="#editModal"
