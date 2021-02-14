@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -29,9 +30,9 @@ import java.util.List;
 
         CategoryStats(Object[] objects) {
             this.categoryId = objects[0] == null ? null : ((BigInteger)objects[0]).longValue();
-            this.income = (Double)objects[1];
-            this.outcome = (Double)objects[2];
-            this.balance = (Double)objects[3];
+            this.income = ((BigDecimal)objects[1]).doubleValue();
+            this.outcome = ((BigDecimal)objects[2]).doubleValue();
+            this.balance = ((BigDecimal)objects[3]).doubleValue();
         }
 
         public Long categoryId;
