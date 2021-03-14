@@ -16,15 +16,15 @@
         <property name="serverTimezone" value="Europe/Warsaw" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="finance_scan@localhost [2]" uuid="36b7db55-f76b-46ff-a091-ec8da3dbc66d">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/finance_scan</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-      <driver-properties>
-        <property name="serverTimezone" value="UTC" />
-      </driver-properties>
-    </data-source>
+<!--    <data-source source="LOCAL" name="finance_scan@localhost [2]" uuid="36b7db55-f76b-46ff-a091-ec8da3dbc66d">-->
+<!--      <driver-ref>mysql.8</driver-ref>-->
+<!--      <synchronize>true</synchronize>-->
+<!--      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>-->
+<!--      <jdbc-url>jdbc:mysql://localhost:3306/finance_scan</jdbc-url>-->
+<!--      <working-dir>$ProjectFileDir$</working-dir>-->
+<!--      <driver-properties>-->
+<!--        <property name="serverTimezone" value="UTC" />-->
+<!--      </driver-properties>-->
+<!--    </data-source>-->
   </component>
 </project>
