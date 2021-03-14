@@ -94,7 +94,7 @@
                         <div class="row">
                             <div class="col-lg-24">
 
-                                <form action="/transaction/fileimport" method="post" enctype="multipart/form-data">
+                                <form action="${pageContext.request.contextPath}/transaction/fileimport" method="post" enctype="multipart/form-data">
 
                                     <div class="form-group">
                                         <label>Select Your CSV File</label>

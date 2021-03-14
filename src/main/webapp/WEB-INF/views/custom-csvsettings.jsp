@@ -11,7 +11,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/file/csvsettings" method="post">
+<form action="${pageContext.request.contextPath}/file/csvsettings" method="post">
     <div class="form-group">
         <label>Select your custom csv settings</label>
         <select class="form-control" onchange="fillAForm()" id="selectSettings">
