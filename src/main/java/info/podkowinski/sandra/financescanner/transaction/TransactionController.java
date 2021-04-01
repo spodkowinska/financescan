@@ -5,6 +5,7 @@ import info.podkowinski.sandra.financescanner.account.Account;
 import info.podkowinski.sandra.financescanner.account.AccountService;
 import info.podkowinski.sandra.financescanner.category.Category;
 import info.podkowinski.sandra.financescanner.category.CategoryService;
+import info.podkowinski.sandra.financescanner.category.KeywordDTO;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettings;
 import info.podkowinski.sandra.financescanner.csvScanner.CsvSettingsService;
 import info.podkowinski.sandra.financescanner.imports.Import;
@@ -59,6 +60,7 @@ public class TransactionController {
         final var yearsAndLastMonth = transactionService.findYearsAndLastMonthByProjectId(project.getId());
         final HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(project.getId());
         model.addAttribute("bl", accountsList);
+        model.addAttribute("keywordDTO", new KeywordDTO());
         model.addAttribute("categoriesList", categoriesList);
         model.addAttribute("transCategories", transactionCategory);
         model.addAttribute("years", yearsAndLastMonth.years);

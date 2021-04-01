@@ -113,10 +113,10 @@ public class CategoryController {
 
     @ResponseBody
     @PostMapping("/keyword/add")
-    public String addKeywordPost(HttpServletRequest request, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String addKeywordPost(HttpServletRequest request, KeywordDTO keywordDTO, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
-        Category category = categoryService.findById(Long.parseLong(request.getParameter("category")));
-        if (project.getId() == category.project.getId()) {
+        Category category = keywordDTO.category;
+        if (project.getId().equals(category.project.getId())) {
             List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
             category.keywords.addAll(validatedKeywords);
             List<String> validatedSafeKeywords = categoryService.areValidKeywords(request.getParameter("safeKeywords").split(","));
@@ -131,8 +131,9 @@ public class CategoryController {
         Project project = currentUser.getUser().getCurrentProject();
         List<Category> categories = categoryService.findByProjectId(project.getId());
         Transaction transaction = transactionService.findById(transactionId);
-        String keyword = transaction.getDescription();
-        model.addAttribute("keywords", keyword);
+        KeywordDTO keywordDTO = new KeywordDTO();
+        keywordDTO.setKeyword(transaction.getDescription());
+        model.addAttribute("keywordDTO", keywordDTO);
         model.addAttribute("categories", categories);
         return "keywords/keyword-add";
     }
@@ -141,7 +142,7 @@ public class CategoryController {
     @GetMapping("/numberoftransactions/{categoryId}")
     public String numberOfTransactions(@PathVariable Long categoryId, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
-        if (project.getId() == categoryService.findById(categoryId).project.getId()) {
+        if (project.getId().equals(categoryService.findById(categoryId).project.getId())) {
             Long numberOTransactionsPerCategory = categoryService.findNumberOfTransactionsPerCategory(categoryId);
             Long numberOTransactionsPerPendingCategory = categoryService.findNumberOfTransactionsPerPendingCategory(categoryId);
             return numberOTransactionsPerCategory + "," + numberOTransactionsPerPendingCategory;
