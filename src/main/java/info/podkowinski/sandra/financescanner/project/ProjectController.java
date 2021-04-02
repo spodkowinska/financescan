@@ -77,7 +77,7 @@ public class ProjectController {
 
     @GetMapping("/edit/{projectId}")
     public String edit(Model model, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
-        List<Project> projects = currentUser.getUser().getProjects().stream().filter(x -> x.getId() == projectId).collect(Collectors.toList());
+        List<Project> projects = currentUser.getUser().getProjects().stream().filter(x -> x.getId().equals(projectId)).collect(Collectors.toList());
         List<User> friends = currentUser.getUser().getFriends();
         List<Role> roles = userService.findProjectRoles();
         model.addAttribute("friends", friends);
@@ -90,11 +90,11 @@ public class ProjectController {
     @ResponseBody
     @PostMapping("/edit/{projectId}")
     public String editPost(@ModelAttribute Project project, @PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
-        if (currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x == projectId))
+        if (currentUser.getUser().getProjects().stream().map(Project::getId).anyMatch(x -> x.equals(projectId)))
             projectService.save(project);
         currentUser.getUser().getProjects().clear();
         currentUser.getUser().getProjects().addAll(projectService.findAllByUserId(currentUser.getUser().getId()));
-        if (currentUser.getUser().getCurrentProject().getId() == projectId) {
+        if (currentUser.getUser().getCurrentProject().getId().equals(projectId)) {
             currentUser.getUser().setCurrentProject(project);
         }
         return "";
@@ -106,7 +106,7 @@ public class ProjectController {
         User user = currentUser.getUser();
         List<Project> usersProjects = user.getProjects();
         for (Project project : usersProjects) {
-            if (project.getId() == projectId) {
+            if (project.getId().equals(projectId)) {
                 projectService.delete(project);
             }
         }
@@ -116,7 +116,7 @@ public class ProjectController {
     @ResponseBody
     @GetMapping("/archive/{projectId}")
     public String archive(@PathVariable Long projectId, @AuthenticationPrincipal CurrentUser currentUser) {
-        if (currentUser.getUser().getCurrentProject().getId() == projectId) {
+        if (currentUser.getUser().getCurrentProject().getId().equals(projectId)) {
             // Current project can't be archived. This also ensures we always have at least 1 un-archived project.
             return "error:current";
         }

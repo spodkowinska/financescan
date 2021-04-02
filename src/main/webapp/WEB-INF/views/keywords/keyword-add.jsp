@@ -2,16 +2,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<form id="keywordModalForm">
+<form:form modelAttribute="keywordDTO" id="keywordModalForm">
 
     <div class="form-group">
         <label>Select category</label>
-        <select class="form-control" id="category" name="category">
-            </option>
-            <c:forEach items="${categories}" var="category">
-                <option value="${category.id}">${category.name}</option>
+        <form:select path="category" class="form-control" id="category">
+            <c:forEach items="${categories}" var="cat">
+                <form:option value="${cat}">${cat.name}</form:option>
             </c:forEach>
-        </select>
+        </form:select>
     </div>
 
     <div class="form-group">
@@ -23,24 +22,24 @@
             </a>
         </label>
 
-        <input name="safeKeywords" id="notSentKeywords" type="hidden"/>
-        <input name="keywords" id="sentKeywords" class="form-control"/>
+<%--        <input name="hiddenSafeKeywords" id="notSentKeywords" type="hidden"/>--%>
+        <form:input path="keyword" name="keyword" id="keywords" class="form-control"/>
 
         <div class="form-check" style="margin-top: 5px">
-            <input class="form-check-input" type="checkbox" id="safeCheck" style="margin-top: 6px">
-            <label class="form-check-label small" for="safeCheck">Safe keyword</label>
+            <input type="checkbox" path="safeWord" name="safeWord" class="form-check-input" id="safeWord" style="margin-top: 6px"></inputcheckbox>
+            <label class="form-check-label small" for="safeWord">Safe keyword</label>
         </div>
     </div>
-</form>
+</form:form>
 
-<script>
-    $('#sentKeywords').val('${keywords != null ? keywords : ''}');
+<%--<script>--%>
+<%--    $('#keywords').val('${keyword != null ? keyword : ''}');--%>
 
-    $('#safeCheck').change(function () {
-        const checked = $(this).is(':checked');
-        $('#sentKeywords').attr('name', checked ? 'safeKeywords' : 'keywords');
-        $('#notSentKeywords').attr('name', checked ? 'keywords' : 'safeKeywords');
-    });
+<%--    $('#safeKeyword').change(function () {--%>
+<%--        const checked = $(this).is(':checked');--%>
+<%--        $('#sentKeywords').attr('name', checked ? 'safeKeyword' : 'keyword');--%>
+<%--        $('#notSentKeywords').attr('name', checked ? 'keyword' : 'safeKeyword');--%>
+<%--    });--%>
 
-    $('[data-toggle="popover"]').popover();
-</script>
+<%--    $('[data-toggle="popover"]').popover();--%>
+<%--</script>--%>
