@@ -6,11 +6,10 @@
 
     <div class="form-group">
         <label>Select category</label>
-        <form:select path="category" class="form-control" id="category" name="category">
-<%--            </option>--%>
-<%--            <c:forEach items="${categories}" var="categoryToChoose">--%>
-                <form:options items="${categories}" itemValue="id" itemLabel="name"></form:options>
-<%--            </c:forEach>--%>
+        <form:select path="category" class="form-control" id="category">
+            <c:forEach items="${categories}" var="cat">
+                <form:option value="${cat}">${cat.name}</form:option>
+            </c:forEach>
         </form:select>
     </div>
 
@@ -23,12 +22,12 @@
             </a>
         </label>
 
-        <input name="hiddenSafeKeywords" id="notSentKeywords" type="hidden"/>
+<%--        <input name="hiddenSafeKeywords" id="notSentKeywords" type="hidden"/>--%>
         <form:input path="keyword" name="keyword" id="keywords" class="form-control"/>
 
         <div class="form-check" style="margin-top: 5px">
-            <form:checkbox path="safeKeyword" name="safeKeyword" class="form-check-input" id="safeKeyword" style="margin-top: 6px"></form:checkbox>
-            <label class="form-check-label small" for="safeKeyword">Safe keyword</label>
+            <input type="checkbox" path="safeWord" name="safeWord" class="form-check-input" id="safeWord" style="margin-top: 6px"></inputcheckbox>
+            <label class="form-check-label small" for="safeWord">Safe keyword</label>
         </div>
     </div>
 </form:form>

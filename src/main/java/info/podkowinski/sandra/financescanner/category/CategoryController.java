@@ -113,14 +113,16 @@ public class CategoryController {
 
     @ResponseBody
     @PostMapping("/keyword/add")
-    public String addKeywordPost(HttpServletRequest request, KeywordDTO keywordDTO, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String addKeywordPost(HttpServletRequest request, @ModelAttribute KeywordDTO keywordDTO, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
-        Category category = keywordDTO.category;
+        Category category = keywordDTO.getCategory();
         if (project.getId().equals(category.project.getId())) {
-            List<String> validatedKeywords = categoryService.areValidKeywords(request.getParameter("keywords").split(","));
-            category.keywords.addAll(validatedKeywords);
-            List<String> validatedSafeKeywords = categoryService.areValidKeywords(request.getParameter("safeKeywords").split(","));
-            category.safeKeywords.addAll(validatedSafeKeywords);
+            List<String> validatedKeywords = categoryService.areValidKeywords(keywordDTO.keyword.split(","));
+            if (keywordDTO.safeWord) {
+                category.safeKeywords.addAll(validatedKeywords);
+            } else {
+                category.keywords.addAll(validatedKeywords);
+            }
             categoryService.save(category);
         }
         return "";
@@ -133,6 +135,7 @@ public class CategoryController {
         Transaction transaction = transactionService.findById(transactionId);
         KeywordDTO keywordDTO = new KeywordDTO();
         keywordDTO.setKeyword(transaction.getDescription());
+        System.out.println(keywordDTO.keyword);
         model.addAttribute("keywordDTO", keywordDTO);
         model.addAttribute("categories", categories);
         return "keywords/keyword-add";

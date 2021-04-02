@@ -58,11 +58,11 @@ public class TransactionController {
         final List<Account> accountsList = accountService.findByProjectId(project.getId());
         final List<Category> categoriesList = categoryService.findByProjectId(project.getId());
         final var yearsAndLastMonth = transactionService.findYearsAndLastMonthByProjectId(project.getId());
-        final HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(project.getId());
+//        final HashMap<Long, List<String>> transactionCategory = transactionService.transactionIdCategories(project.getId());
         model.addAttribute("bl", accountsList);
         model.addAttribute("keywordDTO", new KeywordDTO());
         model.addAttribute("categoriesList", categoriesList);
-        model.addAttribute("transCategories", transactionCategory);
+//        model.addAttribute("transCategories", transactionCategory);
         model.addAttribute("years", yearsAndLastMonth.years);
         model.addAttribute("lastMonth", yearsAndLastMonth.lastMonth);
         final int lastYear = yearsAndLastMonth.years.size() == 0 ?
@@ -143,7 +143,6 @@ public class TransactionController {
     public String editPost(HttpServletRequest request, @ModelAttribute Transaction transaction1, @AuthenticationPrincipal CurrentUser currentUser) {
         Project project = currentUser.getUser().getCurrentProject();
         transaction1.setProject(project);
-//        transaction1.setImportName("Imported manually on " + LocalDate.now());
         String date = request.getParameter("transactionDate");
         transaction1.setTransactionDate(LocalDate.parse(date));
         System.out.println(transaction1.transactionDate);
