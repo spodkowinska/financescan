@@ -7,10 +7,10 @@
     <div class="form-group">
         <label>Select category</label>
         <form:select path="category" class="form-control" id="category" name="category">
-            </option>
-            <c:forEach items="${categories}" var="categoryToChoose">
-                <form:option value="${categoryToChoose.id}">${categoryToChoose.name}</form:option>
-            </c:forEach>
+<%--            </option>--%>
+<%--            <c:forEach items="${categories}" var="categoryToChoose">--%>
+                <form:options items="${categories}" itemValue="id" itemLabel="name"></form:options>
+<%--            </c:forEach>--%>
         </form:select>
     </div>
 
@@ -24,23 +24,23 @@
         </label>
 
         <input name="hiddenSafeKeywords" id="notSentKeywords" type="hidden"/>
-        <form:input path="keyword" name="keywords" id="sentKeywords" class="form-control"/>
+        <form:input path="keyword" name="keyword" id="keywords" class="form-control"/>
 
         <div class="form-check" style="margin-top: 5px">
-            <form:checkbox path="safeKeyword" name="safeKeywords" class="form-check-input" id="safeCheck" style="margin-top: 6px"></form:checkbox>
-            <label class="form-check-label small" for="safeCheck">Safe keyword</label>
+            <form:checkbox path="safeKeyword" name="safeKeyword" class="form-check-input" id="safeKeyword" style="margin-top: 6px"></form:checkbox>
+            <label class="form-check-label small" for="safeKeyword">Safe keyword</label>
         </div>
     </div>
 </form:form>
 
-<script>
-    $('#sentKeywords').val('${keywords != null ? keywords : ''}');
+<%--<script>--%>
+<%--    $('#keywords').val('${keyword != null ? keyword : ''}');--%>
 
-    $('#safeCheck').change(function () {
-        const checked = $(this).is(':checked');
-        $('#sentKeywords').attr('name', checked ? 'safeKeywords' : 'keywords');
-        $('#notSentKeywords').attr('name', checked ? 'keywords' : 'safeKeywords');
-    });
+<%--    $('#safeKeyword').change(function () {--%>
+<%--        const checked = $(this).is(':checked');--%>
+<%--        $('#sentKeywords').attr('name', checked ? 'safeKeyword' : 'keyword');--%>
+<%--        $('#notSentKeywords').attr('name', checked ? 'keyword' : 'safeKeyword');--%>
+<%--    });--%>
 
-    $('[data-toggle="popover"]').popover();
-</script>
+<%--    $('[data-toggle="popover"]').popover();--%>
+<%--</script>--%>
